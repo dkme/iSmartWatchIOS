@@ -1,0 +1,49 @@
+/* 
+  Localizable.strings
+  WMSPlusdot
+
+  Created by John on 14-8-21.
+  Copyright (c) 2014年 GUOGEE. All rights reserved.
+*/
+
+
+//LeftViewController String
+"My sports" = "我的运动";
+"My sleep" = "我的睡眠";
+"Set target" = "设置目标";
+"Binding accessories" = "绑定配件";
+
+//RightViewController String
+"Remind Setting" = "提醒设置";
+"Social contact" = "社交";
+
+"Telephone" = "电话";
+"SMS" = "短信";
+"Email" = "邮件";
+"Battery" = "电池";
+
+"WeiXin" = "微信";
+"QQ" = "QQ";
+"Facebook" = "Facebook";
+"Twitter" = "Twitter";
+
+"Take photos" = "拍照";
+
+
+//Content1ViewController String
+"Deep sleep" = "深睡";
+"Light sleep" = "浅睡";
+"Wake up" = "唤醒";
+"Hour" = "时";
+"Minutes" = "分";
+
+//Content2ViewController String
+"Step" = "步";
+"%@ mode" = "%@模式";
+"The range of %d-%d steps" = "范围%d-%d步";
+"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle" = "专家建议每天运动10000步是积极健康的生活方式";
+
+//BindingAccessoryViewController String
+"Binding accessories" = "绑定配件";
+"Searching Plusdot watches" = "正在搜索Plusdot手表";
+"Please make sure the watch power is on and near the phone" = "请确认手表电源已经开启并在手机附近";

@@ -1,0 +1,39 @@
+/* 
+  Localizable.strings
+  WMSPlusdot
+
+  Created by John on 14-8-21.
+  Copyright (c) 2014年 GUOGEE. All rights reserved.
+*/
+
+
+//LeftViewController String
+"My sports" = "My sports";
+"My sleep" = "My sleep";
+"Set target" = "Set target";
+"Binding accessories" = "Binding accessories";
+
+//RightViewController String
+"Remind Setting" = "Remind Setting";
+"Social contact" = "Social contact";
+
+"Telephone" = "Telephone";
+"SMS" = "SMS";
+"Email" = "Email";
+"Battery" = "Battery";
+
+"WeiXin" = "WeiXin";
+"QQ" = "QQ";
+"Facebook" = "Facebook";
+"Twitter" = "Twitter";
+
+"Take photos" = "Take photos";
+
+
+//Content1ViewController String
+"Deep sleep" = "Deep sleep";
+"Light sleep" = "Light sleep";
+"Wake up" = "Wake up";
+"Hour" = "Hour";
+"Minutes" = "Minutes";
+
