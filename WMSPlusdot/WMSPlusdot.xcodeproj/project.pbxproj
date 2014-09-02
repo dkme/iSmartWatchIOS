@@ -18,6 +18,15 @@
 		230298D819A87F0A009D4306 /* link_connect_failure_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D419A87F0A009D4306 /* link_connect_failure_icon.png */; };
 		230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D519A87F0A009D4306 /* link_connect_ing_icon.png */; };
 		230298DA19A87F0A009D4306 /* link_connect_success_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D619A87F0A009D4306 /* link_connect_success_icon.png */; };
+		2311611919B1A2BE0012B066 /* NSDate+Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2311611819B1A2BE0012B066 /* NSDate+Formatter.m */; };
+		2316507D19AAEA350066C301 /* WMSMySportView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316507C19AAEA350066C301 /* WMSMySportView.m */; };
+		2316508219AB15510066C301 /* WMSLeftViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316508019AB15510066C301 /* WMSLeftViewCell.m */; };
+		2316508319AB15510066C301 /* WMSLeftViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2316508119AB15510066C301 /* WMSLeftViewCell.xib */; };
+		2316508819AB30D90066C301 /* WMSMySleepView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316508719AB30D90066C301 /* WMSMySleepView.m */; };
+		2316509319AB4A180066C301 /* WMSSmartClockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316509119AB4A180066C301 /* WMSSmartClockViewController.m */; };
+		2316509419AB4A180066C301 /* WMSSmartClockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2316509219AB4A180066C301 /* WMSSmartClockViewController.xib */; };
+		2316509819AB4E650066C301 /* back_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 2316509619AB4E650066C301 /* back_btn_a.png */; };
+		2316509919AB4E650066C301 /* back_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 2316509719AB4E650066C301 /* back_btn_b.png */; };
 		2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40119A58CCF0098657B /* main_circle_orange.png */; };
 		2326A40419A58CCF0098657B /* main_circle_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40219A58CCF0098657B /* main_circle_white.png */; };
 		2326A40619A591320098657B /* main_ico_distance.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40519A591320098657B /* main_ico_distance.png */; };
@@ -84,13 +93,33 @@
 		233511B519A4C3E500FBCC81 /* main_date_next_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B319A4C3E500FBCC81 /* main_date_next_a.png */; };
 		233511B619A4C3E500FBCC81 /* main_date_next_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B419A4C3E500FBCC81 /* main_date_next_b.png */; };
 		233511B819A4C45500FBCC81 /* main_progress_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B719A4C45500FBCC81 /* main_progress_bg.png */; };
+		234BF1EE19B0305C005D71A0 /* WMSNavBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */; };
+		234BF1F019B0308F005D71A0 /* WMSNavBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */; };
+		234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 234BF1F319B05914005D71A0 /* WMSMyAccountViewController.m */; };
+		234BF1F619B05914005D71A0 /* WMSMyAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1F419B05914005D71A0 /* WMSMyAccountViewController.xib */; };
+		234BF1FA19B05991005D71A0 /* car_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1F719B05991005D71A0 /* car_bg.png */; };
+		234BF1FB19B05991005D71A0 /* select_man.png in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1F819B05991005D71A0 /* select_man.png */; };
+		234BF1FC19B05991005D71A0 /* select_woman.png in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1F919B05991005D71A0 /* select_woman.png */; };
 		2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2354A3B619A6E0CD0027C91F /* WMSContent1ViewController.m */; };
 		2354A3B919A6E0CD0027C91F /* WMSContent1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2354A3B719A6E0CD0027C91F /* WMSContent1ViewController.xib */; };
+		237545C319AED3D200685CD1 /* account_head.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C219AED3D200685CD1 /* account_head.png */; };
+		237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C419AED3E100685CD1 /* account_edit_icon.png */; };
+		237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C619AED4BE00685CD1 /* exit_btn_a.png */; };
+		237545C919AED4BE00685CD1 /* exit_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C719AED4BE00685CD1 /* exit_btn_b.png */; };
+		237545CD19AF00CF00685CD1 /* TemperaBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545CC19AF00CF00685CD1 /* TemperaBar.m */; };
+		237545D119AF029400685CD1 /* OBShapedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545D019AF029400685CD1 /* OBShapedButton.m */; };
+		237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545D319AF02AC00685CD1 /* UIImage+ColorAtPixel.m */; };
+		237545DB19AF229C00685CD1 /* WMSActivityRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545D919AF229C00685CD1 /* WMSActivityRemindViewController.m */; };
+		237545DC19AF229C00685CD1 /* WMSActivityRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237545DA19AF229C00685CD1 /* WMSActivityRemindViewController.xib */; };
+		237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545E019AF484600685CD1 /* WMSInputViewController.m */; };
+		237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237545E119AF484600685CD1 /* WMSInputViewController.xib */; };
 		23C74AFE19A72E9E00C589A1 /* main_deepsleep_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74AFD19A72E9E00C589A1 /* main_deepsleep_icon.png */; };
 		23C74B0219A72EFA00C589A1 /* main_lightsleep_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0119A72EFA00C589A1 /* main_lightsleep_icon.png */; };
 		23C74B0419A72F0B00C589A1 /* main_wakeup_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */; };
 		23C74B0719A733FA00C589A1 /* main_clock_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */; };
 		23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */; };
+		23CDDD9919AC2DBB00A12820 /* WMSSelectValueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CDDD9719AC2DBB00A12820 /* WMSSelectValueViewController.m */; };
+		23CDDD9A19AC2DBB00A12820 /* WMSSelectValueViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23CDDD9819AC2DBB00A12820 /* WMSSelectValueViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +146,20 @@
 		230298D419A87F0A009D4306 /* link_connect_failure_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_failure_icon.png; sourceTree = "<group>"; };
 		230298D519A87F0A009D4306 /* link_connect_ing_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_ing_icon.png; sourceTree = "<group>"; };
 		230298D619A87F0A009D4306 /* link_connect_success_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_success_icon.png; sourceTree = "<group>"; };
+		2311611719B1A2BE0012B066 /* NSDate+Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Formatter.h"; sourceTree = "<group>"; };
+		2311611819B1A2BE0012B066 /* NSDate+Formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Formatter.m"; sourceTree = "<group>"; };
+		2316507B19AAEA350066C301 /* WMSMySportView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMySportView.h; sourceTree = "<group>"; };
+		2316507C19AAEA350066C301 /* WMSMySportView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMySportView.m; sourceTree = "<group>"; };
+		2316507F19AB15510066C301 /* WMSLeftViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLeftViewCell.h; sourceTree = "<group>"; };
+		2316508019AB15510066C301 /* WMSLeftViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLeftViewCell.m; sourceTree = "<group>"; };
+		2316508119AB15510066C301 /* WMSLeftViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSLeftViewCell.xib; sourceTree = "<group>"; };
+		2316508619AB30D90066C301 /* WMSMySleepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMySleepView.h; sourceTree = "<group>"; };
+		2316508719AB30D90066C301 /* WMSMySleepView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMySleepView.m; sourceTree = "<group>"; };
+		2316509019AB4A180066C301 /* WMSSmartClockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSmartClockViewController.h; sourceTree = "<group>"; };
+		2316509119AB4A180066C301 /* WMSSmartClockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSmartClockViewController.m; sourceTree = "<group>"; };
+		2316509219AB4A180066C301 /* WMSSmartClockViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSmartClockViewController.xib; sourceTree = "<group>"; };
+		2316509619AB4E650066C301 /* back_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_btn_a.png; sourceTree = "<group>"; };
+		2316509719AB4E650066C301 /* back_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_btn_b.png; sourceTree = "<group>"; };
 		2326A40119A58CCF0098657B /* main_circle_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_circle_orange.png; sourceTree = "<group>"; };
 		2326A40219A58CCF0098657B /* main_circle_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_circle_white.png; sourceTree = "<group>"; };
 		2326A40519A591320098657B /* main_ico_distance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_ico_distance.png; sourceTree = "<group>"; };
@@ -199,14 +242,42 @@
 		233511B319A4C3E500FBCC81 /* main_date_next_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_date_next_a.png; sourceTree = "<group>"; };
 		233511B419A4C3E500FBCC81 /* main_date_next_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_date_next_b.png; sourceTree = "<group>"; };
 		233511B719A4C45500FBCC81 /* main_progress_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_progress_bg.png; sourceTree = "<group>"; };
+		234BF1EC19B0305C005D71A0 /* WMSNavBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSNavBarView.h; sourceTree = "<group>"; };
+		234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSNavBarView.m; sourceTree = "<group>"; };
+		234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSNavBarView.xib; sourceTree = "<group>"; };
+		234BF1F219B05914005D71A0 /* WMSMyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMyAccountViewController.h; sourceTree = "<group>"; };
+		234BF1F319B05914005D71A0 /* WMSMyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMyAccountViewController.m; sourceTree = "<group>"; };
+		234BF1F419B05914005D71A0 /* WMSMyAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSMyAccountViewController.xib; sourceTree = "<group>"; };
+		234BF1F719B05991005D71A0 /* car_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = car_bg.png; sourceTree = "<group>"; };
+		234BF1F819B05991005D71A0 /* select_man.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_man.png; sourceTree = "<group>"; };
+		234BF1F919B05991005D71A0 /* select_woman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_woman.png; sourceTree = "<group>"; };
 		2354A3B519A6E0CD0027C91F /* WMSContent1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSContent1ViewController.h; sourceTree = "<group>"; };
 		2354A3B619A6E0CD0027C91F /* WMSContent1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSContent1ViewController.m; sourceTree = "<group>"; };
 		2354A3B719A6E0CD0027C91F /* WMSContent1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSContent1ViewController.xib; sourceTree = "<group>"; };
+		237545C219AED3D200685CD1 /* account_head.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_head.png; sourceTree = "<group>"; };
+		237545C419AED3E100685CD1 /* account_edit_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_edit_icon.png; sourceTree = "<group>"; };
+		237545C619AED4BE00685CD1 /* exit_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_btn_a.png; sourceTree = "<group>"; };
+		237545C719AED4BE00685CD1 /* exit_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_btn_b.png; sourceTree = "<group>"; };
+		237545CB19AF00CF00685CD1 /* TemperaBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperaBar.h; sourceTree = "<group>"; };
+		237545CC19AF00CF00685CD1 /* TemperaBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperaBar.m; sourceTree = "<group>"; };
+		237545CF19AF029400685CD1 /* OBShapedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBShapedButton.h; sourceTree = "<group>"; };
+		237545D019AF029400685CD1 /* OBShapedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBShapedButton.m; sourceTree = "<group>"; };
+		237545D219AF02AC00685CD1 /* UIImage+ColorAtPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ColorAtPixel.h"; sourceTree = "<group>"; };
+		237545D319AF02AC00685CD1 /* UIImage+ColorAtPixel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ColorAtPixel.m"; sourceTree = "<group>"; };
+		237545D819AF229C00685CD1 /* WMSActivityRemindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSActivityRemindViewController.h; sourceTree = "<group>"; };
+		237545D919AF229C00685CD1 /* WMSActivityRemindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSActivityRemindViewController.m; sourceTree = "<group>"; };
+		237545DA19AF229C00685CD1 /* WMSActivityRemindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSActivityRemindViewController.xib; sourceTree = "<group>"; };
+		237545DF19AF484600685CD1 /* WMSInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSInputViewController.h; sourceTree = "<group>"; };
+		237545E019AF484600685CD1 /* WMSInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSInputViewController.m; sourceTree = "<group>"; };
+		237545E119AF484600685CD1 /* WMSInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSInputViewController.xib; sourceTree = "<group>"; };
 		23C74AFD19A72E9E00C589A1 /* main_deepsleep_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_deepsleep_icon.png; sourceTree = "<group>"; };
 		23C74B0119A72EFA00C589A1 /* main_lightsleep_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_lightsleep_icon.png; sourceTree = "<group>"; };
 		23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_wakeup_icon.png; sourceTree = "<group>"; };
 		23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_clock_btn_a.png; sourceTree = "<group>"; };
 		23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_clock_btn_b.png; sourceTree = "<group>"; };
+		23CDDD9619AC2DBB00A12820 /* WMSSelectValueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSelectValueViewController.h; sourceTree = "<group>"; };
+		23CDDD9719AC2DBB00A12820 /* WMSSelectValueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSelectValueViewController.m; sourceTree = "<group>"; };
+		23CDDD9819AC2DBB00A12820 /* WMSSelectValueViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSelectValueViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,27 +304,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		230298C519A83250009D4306 /* Content2ViewController Icon */ = {
+		230298C519A83250009D4306 /* 设置目标视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
 				230298C619A83281009D4306 /* target_info_icon.png */,
 				230298C719A83281009D4306 /* target_progress_bg.png */,
 				230298C819A83281009D4306 /* target_progress_btn.png */,
 			);
-			name = "Content2ViewController Icon";
+			name = "设置目标视图 Icon";
 			sourceTree = "<group>";
 		};
-		230298CC19A87D65009D4306 /* BindingAccessory View */ = {
+		230298CC19A87D65009D4306 /* 绑定配件视图 */ = {
 			isa = PBXGroup;
 			children = (
 				230298CD19A87DBF009D4306 /* WMSBindingAccessoryViewController.h */,
 				230298CE19A87DBF009D4306 /* WMSBindingAccessoryViewController.m */,
 				230298CF19A87DBF009D4306 /* WMSBindingAccessoryViewController.xib */,
 			);
-			name = "BindingAccessory View";
+			name = "绑定配件视图";
 			sourceTree = "<group>";
 		};
-		230298D219A87EAD009D4306 /* BindingAccessoryViewController Icon */ = {
+		230298D219A87EAD009D4306 /* 绑定配件视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
 				230298D319A87F0A009D4306 /* link_bg.png */,
@@ -261,40 +332,40 @@
 				230298D519A87F0A009D4306 /* link_connect_ing_icon.png */,
 				230298D619A87F0A009D4306 /* link_connect_success_icon.png */,
 			);
-			name = "BindingAccessoryViewController Icon";
+			name = "绑定配件视图 Icon";
 			sourceTree = "<group>";
 		};
-		230298DB19A88CC5009D4306 /* MySport View */ = {
+		230298DB19A88CC5009D4306 /* 我的运动视图 */ = {
 			isa = PBXGroup;
 			children = (
 				233511A119A4BD5200FBCC81 /* WMSContentViewController.h */,
 				233511A219A4BD5200FBCC81 /* WMSContentViewController.m */,
 				233511A319A4BD5200FBCC81 /* WMSContentViewController.xib */,
 			);
-			name = "MySport View";
+			name = "我的运动视图";
 			sourceTree = "<group>";
 		};
-		230298DC19A88CF6009D4306 /* MySleep View */ = {
+		230298DC19A88CF6009D4306 /* 我的睡眠视图 */ = {
 			isa = PBXGroup;
 			children = (
 				2354A3B519A6E0CD0027C91F /* WMSContent1ViewController.h */,
 				2354A3B619A6E0CD0027C91F /* WMSContent1ViewController.m */,
 				2354A3B719A6E0CD0027C91F /* WMSContent1ViewController.xib */,
 			);
-			name = "MySleep View";
+			name = "我的睡眠视图";
 			sourceTree = "<group>";
 		};
-		230298DD19A88D10009D4306 /* SetTarget View */ = {
+		230298DD19A88D10009D4306 /* 设置目标视图 */ = {
 			isa = PBXGroup;
 			children = (
 				230298C019A82FDC009D4306 /* WMSContent2ViewController.h */,
 				230298C119A82FDC009D4306 /* WMSContent2ViewController.m */,
 				230298C219A82FDC009D4306 /* WMSContent2ViewController.xib */,
 			);
-			name = "SetTarget View";
+			name = "设置目标视图";
 			sourceTree = "<group>";
 		};
-		230298DE19A88D3C009D4306 /* Left and Right View */ = {
+		230298DE19A88D3C009D4306 /* 左右菜单视图 */ = {
 			isa = PBXGroup;
 			children = (
 				2326A41319A59E200098657B /* WMSLeftViewController.h */,
@@ -304,10 +375,110 @@
 				2326A44819A5E9CE0098657B /* WMSRightViewController.m */,
 				2326A44919A5E9CE0098657B /* WMSRightViewController.xib */,
 			);
-			name = "Left and Right View";
+			name = "左右菜单视图";
 			sourceTree = "<group>";
 		};
-		2326A41D19A5A25D0098657B /* LeftViewController Icon */ = {
+		2311611519B180EC0012B066 /* 登陆注册视图 */ = {
+			isa = PBXGroup;
+			children = (
+				232846EF19A43825001C148D /* WMSLoginViewController.h */,
+				232846F019A43825001C148D /* WMSLoginViewController.m */,
+				232846F119A43825001C148D /* WMSLoginViewController.xib */,
+				2335118E19A476EF00FBCC81 /* WMSSignupViewController.h */,
+				2335118F19A476EF00FBCC81 /* WMSSignupViewController.m */,
+				2335119019A476EF00FBCC81 /* WMSSignupViewController.xib */,
+			);
+			name = "登陆注册视图";
+			sourceTree = "<group>";
+		};
+		2311611619B1A2620012B066 /* NSDate+Formatter */ = {
+			isa = PBXGroup;
+			children = (
+				2311611719B1A2BE0012B066 /* NSDate+Formatter.h */,
+				2311611819B1A2BE0012B066 /* NSDate+Formatter.m */,
+			);
+			name = "NSDate+Formatter";
+			sourceTree = "<group>";
+		};
+		2311611A19B1A3070012B066 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				2311611619B1A2620012B066 /* NSDate+Formatter */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		2316507A19AAE4AA0066C301 /* WMSSwitchCell */ = {
+			isa = PBXGroup;
+			children = (
+				2326A44D19A605660098657B /* WMSSwitchCell.h */,
+				2326A44E19A605660098657B /* WMSSwitchCell.m */,
+				2326A44F19A605660098657B /* WMSSwitchCell.xib */,
+			);
+			name = WMSSwitchCell;
+			sourceTree = "<group>";
+		};
+		2316507E19AB14D50066C301 /* MySportView */ = {
+			isa = PBXGroup;
+			children = (
+				2316507B19AAEA350066C301 /* WMSMySportView.h */,
+				2316507C19AAEA350066C301 /* WMSMySportView.m */,
+			);
+			name = MySportView;
+			sourceTree = "<group>";
+		};
+		2316508419AB15560066C301 /* LeftViewController Cell */ = {
+			isa = PBXGroup;
+			children = (
+				2316507F19AB15510066C301 /* WMSLeftViewCell.h */,
+				2316508019AB15510066C301 /* WMSLeftViewCell.m */,
+				2316508119AB15510066C301 /* WMSLeftViewCell.xib */,
+			);
+			name = "LeftViewController Cell";
+			sourceTree = "<group>";
+		};
+		2316508519AB30AD0066C301 /* MySleepView */ = {
+			isa = PBXGroup;
+			children = (
+				2316508619AB30D90066C301 /* WMSMySleepView.h */,
+				2316508719AB30D90066C301 /* WMSMySleepView.m */,
+			);
+			name = MySleepView;
+			sourceTree = "<group>";
+		};
+		2316508919AB47310066C301 /* 个人信息视图 */ = {
+			isa = PBXGroup;
+			children = (
+				234BF1F219B05914005D71A0 /* WMSMyAccountViewController.h */,
+				234BF1F319B05914005D71A0 /* WMSMyAccountViewController.m */,
+				234BF1F419B05914005D71A0 /* WMSMyAccountViewController.xib */,
+			);
+			name = "个人信息视图";
+			sourceTree = "<group>";
+		};
+		2316508A19AB489A0066C301 /* 智能闹钟视图 */ = {
+			isa = PBXGroup;
+			children = (
+				2316509019AB4A180066C301 /* WMSSmartClockViewController.h */,
+				2316509119AB4A180066C301 /* WMSSmartClockViewController.m */,
+				2316509219AB4A180066C301 /* WMSSmartClockViewController.xib */,
+				23CDDD9619AC2DBB00A12820 /* WMSSelectValueViewController.h */,
+				23CDDD9719AC2DBB00A12820 /* WMSSelectValueViewController.m */,
+				23CDDD9819AC2DBB00A12820 /* WMSSelectValueViewController.xib */,
+			);
+			name = "智能闹钟视图";
+			sourceTree = "<group>";
+		};
+		2316509519AB4E3F0066C301 /* 智能闹钟视图 Icon */ = {
+			isa = PBXGroup;
+			children = (
+				2316509619AB4E650066C301 /* back_btn_a.png */,
+				2316509719AB4E650066C301 /* back_btn_b.png */,
+			);
+			name = "智能闹钟视图 Icon";
+			sourceTree = "<group>";
+		};
+		2326A41D19A5A25D0098657B /* 左右菜单视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
 				2326A41E19A5A2FC0098657B /* main_avatar_default.png */,
@@ -324,15 +495,17 @@
 				2326A43C19A5D71B0098657B /* main_menu_bg_a.png */,
 				2326A43D19A5D71B0098657B /* main_menu_bg_b.png */,
 			);
-			name = "LeftViewController Icon";
+			name = "左右菜单视图 Icon";
 			sourceTree = "<group>";
 		};
 		2326A44C19A604B80098657B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2326A44D19A605660098657B /* WMSSwitchCell.h */,
-				2326A44E19A605660098657B /* WMSSwitchCell.m */,
-				2326A44F19A605660098657B /* WMSSwitchCell.xib */,
+				2316508419AB15560066C301 /* LeftViewController Cell */,
+				2316507A19AAE4AA0066C301 /* WMSSwitchCell */,
+				2316507E19AB14D50066C301 /* MySportView */,
+				2316508519AB30AD0066C301 /* MySleepView */,
+				234BF1F119B055AE005D71A0 /* WMSNavBarView */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -340,10 +513,12 @@
 		232846B419A43668001C148D = {
 			isa = PBXGroup;
 			children = (
+				237545CA19AF00AB00685CD1 /* TemperaBar */,
 				2335119719A4B82700FBCC81 /* ResideMenu */,
+				2311611A19B1A3070012B066 /* Categories */,
 				2326A44C19A604B80098657B /* Views */,
-				232846C619A43668001C148D /* WMSPlusdot */,
 				232846F419A43D0D001C148D /* Images */,
+				232846C619A43668001C148D /* WMSPlusdot */,
 				232846DF19A43668001C148D /* WMSPlusdotTests */,
 				232846BF19A43668001C148D /* Frameworks */,
 				232846BE19A43668001C148D /* Products */,
@@ -375,19 +550,17 @@
 			children = (
 				232846CF19A43668001C148D /* WMSAppDelegate.h */,
 				232846D019A43668001C148D /* WMSAppDelegate.m */,
-				232846EF19A43825001C148D /* WMSLoginViewController.h */,
-				232846F019A43825001C148D /* WMSLoginViewController.m */,
-				232846F119A43825001C148D /* WMSLoginViewController.xib */,
-				2335118E19A476EF00FBCC81 /* WMSSignupViewController.h */,
-				2335118F19A476EF00FBCC81 /* WMSSignupViewController.m */,
-				2335119019A476EF00FBCC81 /* WMSSignupViewController.xib */,
-				230298DE19A88D3C009D4306 /* Left and Right View */,
-				230298DB19A88CC5009D4306 /* MySport View */,
-				230298DC19A88CF6009D4306 /* MySleep View */,
-				230298DD19A88D10009D4306 /* SetTarget View */,
-				230298CC19A87D65009D4306 /* BindingAccessory View */,
-				232846D219A43668001C148D /* Images.xcassets */,
+				2311611519B180EC0012B066 /* 登陆注册视图 */,
+				230298DE19A88D3C009D4306 /* 左右菜单视图 */,
+				230298DB19A88CC5009D4306 /* 我的运动视图 */,
+				230298DC19A88CF6009D4306 /* 我的睡眠视图 */,
+				230298DD19A88D10009D4306 /* 设置目标视图 */,
+				230298CC19A87D65009D4306 /* 绑定配件视图 */,
+				2316508919AB47310066C301 /* 个人信息视图 */,
+				237545D719AF21DB00685CD1 /* 活动提醒视图 */,
+				2316508A19AB489A0066C301 /* 智能闹钟视图 */,
 				232846C719A43668001C148D /* Supporting Files */,
+				232846D219A43668001C148D /* Images.xcassets */,
 			);
 			path = WMSPlusdot;
 			sourceTree = "<group>";
@@ -425,18 +598,14 @@
 		232846F419A43D0D001C148D /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				232846F519A43DC1001C148D /* main_bg.png */,
-				232846FB19A442F3001C148D /* login_arrow_a.png */,
-				232846FC19A442F3001C148D /* login_arrow_b.png */,
-				2335119319A479DA00FBCC81 /* signup_arrow_a.png */,
-				2335119419A479DA00FBCC81 /* signup_arrow_b.png */,
-				232846F719A441FC001C148D /* login_btn_a.png */,
-				232846F819A441FC001C148D /* login_btn_b.png */,
-				233511A619A4BF6400FBCC81 /* ContentViewController Icon */,
-				23C74AFC19A72E6C00C589A1 /* Content1ViewController Icon */,
-				230298C519A83250009D4306 /* Content2ViewController Icon */,
-				230298D219A87EAD009D4306 /* BindingAccessoryViewController Icon */,
-				2326A41D19A5A25D0098657B /* LeftViewController Icon */,
+				23BCA12B19B4113D0032F19F /* 登陆注册视图 Icon */,
+				2326A41D19A5A25D0098657B /* 左右菜单视图 Icon */,
+				233511A619A4BF6400FBCC81 /* 我的运动视图 Icon */,
+				23C74AFC19A72E6C00C589A1 /* 我的睡眠视图 Icon */,
+				230298C519A83250009D4306 /* 设置目标视图 Icon */,
+				230298D219A87EAD009D4306 /* 绑定配件视图 Icon */,
+				2316509519AB4E3F0066C301 /* 智能闹钟视图 Icon */,
+				237545C119AED36700685CD1 /* 个人信息视图 Icon */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -454,7 +623,7 @@
 			name = ResideMenu;
 			sourceTree = "<group>";
 		};
-		233511A619A4BF6400FBCC81 /* ContentViewController Icon */ = {
+		233511A619A4BF6400FBCC81 /* 我的运动视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
 				233511A719A4BFC900FBCC81 /* main_menu_icon_a.png */,
@@ -476,10 +645,82 @@
 				2326A40519A591320098657B /* main_ico_distance.png */,
 				2326A40719A591460098657B /* main_ico_time.png */,
 			);
-			name = "ContentViewController Icon";
+			name = "我的运动视图 Icon";
 			sourceTree = "<group>";
 		};
-		23C74AFC19A72E6C00C589A1 /* Content1ViewController Icon */ = {
+		234BF1F119B055AE005D71A0 /* WMSNavBarView */ = {
+			isa = PBXGroup;
+			children = (
+				234BF1EC19B0305C005D71A0 /* WMSNavBarView.h */,
+				234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */,
+				234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */,
+			);
+			name = WMSNavBarView;
+			sourceTree = "<group>";
+		};
+		237545C119AED36700685CD1 /* 个人信息视图 Icon */ = {
+			isa = PBXGroup;
+			children = (
+				237545C219AED3D200685CD1 /* account_head.png */,
+				237545C419AED3E100685CD1 /* account_edit_icon.png */,
+				237545C619AED4BE00685CD1 /* exit_btn_a.png */,
+				237545C719AED4BE00685CD1 /* exit_btn_b.png */,
+				234BF1F719B05991005D71A0 /* car_bg.png */,
+				234BF1F819B05991005D71A0 /* select_man.png */,
+				234BF1F919B05991005D71A0 /* select_woman.png */,
+			);
+			name = "个人信息视图 Icon";
+			sourceTree = "<group>";
+		};
+		237545CA19AF00AB00685CD1 /* TemperaBar */ = {
+			isa = PBXGroup;
+			children = (
+				237545CB19AF00CF00685CD1 /* TemperaBar.h */,
+				237545CC19AF00CF00685CD1 /* TemperaBar.m */,
+				237545CE19AF027F00685CD1 /* OBShapedButton */,
+			);
+			name = TemperaBar;
+			sourceTree = "<group>";
+		};
+		237545CE19AF027F00685CD1 /* OBShapedButton */ = {
+			isa = PBXGroup;
+			children = (
+				237545CF19AF029400685CD1 /* OBShapedButton.h */,
+				237545D019AF029400685CD1 /* OBShapedButton.m */,
+				237545D219AF02AC00685CD1 /* UIImage+ColorAtPixel.h */,
+				237545D319AF02AC00685CD1 /* UIImage+ColorAtPixel.m */,
+			);
+			name = OBShapedButton;
+			sourceTree = "<group>";
+		};
+		237545D719AF21DB00685CD1 /* 活动提醒视图 */ = {
+			isa = PBXGroup;
+			children = (
+				237545D819AF229C00685CD1 /* WMSActivityRemindViewController.h */,
+				237545D919AF229C00685CD1 /* WMSActivityRemindViewController.m */,
+				237545DA19AF229C00685CD1 /* WMSActivityRemindViewController.xib */,
+				237545DF19AF484600685CD1 /* WMSInputViewController.h */,
+				237545E019AF484600685CD1 /* WMSInputViewController.m */,
+				237545E119AF484600685CD1 /* WMSInputViewController.xib */,
+			);
+			name = "活动提醒视图";
+			sourceTree = "<group>";
+		};
+		23BCA12B19B4113D0032F19F /* 登陆注册视图 Icon */ = {
+			isa = PBXGroup;
+			children = (
+				232846F519A43DC1001C148D /* main_bg.png */,
+				232846FB19A442F3001C148D /* login_arrow_a.png */,
+				232846FC19A442F3001C148D /* login_arrow_b.png */,
+				2335119319A479DA00FBCC81 /* signup_arrow_a.png */,
+				2335119419A479DA00FBCC81 /* signup_arrow_b.png */,
+				232846F719A441FC001C148D /* login_btn_a.png */,
+				232846F819A441FC001C148D /* login_btn_b.png */,
+			);
+			name = "登陆注册视图 Icon";
+			sourceTree = "<group>";
+		};
+		23C74AFC19A72E6C00C589A1 /* 我的睡眠视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
 				23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */,
@@ -488,7 +729,7 @@
 				23C74B0119A72EFA00C589A1 /* main_lightsleep_icon.png */,
 				23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */,
 			);
-			name = "Content1ViewController Icon";
+			name = "我的睡眠视图 Icon";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -570,23 +811,31 @@
 			files = (
 				2354A3B919A6E0CD0027C91F /* WMSContent1ViewController.xib in Resources */,
 				232846FE19A442F3001C148D /* login_arrow_b.png in Resources */,
+				234BF1FA19B05991005D71A0 /* car_bg.png in Resources */,
 				232846CB19A43668001C148D /* InfoPlist.strings in Resources */,
 				232846D319A43668001C148D /* Images.xcassets in Resources */,
 				2326A41019A593E20098657B /* main_history_btn_b.png in Resources */,
+				234BF1FB19B05991005D71A0 /* select_man.png in Resources */,
 				2326A40A19A5916A0098657B /* main_ico_burn.png in Resources */,
 				23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */,
 				230298D119A87DBF009D4306 /* WMSBindingAccessoryViewController.xib in Resources */,
+				234BF1F619B05914005D71A0 /* WMSMyAccountViewController.xib in Resources */,
 				2335119619A479DA00FBCC81 /* signup_arrow_b.png in Resources */,
 				230298CB19A83281009D4306 /* target_progress_btn.png in Resources */,
+				234BF1F019B0308F005D71A0 /* WMSNavBarView.xib in Resources */,
 				230298D819A87F0A009D4306 /* link_connect_failure_icon.png in Resources */,
 				230298DA19A87F0A009D4306 /* link_connect_success_icon.png in Resources */,
 				233511B219A4C3D300FBCC81 /* main_date_prev_b.png in Resources */,
 				2326A43719A5C6970098657B /* main_menu_sleep_icon_b.png in Resources */,
 				2335119519A479DA00FBCC81 /* signup_arrow_a.png in Resources */,
 				2326A40F19A593E20098657B /* main_history_btn_a.png in Resources */,
+				23CDDD9A19AC2DBB00A12820 /* WMSSelectValueViewController.xib in Resources */,
+				237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */,
 				230298CA19A83281009D4306 /* target_progress_bg.png in Resources */,
 				2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */,
 				2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */,
+				237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */,
+				237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */,
 				233511AE19A4C00600FBCC81 /* main_setting_icon_b.png in Resources */,
 				233511B119A4C3D300FBCC81 /* main_date_prev_a.png in Resources */,
 				230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */,
@@ -600,16 +849,22 @@
 				2326A43819A5C6970098657B /* main_menu_sport_icon_a.png in Resources */,
 				2335119219A476EF00FBCC81 /* WMSSignupViewController.xib in Resources */,
 				233511A519A4BD5200FBCC81 /* WMSContentViewController.xib in Resources */,
+				237545C319AED3D200685CD1 /* account_head.png in Resources */,
 				23C74AFE19A72E9E00C589A1 /* main_deepsleep_icon.png in Resources */,
 				23C74B0419A72F0B00C589A1 /* main_wakeup_icon.png in Resources */,
 				2326A41719A59E200098657B /* WMSLeftViewController.xib in Resources */,
+				2316508319AB15510066C301 /* WMSLeftViewCell.xib in Resources */,
 				2326A42419A5C4010098657B /* Localizable.strings in Resources */,
 				233511B519A4C3E500FBCC81 /* main_date_next_a.png in Resources */,
 				2326A43419A5C6970098657B /* main_menu_setting_icon_a.png in Resources */,
 				232846F319A43825001C148D /* WMSLoginViewController.xib in Resources */,
 				233511A819A4BFC900FBCC81 /* main_menu_icon_a.png in Resources */,
 				2326A40419A58CCF0098657B /* main_circle_white.png in Resources */,
+				237545C919AED4BE00685CD1 /* exit_btn_b.png in Resources */,
+				234BF1FC19B05991005D71A0 /* select_woman.png in Resources */,
+				2316509919AB4E650066C301 /* back_btn_b.png in Resources */,
 				232846FA19A441FC001C148D /* login_btn_b.png in Resources */,
+				2316509819AB4E650066C301 /* back_btn_a.png in Resources */,
 				23C74B0219A72EFA00C589A1 /* main_lightsleep_icon.png in Resources */,
 				23C74B0719A733FA00C589A1 /* main_clock_btn_a.png in Resources */,
 				232846FD19A442F3001C148D /* login_arrow_a.png in Resources */,
@@ -620,10 +875,12 @@
 				2326A45119A605660098657B /* WMSSwitchCell.xib in Resources */,
 				230298D719A87F0A009D4306 /* link_bg.png in Resources */,
 				233511B619A4C3E500FBCC81 /* main_date_next_b.png in Resources */,
+				237545DC19AF229C00685CD1 /* WMSActivityRemindViewController.xib in Resources */,
 				2326A43B19A5C6970098657B /* main_menu_target_icon_b.png in Resources */,
 				2326A41119A593E20098657B /* main_target_btn_a.png in Resources */,
 				2326A43519A5C6970098657B /* main_menu_setting_icon_b.png in Resources */,
 				232846F619A43DC1001C148D /* main_bg.png in Resources */,
+				2316509419AB4A180066C301 /* WMSSmartClockViewController.xib in Resources */,
 				2326A43F19A5D71B0098657B /* main_menu_bg_b.png in Resources */,
 				233511AD19A4C00600FBCC81 /* main_setting_icon_a.png in Resources */,
 				2326A43319A5C6970098657B /* main_menu_binding_icon_b.png in Resources */,
@@ -648,19 +905,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237545CD19AF00CF00685CD1 /* TemperaBar.m in Sources */,
+				2316507D19AAEA350066C301 /* WMSMySportView.m in Sources */,
+				237545DB19AF229C00685CD1 /* WMSActivityRemindViewController.m in Sources */,
 				2335119119A476EF00FBCC81 /* WMSSignupViewController.m in Sources */,
 				2326A45019A605660098657B /* WMSSwitchCell.m in Sources */,
 				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
+				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
+				2316508819AB30D90066C301 /* WMSMySleepView.m in Sources */,
+				234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */,
+				237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */,
 				2335119E19A4B85700FBCC81 /* RECommonFunctions.m in Sources */,
+				234BF1EE19B0305C005D71A0 /* WMSNavBarView.m in Sources */,
 				2326A44A19A5E9CE0098657B /* WMSRightViewController.m in Sources */,
 				230298D019A87DBF009D4306 /* WMSBindingAccessoryViewController.m in Sources */,
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
 				232846F219A43825001C148D /* WMSLoginViewController.m in Sources */,
+				2316508219AB15510066C301 /* WMSLeftViewCell.m in Sources */,
 				2335119F19A4B85700FBCC81 /* RESideMenu.m in Sources */,
 				2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */,
+				2316509319AB4A180066C301 /* WMSSmartClockViewController.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
+				23CDDD9919AC2DBB00A12820 /* WMSSelectValueViewController.m in Sources */,
+				2311611919B1A2BE0012B066 /* NSDate+Formatter.m in Sources */,
 				233511A419A4BD5200FBCC81 /* WMSContentViewController.m in Sources */,
 				230298C319A82FDC009D4306 /* WMSContent2ViewController.m in Sources */,
+				237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */,
 				232846CD19A43668001C148D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

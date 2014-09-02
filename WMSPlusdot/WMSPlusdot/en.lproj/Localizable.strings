@@ -30,10 +30,66 @@
 "Take photos" = "Take photos";
 
 
-//Content1ViewController String
+//MySport ViewController String
+"Today" = "Today";
+"Yesterday" = "Yesterday";
+"Target" = "Target";
+"Burn" = "Burn";
+"Distance" = "Distance";
+"Time" = "Time";
+
+
+//MySleep ViewController String
 "Deep sleep" = "Deep sleep";
 "Light sleep" = "Light sleep";
 "Wake up" = "Wake up";
 "Hour" = "Hour";
 "Minutes" = "Minutes";
+
+//Set Target ViewController String
+"Step" = "Step";
+"%@ mode" = "%@mode";
+"Rookie" = "Rookie";
+"Expert" = "Expert";
+"The range of %d-%d steps" = "The range of %d-%d steps";
+"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle" = "Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle";
+
+
+//WMSSmartClockViewController String
+"Smart alarm clock" = "Smart alarm clock";
+"Alarm clock time" = "Alarm clock time";
+"Smart sleep Windows" = "Smart sleep Windows";
+"Repeat" = "Repeat";
+"Alarm clock" = "Alarm clock";
+
+//WMSAccountViewController String
+"My account" = "My account";
+"%@ watches" = "%@ watches";
+"Exit" = "Exit";
+
+//WMSAccountViewController String
+"Personal data" = "Personal data";
+"Please enter a nickname" = "Please enter a nickname";
+"Please enter the character signature" = "Please enter the character signature";
+"Height" = "Height";
+"Birthday" = "Birthday";
+"Current weight" = "Current weight";
+"Target weight" = "Target weight";
+"Year" = "Year";
+"Month" = "Month";
+"Day" = "Day";
+"cm" = "cm";
+"kg" = "kg";
+"Man" = "Man";
+"Woman" = "Woman";
+"Cancel" = "Cancel";
+"Confirm" = "Confirm";
+
+//WMSActivityRemindViewController String
+"Activities remind" = "Activities remind";
+"Start" = "Start";
+"Finish" = "Finish";
+"Interval" = "Interval";
+"Remind" = "Remind";
+
 

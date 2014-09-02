@@ -67,10 +67,10 @@
     WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
     WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
     
-    sideMenu.contentViewController = contentVC;
+    sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
     sideMenu.leftMenuViewController = leftVC;
     sideMenu.rightMenuViewController = rightVC;
-    //sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
+    sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
     
     //_reSideMenu = sideMenu;
     sideMenu.delegate = self;

@@ -13,16 +13,19 @@
 #import "WMSContent1ViewController.h"
 #import "WMSContent2ViewController.h"
 #import "WMSBindingAccessoryViewController.h"
+#import "WMSLeftViewCell.h"
+#import "WMSMyAccountViewController.h"
 
 #define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 64) )
 #define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 45, _userInfoView.center.y - 45 - 10, 79, 79) )
 #define userLabelFrame ( CGRectMake(0, userImgBtn.center.y + 45, _userInfoView.frame.size.width, 35) )
-#define tableViewFrame ( CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 60, self.view.frame.size.width, 65 * 5) )
-#define settingBtnFrame ( CGRectMake(16, self.view.frame.size.height - 50, 30, 30) )
+#define tableViewFrame ( iPhone5 ? (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 60, self.view.frame.size.width, 65 * 5)) : (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 150, self.view.frame.size.width, 65 * 5)) )
+#define settingBtnFrame ( iPhone5 ? CGRectMake(16, self.view.frame.size.height - 50, 30, 30) : CGRectMake(16, self.view.frame.size.height - 150, 30, 30) )
 
 #define Null_Object     @"Null_Object"
 
 #define SECTION_NUMBER  1
+#define CELL_HEIGHT     44
 
 @interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -51,6 +54,7 @@
         [userImgBtn setFrame:userImgBtnFrame];
         [userImgBtn setImage:[UIImage imageNamed:@"main_avatar_default.png"] forState:UIControlStateNormal];
         [userImgBtn setHighlighted:NO];
+        [userImgBtn addTarget:self action:@selector(userImgBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_userInfoView addSubview:userImgBtn];
         
         UILabel *userLabel = [[UILabel alloc] initWithFrame:userLabelFrame];
@@ -109,11 +113,11 @@
 {
     if (!_imageNameArray) {
         _imageNameArray = [[NSArray alloc] initWithObjects:
-                       @"main_menu_sport_icon_a.png",
-                       @"main_menu_sleep_icon_a.png",
-                       @"main_menu_target_icon_a.png",
-                       @"main_menu_binding_icon_a.png",
-                       nil];
+                           @"main_menu_sport_icon_a.png",
+                           @"main_menu_sleep_icon_a.png",
+                           @"main_menu_target_icon_a.png",
+                           @"main_menu_binding_icon_a.png",
+                           nil];
     }
     return _imageNameArray;
 }
@@ -145,8 +149,12 @@
 - (NSMutableArray *)contentVCArray
 {
     if (!_contentVCArray) {
+        if ([UINavigationController class] != [self.sideMenuViewController.contentViewController class]) {
+            return nil;
+        }
+        UIViewController *vc = ((UINavigationController *)self.sideMenuViewController.contentViewController).topViewController;
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
-                           self.sideMenuViewController.contentViewController,
+                           vc,
                            Null_Object,
                            Null_Object,
                            Null_Object,
@@ -170,7 +178,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_bg.png"]]];
+    [self.view setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:self.userInfoView];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.buttonSetting];
@@ -180,7 +188,6 @@
     [super viewWillAppear:animated];
     
     DEBUGLog(@"LeftViewController viewWillAppear");
-    //self.sideMenuViewController.scaleContentView = YES;
 }
 - (void)dealloc
 {
@@ -195,6 +202,11 @@
 
 
 #pragma mark - Events
+- (void)userImgBtnClick:(id)sender
+{
+    WMSMyAccountViewController *VC = [[WMSMyAccountViewController alloc] init];
+    [self presentViewController:VC animated:YES completion:nil];
+}
 - (void)settingBtnClick:(id)sender
 {
     
@@ -212,12 +224,14 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"UITableViewCell";
+    static NSString *cellIdentifier = @"WMSLeftViewCell";
+    UINib *cellNib = [UINib nibWithNibName:@"WMSLeftViewCell" bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:cellIdentifier];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    WMSLeftViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[WMSLeftViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -225,17 +239,29 @@
     cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_b.png"]];
     
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.font = [UIFont fontWithName:@"System" size:8.f];
-    cell.textLabel.text = [self.titleArray objectAtIndex:indexPath.row];
-    cell.imageView.image = [UIImage imageNamed:[self.imageNameArray objectAtIndex:indexPath.row]];
-    cell.imageView.highlightedImage = [UIImage imageNamed:[self.seletedImageNameArray objectAtIndex:indexPath.row]];
+    //不用系统自带的
+//    cell.textLabel.textColor = [UIColor whiteColor];
+//    cell.textLabel.font = [UIFont fontWithName:@"System" size:8.f];
+//    cell.textLabel.text = [self.titleArray objectAtIndex:indexPath.row];
+//    cell.imageView.image = [UIImage imageNamed:[self.imageNameArray objectAtIndex:indexPath.row]];
+//    cell.imageView.highlightedImage = [UIImage imageNamed:[self.seletedImageNameArray objectAtIndex:indexPath.row]];
+    
+    cell.leftImageView.image = [UIImage imageNamed:[self.imageNameArray objectAtIndex:indexPath.row]];
+    cell.leftImageView.highlightedImage = [UIImage imageNamed:[self.seletedImageNameArray objectAtIndex:indexPath.row]];
+    cell.leftLabelText.textColor = [UIColor whiteColor];
+    cell.leftLabelText.font = [UIFont fontWithName:@"System" size:8.f];
+    cell.leftLabelText.text = [self.titleArray objectAtIndex:indexPath.row];
     
     return cell;
 }
 
 
 #pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CELL_HEIGHT;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

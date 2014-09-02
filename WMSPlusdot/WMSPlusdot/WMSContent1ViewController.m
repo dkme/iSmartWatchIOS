@@ -9,6 +9,12 @@
 #import "WMSContent1ViewController.h"
 #import "UIViewController+RESideMenu.h"
 #import "RESideMenu.h"
+#import "WMSMySleepView.h"
+#import "WMSSmartClockViewController.h"
+#import "NSDate+Formatter.h"
+
+#define OneDayTimeInterval    (24*60*60)
+#define DateFormat           @"yyyy/MM/dd"
 
 @interface WMSContent1ViewController ()
 {
@@ -38,6 +44,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelWakeupSleepHour;
 @property (weak, nonatomic) IBOutlet UILabel *labelWakeupSleepMinute;
 
+@property (weak, nonatomic) IBOutlet UIView *dateView;
+@property (weak, nonatomic) IBOutlet UIView *bottomView;
+
+@property (weak, nonatomic) IBOutlet WMSMySleepView *mySleepView;
+
+@property (strong, nonatomic) NSDate *showDate;
 @end
 
 @implementation WMSContent1ViewController
@@ -66,6 +78,14 @@
     [self setupControl];
     
     [self localizableView];
+    
+    [self adaptiveIphone4];
+    
+    [self reloadView];
+    
+    
+    [self.mySleepView setSleepTime:120];
+    [self.mySleepView setDeepSleepTime:60 andLightSleepTime:30 andWakeupTime:30];
     
 }
 
@@ -126,6 +146,54 @@
     _labelMinute0.text = _labelMinute1.text = _labelMinute2.text = _labelMinute3.text = NSLocalizedString(@"Minutes",nil);
 }
 
+- (void)adaptiveIphone4
+{
+    if (iPhone5) {
+        return;
+    }
+    CGRect frame = self.dateView.frame;
+    frame.origin.y -= 20;
+    self.dateView.frame = frame;
+    
+    frame = self.mySleepView.frame;
+    frame.origin.y -= 40;
+    self.mySleepView.frame = frame;
+    
+    frame = self.buttonClock.frame;
+    frame.origin.y -= 50;
+    self.buttonClock.frame = frame;
+    
+    frame = self.buttonHistory.frame;
+    frame.origin.y -= 50;
+    self.buttonHistory.frame = frame;
+    
+    frame = self.bottomView.frame;
+    frame.origin.y -= 60;
+    self.bottomView.frame = frame;
+}
+
+- (void)reloadView
+{
+    self.showDate = [NSDate date];
+    self.labelDate.text = [self stringWithDate:[NSDate date] andFormart:DateFormat];
+}
+
+- (NSString *)stringWithDate:(NSDate *)date andFormart:(NSString *)formart
+{
+    switch ([NSDate compareDate:date]) {
+        case NSDateModeToday:
+            return NSLocalizedString(@"Today",nil);
+        case NSDateModeYesterday:
+            return NSLocalizedString(@"Yesterday",nil);
+        case NSDateModeTomorrow:
+            return NSLocalizedString(@"Today",nil);
+        case NSDateModeUnknown:
+            return [NSDate formatDate:date withFormat:formart];
+        default:
+            return nil;
+    }
+    return nil;
+}
 
 #pragma mark - Action
 - (IBAction)showLeftViewAction:(id)sender {
@@ -137,15 +205,21 @@
 }
 
 - (IBAction)prevDateAction:(id)sender {
+    self.showDate = [NSDate dateWithTimeInterval:OneDayTimeInterval*-1.0 sinceDate:self.showDate];
+    self.labelDate.text = [self stringWithDate:self.showDate andFormart:DateFormat];
 }
 
 - (IBAction)nextDateAction:(id)sender {
+    if (NSDateModeToday == [NSDate compareDate:self.showDate]) {
+        return;
+    }
+    self.showDate = [NSDate dateWithTimeInterval:OneDayTimeInterval sinceDate:self.showDate];
+    self.labelDate.text = [self stringWithDate:self.showDate andFormart:DateFormat];
 }
 
 - (IBAction)gotoMyClockViewAction:(id)sender {
-    UIViewController *VC = [[UIViewController alloc] init];
-    VC.view.backgroundColor = UIColorFromRGBAlpha(0x00D5E1, 1);
-//    [self.navigationController pushViewController:VC animated:NO];
+    WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
+    [self.navigationController pushViewController:VC animated:NO];
 }
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {
