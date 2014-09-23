@@ -10,4 +10,10 @@
 
 @interface WMSLeftViewController : UIViewController
 
+@property (strong, nonatomic) NSMutableArray *contentVCArray;
+
+- (void)setUserImage:(UIImage *)image;
+
+- (void)setUserNickname:(NSString *)nickname;
+
 @end

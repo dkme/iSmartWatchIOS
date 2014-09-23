@@ -10,7 +10,8 @@
 
 @interface WMSMySleepView : UIView
 
-- (void)setSleepTime:(int)minute;
-- (BOOL)setDeepSleepTime:(int)deepSleepMinute andLightSleepTime:(int)lightSleepMinute andWakeupTime:(int)wakeupMinute;
+- (void)setSleepMinute:(NSUInteger)sleepMinute
+       deepSleepMinute:(NSUInteger)deepSleepMinute
+      lightSleepMinute:(NSUInteger)lightSleepMinute;
 
 @end

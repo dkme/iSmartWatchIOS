@@ -10,6 +10,6 @@
 
 @interface WMSMyAccountViewController : UIViewController
 
-
+@property (nonatomic, assign) BOOL isModifyAccount;
 
 @end

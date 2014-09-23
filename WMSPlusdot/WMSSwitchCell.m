@@ -13,7 +13,7 @@
 - (void)awakeFromNib
 {
     // Initialization code
-    DEBUGLog(@"awakeFromNib");
+    //DEBUGLog(@"awakeFromNib");
     [self.mySwitch setOn:YES animated:NO];
     [self.mySwitch addTarget:self action:@selector(switchBtnValueChangedHandle:) forControlEvents:UIControlEventValueChanged];
     [self.mySwitch setOnTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];

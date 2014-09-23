@@ -10,9 +10,11 @@
 #import "UIViewController+RESideMenu.h"
 #import "RESideMenu.h"
 #import "TemperaBar.h"
+#import "WMSBluetooth.h"
+#import "WMSAppDelegate.h"
 
-#define MIN_SPORT_STEPS     0
 #define MAX_SPORT_STEPS     20000
+#define CRITICAL_SPORT_STEPS 10000
 
 #define LABEL_MAX_WIDTH     172.f
 #define LABEL_MAX_HEIGHT    100.f
@@ -44,6 +46,19 @@
     return _temperaBar;
 }
 
+#pragma mark - Setter
+- (void)setTargetSteps:(NSUInteger)targetSteps
+{
+    NSString *mode = @"";
+    if (targetSteps < CRITICAL_SPORT_STEPS) {
+        mode = NSLocalizedString(@"菜鸟", nil);
+    } else {
+        mode = NSLocalizedString(@"砖家", nil);
+    }
+    self.labelMySteps.text = [NSString stringWithFormat:@"%d",targetSteps];
+    self.labelModeType.text = [NSString stringWithFormat:NSLocalizedString(@"%@ mode", nil), mode];
+}
+
 #pragma mark - Life Cycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,10 +74,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.labelMySteps.text = @"0";
-    self.labelModeType.text = [NSString stringWithFormat:NSLocalizedString(@"%@ mode", nil),@""];
-    
-    DEBUGLog(@"temperaBar frame:(%f,%f,%f,%f)",self.temperaBar.frame.origin.x,self.temperaBar.frame.origin.y,self.temperaBar.frame.size.width,self.temperaBar.frame.size.height);
+    //DEBUGLog(@"temperaBar frame:(%f,%f,%f,%f)",self.temperaBar.frame.origin.x,self.temperaBar.frame.origin.y,self.temperaBar.frame.size.width,self.temperaBar.frame.size.height);
     [self.view addSubview:self.temperaBar];
     //[self.centerView addSubview:self.temperaBar];
     
@@ -72,12 +84,13 @@
     frame.origin = (CGPoint){frame.origin.x-1,frame.origin.y-20};
     self.temperaBar.frame = frame;
     
-    
+
     [self setupControl];
-    
     [self localizableView];
-    
     [self adaptiveIphone4];
+    
+    
+    [self reloadView];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -123,12 +136,18 @@
     _labelViewTitle.text = NSLocalizedString(@"Set target",nil);
     _labelStep.text = NSLocalizedString(@"Step",nil);
     //_labelRange.text = [NSString stringWithFormat:NSLocalizedString(@"The range of %d-%d steps",nil), MIN_SPORT_STEPS,MAX_SPORT_STEPS];
-    _labelRange.text = @"坚持锻炼一个月,";
+    _labelRange.text = [NSString stringWithFormat:@"%@,",NSLocalizedString(@"坚持锻炼一个月", nil)];
     
     //_labelTip.text = NSLocalizedString(@"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle",nil);
     //[self setLabelTipText:NSLocalizedString(@"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle",nil)];
-    [self setLabelTipText:@"并分享到朋友圈，即可获得精美礼品哦！"];
+    [self setLabelTipText:[NSString stringWithFormat:@"%@！",NSLocalizedString(@"并分享到朋友圈，即可获得精美礼品哦",nil)] ];
     
+}
+
+- (void)reloadView
+{
+    self.sportTargetSteps = MIN_SPORT_STEPS;
+    [self setTargetSteps:MIN_SPORT_STEPS];
 }
 
 - (void)adaptiveIphone4
@@ -183,11 +202,20 @@
 - (void)onTemperaBarChange:(id)sender
 {
     TemperaBar *bar = (TemperaBar *)sender;
-    self.labelMySteps.text = [NSString stringWithFormat:@"%d",bar.currentTempera];
+
+    [self setTargetSteps:bar.currentTempera];
 }
 - (void)onTmpTouchUp:(id)sender
 {
+    TemperaBar *bar = (TemperaBar *)sender;
     
+    //设置目标
+    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    [bleControl.settingProfile setTargetWithStep:bar.currentTempera withSleepMinute:0 withCompletion:^(BOOL success)
+    {
+        DEBUGLog(@"设置运动目标%@",success?@"成功":@"失败");
+        self.sportTargetSteps = bar.currentTempera;
+    }];
 }
 
 @end

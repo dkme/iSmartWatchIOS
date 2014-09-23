@@ -9,15 +9,26 @@
 #import "WMSAppDelegate.h"
 #import "RESideMenu.h"
 #import "WMSLoginViewController.h"
-#import "WMSContentViewController.h"
 #import "WMSLeftViewController.h"
 #import "WMSRightViewController.h"
+#import "WMSContentViewController.h"
+#import "WMSBindingAccessoryViewController.h"
+#import "WMSMyAccessoryViewController.h"
+#import "WMSBleControl.h"
 
 @interface WMSAppDelegate ()<RESideMenuDelegate>
 
 @end
 
 @implementation WMSAppDelegate
+
+#pragma mark - 获取appDelegate
++ (WMSAppDelegate *)appDelegate
+{
+    return (WMSAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+#pragma mark - 启动
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -36,8 +47,8 @@
     shadow.shadowOffset = CGSizeMake(0, 1);
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                             [UIColor whiteColor],NSForegroundColorAttributeName,
-                            shadow, NSShadowAttributeName,
-                            [UIFont fontWithName:@"DIN Condensed" size:35.f], NSFontAttributeName, nil]];
+                            shadow, NSShadowAttributeName
+                            , nil]];//[UIFont fontWithName:@"DIN Condensed" size:35.f],NSFontAttributeName
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
@@ -61,9 +72,11 @@
     sideMenu.contentViewShadowOpacity = 0.6;
     sideMenu.contentViewShadowRadius = 3;
     sideMenu.contentViewShadowEnabled = NO;
-    sideMenu.panGestureEnabled = NO;
+    sideMenu.panGestureEnabled = YES;
     
     WMSContentViewController *contentVC = [[WMSContentViewController alloc] init];
+    //WMSBindingAccessoryViewController *contentVC = [[WMSBindingAccessoryViewController alloc] init];
+    //WMSMyAccessoryViewController *contentVC = [[WMSMyAccessoryViewController alloc] init];
     WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
     WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
     
@@ -71,9 +84,14 @@
     sideMenu.leftMenuViewController = leftVC;
     sideMenu.rightMenuViewController = rightVC;
     sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
-    
-    //_reSideMenu = sideMenu;
     sideMenu.delegate = self;
+    
+    
+    _reSideMenu = sideMenu;
+    _wmsBleControl  = [[WMSBleControl alloc] init];
+    
+    
+    
     self.window.rootViewController = sideMenu;
     
     return YES;
@@ -104,6 +122,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
 }
 
 

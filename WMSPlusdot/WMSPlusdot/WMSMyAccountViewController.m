@@ -8,6 +8,17 @@
 
 #import "WMSMyAccountViewController.h"
 #import "WMSNavBarView.h"
+#import "WMSAppDelegate.h"
+#import "WMSPersonModel.h"
+#import "NSDate+Formatter.h"
+#import "WMSMyAccessory.h"
+#import "WMSBindingAccessoryViewController.h"
+#import "MBProgressHUD.h"
+#import "WMSLeftViewController.h"
+#import "RESideMenu.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "UIImage+QuartzProc.h"
 
 #define PickerViewHeight    216.f
 #define DatePickerHeight    PickerViewHeight
@@ -18,13 +29,22 @@
 #define CurrentWeightViewIndex      102
 #define TargetWeightViewIndex       103
 
+#define HeightMinValue  100
+#define HeightMaxValue  300
+#define WeightMinValue  35
+#define WeightMaxValue  220
+
 #define HeightUnit      @"cm"
 #define WeightUnit      @"kg"
 
 #define COMPONENT_NUMBER 2
 #define COMPONENT_WIDTH  50.f
 
-@interface WMSMyAccountViewController ()<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
+#define StrideWithGender(gender,height) ( gender ? 0.415*height : 0.413*height )
+
+#define ButtonSavaFrame ( CGRectMake((ScreenWidth-610/2.0)/2, (ScreenHeight-99/2.0-30), 610/2.0, 99/2.0) )
+
+@interface WMSMyAccountViewController ()<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     //本地化
     __weak IBOutlet UILabel *labelTip2;
@@ -35,8 +55,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet WMSNavBarView *navBarView;
-
 @property (weak, nonatomic) IBOutlet UIView *centerView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageViewUserImage;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldName;
 
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
@@ -48,6 +68,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelBirthdayYear;
 @property (weak, nonatomic) IBOutlet UILabel *labelCurrentWeight;
 @property (weak, nonatomic) IBOutlet UILabel *labelTargetWeight;
+@property (strong, nonatomic) UIButton *buttonSava;
 
 @property (strong, nonatomic) UIPickerView *myPickerView;
 @property (strong, nonatomic) UIDatePicker *myDatePicker;
@@ -63,6 +84,17 @@
 @end
 
 @implementation WMSMyAccountViewController
+{
+    int mySex;//1表示男，0表示女
+    int myHeight;
+    int myBirthdayYear;
+    int myBirthdayMonth;
+    int myBirthdayDay;
+    int myCurrentWeight;
+    int myTargetWeight;
+    NSString *myName;
+    UIImage *myImage;
+}
 
 #pragma mark - Getter
 - (UIPickerView *)myPickerView
@@ -70,6 +102,7 @@
     if (!_myPickerView) {
         _myPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, ScreenHeight, ScreenWidth, PickerViewHeight)];
         _myPickerView.backgroundColor = [UIColor whiteColor];
+        //_myPickerView.alpha = 1.0;
         //DEBUGLog(@"PickerView Height:%f",_myPickerView.bounds.size.height);
     }
     return _myPickerView;
@@ -105,6 +138,21 @@
     return _myToolbar;
 }
 
+- (UIButton *)buttonSava
+{
+    if (!_buttonSava) {
+        _buttonSava = [UIButton buttonWithType:UIButtonTypeCustom];
+        _buttonSava.backgroundColor = [UIColor clearColor];
+        _buttonSava.frame = ButtonSavaFrame;
+        [_buttonSava setTitle:@"保存信息" forState:UIControlStateNormal];
+        [_buttonSava setBackgroundImage:[UIImage imageNamed:@"sava_info_btn_a.png"] forState:UIControlStateNormal];
+        [_buttonSava setBackgroundImage:[UIImage imageNamed:@"sava_info_btn_b.png"] forState:UIControlStateHighlighted];
+        [_buttonSava addTarget:self action:@selector(savaInfoAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    return _buttonSava;
+}
+
 //- (NSArray *)pickerViewComponent1
 //{
 //    if (!_pickerViewComponent1) {
@@ -116,7 +164,7 @@
 {
     if (!_heightArray) {
         _heightArray = [[NSMutableArray alloc] init];
-        for (int i=100; i<=240; i++) {
+        for (int i=HeightMinValue; i<=HeightMaxValue; i++) {
             [_heightArray addObject:[NSString stringWithFormat:@"%d",i]];
         }
     }
@@ -126,7 +174,7 @@
 {
     if (!_weightArray) {
         _weightArray = [[NSMutableArray alloc] init];
-        for (int i=35; i<=220; i++) {
+        for (int i=WeightMinValue; i<=WeightMaxValue; i++) {
             [_weightArray addObject:[NSString stringWithFormat:@"%d",i]];
         }
     }
@@ -168,9 +216,13 @@
     self.myPickerView.dataSource = self;
     self.myPickerView.delegate = self;
     
+    if (!self.isModifyAccount) {
+        [self.view addSubview:self.buttonSava];
+    }
     [self.view addSubview:self.myPickerView];
     [self.view addSubview:self.myDatePicker];
     [self.view addSubview:self.myToolbar];
+    
     
     DEBUGLog(@"datePicker frame:%f,%f",self.myDatePicker.bounds.size.width,self.myDatePicker.bounds.size.height);
     
@@ -180,6 +232,9 @@
     [self setupControl];
     
     [self localized];
+    
+    [self loadData];
+    [self updateViews];
 }
 
 - (void)dealloc
@@ -197,11 +252,12 @@
 - (void)setupControl
 {
     [self.buttonMan setTitle:@"" forState:UIControlStateNormal];
-    [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"select_man.png"] forState:UIControlStateNormal];
+    [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"unselect_man.png"] forState:UIControlStateNormal];
     [self.buttonMan addTarget:self action:@selector(buttonManClicked:) forControlEvents:UIControlEventTouchUpInside];
+
     
     [self.buttonWoman setTitle:@"" forState:UIControlStateNormal];
-    [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"select_woman.png"] forState:UIControlStateNormal];
+    [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"unselect_woman.png"] forState:UIControlStateNormal];
     [self.buttonWoman addTarget:self action:@selector(buttonWomanClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -214,6 +270,86 @@
     labelTiZhong2.text = NSLocalizedString(@"Target weight",nil);
 }
 
+//更新对应的视图
+- (void)updateViews
+{
+    self.textFieldName.text = myName;
+    if (myImage) {
+        self.imageViewUserImage.image = myImage;
+    }
+    
+    if (mySex == 1) {
+        self.labelSex.text = NSLocalizedString(@"Man",nil);
+        [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"select_man.png"] forState:UIControlStateNormal];
+        [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"unselect_woman.png"] forState:UIControlStateNormal];
+    } else if (mySex == 0) {
+        self.labelSex.text = NSLocalizedString(@"Woman",nil);
+        [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"select_woman.png"] forState:UIControlStateNormal];
+        [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"unselect_man.png"] forState:UIControlStateNormal];
+    }
+    
+    self.labelHeightValue.text = [NSString stringWithFormat:@"%d%@",myHeight,NSLocalizedString(@"cm",nil)];
+    self.labelCurrentWeight.text = [NSString stringWithFormat:@"%d%@",myCurrentWeight,NSLocalizedString(@"kg",nil)];
+    self.labelTargetWeight.text = [NSString stringWithFormat:@"%d%@",myTargetWeight,NSLocalizedString(@"kg",nil)];
+    
+    self.labelBirthdayYear.text = [NSString stringWithFormat:@"%d%@",myBirthdayYear,NSLocalizedString(@"Year",nil)];
+    self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%d%@%d%@",myBirthdayMonth,NSLocalizedString(@"Month",nil),myBirthdayDay,NSLocalizedString(@"Day",nil)];
+}
+
+#pragma mark - Data
+//加载初始数据
+- (void)loadData
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    myName = [userDefaults stringForKey:@"name"];
+    myImage = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
+    NSDate *birthday = [userDefaults valueForKey:@"birthday"];
+    mySex = [userDefaults integerForKey:@"gender"];
+    myHeight = [userDefaults integerForKey:@"height"];
+    myCurrentWeight = [userDefaults integerForKey:@"currentWeight"];
+    myTargetWeight = [userDefaults integerForKey:@"targetWeight"];
+    
+    myBirthdayYear = [NSDate yearOfDate:birthday];
+    myBirthdayMonth = [NSDate monthOfDate:birthday];
+    myBirthdayDay = [NSDate dayOfDate:birthday];
+    
+    if (myHeight <= 0) {
+        myHeight = 170;
+    }
+    if (myCurrentWeight <= 0) {
+        myCurrentWeight = 60;
+    }
+    if (myTargetWeight <= 0) {
+        myTargetWeight = 60;
+    }
+    if (myBirthdayYear <= 0) {
+        myBirthdayYear = 1970;
+    }
+    if (myBirthdayMonth <= 0) {
+        myBirthdayMonth = 1;
+    }
+    if (myBirthdayDay <= 0) {
+        myBirthdayDay = 1;
+    }
+}
+//保存用户信息
+- (void)savaPersonInfoBirthday:(NSDate *)birthday stride:(NSUInteger)stride
+{
+    WMSPersonModel *personModel = [[WMSPersonModel alloc] initWithName:myName image:myImage birthday:birthday gender:mySex height:myHeight currentWeight:myCurrentWeight targetWeight:myTargetWeight stride:stride];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:personModel.name forKey:@"name"];
+    [userDefaults setObject:UIImageJPEGRepresentation(myImage, 0.5) forKey:@"image"];
+    [userDefaults setObject:personModel.birthday forKey:@"birthday"];
+    [userDefaults setInteger:personModel.gender forKey:@"gender"];
+    [userDefaults setInteger:personModel.height forKey:@"height"];
+    [userDefaults setInteger:personModel.currentWeight forKey:@"currentWeight"];
+    [userDefaults setInteger:personModel.targetWeight forKey:@"targetWeight"];
+    [userDefaults setInteger:personModel.stride forKey:@"stride"];
+}
+
+
+#pragma mark - 隐藏与显示输入视图
 //判断self.myPickerView是否显示
 - (BOOL)isShowPickerView
 {
@@ -318,23 +454,105 @@
     if ([self.textFieldName isFirstResponder]) {
         [self.textFieldName resignFirstResponder];
     }
-
+    myName = self.textFieldName.text;
 }
+
+//校验昵称是否为空
+- (BOOL)checkUserName
+{
+    if (myName == nil || [@"" isEqualToString:myName]) {
+        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+        //hud.labelFont = Font_DINCondensed(10.0);
+        hud.labelText = @"个性签名不能为空";
+        hud.mode = MBProgressHUDModeText;
+        hud.minSize = CGSizeMake(250, 60);
+        //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
+        hud.yOffset = ScreenHeight/2.0-60;
+        hud.xOffset = 0;
+        [self.view addSubview:hud];
+        [hud showAnimated:YES whileExecutingBlock:^{
+            sleep(1);
+        } completionBlock:^{
+            [hud removeFromSuperview];
+        }];
+        
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - 相机，相片库
+- (void)openCamera
+{
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        return ;
+    }
+    UIImagePickerControllerSourceType sourceType;
+    sourceType=UIImagePickerControllerSourceTypeCamera;
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = sourceType;
+    //设置图像选取控制器的类型为静态图像
+    picker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*)kUTTypeImage, nil];
+    picker.allowsEditing=YES;
+    picker.showsCameraControls = YES;
+    picker.delegate = self;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)openPhotoLibrary
+{
+    UIImagePickerControllerSourceType sourceType;
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        return ;
+    }
+    
+    sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = sourceType;
+    picker.allowsEditing=YES;
+    picker.delegate = self;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
 
 #pragma mark - Action
 - (void)buttonLeftClicked:(id)sender
 {
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您要保存个人信息吗？" delegate:self cancelButtonTitle:@"不保存" otherButtonTitles:@"保存", nil];
+//    [alertView show];
+    if (self.isModifyAccount) {
+        WMSLeftViewController *leftVC = (WMSLeftViewController *)((RESideMenu *)self.presentingViewController).leftMenuViewController;
+        [leftVC setUserImage:myImage];
+        [leftVC setUserNickname:myName];
+        
+        [self savaInfoAction:nil];
+        return;
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)buttonManClicked:(id)sender
 {
     self.labelSex.text = NSLocalizedString(@"Man",nil);
+    mySex = 1;
+    [self updateViews];
 }
 
 - (void)buttonWomanClicked:(id)sender
 {
     self.labelSex.text = NSLocalizedString(@"Woman",nil);
+    mySex = 0;
+    [self updateViews];
+}
+
+- (IBAction)imageViewClicked:(id)sender {
+    DEBUGLog(@"选取头像");
+    //警告
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"拍照", nil),NSLocalizedString(@"选取照片", nil), nil];//没有红色按钮
+    [actionSheet showInView:self.view];
 }
 
 //- (IBAction)resignResponse:(id)sender {
@@ -349,7 +567,6 @@
 //        }];
 //    }
 //}
-
 
 - (IBAction)heightClicked:(id)sender {
     self.clickedViewIndex = HeightViewIndex;
@@ -367,6 +584,7 @@
     }];
     
     [self.myPickerView reloadAllComponents];
+    [self.myPickerView selectRow:(myHeight-HeightMinValue) inComponent:0 animated:YES];
 }
 
 - (IBAction)birthdayClicked:(id)sender {
@@ -377,6 +595,13 @@
     [UIView animateWithDuration:0.5 animations:^{
         [self showInputView:YES];
     }];
+    
+    NSString *datestring = [NSString stringWithFormat:@"%04d-%02d-%02d",
+                            myBirthdayYear,myBirthdayMonth,myBirthdayDay];
+    NSDateFormatter *dm = [[NSDateFormatter alloc]init];
+    dm.dateFormat = @"yyyy-MM-dd";
+    NSDate *newdate = [dm dateFromString:datestring];
+    [self.myDatePicker setDate:newdate animated:YES];
 }
 
 - (IBAction)currentWeightClicked:(id)sender {
@@ -395,6 +620,7 @@
     }];
     
     [self.myPickerView reloadAllComponents];
+    [self.myPickerView selectRow:(myCurrentWeight-WeightMinValue) inComponent:0 animated:YES];
 }
 
 - (IBAction)targetWeightClicked:(id)sender {
@@ -413,6 +639,7 @@
     }];
     
     [self.myPickerView reloadAllComponents];
+    [self.myPickerView selectRow:(myTargetWeight-WeightMinValue) inComponent:0 animated:YES];
 }
 
 - (void)cancelClicked:(id)sender
@@ -430,13 +657,20 @@
     NSInteger row = [self.myPickerView selectedRowInComponent:0];
     if (self.clickedViewIndex == HeightViewIndex) {
         self.labelHeightValue.text = [NSString stringWithFormat:@"%@%@",self.heightArray[row],NSLocalizedString(@"cm",nil)];
+        
+        myHeight = [self.heightArray[row] intValue];
+        
         return;
     }
     if (self.clickedViewIndex == CurrentWeightViewIndex) {
         self.labelCurrentWeight.text = [NSString stringWithFormat:@"%@%@",self.weightArray[row],NSLocalizedString(@"kg",nil)];
+        
+        myCurrentWeight = [self.weightArray[row] intValue];
+        
         return;
     }
     if (self.clickedViewIndex == TargetWeightViewIndex) {
+        myTargetWeight = [self.weightArray[row] intValue];
         self.labelTargetWeight.text = [NSString stringWithFormat:@"%@%@",self.weightArray[row],NSLocalizedString(@"kg",nil)];
         return;
     }
@@ -454,8 +688,100 @@
         self.labelBirthdayYear.text = [NSString stringWithFormat:@"%@%@",strYear,NSLocalizedString(@"Year",nil)];
         self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%@%@%@%@",strMonth,NSLocalizedString(@"Month",nil),strDay,NSLocalizedString(@"Day",nil)];
         
+        myBirthdayYear = [strYear intValue];
+        myBirthdayMonth = [strMonth intValue];
+        myBirthdayDay = [strDay intValue];
+        
         return;
     }
+}
+
+- (void)savaInfoAction:(id)sender
+{
+    //校验姓名是否为空
+    if ([self checkUserName] == NO) {
+        return;
+    }
+    
+    NSString *strBirthday = [NSString stringWithFormat:@"%04d-%02d-%02d",
+                             myBirthdayYear,myBirthdayMonth,myBirthdayDay];
+    float floatStride = StrideWithGender(mySex, myHeight);
+    int stride = Rounded(floatStride);
+    NSDate *birthday = [NSDate dateFromString:strBirthday format:@"yyyy-MM-dd"];
+    
+    [self savaPersonInfoBirthday:birthday stride:stride];
+    
+    if (self.isModifyAccount) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        WMSBindingAccessoryViewController *vc = (WMSBindingAccessoryViewController *)self.presentingViewController;
+        vc.isSavaUserInfo = YES;
+        [self dismissViewControllerAnimated:YES completion:^{
+            //DEBUGLog(@"bind VC:%@",vc);
+            [vc dismissVC];
+        }];
+    }
+}
+
+
+
+#pragma mark - UIImagePickerControllerDelegate
+-(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    //判断是静态图像还是视频
+    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
+        UIImage* editedImage = [info objectForKey:UIImagePickerControllerEditedImage];//获取用户编辑之后的图像
+        //UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        //将该图像保存到媒体库中
+        //UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+        
+        //显示用户image
+        CGSize toSize = self.imageViewUserImage.bounds.size;
+        self.imageViewUserImage.image = [editedImage resizeImageToSize:toSize resizeMode:quartzImageResizeAspectFill];
+        myImage = self.imageViewUserImage.image;
+    }
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    DEBUGLog(@"actionSheet buttonIndex:%d",buttonIndex);
+    if (buttonIndex == 0) {//拍照
+        [self openCamera];
+    } else if (buttonIndex == 1) {//选取照片
+        [self openPhotoLibrary];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        ;
+    } else if (buttonIndex == 1) {//保存数据，关闭视图
+        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+        
+        WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+        
+        NSString *strBirthday = [NSString stringWithFormat:@"%04d-%02d-%02d",
+                                myBirthdayYear,myBirthdayMonth,myBirthdayDay];
+        float floatStride = StrideWithGender(mySex, myHeight);
+        int stride = Rounded(floatStride);
+        
+        
+        [bleControl.settingProfile setPersonInfoWithWeight:myCurrentWeight withHeight:myHeight withGender:mySex withBirthday:strBirthday withDateFormat:@"yyyy-MM-dd" withStride:stride withMetric:LengthUnitTypeMetricSystem withCompletion:^(BOOL success)
+        {
+            DEBUGLog(@"设置个人信息%@",success?@"成功":@"失败");
+            
+            NSDate *birthday = [NSDate dateFromString:strBirthday format:@"yyyy-MM-dd"];
+            
+            [self savaPersonInfoBirthday:birthday stride:stride];
+        }];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -468,7 +794,7 @@
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    [self textFieldNameResignFirstResponder];
     return YES;
 }
 

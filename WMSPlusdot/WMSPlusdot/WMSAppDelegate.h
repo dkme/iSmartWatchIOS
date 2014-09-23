@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WMSBluetooth.h"
+
 @class RESideMenu;
 
 @interface WMSAppDelegate : UIResponder <UIApplicationDelegate>
@@ -15,5 +17,12 @@
 
 @property (strong, nonatomic) UINavigationController *navigationCtrl;
 
-//@property (nonatomic, readonly) RESideMenu *reSideMenu;
+@property (nonatomic, readonly) RESideMenu *reSideMenu;
+
+@property (nonatomic, readonly) WMSBleControl *wmsBleControl;
+
+
++ (WMSAppDelegate *)appDelegate;
+
+
 @end

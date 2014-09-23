@@ -17,10 +17,11 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewBLEStatus;
 
+@property (assign, nonatomic) BOOL isSavaUserInfo;
 
 - (IBAction)showLeftViewAction:(id)sender;
 - (IBAction)showRightViewAction:(id)sender;
 
-
+- (void)dismissVC;
 
 @end

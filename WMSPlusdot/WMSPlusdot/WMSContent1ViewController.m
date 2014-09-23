@@ -12,9 +12,16 @@
 #import "WMSMySleepView.h"
 #import "WMSSmartClockViewController.h"
 #import "NSDate+Formatter.h"
+#import "WMSAppDelegate.h"
+#import "WMSSyncDataView.h"
+#import "WMSSleepModel.h"
+#import "WMSSleepDatabase.h"
+#import "MBProgressHUD.h"
 
 #define OneDayTimeInterval    (24*60*60)
 #define DateFormat           @"yyyy/MM/dd"
+
+#define TipViewFrame          ( (CGRect){0,125,ScreenWidth,35} )
 
 @interface WMSContent1ViewController ()
 {
@@ -48,12 +55,110 @@
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
 
 @property (weak, nonatomic) IBOutlet WMSMySleepView *mySleepView;
+@property (strong, nonatomic) WMSSyncDataView *syncDataView;
+@property (strong, nonatomic) UIView *tipView;
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 @property (strong, nonatomic) NSDate *showDate;
+
+@property (strong, nonatomic) WMSBleControl *bleControl;
+
+@property (strong, nonatomic) NSMutableArray *everydaySleepDataArray;
 @end
 
 @implementation WMSContent1ViewController
 
+#pragma mark - Getter
+- (WMSSyncDataView *)syncDataView
+{
+    if (!_syncDataView) {
+        _syncDataView = [[WMSSyncDataView alloc] initWithFrame:(CGRect){0,125,ScreenWidth,35}];
+        _syncDataView.backgroundColor = [UIColor clearColor];
+        
+        _syncDataView.labelTip.text = NSLocalizedString(@"手表已连接",nil);
+        _syncDataView.labelTip.font = [UIFont fontWithName:@"DIN Condensed" size:17.0];
+        
+        UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
+        CGRect frame = _syncDataView.imageView.frame;
+        frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
+        _syncDataView.imageView.image = image;
+        _syncDataView.imageView.frame = frame;
+        
+        [_syncDataView.buttonSync setTitle:NSLocalizedString(@"同步",nil) forState:UIControlStateNormal];
+        [_syncDataView.buttonSync.titleLabel setFont:[UIFont fontWithName:@"DIN Condensed" size:16.0]];
+        [_syncDataView.buttonSync addTarget:self action:@selector(syncDataAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _syncDataView;
+}
+- (UIView *)tipView
+{
+    if (!_tipView) {
+        _tipView = [[UIView alloc] initWithFrame:TipViewFrame];
+        _tipView.backgroundColor = [UIColor clearColor];
+        
+        UILabel *labelTip = [[UILabel alloc] initWithFrame:CGRectMake(_tipView.bounds.size.width/2-100, (_tipView.bounds.size.height-30)/2, 150, 30)];
+        labelTip.text = NSLocalizedString(@"正在连接您的手表", nil);
+        labelTip.textAlignment = NSTextAlignmentRight;
+        labelTip.textColor = [UIColor whiteColor];
+        labelTip.font = Font_DINCondensed(17.0);
+        
+        UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(labelTip.frame.origin.x+labelTip.frame.size.width+15, (_tipView.bounds.size.height-37)/2, 37, 37)];
+        [indicatorView startAnimating];
+        
+        [_tipView addSubview:labelTip];
+        [_tipView addSubview:indicatorView];
+    }
+    return _tipView;
+}
+- (MBProgressHUD *)hud
+{
+    if (!_hud) {
+        _hud = [[MBProgressHUD alloc] initWithView:self.view];
+        _hud.labelText = NSLocalizedString(@"努力同步数据中...", nil);
+        _hud.minSize = MBProgressHUD_MinSize;
+    }
+    return _hud;
+}
+
+- (NSMutableArray *)everydaySleepDataArray
+{
+    if (!_everydaySleepDataArray) {
+        _everydaySleepDataArray = [NSMutableArray new];
+    }
+    return _everydaySleepDataArray;
+}
+
+#pragma mark - Setter
+- (void)setSleepDurations:(NSUInteger)sleepMinute
+{
+    NSUInteger hour = sleepMinute/60;
+    NSUInteger minute = sleepMinute%60;
+    
+    self.labelSleepHour.text = [NSString stringWithFormat:@"%u",hour];
+    self.labelSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+}
+- (void)setDeepSleepDurations:(NSUInteger)deepSleepMinute
+{
+    NSUInteger hour = deepSleepMinute/60;
+    NSUInteger minute = deepSleepMinute%60;
+    
+    self.labelDeepsleepHour.text = [NSString stringWithFormat:@"%u",hour];
+    self.labelDeepsleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+}
+- (void)setLightSleepDurations:(NSUInteger)lightSleepMinute
+{
+    NSUInteger hour = lightSleepMinute/60;
+    NSUInteger minute = lightSleepMinute%60;
+    
+    self.labelLightSleepHour.text = [NSString stringWithFormat:@"%u",hour];
+    self.labelLightSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+}
+- (void)setAwakeCount:(NSUInteger)awakeCount
+{
+    self.labelWakeupSleepHour.text = [NSString stringWithFormat:@"%u",awakeCount];
+}
+
+#pragma mark - Life Cycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -75,6 +180,10 @@
 //    
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"main_setting_icon_a.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showRightViewAction:)];
     
+    [self.view addSubview:self.syncDataView];
+    [self.view addSubview:self.tipView];
+    [self.view addSubview:self.hud];
+    
     [self setupControl];
     
     [self localizableView];
@@ -84,9 +193,15 @@
     [self reloadView];
     
     
-    [self.mySleepView setSleepTime:120];
-    [self.mySleepView setDeepSleepTime:60 andLightSleepTime:30 andWakeupTime:30];
+    [self.mySleepView setSleepMinute:0 deepSleepMinute:0 lightSleepMinute:0];
+    [self setSleepDurations:0];
+    [self setDeepSleepDurations:0];
+    [self setLightSleepDurations:0];
+    [self setAwakeCount:0];
     
+    
+    //
+    [self bleOperation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -94,11 +209,19 @@
     [super viewDidAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
+    
+    if ([self.bleControl isConnected]) {
+        [self showTipView:NO];
+    } else {
+        [self showTipView:YES];
+    }
 }
 
 - (void)dealloc
 {
     DEBUGLog(@"Content1ViewController dealloc");
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -195,6 +318,86 @@
     return nil;
 }
 
+//是否显示TipView
+- (void)showTipView:(BOOL)show
+{
+    if (show) {
+        [self.syncDataView setHidden:YES];
+        [self.tipView setHidden:NO];
+    } else {
+        [self.syncDataView setHidden:NO];
+        [self.tipView setHidden:YES];
+    }
+}
+
+//更新界面上的数据
+- (void)updateView
+{
+    WMSSleepModel *sleepModel = nil;
+//    for (WMSSleepModel *model in self.everydaySleepDataArray) {
+//        NSInteger interval_days = [NSDate daysOfDuringDate:self.showDate andDate:model.sleepDate];
+//        if (interval_days == 0)
+//        {
+//            DEBUGLog(@"两个日期是同一天");
+//            sleepModel = model;
+//            break;
+//        }
+//    }
+    
+    //从数据库中查询数据
+    NSArray *results = [[WMSSleepDatabase sleepDatabase] querySleepData:self.showDate];
+    if (results.count > 0) {
+        sleepModel = results[0];
+    }
+    
+    if (sleepModel) {
+        [self.mySleepView setSleepMinute:sleepModel.sleepMinute deepSleepMinute:sleepModel.deepSleepMinute lightSleepMinute:sleepModel.lightSleepMinute];
+        [self setSleepDurations:sleepModel.sleepMinute];
+        [self setDeepSleepDurations:sleepModel.deepSleepMinute];
+        [self setLightSleepDurations:sleepModel.lightSleepMinute];
+        [self setAwakeCount:sleepModel.awakeCount];
+    } else {
+        [self.mySleepView setSleepMinute:0 deepSleepMinute:0 lightSleepMinute:0];
+        [self setSleepDurations:0];
+        [self setDeepSleepDurations:0];
+        [self setLightSleepDurations:0];
+        [self setAwakeCount:0];
+    }
+}
+
+#pragma mark - Date
+- (void)savaSleepDataWithDate:(NSDate *)date
+                 sleepEndHour:(NSUInteger)endHour
+               sleepEndMinute:(NSUInteger)endMinute
+             sleepMinute:(NSUInteger)sleepMinute
+                 asleepMinute:(NSUInteger)asleepMinute
+                   awakeCount:(NSUInteger)count
+              deepSleepMinute:(NSUInteger)deepSleepMinute
+             lightSleepMinute:(NSUInteger)lightSleepMinute
+               startedMinutes:(UInt16 *)startedMinutes
+                startedStatus:(UInt8 *)startedStatus
+              statusDurations:(UInt8 *)statusDurations
+                   dataLength:(NSUInteger)dataLength;
+{
+    WMSSleepModel *model = [[WMSSleepModel alloc] initWithSleepDate:date sleepEndHour:endHour sleepEndMinute:endMinute sleepMinute:sleepMinute asleepMinute:asleepMinute awakeCount:count deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
+
+    NSArray *results = [[WMSSleepDatabase sleepDatabase] querySleepData:date];
+    DEBUGLog(@"query results:");
+    for (WMSSleepModel *obj in results) {
+        DEBUGLog(@"\t\t\t %@",[obj.sleepDate.description substringToIndex:10]);
+    }
+    
+    if (results && results.count>0) {//若数据库中已存在该日期的数据，则更新数据库
+        [[WMSSleepDatabase sleepDatabase] updateSleepData:model];
+    } else {
+        [[WMSSleepDatabase sleepDatabase] insertSleepData:model];
+    }
+    
+    
+    [self.everydaySleepDataArray addObject:model];
+}
+
+
 #pragma mark - Action
 - (IBAction)showLeftViewAction:(id)sender {
     [self.sideMenuViewController presentLeftMenuViewController];
@@ -207,6 +410,8 @@
 - (IBAction)prevDateAction:(id)sender {
     self.showDate = [NSDate dateWithTimeInterval:OneDayTimeInterval*-1.0 sinceDate:self.showDate];
     self.labelDate.text = [self stringWithDate:self.showDate andFormart:DateFormat];
+    
+    [self updateView];
 }
 
 - (IBAction)nextDateAction:(id)sender {
@@ -215,6 +420,8 @@
     }
     self.showDate = [NSDate dateWithTimeInterval:OneDayTimeInterval sinceDate:self.showDate];
     self.labelDate.text = [self stringWithDate:self.showDate andFormart:DateFormat];
+    
+    [self updateView];
 }
 
 - (IBAction)gotoMyClockViewAction:(id)sender {
@@ -224,4 +431,138 @@
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {
 }
+
+- (void)syncDataAction:(id)sender
+{
+    if (![self.bleControl isConnected]) {
+        return;
+    }
+    [self startSyncSleepData];
+}
+
+
+#pragma mark - 收发数据
+- (void)startSyncSleepData
+{
+    [self.syncDataView startAnimating];
+    [self.hud show:YES];
+    
+    [self.bleControl.deviceProfile syncDeviceSleepDataWithCompletion:^(NSString *sleepDate, NSUInteger sleepEndHour, NSUInteger sleepEndMinute, NSUInteger todaySleepMinute, NSUInteger todayAsleepMinute, NSUInteger awakeCount, NSUInteger deepSleepMinute, NSUInteger lightSleepMinute, UInt16 *startedMinutes, UInt8 *startedStatus, UInt8 *statusDurations, NSUInteger dataLength)
+     {
+         DEBUGLog(@"====>>>date:%@,sleepEndHour:%d,sleepEndMinute:%d,SleepDurations:%d,AsleepDurations:%d,awakeCount:%d",sleepDate,sleepEndHour,sleepEndMinute,todaySleepMinute,todayAsleepMinute,awakeCount);
+         printf("\t\t [startedMinutes--startedStatus--statusDurations]\n");
+         for (int i=0; i<dataLength; i++) {
+             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
+         }
+         printf("\n");
+         
+         if ([sleepDate isEqualToString:@"0000-00-00"]) {
+             DEBUGLog(@"同步睡眠数据完成");
+             [self syncSleepDataOver];
+             return ;
+         }
+         
+         //保存数据
+         [self savaSleepDataWithDate:[NSDate dateFromString:sleepDate format:@"yyyy-MM-dd"] sleepEndHour:sleepEndHour sleepEndMinute:sleepEndMinute sleepMinute:todaySleepMinute asleepMinute:todayAsleepMinute awakeCount:awakeCount deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
+         
+         [self continueSyncSleepData];
+     }];
+}
+
+- (void)continueSyncSleepData
+{
+    [self.bleControl.deviceProfile syncDeviceSleepDataWithCompletion:^(NSString *sleepDate, NSUInteger sleepEndHour, NSUInteger sleepEndMinute, NSUInteger todaySleepMinute, NSUInteger todayAsleepMinute, NSUInteger awakeCount, NSUInteger deepSleepMinute, NSUInteger lightSleepMinute, UInt16 *startedMinutes, UInt8 *startedStatus, UInt8 *statusDurations, NSUInteger dataLength)
+     {
+         DEBUGLog(@"====>>>date:%@,sleepEndHour:%d,sleepEndMinute:%d,SleepDurations:%d,AsleepDurations:%d,awakeCount:%d",sleepDate,sleepEndHour,sleepEndMinute,todaySleepMinute,todayAsleepMinute,awakeCount);
+         printf("\t\t [startedMinutes--startedStatus--statusDurations]\n");
+         for (int i=0; i<dataLength; i++) {
+             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
+         }
+         printf("\n");
+         
+         if ([sleepDate isEqualToString:@"0000-00-00"]) {
+             DEBUGLog(@"同步睡眠数据完成");
+             [self syncSleepDataOver];
+             return ;
+         }
+         
+         //保存数据
+         [self savaSleepDataWithDate:[NSDate dateFromString:sleepDate format:@"yyyy-MM-dd"] sleepEndHour:sleepEndHour sleepEndMinute:sleepEndMinute sleepMinute:todaySleepMinute asleepMinute:todayAsleepMinute awakeCount:awakeCount deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
+         
+         [self continueSyncSleepData];
+     }];
+}
+
+- (void)syncSleepDataOver
+{
+    [self.syncDataView stopAnimating];
+    [self.hud hide:YES afterDelay:0];
+    
+    //更新界面
+    [self updateView];
+}
+
+#pragma mark - 蓝牙操作
+- (void)bleOperation
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
+    
+    self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    
+ ///////测试
+    NSArray *results = [[WMSSleepDatabase sleepDatabase] queryAllSleepData];
+    DEBUGLog(@"所有睡眠数据：");
+    for (WMSSleepModel *modelObj in results) {
+        DEBUGLog(@"sleep Date:%@",[modelObj.sleepDate.description substringToIndex:10]);
+    }
+    
+    if ([self.bleControl isConnected]) {
+        DEBUGLog(@"同步睡眠数据");
+        [self startSyncSleepData];
+    }
+    
+//    NSArray *array = [[WMSSleepDatabase sleepDatabase] getSleepModel];
+//    for (WMSSleepModel *model in array) {
+//        DEBUGLog(@"$$$$$ sleep Date:%@, endHour:%d,endMinute:%d,Durations:%d",
+//                 model.sleepDate,
+//                 model.sleepEndHour,
+//                 model.sleepEndMinute,
+//                 model.sleepMinute);
+//        //model.perHourData
+//        printf("startedMinutes:[");
+//        for (int i=0; i<model.dataLength; i++) {
+//            printf("%d ",model.startedMinutes[i]);
+//        }
+//        printf("]\n");
+//        
+//        printf("startedStatus:[");
+//        for (int i=0; i<model.dataLength; i++) {
+//            printf("%d ",model.startedStatus[i]);
+//        }
+//        printf("]\n");
+//        
+//        printf("statusDurations:[");
+//        for (int i=0; i<model.dataLength; i++) {
+//            printf("%d ",model.statusDurations[i]);
+//        }
+//        printf("]\n");
+//    }
+
+}
+
+//Handle
+- (void)handleSuccessConnectPeripheral:(NSNotification *)notification
+{
+    DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
+    
+    [self showTipView:NO];
+    
+    [self startSyncSleepData];
+}
+- (void)handleDidDisConnectPeripheral:(NSNotification *)notification
+{
+    [self showTipView:YES];
+}
+
 @end

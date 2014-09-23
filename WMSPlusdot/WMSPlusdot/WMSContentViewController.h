@@ -32,5 +32,8 @@
 - (IBAction)gotoMyTargetViewAction:(id)sender;
 - (IBAction)gotoMyHistoryViewAction:(id)sender;
 
+@property (nonatomic, assign) BOOL isShowBindVC;
+- (void)scanAndConnectPeripheral;
+//- (void)startSyncSportData;
 
 @end

@@ -100,11 +100,11 @@
     }
     
     if (self.layer != [self.trackUnderLayer superlayer]) {
-        DEBUGLog(@"MySportView addSublayer");
+        //DEBUGLog(@"MySportView addSublayer");
         [self.layer addSublayer:self.trackUnderLayer];
     }
     if (self.layer != [self.trackUpperLayer superlayer]) {
-        DEBUGLog(@"MySportView addSublayer2");
+        //DEBUGLog(@"MySportView addSublayer2");
         [self.layer addSublayer:self.trackUpperLayer];
     }
     

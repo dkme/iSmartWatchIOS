@@ -10,6 +10,7 @@
                 <outlet property="buttonMan" destination="zQ7-9n-gNX" id="JVf-Gh-u98"/>
                 <outlet property="buttonWoman" destination="0bW-cL-LPI" id="Gby-Ih-CrH"/>
                 <outlet property="centerView" destination="InB-Lc-5Ic" id="SO0-w7-CeL"/>
+                <outlet property="imageViewUserImage" destination="udd-0b-EIK" id="ZBx-7V-mqw"/>
                 <outlet property="labelBirthdayMonth" destination="Vc8-vJ-Isv" id="jvO-Yq-uWO"/>
                 <outlet property="labelBirthdayYear" destination="ThF-dc-5hm" id="lck-Xw-mk3"/>
                 <outlet property="labelCurrentWeight" destination="TjI-FA-Ue9" id="W4k-GK-Xjt"/>
@@ -40,9 +41,13 @@
                     <rect key="frame" x="0.0" y="64" width="320" height="185"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="car_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="udd-0b-EIK">
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="car_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="udd-0b-EIK">
                             <rect key="frame" x="19" y="22" width="100" height="100"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <gestureRecognizers/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="XEP-f4-gN6" appends="YES" id="TPp-1a-fmS"/>
+                            </connections>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="请输入。。。。" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhw-yL-igJ">
                             <rect key="frame" x="124" y="74" width="196" height="35"/>
@@ -208,7 +213,6 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <tapGestureRecognizer id="fq3-mS-8Hd"/>
         <tapGestureRecognizer id="8xa-xO-K3E">
             <connections>
                 <action selector="heightClicked:" destination="-1" id="Ehs-aU-wl9"/>
@@ -227,6 +231,11 @@
         <tapGestureRecognizer id="h6I-Em-sKI">
             <connections>
                 <action selector="targetWeightClicked:" destination="-1" id="I8a-jz-XE6"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="XEP-f4-gN6">
+            <connections>
+                <action selector="imageViewClicked:" destination="-1" id="qtc-vy-gsZ"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

@@ -8,6 +8,8 @@
 
 #import "WMSActivityRemindViewController.h"
 #import "WMSInputViewController.h"
+#import "WMSAppDelegate.h"
+#import "WMSBluetooth.h"
 
 #define SECTION_NUMBER  1
 #define SECTION_FOOTER_HEIGHT   1
@@ -89,9 +91,16 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)setAlarmClock
+{
+    
+}
+
 
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
+    [self setAlarmClock];
+    
     self.navigationController.delegate = nil;//一定要加入这条语句
     [self.navigationController popViewControllerAnimated:NO];
 }

@@ -35,7 +35,7 @@
         _trackUnderLayer = [CAShapeLayer layer];
         _trackUnderLayer.frame = self.bounds;
         _trackUnderLayer.fillColor = [[UIColor clearColor] CGColor];
-        _trackUnderLayer.strokeColor = [UIColor grayColor].CGColor;
+        _trackUnderLayer.strokeColor = UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
         _trackUnderLayer.opacity = 1;
         _trackUnderLayer.lineCap = kCALineCapRound;
         _trackUnderLayer.lineWidth = PROGRESS_WIDTH;
@@ -75,7 +75,7 @@
         _trackLayer3 = [CAShapeLayer layer];
         _trackLayer3.frame = self.bounds;
         _trackLayer3.fillColor = [[UIColor clearColor] CGColor];
-        _trackLayer3.strokeColor = [UIColor blueColor].CGColor;
+        _trackLayer3.strokeColor = [UIColor yellowColor].CGColor;
         _trackLayer3.opacity = 1.0;
         _trackLayer3.lineCap = kCALineCapRound;
         _trackLayer3.lineWidth = PROGRESS_WIDTH;
@@ -113,6 +113,17 @@
 }
 
 #pragma mark - Public Method
+- (void)setSleepMinute:(NSUInteger)sleepMinute
+       deepSleepMinute:(NSUInteger)deepSleepMinute
+      lightSleepMinute:(NSUInteger)lightSleepMinute
+{
+    [self setSleepTime:sleepMinute];
+    [self setDeepSleepTime:deepSleepMinute andLightSleepTime:lightSleepMinute];
+    [self setNeedsDisplay];
+}
+
+
+#pragma mark - Private Methods
 - (BOOL)setDeepSleepTime:(int)deepSleepMinute andLightSleepTime:(int)lightSleepMinute andWakeupTime:(int)wakeupMinute
 {
     if (deepSleepMinute+lightSleepMinute+wakeupMinute != self.mySleepMinute) {
@@ -132,10 +143,28 @@
     
     return YES;
 }
+
+- (void)setDeepSleepTime:(NSUInteger)deepSleepMinute andLightSleepTime:(NSUInteger)lightSleepMinute
+{    
+    if (deepSleepMinute <= self.mySleepMinute) {
+        self.myDeepSleepMinute = deepSleepMinute;
+    } else {
+        self.myDeepSleepMinute = self.mySleepMinute;
+    }
+    
+    
+    if (lightSleepMinute <= self.mySleepMinute-self.myDeepSleepMinute) {
+        self.myLightSleepMinute = lightSleepMinute;
+    } else {
+        self.myLightSleepMinute = self.mySleepMinute-self.myDeepSleepMinute;
+    }
+    
+    //[self setNeedsDisplay];
+}
 - (void)setSleepTime:(int)minute
 {
     self.mySleepMinute = minute;
-    [self setNeedsDisplay];
+    //[self setNeedsDisplay];
 }
 //- (void)setDeepSleepTime:(int)minute
 //{
@@ -189,7 +218,8 @@
     [self drawTrackLayer:self.trackLayer2 andStartAngle:startAngle andEndAngle:endAngle];
     
     startAngle = endAngle;
-    endAngle = self.myWakeupMinute * factor +startAngle;
+    //endAngle = self.myWakeupMinute * factor +startAngle;
+    endAngle = (self.mySleepMinute-self.myDeepSleepMinute-self.myLightSleepMinute) * factor +startAngle;
     [self drawTrackLayer:self.trackLayer3 andStartAngle:startAngle andEndAngle:endAngle];
     
 }

@@ -15,6 +15,7 @@
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSLeftViewCell.h"
 #import "WMSMyAccountViewController.h"
+#import "WMSMyAccessoryViewController.h"
 
 #define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 64) )
 #define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 45, _userInfoView.center.y - 45 - 10, 79, 79) )
@@ -38,7 +39,6 @@
 @property (strong, nonatomic) NSArray *seletedImageNameArray;
 
 @property (strong, nonatomic) NSArray *specifyContentVCClassArray;
-@property (strong, nonatomic) NSMutableArray *contentVCArray;
 @end
 
 @implementation WMSLeftViewController
@@ -58,7 +58,7 @@
         [_userInfoView addSubview:userImgBtn];
         
         UILabel *userLabel = [[UILabel alloc] initWithFrame:userLabelFrame];
-        [userLabel setText:@"xxxxx"];
+        [userLabel setText:@""];
         [userLabel setTextAlignment:NSTextAlignmentCenter];
         [userLabel setTextColor:[UIColor whiteColor]];
         [_userInfoView addSubview:userLabel];
@@ -141,7 +141,8 @@
                                        [WMSContentViewController class],
                                        [WMSContent1ViewController class],
                                        [WMSContent2ViewController class],
-                                       [WMSBindingAccessoryViewController class],
+                                       //[WMSBindingAccessoryViewController class],
+                                       [WMSMyAccessoryViewController class],
                                        nil];
     }
     return _specifyContentVCClassArray;
@@ -182,6 +183,9 @@
     [self.view addSubview:self.userInfoView];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.buttonSetting];
+    
+    
+    [self reloadView];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -200,11 +204,57 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)reloadView
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    UIImage *image = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
+    NSString *name = [userDefaults stringForKey:@"name"];
+    
+    [self setUserImage:image];
+    [self setUserNickname:name];
+}
+
+
+//设置用户头像和昵称
+- (void)setUserImage:(UIImage *)image
+{
+    if (image == nil) {
+        return;
+    }
+    NSArray *views = self.userInfoView.subviews;
+    UIButton *buttonUserImage = nil;
+    for (UIView *viewObj in views) {
+        if ([UIButton class] == [viewObj class]) {
+            buttonUserImage = (UIButton *)viewObj;
+            break;
+        }
+    }
+    [buttonUserImage setImage:image forState:UIControlStateNormal];
+}
+
+- (void)setUserNickname:(NSString *)nickname
+{
+    if (nickname == nil) {
+        return;
+    }
+    NSArray *views = self.userInfoView.subviews;
+    UILabel *labelUserNickname = nil;
+    for (UIView *viewObj in views) {
+        if ([UILabel class] == [viewObj class]) {
+            labelUserNickname = (UILabel *)viewObj;
+            break;
+        }
+    }
+    [labelUserNickname setText:nickname];
+}
+
+
 
 #pragma mark - Events
 - (void)userImgBtnClick:(id)sender
 {
     WMSMyAccountViewController *VC = [[WMSMyAccountViewController alloc] init];
+    VC.isModifyAccount = YES;
     [self presentViewController:VC animated:YES completion:nil];
 }
 - (void)settingBtnClick:(id)sender

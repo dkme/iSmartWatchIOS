@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define MIN_SPORT_STEPS     6000
+
 @interface WMSContent2ViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonLeft;
@@ -19,5 +21,6 @@
 - (IBAction)showLeftViewAction:(id)sender;
 - (IBAction)showRightViewAction:(id)sender;
 
+@property (nonatomic) NSUInteger sportTargetSteps;
 
 @end
