@@ -44,8 +44,8 @@ extern NSString * const WMSBleControlBluetoothStateUpdated;
 
 //
 typedef NS_ENUM(NSUInteger, ControlMode) {
+    ControlModeRemote = 0x01,
     ControlModeNormal = 0xFF,
-    ControlModeRemote = 0x02,
     ControlModeOTA = 0x30,
 };
 
@@ -56,15 +56,25 @@ typedef NS_ENUM(Byte, CMDType) {
     CMDSetAlarmClock = 0x03,
     CMDSetTarger = 0x04,
     CMDSetRemind = 0x05,
+    CMDSetSportRemind = 0x08,
+    CMDSetAntiLost = 0x09,
     
     CMDGetDeviceInfo = 0x0A,
     CMDGetDeviceTime = 0x0B,
+    
+    CMDSwitchControlMode = 0xF2,
+};
+//蓝牙状态
+typedef NS_ENUM(NSInteger, WMSBleState) {
+    BleStateUnsupported = 0,
+    BleStatePoweredOff,
+    BleStatePoweredOn,
 };
 
 #define KEY_TIMEOUT_USERINFO_CHARACT    @"KEY_TIMEOUT_USERINFO_CHARACT"
 #define KEY_TIMEOUT_USERINFO_VALUE      @"KEY_TIMEOUT_USERINFO_VALUE"
 
-static const NSUInteger MAX_TIMEOUT_COUNT = 10;
+static const NSUInteger MAX_TIMEOUT_COUNT = 5;
 static const NSUInteger SUBSCRIBE_CHARACTERISTICS_INTERVAL = 2;
 static const NSUInteger WRITEVALUE_CHARACTERISTICS_INTERVAL = 2;
 
@@ -90,6 +100,7 @@ typedef void (^WMSBleSendDataCallback)(BOOL success);
 @property (nonatomic, readonly) BOOL isScanning;
 @property (nonatomic, readonly) BOOL isConnecting;
 @property (nonatomic, readonly) BOOL isConnected;
+@property (nonatomic, readonly) WMSBleState bleState;
 
 @property (nonatomic, readonly) WMSSettingProfile *settingProfile;
 @property (nonatomic, readonly) WMSDeviceProfile *deviceProfile;
@@ -117,6 +128,7 @@ typedef void (^WMSBleSendDataCallback)(BOOL success);
  模式控制
  */
 - (void)switchToControlMode:(ControlMode)controlMode
+                openOrClose:(BOOL)status
                  completion:(WMSBleSwitchToControlModeCallback)aCallBack;
 
 @end

@@ -40,6 +40,12 @@ typedef NS_ENUM(NSUInteger, RemindEventsType) {
     RemindEventsTypeTwitter = 0x01 << 7,
 };
 
+//其他提醒事件类型
+typedef NS_ENUM(NSUInteger, OtherRemindType) {
+    OtherRemindTypeSearchWatch = 0x10,
+    OtherRemindTypeLowBattery = 0x11,
+};
+
 
 //Block
 typedef void (^setCurrentDateCallBack)(BOOL success);
@@ -48,6 +54,9 @@ typedef void (^setAlarmClockCallBack)(BOOL success);
 typedef void(^setTargetCallBack)(BOOL success);
 typedef void(^setRemindModeCallBack)(BOOL success);
 typedef void(^setRemindEventsCallBack)(BOOL success);
+typedef void (^setOtherRemindCallBack)(BOOL success);
+typedef void (^setSportRemindCallBack)(BOOL success);
+typedef void (^setAntiLostCallBack)(BOOL success);
 
 @interface WMSSettingProfile : NSObject
 
@@ -103,7 +112,7 @@ typedef void(^setRemindEventsCallBack)(BOOL success);
            withCompletion:(setTargetCallBack)aCallBack;
 
 /**
- 提醒设置
+ 设置提醒方式
  
  */
 - (void)setRemindWithMode:(RemindMode)remindMode
@@ -114,5 +123,31 @@ typedef void(^setRemindEventsCallBack)(BOOL success);
  */
 - (void)setRemindEventsType:(RemindEventsType)remindEventsType
                  completion:(setRemindEventsCallBack)aCallBack;
+
+/**
+ 设置其他提醒
+ */
+- (void)setOtherRemind:(OtherRemindType)remindType
+            completion:(setOtherRemindCallBack)aCallBack;
+
+/**
+ 久坐运动提醒
+ */
+- (void)setSportRemindWithStatus:(BOOL)openOrClose
+                       startHour:(Byte)startHour
+                     startMinute:(Byte)startMinute
+                         endHour:(Byte)endHour
+                       endMinute:(Byte)endMinute
+                  intervalMinute:(UInt16)intervalMinute
+                         repeats:(NSArray *)repeats
+                      completion:(setSportRemindCallBack)aCallBack;
+
+/**
+ 防丢提醒
+ */
+- (void)setAntiLostStatus:(BOOL)openOrClose
+                 distance:(NSUInteger)distance
+               completion:(setAntiLostCallBack)aCallBack;
+
 
 @end

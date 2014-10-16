@@ -21,6 +21,9 @@
 #import "WMSSportDatabase.h"
 #import "WMSContent2ViewController.h"
 #import "MBProgressHUD.h"
+#import "WMSSportHistoryViewController.h"
+#import "WMSDeviceModel.h"
+#import "WMSLoginViewController.h"
 
 #define OneDayTimeInterval    (24*60*60)
 #define DateFormat            @"yyyy/MM/dd"
@@ -41,7 +44,8 @@
     __weak IBOutlet UILabel *_labelRanShao;
     __weak IBOutlet UILabel *_labelJuli;
     __weak IBOutlet UILabel *_labelShiJian;
-    
+    __weak IBOutlet UILabel *_labelHour;
+    __weak IBOutlet UILabel *_labelMinute;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *dateView;
@@ -67,7 +71,7 @@
         _syncDataView = [[WMSSyncDataView alloc] initWithFrame:TipViewFrame];
         _syncDataView.backgroundColor = [UIColor clearColor];
         
-        _syncDataView.labelTip.text = NSLocalizedString(@"手表已连接",nil);
+        _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
         _syncDataView.labelTip.font = Font_DINCondensed(17.0);
         
         UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
@@ -123,21 +127,79 @@
 #pragma mark - Setter
 - (void)setSportStepsValue:(NSUInteger)steps
 {
-    [self.labelCurrentSteps setText:[NSString stringWithFormat:@"%u",steps]];
+    NSString *unit = NSLocalizedString(@"Step",nil);
+    NSString *str = [NSString stringWithFormat:@"%u %@",steps,unit];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = str.length-unit.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(45.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = unit.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    
+    //[self.labelCurrentSteps setText:[NSString stringWithFormat:@"%u",steps]];
+    [self.labelCurrentSteps setAttributedText:text];
     [self.mySportView setSportSteps:steps];
+    
 }
 - (void)setTargetStepsValue:(NSUInteger)steps
 {
-    [self.labelTargetSetps setText:[NSString stringWithFormat:@"%u",steps]];
+    NSString *describe = NSLocalizedString(@"Target",nil);
+    NSString *value = [NSString stringWithFormat:@"%u",steps];
+    NSString *unit = NSLocalizedString(@"Step",nil);
+    NSString *str = [NSString stringWithFormat:@"%@: %@ %@",describe,value,unit];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = describe.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = @": ".length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = value.length+@" ".length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(25.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = unit.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    
+    //[self.labelTargetSetps setText:[NSString stringWithFormat:@"%u",steps]];
+    [self.labelTargetSetps setAttributedText:text];
     [self.mySportView setTargetSetps:steps];
 }
 - (void)setSportTimeValue:(NSUInteger)minute
 {
-    [self.labelTimeValue setText:[NSString stringWithFormat:@"%u",minute]];
+    NSString *hour = [NSString stringWithFormat:@"%u",minute/60];
+    NSString *mu = [NSString stringWithFormat:@"%u",minute%60];
+    NSString *hourLbl = NSLocalizedString(@"Hour",nil);
+    NSString *muLbl = NSLocalizedString(@"Minutes",nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@%@%@",hour,hourLbl,mu,muLbl];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = hour.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = hourLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = mu.length;//+@" ".length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = muLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    
+    //[self.labelTimeValue setText:[NSString stringWithFormat:@"%u",minute]];
+    //[self.labelTimeValue setText:[NSString stringWithFormat:@"%@",hour]];
+    //[self.labelTimeMinuteValue setText:[NSString stringWithFormat:@"%u",mu]];
+    [self.labelTimeValue setAttributedText:text];
 }
 - (void)setSportDistanceValue:(NSUInteger)distance
 {
-    [self.labelDistanceValue setText:[NSString stringWithFormat:@"%u",distance]];
+    NSUInteger gewei = distance%10;
+    distance -= gewei;
+    [self.labelDistanceValue setText:[NSString stringWithFormat:@"%g",distance/1000.0]];//km
 }
 - (void)setSportCalorieValue:(NSUInteger)calorie
 {
@@ -173,24 +235,20 @@
     //
     [self bleOperation];
     
-    if ([WMSMyAccessory isBindAccessory] == NO) {
-        self.isShowBindVC = YES;
-        WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];
-        //DEBUGLog(@"self:%@",self);
-        [self presentViewController:vc animated:NO completion:nil];
-    } else {
-        self.isShowBindVC = NO;
-        
-        [self scanAndConnectPeripheral];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
+    //[self presentBindingVC];//不要在这里跳转
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
+    DEBUGLog(@"viewDidAppear %@",NSStringFromClass([self class]));
     self.navigationController.navigationBarHidden = YES;
+    
+    [self presentBindingVC];
+    
     
     if ([self.bleControl isConnected]) {
         [self showTipView:NO];
@@ -221,6 +279,9 @@
             [self startSyncSportData];
         }];
     }
+    
+    //更新电池电量
+    [self readDeviceInfo];
 }
 
 - (void)dealloc
@@ -272,6 +333,8 @@
     _labelRanShao.text = NSLocalizedString(@"Burn",nil);
     _labelJuli.text = NSLocalizedString(@"Distance",nil);
     _labelShiJian.text = NSLocalizedString(@"Time",nil);
+    _labelHour.text = NSLocalizedString(@"Hour",nil);
+    _labelMinute.text = NSLocalizedString(@"Minutes",nil);
 }
 
 - (void)adaptiveIphone4
@@ -305,7 +368,7 @@
     self.showDate = [NSDate date];
     self.labelDate.text = [self stringWithDate:[NSDate date] andFormart:DateFormat];
     
-    [self setTargetStepsValue:0];
+    [self setTargetStepsValue:20000];
     [self setSportStepsValue:0];
     [self setSportTimeValue:0];
     [self setSportDistanceValue:0];
@@ -365,7 +428,7 @@
     }
     
     if (sportModel) {
-        [self setTargetStepsValue:20000];
+        [self setTargetStepsValue:sportModel.targetSteps];
         [self setSportStepsValue:sportModel.sportSteps];
         [self setSportTimeValue:sportModel.sportMinute];
         [self setSportDistanceValue:sportModel.sportDistance];
@@ -379,6 +442,26 @@
         [self setSportCalorieValue:0];
     }
 }
+
+//跳转到绑定界面，只调用一次
+- (void)presentBindingVC
+{
+    static int callCount = 0;
+    if (callCount >= 1) {
+        return;
+    }
+    callCount++;
+    if ([WMSMyAccessory isBindAccessory] == NO) {
+        self.isShowBindVC = YES;
+        WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];
+        [self presentViewController:vc animated:NO completion:nil];
+    } else {
+        self.isShowBindVC = NO;
+        
+        [self scanAndConnectPeripheral];
+    }
+}
+
 
 #pragma mark - Data
 - (void)savaSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations perHourData:(UInt16 *)perHourData dataLength:(NSUInteger)dataLength
@@ -400,7 +483,7 @@
             break;
         }
     }
-    NSUInteger targetSteps = (setTargetVC ? setTargetVC.sportTargetSteps : MIN_SPORT_STEPS);
+    NSUInteger targetSteps = (setTargetVC ? setTargetVC.sportTargetSteps : 20000);
     
     WMSSportModel *sportModel = [[WMSSportModel alloc] initWithSportDate:date sportTargetSteps:targetSteps sportSteps:steps sportMinute:durations sportDistance:distances sportCalorie:calorie perHourData:perHourData dataLength:dataLength];
     
@@ -456,11 +539,13 @@
 
 - (IBAction)gotoMyTargetViewAction:(id)sender {
     WMSActivityRemindViewController *VC = [[WMSActivityRemindViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {
-    
+    WMSSportHistoryViewController *historyVC = [[WMSSportHistoryViewController alloc] initWithNibName:@"WMSSportHistoryViewController" bundle:nil];
+    historyVC.showDate = self.showDate;
+    [self.navigationController pushViewController:historyVC animated:NO];
 }
 
 - (void)syncDataAction:(id)sender {
@@ -490,6 +575,7 @@
     [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
      {
          DEBUGLog(@"电池电量：%d",batteryEnergy);
+         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
          [self.syncDataView setCellElectricQuantity:batteryEnergy];
      }];
 }
@@ -613,10 +699,10 @@
     [self connectedOperation];
     
 ///////开启提醒
-    [self.bleControl.settingProfile setRemindEventsType:RemindEventsTypeSMS|RemindEventsTypeCall|RemindEventsTypeQQ completion:^(BOOL success)
-    {
-        DEBUGLog(@"开启提醒%@",success?@"成功":@"失败");;
-    }];
+//    [self.bleControl.settingProfile setRemindEventsType:RemindEventsTypeSMS|RemindEventsTypeCall|RemindEventsTypeQQ completion:^(BOOL success)
+//    {
+//        DEBUGLog(@"开启提醒%@",success?@"成功":@"失败");;
+//    }];
     
     //[[WMSSportDatabase sportDatabase] deleteAllSportData];
     
@@ -629,7 +715,10 @@
         return;
     }
     [self showTipView:YES];
-//    [self scanAndConnectPeripheral];
+    [self.hud hide:YES afterDelay:0];
+    [self.syncDataView stopAnimating];
+    
+    [self scanAndConnectPeripheral];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
@@ -639,7 +728,10 @@
         return;
     }
     [self showTipView:YES];
-//    [self scanAndConnectPeripheral];
+    [self.hud hide:YES afterDelay:0];
+    [self.syncDataView stopAnimating];
+    
+    [self scanAndConnectPeripheral];
 }
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
@@ -655,6 +747,39 @@
     }
     [self showTipView:YES];
     [self scanAndConnectPeripheral];
+}
+
+
+#pragma mark -  Notification
+- (void)appWillEnterForeground:(NSNotification *)notification
+{
+//    switch (self.bleControl.bleState) {
+//        case BleStatePoweredOff:
+//        {
+//            if (self.isShowBindVC) {
+//                return;
+//            }
+//            [self showTipView:YES];
+//            [self.hud hide:YES afterDelay:0];
+//            [self.syncDataView stopAnimating];
+//            break;
+//        }
+//            
+//        default:
+//            break;
+//    }
+    if ([self.bleControl isConnected] == NO) {
+//        if (self.isShowBindVC) {
+//            return;
+//        }
+//        [self showTipView:YES];
+//        [self.hud hide:YES afterDelay:0];
+//        [self.syncDataView stopAnimating];
+        
+        [self handleScanPeripheralFinish:nil];
+    } else {
+        
+    }
 }
 
 @end

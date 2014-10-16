@@ -11,23 +11,23 @@
 "My sports" = "My sports";
 "My sleep" = "My sleep";
 "Set target" = "Set target";
-"Binding accessories" = "Binding accessories";
+"Bound watch" = "Bound watch";
 
 //RightViewController String
 "Remind Setting" = "Remind Setting";
 "Social contact" = "Social contact";
 
-"Telephone" = "Telephone";
-"SMS" = "SMS";
+"Phone" = "Phone";
+"Message" = "Message";
 "Email" = "Email";
 "Battery" = "Battery";
 
-"WeiXin" = "WeiXin";
+"Wechat" = "Wechat";
 "QQ" = "QQ";
 "Facebook" = "Facebook";
 "Twitter" = "Twitter";
 
-"Take photos" = "Take photos";
+"Take a Photo" = "Take a Photo";
 
 
 //MySport ViewController String
@@ -43,8 +43,8 @@
 "Deep sleep" = "Deep sleep";
 "Light sleep" = "Light sleep";
 "Wake up" = "Wake up";
-"Hour" = "Hour";
-"Minutes" = "Minutes";
+"Hour" = "h";
+"Minutes" = "min";
 
 //Set Target ViewController String
 "Step" = "Step";
@@ -60,6 +60,7 @@
 "Alarm clock time" = "Alarm clock time";
 "Smart sleep Windows" = "Smart sleep Windows";
 "Repeat" = "Repeat";
+"Minutes clock" = "Minutes";
 "Alarm clock" = "Alarm clock";
 
 //WMSAccountViewController String
@@ -70,7 +71,7 @@
 //WMSAccountViewController String
 "Personal data" = "Personal data";
 "Please enter a nickname" = "Please enter a nickname";
-"Please enter the character signature" = "Please enter the character signature";
+"Please enter the character signature" = "Please enter the signature";
 "Height" = "Height";
 "Birthday" = "Birthday";
 "Current weight" = "Current weight";
@@ -80,8 +81,8 @@
 "Day" = "Day";
 "cm" = "cm";
 "kg" = "kg";
-"Man" = "Man";
-"Woman" = "Woman";
+"Male" = "Male";
+"Female" = "Female";
 "Cancel" = "Cancel";
 "Confirm" = "Confirm";
 
@@ -92,4 +93,45 @@
 "Interval" = "Interval";
 "Remind" = "Remind";
 
+
+"同步" = "Sync";
+"智能手表已连接" = "Smart watch connected";
+"智能手表连接中" = "Connecting smart watch";
+"手表" = "watch";
+"解除绑定" = "Remove the binding";
+"坚持锻炼一个月" = "Insist to take exercise for a month";
+"并分享到朋友圈，即可获得精美礼品哦" = "and for the exquisite gift to share to the circle of friends";
+"菜鸟" = "菜鸟";
+"砖家" = "砖家";
+"绑定配件" = "Bound watch";
+"重新扫描" = "Research";
+"绑定的配件" = "Binding accessories";
+
+"一" = "Mon";
+"二" = "Tue";
+"三" = "Wed";
+"四" = "Thu";
+"五" = "Fri";
+"六" = "Sat";
+"七" = "Sun";
+"周一" = "Monday";
+"周二" = "Tuesday";
+"周三" = "Wednesday";
+"周四" = "Thursday";
+"周五" = "Friday";
+"周六" = "Saturday";
+"周日" = "Sunday";
+"每天" = "Everyday";
+
+"努力同步数据中..." = "Strive syncing data...";
+"运动记录" = "Sport records";
+"睡眠记录" = "Sleep records";
+"完成目标的" = "Completed progress";
+"设置目标" = "Target settings";
+"拍照" = "Take a photo";
+"选取照片" = "Choose photo";
+"防丢" = "Anti lost";
+"正在连接您的手表" = "Connecting smart watch";
+
+"拍摄的照片保存在照片库" = "Photos stored in the library";
 

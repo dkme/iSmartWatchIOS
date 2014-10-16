@@ -32,6 +32,8 @@ enum {
     CMDAgainPrepareSyncSleepData = 0x19,
     CMDStartSyncSleepData = 0x17,
     CMDEndSyncSleepData = 0x18,
+    
+    CMDReadDeviceRemoteData = 0xF0,
 };
 
 static const int HOUR_NUMBER = 24;
@@ -80,11 +82,15 @@ static const int STARTED_NUMBER = 50;
 
 @property (nonatomic, strong) WMSMyTimers *myTimers;
 
+//Block
+@property (nonatomic, copy) readDeviceRemoteDataCallBack readDeviceRemoteDataBlock;
+
 //Stack
 @property (nonatomic, strong) NSMutableArray *stackReadDeviceInfo;
 @property (nonatomic, strong) NSMutableArray *stackReadDeviceTime;
 @property (nonatomic, strong) NSMutableArray *stackSyncSportData;
 @property (nonatomic, strong) NSMutableArray *stackSyncSleepData;
+@property (nonatomic, strong) NSMutableArray *stackReadDeviceRemoteData;
 @end
 
 @implementation WMSDeviceProfile
@@ -117,6 +123,13 @@ static const int STARTED_NUMBER = 50;
         _stackSyncSleepData = [NSMutableArray new];
     }
     return _stackSyncSleepData;
+}
+- (NSMutableArray *)stackReadDeviceRemoteData
+{
+    if (!_stackReadDeviceRemoteData) {
+        _stackReadDeviceRemoteData = [NSMutableArray new];
+    }
+    return _stackReadDeviceRemoteData;
 }
 
 #pragma mark - Init
@@ -271,6 +284,18 @@ static const int STARTED_NUMBER = 50;
     [self prepareSyncSleepData];
 }
 
+- (void)readDeviceRemoteDataWithCompletion:(readDeviceRemoteDataCallBack)aCallBack
+{
+    if (![self.bleControl isConnected]) {
+        return ;
+    }
+    
+    if (aCallBack) {
+        //[NSMutableArray push:aCallBack toArray:self.stackReadDeviceRemoteData];
+        self.readDeviceRemoteDataBlock = aCallBack;
+    }
+}
+
 
 #pragma mark - Time out
 - (void)writeValueToCharactTimeout:(NSTimer *)timer
@@ -376,6 +401,22 @@ static const int STARTED_NUMBER = 50;
            )
         {
             [self handleSyncSleepData:package];
+            return;
+        }
+        
+        if (cmd == CMDReadDeviceRemoteData) {
+            DEBUGLog(@"监听到按键状态");
+            //readDeviceRemoteDataCallBack callBack = [NSMutableArray popFromArray:self.stackReadDeviceRemoteData];
+            readDeviceRemoteDataCallBack callBack = self.readDeviceRemoteDataBlock;
+            if (callBack) {
+                Byte type = package[3];
+                callBack(type);
+            }
+            //回复，不用超时重传
+            Byte pg[DATA_LENGTH] = {0};
+            [self setPacketCMD:CMDReadDeviceRemoteData andData:pg dataLength:DATA_LENGTH];
+            NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+            [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
             return;
         }
     }

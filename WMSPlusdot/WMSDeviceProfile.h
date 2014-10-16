@@ -20,6 +20,13 @@ typedef NS_ENUM(NSUInteger, SleepStatus) {
     SleepStatusWakeup = 0x03,
 };
 
+//遥控模式下的数据类型
+typedef NS_ENUM(NSUInteger, RemoteDataType) {
+    RemoteDataTypeFindPhone = 0x01,
+    RemoteDataTypeTakephoto = 0x02,
+};
+
+
 //Block
 typedef void(^readDeviceInfoCallBack)(NSUInteger batteryEnergy,NSUInteger version,NSUInteger todaySteps,NSUInteger todaySportDurations,NSUInteger endSleepMinute,NSUInteger endSleepHour,NSUInteger sleepDurations,DeviceWorkStatus workStatus,BOOL success);
 typedef void(^readDeviceTimeCallBack)(NSString *dateString,BOOL success);
@@ -35,6 +42,9 @@ typedef void (^syncDeviceSportDataCallBack)(NSString *sportdate,NSUInteger today
     dataLength        数据的长度
  */
 typedef void (^syncDeviceSleepDataCallBack)(NSString *sleepDate,NSUInteger sleepEndHour,NSUInteger sleepEndMinute,NSUInteger todaySleepMinute,NSUInteger todayAsleepMinute,NSUInteger awakeCount,NSUInteger deepSleepMinute,NSUInteger lightSleepMinute,UInt16 *startedMinutes,UInt8 * startedStatus,UInt8 *statusDurations,NSUInteger dataLength);
+
+typedef void (^readDeviceRemoteDataCallBack)(RemoteDataType dataType);
+
 
 @interface WMSDeviceProfile : NSObject
 
@@ -67,5 +77,10 @@ typedef void (^syncDeviceSleepDataCallBack)(NSString *sleepDate,NSUInteger sleep
  寻找手机
  */
 //- (void)aa;
+
+/**
+ 读取遥控模式下的数据
+ */
+- (void)readDeviceRemoteDataWithCompletion:(readDeviceRemoteDataCallBack)aCallBack;
 
 @end

@@ -16,8 +16,6 @@
 #import "MBProgressHUD.h"
 #import "WMSLeftViewController.h"
 #import "RESideMenu.h"
-#import <MobileCoreServices/MobileCoreServices.h>
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "UIImage+QuartzProc.h"
 
 #define PickerViewHeight    216.f
@@ -130,6 +128,9 @@
         UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel",nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelClicked:)];
         UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Confirm",nil) style:UIBarButtonItemStyleDone target:self action:@selector(confirmClicked:)];
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        //NSDictionary *attributes = @{NSFontAttributeName:Font_DINCondensed(20)};
+        //[leftBarButton setTitleTextAttributes:attributes forState:UIControlStateNormal];
+        //[rightBarButton setTitleTextAttributes:attributes forState:UIControlStateNormal];
         
         NSArray *buttons = @[leftBarButton,flexibleSpace,rightBarButton];
         
@@ -279,11 +280,11 @@
     }
     
     if (mySex == 1) {
-        self.labelSex.text = NSLocalizedString(@"Man",nil);
+        self.labelSex.text = NSLocalizedString(@"Male",nil);
         [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"select_man.png"] forState:UIControlStateNormal];
         [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"unselect_woman.png"] forState:UIControlStateNormal];
     } else if (mySex == 0) {
-        self.labelSex.text = NSLocalizedString(@"Woman",nil);
+        self.labelSex.text = NSLocalizedString(@"Female",nil);
         [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"select_woman.png"] forState:UIControlStateNormal];
         [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"unselect_man.png"] forState:UIControlStateNormal];
     }
@@ -339,7 +340,7 @@
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:personModel.name forKey:@"name"];
-    [userDefaults setObject:UIImageJPEGRepresentation(myImage, 0.5) forKey:@"image"];
+    [userDefaults setObject:UIImagePNGRepresentation(personModel.image) forKey:@"image"];
     [userDefaults setObject:personModel.birthday forKey:@"birthday"];
     [userDefaults setInteger:personModel.gender forKey:@"gender"];
     [userDefaults setInteger:personModel.height forKey:@"height"];
@@ -584,7 +585,7 @@
     }];
     
     [self.myPickerView reloadAllComponents];
-    [self.myPickerView selectRow:(myHeight-HeightMinValue) inComponent:0 animated:YES];
+    [self.myPickerView selectRow:(myHeight-HeightMinValue) inComponent:0 animated:NO];
 }
 
 - (IBAction)birthdayClicked:(id)sender {
@@ -601,7 +602,7 @@
     NSDateFormatter *dm = [[NSDateFormatter alloc]init];
     dm.dateFormat = @"yyyy-MM-dd";
     NSDate *newdate = [dm dateFromString:datestring];
-    [self.myDatePicker setDate:newdate animated:YES];
+    [self.myDatePicker setDate:newdate animated:NO];
 }
 
 - (IBAction)currentWeightClicked:(id)sender {
@@ -620,7 +621,7 @@
     }];
     
     [self.myPickerView reloadAllComponents];
-    [self.myPickerView selectRow:(myCurrentWeight-WeightMinValue) inComponent:0 animated:YES];
+    [self.myPickerView selectRow:(myCurrentWeight-WeightMinValue) inComponent:0 animated:NO];
 }
 
 - (IBAction)targetWeightClicked:(id)sender {
@@ -639,7 +640,7 @@
     }];
     
     [self.myPickerView reloadAllComponents];
-    [self.myPickerView selectRow:(myTargetWeight-WeightMinValue) inComponent:0 animated:YES];
+    [self.myPickerView selectRow:(myTargetWeight-WeightMinValue) inComponent:0 animated:NO];
 }
 
 - (void)cancelClicked:(id)sender
@@ -731,14 +732,16 @@
     NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     //判断是静态图像还是视频
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-        UIImage* editedImage = [info objectForKey:UIImagePickerControllerEditedImage];//获取用户编辑之后的图像
+        UIImage* image = [info objectForKey:UIImagePickerControllerEditedImage];//获取用户编辑之后的图像
         //UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
         //将该图像保存到媒体库中
         //UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
         
         //显示用户image
-        CGSize toSize = self.imageViewUserImage.bounds.size;
-        self.imageViewUserImage.image = [editedImage resizeImageToSize:toSize resizeMode:quartzImageResizeAspectFill];
+        CGSize toSize = CGSizeZero;
+        toSize.width = self.imageViewUserImage.bounds.size.width*2;
+        toSize.height = self.imageViewUserImage.bounds.size.height*2;
+        self.imageViewUserImage.image = [image resizeImageToSize:toSize resizeMode:quartzImageResizeAspectFit];
         myImage = self.imageViewUserImage.image;
     }
     
@@ -851,5 +854,19 @@
     
     return nil;
 }
+//- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row
+//          forComponent:(NSInteger)component reusingView:(UIView *)view
+//{
+//    mycom1 = view ? (UILabel *) view : [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 60.0f, 30.0f)];
+//    
+//    NSString *imgstr1 = [[NSString alloc] initWithFormat:@"%d", row];
+//    mycom1.text = imgstr1;
+//    [mycom1 setFont:[UIFont boldSystemFontOfSize:30]];
+//    mycom1.backgroundColor = [UIColor clearColor];
+//    CFShow(mycom1);
+//    [imgstr1 release];
+//    
+//    return mycom1;
+//}
 
 @end

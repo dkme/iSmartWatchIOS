@@ -8,8 +8,8 @@
 
 #import "WMSSyncDataView.h"
 
-#define Cell_Height     8
-#define Cell_Width      25
+#define Cell_Height     10
+#define Cell_Width      30
 #define Cell_tuber      3
 
 #define MAX_ElectricQuantity    100.0
@@ -96,16 +96,23 @@
     _labelTip.textColor = [UIColor whiteColor];
     _labelTip.textAlignment = NSTextAlignmentRight;
     
+    CGPoint or = CGPointZero;
+    or.x = _labelTip.frame.origin.x+_labelTip.frame.size.width + 2;
+    or.y = _labelTip.frame.origin.y+2;
+    UIView *intervalView = [[UIView alloc] initWithFrame:CGRectMake(or.x, or.y, 1, 20)];
+    intervalView.backgroundColor = [UIColor whiteColor];
+    
     _buttonSync = [UIButton buttonWithType:UIButtonTypeCustom];
     CGSize size = CGSizeMake(70, 30);
     CGPoint point = CGPointMake(self.frame.size.width-size.width-15, (self.frame.size.height-size.height)/2);
     _buttonSync.frame = (CGRect){point,size};
     
-    point = CGPointMake(point.x-15, point.y);
+    point = CGPointMake(point.x-10, point.y);
     _imageView = [[UIImageView alloc] initWithFrame:(CGRect){point,size}];
     
     
     [self addSubview:_labelTip];
+    [self addSubview:intervalView];
     [self addSubview:_imageView];
     [self addSubview:_buttonSync];
     [self addSubview:self.labelElectricQuantity];
@@ -134,6 +141,8 @@
 
 - (void)startAnimating
 {
+    //DEBUGLog(@"[self.imageView.layer animationKeys]:%@",[self.imageView.layer animationKeys]) ;
+    //[self.imageView.layer removeAnimationForKey:@"rotationAnimation"];
     CABasicAnimation *rotationAnimation;
     rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];

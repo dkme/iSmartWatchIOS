@@ -13,7 +13,6 @@
 #import "WMSBluetooth.h"
 #import "WMSAppDelegate.h"
 
-#define MAX_SPORT_STEPS     20000
 #define CRITICAL_SPORT_STEPS 10000
 
 #define LABEL_MAX_WIDTH     172.f
@@ -55,8 +54,21 @@
     } else {
         mode = NSLocalizedString(@"砖家", nil);
     }
-    self.labelMySteps.text = [NSString stringWithFormat:@"%d",targetSteps];
-    self.labelModeType.text = [NSString stringWithFormat:NSLocalizedString(@"%@ mode", nil), mode];
+    NSString *steps = [NSString stringWithFormat:@"%u",targetSteps];
+    NSString *unit = NSLocalizedString(@"Step",nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@",steps,unit];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = steps.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(49.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = unit.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    
+    //self.labelMySteps.text = [NSString stringWithFormat:@"%d",targetSteps];
+    //self.labelModeType.text = [NSString stringWithFormat:NSLocalizedString(@"%@ mode", nil), mode];
+    self.labelMySteps.attributedText = text;
 }
 
 #pragma mark - Life Cycle
@@ -133,7 +145,7 @@
 //本地化
 - (void)localizableView
 {
-    _labelViewTitle.text = NSLocalizedString(@"Set target",nil);
+    _labelViewTitle.text = NSLocalizedString(@"设置目标",nil);
     _labelStep.text = NSLocalizedString(@"Step",nil);
     //_labelRange.text = [NSString stringWithFormat:NSLocalizedString(@"The range of %d-%d steps",nil), MIN_SPORT_STEPS,MAX_SPORT_STEPS];
     _labelRange.text = [NSString stringWithFormat:@"%@,",NSLocalizedString(@"坚持锻炼一个月", nil)];

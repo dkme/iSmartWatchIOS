@@ -11,23 +11,23 @@
 "My sports" = "我的运动";
 "My sleep" = "我的睡眠";
 "Set target" = "设置目标";
-"Binding accessories" = "绑定配件";
+"Bound watch" = "绑定配件";
 
 //RightViewController String
 "Remind Setting" = "提醒设置";
 "Social contact" = "社交";
 
-"Telephone" = "电话";
-"SMS" = "短信";
+"Phone" = "电话";
+"Message" = "短信";
 "Email" = "邮件";
 "Battery" = "电池";
 
-"WeiXin" = "微信";
+"Wechat" = "微信";
 "QQ" = "QQ";
 "Facebook" = "Facebook";
 "Twitter" = "Twitter";
 
-"Take photos" = "拍照";
+"Take a photo" = "拍照";
 
 //MySport ViewController String
 "Today" = "今天";
@@ -56,7 +56,7 @@
 
 
 //BindingAccessoryViewController String
-"Binding accessories" = "绑定配件";
+"Bound watch" = "绑定配件";
 "Searching Plusdot watches" = "正在搜索Plusdot手表";
 "Please make sure the watch power is on and near the phone" = "请确认手表电源已经开启并在手机附近";
 
@@ -90,8 +90,8 @@
 "Day" = "日";
 "cm" = "厘米";
 "kg" = "千克";
-"Man" = "男";
-"Woman" = "女";
+"Male" = "男";
+"Female" = "女";
 "Cancel" = "取消";
 "Confirm" = "确定";
 
@@ -105,8 +105,8 @@
 
 
 "同步" = "同步";
-"手表已连接" = "手表已连接";
-"正在连接您的手表" = "正在连接您的手表";
+"智能手表已连接" = "智能手表已连接";
+"智能手表连接中" = "智能手表连接中";
 "手表" = "手表";
 "解除绑定" = "解除绑定";
 "坚持锻炼一个月" = "坚持锻炼一个月";
@@ -115,6 +115,7 @@
 "砖家" = "砖家";
 "绑定配件" = "绑定配件";
 "重新扫描" = "重新扫描";
+"绑定的配件" = "绑定的配件";
 
 "一" = "一";
 "二" = "二";
@@ -129,9 +130,18 @@
 "周四" = "周四";
 "周五" = "周五";
 "周六" = "周六";
-"周七" = "周七";
+"周日" = "周日";
+"每天" = "每天";
 
-
-
+"努力同步数据中..." = "努力同步数据中...";
+"运动记录" = "运动记录";
+"睡眠记录" = "睡眠记录";
+"完成目标的" = "完成目标的";
+"设置目标" = "设置目标";
+"拍照" = "拍照";
+"选取照片" = "选取照片";
+"防丢" = "防丢";
+"正在连接您的手表" = "正在连接您的手表";
+"拍摄的照片保存在照片库" = "拍摄的照片保存在照片库";
 
 

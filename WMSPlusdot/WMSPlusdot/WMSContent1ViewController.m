@@ -17,6 +17,8 @@
 #import "WMSSleepModel.h"
 #import "WMSSleepDatabase.h"
 #import "MBProgressHUD.h"
+#import "WMSSleepHistoryViewController.h"
+#import "WMSDeviceModel.h"
 
 #define OneDayTimeInterval    (24*60*60)
 #define DateFormat           @"yyyy/MM/dd"
@@ -75,7 +77,7 @@
         _syncDataView = [[WMSSyncDataView alloc] initWithFrame:(CGRect){0,125,ScreenWidth,35}];
         _syncDataView.backgroundColor = [UIColor clearColor];
         
-        _syncDataView.labelTip.text = NSLocalizedString(@"手表已连接",nil);
+        _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
         _syncDataView.labelTip.font = [UIFont fontWithName:@"DIN Condensed" size:17.0];
         
         UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
@@ -131,31 +133,111 @@
 #pragma mark - Setter
 - (void)setSleepDurations:(NSUInteger)sleepMinute
 {
-    NSUInteger hour = sleepMinute/60;
-    NSUInteger minute = sleepMinute%60;
+    NSString *hour = [NSString stringWithFormat:@"%u",sleepMinute/60];
+    NSString *mu = [NSString stringWithFormat:@"%u",sleepMinute%60];
+    NSString *hourLbl = NSLocalizedString(@"Hour",nil);
+    NSString *muLbl = NSLocalizedString(@"Minutes",nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@%@%@",hour,hourLbl,mu,muLbl];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = hour.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(45.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = hourLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = mu.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(45.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = muLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
     
-    self.labelSleepHour.text = [NSString stringWithFormat:@"%u",hour];
-    self.labelSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+    //self.labelSleepHour.text = [NSString stringWithFormat:@"%u",hour];
+    //self.labelSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+    self.labelSleepHour.attributedText = text;
 }
 - (void)setDeepSleepDurations:(NSUInteger)deepSleepMinute
 {
-    NSUInteger hour = deepSleepMinute/60;
-    NSUInteger minute = deepSleepMinute%60;
+    NSString *hour = [NSString stringWithFormat:@"%u",deepSleepMinute/60];
+    NSString *mu = [NSString stringWithFormat:@"%u",deepSleepMinute%60];
+    NSString *hourLbl = NSLocalizedString(@"Hour",nil);
+    NSString *muLbl = NSLocalizedString(@"Minutes",nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@%@%@",hour,hourLbl,mu,muLbl];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = hour.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(30.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = hourLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = mu.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(30.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = muLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
     
-    self.labelDeepsleepHour.text = [NSString stringWithFormat:@"%u",hour];
-    self.labelDeepsleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+    //self.labelDeepsleepHour.text = [NSString stringWithFormat:@"%u",hour];
+    //self.labelDeepsleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+    self.labelDeepsleepHour.attributedText = text;
 }
 - (void)setLightSleepDurations:(NSUInteger)lightSleepMinute
 {
-    NSUInteger hour = lightSleepMinute/60;
-    NSUInteger minute = lightSleepMinute%60;
+    NSString *hour = [NSString stringWithFormat:@"%u",lightSleepMinute/60];
+    NSString *mu = [NSString stringWithFormat:@"%u",lightSleepMinute%60];
+    NSString *hourLbl = NSLocalizedString(@"Hour",nil);
+    NSString *muLbl = NSLocalizedString(@"Minutes",nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@%@%@",hour,hourLbl,mu,muLbl];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = hour.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(30.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = hourLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = mu.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(30.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = muLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
     
-    self.labelLightSleepHour.text = [NSString stringWithFormat:@"%u",hour];
-    self.labelLightSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+    //self.labelLightSleepHour.text = [NSString stringWithFormat:@"%u",hour];
+    //self.labelLightSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+    self.labelLightSleepHour.attributedText = text;
 }
-- (void)setAwakeCount:(NSUInteger)awakeCount
+//- (void)setAwakeCount:(NSUInteger)awakeCount
+//{
+//    self.labelWakeupSleepHour.text = [NSString stringWithFormat:@"%u",awakeCount];
+//}
+- (void)setAwakeDurations:(NSUInteger)awakeMinute
 {
-    self.labelWakeupSleepHour.text = [NSString stringWithFormat:@"%u",awakeCount];
+    NSString *hour = [NSString stringWithFormat:@"%u",awakeMinute/60];
+    NSString *mu = [NSString stringWithFormat:@"%u",awakeMinute%60];
+    NSString *hourLbl = NSLocalizedString(@"Hour",nil);
+    NSString *muLbl = NSLocalizedString(@"Minutes",nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@%@%@",hour,hourLbl,mu,muLbl];
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+    NSUInteger loc,len;
+    loc = 0;
+    len = hour.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(30.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = hourLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = mu.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(30.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = muLbl.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    
+    //self.labelWakeupSleepHour.text = [NSString stringWithFormat:@"%u",hour];
+    //self.labelWakeupSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
+    self.labelWakeupSleepHour.attributedText = text;
 }
 
 #pragma mark - Life Cycle
@@ -197,11 +279,14 @@
     [self setSleepDurations:0];
     [self setDeepSleepDurations:0];
     [self setLightSleepDurations:0];
-    [self setAwakeCount:0];
-    
+    //[self setAwakeCount:0];
+    [self setAwakeDurations:0];
     
     //
     [self bleOperation];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -215,6 +300,8 @@
     } else {
         [self showTipView:YES];
     }
+    
+    [self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
 }
 
 - (void)dealloc
@@ -355,13 +442,15 @@
         [self setSleepDurations:sleepModel.sleepMinute];
         [self setDeepSleepDurations:sleepModel.deepSleepMinute];
         [self setLightSleepDurations:sleepModel.lightSleepMinute];
-        [self setAwakeCount:sleepModel.awakeCount];
+        //[self setAwakeCount:sleepModel.awakeCount];
+        [self setAwakeDurations:sleepModel.sleepMinute-sleepModel.deepSleepMinute-sleepModel.lightSleepMinute];
     } else {
         [self.mySleepView setSleepMinute:0 deepSleepMinute:0 lightSleepMinute:0];
         [self setSleepDurations:0];
         [self setDeepSleepDurations:0];
         [self setLightSleepDurations:0];
-        [self setAwakeCount:0];
+        //[self setAwakeCount:0];
+        [self setAwakeDurations:0];
     }
 }
 
@@ -430,6 +519,9 @@
 }
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {
+    WMSSleepHistoryViewController *vc = [[WMSSleepHistoryViewController alloc] initWithNibName:@"WMSSleepHistoryViewController" bundle:nil];
+    vc.showDate = self.showDate;
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (void)syncDataAction:(id)sender
@@ -502,6 +594,7 @@
     [self updateView];
 }
 
+
 #pragma mark - 蓝牙操作
 - (void)bleOperation
 {
@@ -511,11 +604,11 @@
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     
  ///////测试
-    NSArray *results = [[WMSSleepDatabase sleepDatabase] queryAllSleepData];
-    DEBUGLog(@"所有睡眠数据：");
-    for (WMSSleepModel *modelObj in results) {
-        DEBUGLog(@"sleep Date:%@",[modelObj.sleepDate.description substringToIndex:10]);
-    }
+//    NSArray *results = [[WMSSleepDatabase sleepDatabase] queryAllSleepData];
+//    DEBUGLog(@"所有睡眠数据：");
+//    for (WMSSleepModel *modelObj in results) {
+//        DEBUGLog(@"sleep Date:%@",[modelObj.sleepDate.description substringToIndex:10]);
+//    }
     
     if ([self.bleControl isConnected]) {
         DEBUGLog(@"同步睡眠数据");
@@ -556,6 +649,8 @@
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
     
+    //[self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
+    
     [self showTipView:NO];
     
     [self startSyncSleepData];
@@ -563,6 +658,25 @@
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
     [self showTipView:YES];
+    [self.syncDataView stopAnimating];
+    [self.hud hide:YES afterDelay:0];
+}
+
+#pragma mark -  Notification
+- (void)appWillEnterForeground:(NSNotification *)notification
+{
+    switch (self.bleControl.bleState) {
+        case BleStatePoweredOff:
+        {
+            [self showTipView:YES];
+            [self.hud hide:YES afterDelay:0];
+            [self.syncDataView stopAnimating];
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 @end

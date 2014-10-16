@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WMSAlarmClockModel : NSObject
+@interface WMSAlarmClockModel : NSObject <NSCoding>
 
 @property (nonatomic, assign) BOOL status;
 @property (nonatomic, assign) NSUInteger startHour;

@@ -26,4 +26,23 @@
     return self;
 }
 
+#pragma mark - NSCoding
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:@(_status) forKey:@"WMSAlarmClockModel.status"];
+    [aCoder encodeObject:@(_startHour) forKey:@"WMSAlarmClockModel.startHour"];
+    [aCoder encodeObject:@(_startMinute) forKey:@"WMSAlarmClockModel.startMinute"];
+    [aCoder encodeObject:@(_snoozeMinute) forKey:@"WMSAlarmClockModel.snoozeMinute"];
+    [aCoder encodeObject:_repeats forKey:@"WMSAlarmClockModel.repeats"];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    _status = [[aDecoder decodeObjectForKey:@"WMSAlarmClockModel.status"] boolValue];
+    _startHour = (NSUInteger)[[aDecoder decodeObjectForKey:@"WMSAlarmClockModel.startHour"] integerValue];;
+    _startMinute = (NSUInteger)[[aDecoder decodeObjectForKey:@"WMSAlarmClockModel.startMinute"] integerValue];
+    _snoozeMinute = (NSUInteger)[[aDecoder decodeObjectForKey:@"WMSAlarmClockModel.snoozeMinute"] integerValue];
+    _repeats = [aDecoder decodeObjectForKey:@"WMSAlarmClockModel.repeats"];
+    
+    return self;
+}
+
 @end

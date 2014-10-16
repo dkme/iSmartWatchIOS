@@ -51,7 +51,30 @@
                             , nil]];//[UIFont fontWithName:@"DIN Condensed" size:35.f],NSFontAttributeName
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
+ 
+/*
+    NSString *str = FilePath(@"aa.txt");
+    NSDictionary *dic = [NSDictionary dictionaryWithContentsOfFile:str];
+
+    _reSideMenu = [self sideMenu];
+    if (dic && ![[dic objectForKey:@"userName"] isEqualToString:@""]) {
+        
+        _wmsBleControl  = [[WMSBleControl alloc] init];
+        
+        self.window.rootViewController = _reSideMenu;
+
+    } else {
+        WMSLoginViewController *loginVC = [[WMSLoginViewController alloc] initWithNibName:@"WMSLoginViewController" bundle:nil];
+        
+        //_navigationCtrl = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        //_navigationCtrl.navigationBarHidden = YES;
+        
+        //self.window.rootViewController = _navigationCtrl;
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        nav.navigationBarHidden = YES;
+        self.window.rootViewController = nav;
+    }
+*/
     
 //    WMSLoginViewController *loginVC = [[WMSLoginViewController alloc] initWithNibName:@"WMSLoginViewController" bundle:nil];
 //    
@@ -62,9 +85,10 @@
     
 //    UIViewController *welcomeVC = [[UIViewController alloc] init];
 //    welcomeVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@""]];
-//    [loginVC presentViewController:VC animated:NO completion:nil];
+//    [loginVC presentViewController:welcomeVC animated:NO completion:nil];
     
-    
+  
+//-----------------------------------------------------
     RESideMenu *sideMenu = [[RESideMenu alloc] init];
     sideMenu.menuPreferredStatusBarStyle = UIStatusBarStyleLightContent;
     sideMenu.contentViewShadowColor = [UIColor blackColor];
@@ -85,12 +109,9 @@
     sideMenu.rightMenuViewController = rightVC;
     sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
     sideMenu.delegate = self;
-    
-    
+
     _reSideMenu = sideMenu;
     _wmsBleControl  = [[WMSBleControl alloc] init];
-    
-    
     
     self.window.rootViewController = sideMenu;
     
@@ -112,6 +133,26 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    if (self.wmsBleControl == nil) {
+        return;
+    }
+    switch (self.wmsBleControl.bleState) {
+        case BleStateUnsupported:
+        {
+            UIAlertView *alert= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+            [alert show];
+            break;
+        }
+        case BleStatePoweredOff:
+        {
+            UIAlertView *alert= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的蓝牙已关闭，请在设置中将其打开",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+            [alert show];
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -125,6 +166,33 @@
     
 }
 
+#pragma mark - Private
+- (RESideMenu *)sideMenu
+{
+    RESideMenu *sideMenu = [[RESideMenu alloc] init];
+    sideMenu.menuPreferredStatusBarStyle = UIStatusBarStyleLightContent;
+    sideMenu.contentViewShadowColor = [UIColor blackColor];
+    sideMenu.contentViewShadowOffset = CGSizeMake(0, 0);
+    sideMenu.contentViewShadowOpacity = 0.6;
+    sideMenu.contentViewShadowRadius = 3;
+    sideMenu.contentViewShadowEnabled = NO;
+    sideMenu.panGestureEnabled = YES;
+    
+    WMSContentViewController *contentVC = [[WMSContentViewController alloc] init];
+    //WMSBindingAccessoryViewController *contentVC = [[WMSBindingAccessoryViewController alloc] init];
+    //WMSMyAccessoryViewController *contentVC = [[WMSMyAccessoryViewController alloc] init];
+    WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
+    WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
+    
+    sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
+    sideMenu.leftMenuViewController = leftVC;
+    sideMenu.rightMenuViewController = rightVC;
+    sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
+    sideMenu.delegate = self;
+    
+    return sideMenu;
+}
+
 
 #pragma mark - RESideMenuDelegate
 - (void)sideMenu:(RESideMenu *)sideMenu didRecognizePanGesture:(UIPanGestureRecognizer *)recognizer
@@ -136,8 +204,11 @@
     DEBUGLog(@"willShowMenuViewController: %@", NSStringFromClass([menuViewController class]));
     if ([@"WMSRightViewController" isEqualToString:
          NSStringFromClass([menuViewController class])]
-        ) {
+        )
+    {
         sideMenu.scaleContentView = NO;
+    } else {
+        sideMenu.scaleContentView = YES;
     }
     
     //当显示“设置目标”界面时，禁用左划手势

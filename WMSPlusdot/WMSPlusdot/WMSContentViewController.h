@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelBurnValue;
 @property (weak, nonatomic) IBOutlet UILabel *labelDistanceValue;
 @property (weak, nonatomic) IBOutlet UILabel *labelTimeValue;
+@property (weak, nonatomic) IBOutlet UILabel *labelTimeMinuteValue;
 
 
 - (IBAction)showLeftViewAction:(id)sender;

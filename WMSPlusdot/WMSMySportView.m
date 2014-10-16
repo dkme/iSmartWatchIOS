@@ -33,7 +33,7 @@
         _trackUnderLayer.fillColor = [[UIColor clearColor] CGColor];
         _trackUnderLayer.strokeColor = UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
         _trackUnderLayer.opacity = 1;
-        _trackUnderLayer.lineCap = kCALineCapRound;
+        //_trackUnderLayer.lineCap = kCALineCapRound;
         _trackUnderLayer.lineWidth = PROGRESS_WIDTH;
     }
     return _trackUnderLayer;
@@ -46,7 +46,7 @@
         _trackUpperLayer.fillColor = [[UIColor clearColor] CGColor];
         _trackUpperLayer.strokeColor = UIColorFromRGBAlpha(0xDFE88D, 1.0).CGColor;
         _trackUpperLayer.opacity = 1;
-        _trackUpperLayer.lineCap = kCALineCapRound;
+        //_trackUpperLayer.lineCap = kCALineCapRound;
         _trackUpperLayer.lineWidth = PROGRESS_WIDTH;
     }
     return _trackUpperLayer;
@@ -117,6 +117,7 @@
 {
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:ARC_RADIUS startAngle:degreesToRadians(START_ANGLE) endAngle:degreesToRadians(END_ANGLE) clockwise:YES];
+    path.lineCapStyle = kCGLineCapButt;
     
     self.trackUnderLayer.path = [path CGPath];
     
@@ -126,6 +127,7 @@
 {
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:ARC_RADIUS startAngle:degreesToRadians(START_ANGLE) endAngle:degreesToRadians(endAngle) clockwise:YES];
+    path.lineCapStyle = kCGLineCapButt;
     
     self.trackUpperLayer.path = [path CGPath];
     

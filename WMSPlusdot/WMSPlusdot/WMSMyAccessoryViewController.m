@@ -30,7 +30,7 @@
     if (!_navBarView) {
         _navBarView = [[WMSNavBarView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 64)];
         _navBarView.backgroundColor = UIColorFromRGBAlpha(0x00D5E1, 1);
-        _navBarView.labelTitle.text = NSLocalizedString(@"Binding accessories",nil);
+        _navBarView.labelTitle.text = NSLocalizedString(@"绑定的配件",nil);
         _navBarView.labelTitle.font = Font_DINCondensed(20.f);
     }
     return _navBarView;
@@ -108,6 +108,7 @@
         //。。。。。。
         //。。。。。。
         [WMSMyAccessory unBindAccessory];
+        [self.tableView reloadData];
     }
 }
 
@@ -118,6 +119,9 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([WMSMyAccessory isBindAccessory] == NO) {
+        return 0;
+    }
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -133,7 +137,7 @@
     cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",@"plusdot",NSLocalizedString(@"手表", nil)];
     cell.textLabel.font = Font_DINCondensed(23.0);
     
-    cell.detailTextLabel.text = @"    xxxxxxxxxx";
+    cell.detailTextLabel.text = @"    ";
     cell.detailTextLabel.font = Font_DINCondensed(15.0);
     
     CGRect frame = cell.textLabel.frame;

@@ -16,7 +16,8 @@
 #define SECTION_FOOTER_HEIGHT   1
 
 #define DefaultAlarmClockID 1
-#define SavaAlramClockFileName @"alramClocks.plist"
+#define SavaAlramClockFileName @"alarmClockModels.archiver"
+#define ArchiverKey            @"alarmClockModels"
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
@@ -74,12 +75,16 @@
                          NSLocalizedString(@"六",nil),
                          NSLocalizedString(@"七",nil)];
         NSString *strRepeats = @"";
+        BOOL flag = YES;//标识是否每天都重复
         for (int i=0; i<[self.alarmClockModel.repeats count]; i++) {
             BOOL var = [self.alarmClockModel.repeats[i] boolValue];
             if (YES == var) {
                 strRepeats = [strRepeats stringByAppendingString:@" "];
                 strRepeats = [strRepeats stringByAppendingString:arr[i]];
-            }
+            } else {flag = NO;}
+        }
+        if ([self.alarmClockModel.repeats count] > 0 && flag) {
+            strRepeats = NSLocalizedString(@"每天",nil);
         }
         
         _detailTextArray = @[@"",strStartTime,strSnooze,strRepeats];
@@ -90,7 +95,19 @@
 - (WMSAlarmClockModel *)alarmClockModel
 {
     if (!_alarmClockModel) {
-        _alarmClockModel = [[self loadAlarmClock] objectAtIndex:0];
+        WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+        NSString *identifier = bleControl.connectedPeripheral.UUIDString;
+        
+        NSArray *array = [self loadAlarmClock];
+        DEBUGLog(@"array:%@",array);
+        for (NSDictionary *dicObj in array) {
+            if (identifier == nil) {
+                identifier = @"";
+            }
+            //DEBUGLog();
+            _alarmClockModel = [dicObj objectForKey:identifier];
+        }
+
         if (_alarmClockModel == nil) {
             _alarmClockModel = [[WMSAlarmClockModel alloc] init];
         }
@@ -158,14 +175,83 @@
 
 - (NSArray *)loadAlarmClock
 {
-    NSArray *clockArray = [NSArray arrayWithContentsOfFile:[self filePath:SavaAlramClockFileName]];
-    return clockArray;
+    NSString *fileName = [self filePath:SavaAlramClockFileName];
+    NSData *data = [NSData dataWithContentsOfFile:fileName];
+    if ([data length] > 0) {
+        NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+        NSArray *clockArray = [unArchiver decodeObjectForKey:ArchiverKey];
+        [unArchiver finishDecoding];
+        
+        return clockArray;
+    }
+    return nil;
 }
 
 - (void)savaAlarmClock:(WMSAlarmClockModel *)model
 {
-    NSArray *clockArray = @[model];
-    [clockArray writeToFile:[self filePath:SavaAlramClockFileName] atomically:YES];
+    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    NSString *identifier = bleControl.connectedPeripheral.UUIDString;
+    
+    int index = [self isExistForBleIdentifier:identifier];//是否已存在这个identifier
+    NSArray *savedData = [self loadAlarmClock];
+    
+    NSDictionary *dictionary = @{identifier:model};
+    NSMutableArray *writeData = [NSMutableArray arrayWithArray:savedData];
+    if (index >= 0) {//存在，则替换成新的数据
+        //[writeData addObject:dictionary];
+        [writeData replaceObjectAtIndex:index withObject:dictionary];
+    } else {//不存在，则添加新的数据，保留旧的数据
+        [writeData addObject:dictionary];
+    }
+    
+    //coding
+    NSString *fileName = [self filePath:SavaAlramClockFileName];
+    NSMutableData *data = [NSMutableData data];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:writeData forKey:ArchiverKey];
+    [archiver finishEncoding];
+    [data writeToFile:fileName atomically:YES];
+}
+
+- (int)isExistForBleIdentifier:(NSString *)identifier
+{
+    if (identifier == nil) {
+        //return NO;
+        return -1;
+    }
+    
+    //BOOL isExist = NO;//是否已存在这个identifier
+    int index = -1;//下标
+    NSArray *savedData = [self loadAlarmClock];
+//    for (NSDictionary *dicObj in savedData) {
+//        NSArray *keys = [dicObj allKeys];
+//        NSString *key = @"";
+//        if (keys.count > 0) {
+//            key = [keys objectAtIndex:0];
+//        }
+//        
+//        if ([identifier isEqualToString:key]) {
+//            isExist = YES;
+//            break;
+//        }
+//    }
+    
+    for (int i=0; i<[savedData count]; i++) {
+        NSDictionary *dicObj = savedData[i];
+        NSArray *keys = [dicObj allKeys];
+        NSString *key = @"";
+        if (keys.count > 0) {
+            key = [keys objectAtIndex:0];
+        }
+        
+        if ([identifier isEqualToString:key]) {
+            index = i;
+            break;
+        }
+    }
+    
+    return index;
+    //return isExist;
 }
 
 
@@ -185,17 +271,23 @@
     }
     
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    [bleControl.settingProfile setAlarmClockWithId:DefaultAlarmClockID withHour:hour withMinute:minute withStatus:status withRepeat:NULL withLength:length withSnoozeMinute:snooze withCompletion:^(BOOL success)
+    [bleControl.settingProfile setAlarmClockWithId:DefaultAlarmClockID withHour:hour withMinute:minute withStatus:status withRepeat:repeats withLength:length withSnoozeMinute:snooze withCompletion:^(BOOL success)
      {
-         DEBUGLog(@"设置活动提醒%@",success?@"成功":@"失败");
+         DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
          [self savaAlarmClock:self.alarmClockModel];
      }];
+    
+    //[self savaAlarmClock:self.alarmClockModel];
 }
 
 
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
-    [self setAlarmClock];
+    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    if ([bleControl isConnected]) {
+        [self setAlarmClock];
+    }
+    
     
     self.navigationController.delegate = nil;//一定要加入这条语句
     [self.navigationController popViewControllerAnimated:NO];
@@ -300,14 +392,24 @@
             self.alarmClockModel.snoozeMinute = _selectValueVC.smartSleepMinute;
             
         } else if (_selectValueVC.selectIndex == SmartClockRepeatCell) {
-            NSArray *arr = @[@"一",@"二",@"三",@"四",@"五",@"六",@"七"];
+            NSArray *arr = @[NSLocalizedString(@"一",nil),
+                             NSLocalizedString(@"二",nil),
+                             NSLocalizedString(@"三",nil),
+                             NSLocalizedString(@"四",nil),
+                             NSLocalizedString(@"五",nil),
+                             NSLocalizedString(@"六",nil),
+                             NSLocalizedString(@"七",nil)];
             NSString *str = @"";
+            BOOL flag = YES;//标识是否每天都重复
             for (int i=0; i<_selectValueVC.selectedWeekArray.count; i++) {
                 BOOL var = [_selectValueVC.selectedWeekArray[i] boolValue];
                 if (YES == var) {
                     str = [str stringByAppendingString:@" "];
                     str = [str stringByAppendingString:arr[i]];
-                }
+                } else {flag = NO;}
+            }
+            if (flag) {
+                str = NSLocalizedString(@"每天",nil);
             }
             cell.detailTextLabel.text = str;
             

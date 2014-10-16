@@ -15,9 +15,11 @@
 #import "WMSContentViewController.h"
 
 #define TableFrame ( CGRectMake(0, 80, ScreenWidth, ScreenHeight-80) )
-#define buttonBottomFrame   ( CGRectMake((ScreenWidth-110)/2, ScreenHeight-35-20, 110, 35) )
+#define buttonBottomFrame   ( CGRectMake((ScreenWidth-150)/2, ScreenHeight-35-20, 150, 35) )
 #define ButtonScanTitle     NSLocalizedString(@"重新扫描", nil)
 #define ButtonBindTitle     NSLocalizedString(@"绑定配件", nil)
+
+#define TAG_BOTTOM_VIEW     100
 
 @interface WMSBindingAccessoryViewController ()
 {
@@ -36,6 +38,11 @@
     if (!_buttonBottom) {
         _buttonBottom = [UIButton buttonWithType:UIButtonTypeCustom];
         _buttonBottom.frame = buttonBottomFrame;
+        if (!iPhone5) {
+            CGRect frame = buttonBottomFrame;
+            frame.origin.y = frame.origin.y-10;
+            _buttonBottom.frame = frame;
+        }
         [_buttonBottom setBackgroundColor:[UIColor clearColor]];
         [_buttonBottom setBackgroundImage:[UIImage imageNamed:@"bind_btn_a.png"] forState:UIControlStateNormal];
         [_buttonBottom setBackgroundImage:[UIImage imageNamed:@"bind_btn_b.png"] forState:UIControlStateHighlighted];
@@ -67,12 +74,13 @@
     [self updateUI];
     [self setupControl];
     [self localizableView];
+    [self adaptiveIphone4];
     
     //
     [self bleOperation];
-    UINavigationController *nav = (UINavigationController *)((RESideMenu *)self.presentingViewController).contentViewController;
-    WMSContentViewController *contentVC = (WMSContentViewController *)nav.topViewController;
-    [contentVC scanAndConnectPeripheral];
+//    UINavigationController *nav = (UINavigationController *)((RESideMenu *)self.presentingViewController).contentViewController;
+//    WMSContentViewController *contentVC = (WMSContentViewController *)nav.topViewController;
+//    [contentVC scanAndConnectPeripheral];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -128,9 +136,20 @@
 //本地化
 - (void)localizableView
 {
-    _labelTitle.text = NSLocalizedString(@"Binding accessories",nil);
+    _labelTitle.text = NSLocalizedString(@"绑定配件",nil);
     _labelTip.text = NSLocalizedString(@"Please make sure the watch power is on and near the phone",nil);
     
+}
+
+- (void)adaptiveIphone4
+{
+    if (iPhone5) {
+        return;
+    }
+    UIView *bottomView = [self.view viewWithTag:TAG_BOTTOM_VIEW];
+    CGRect frame = bottomView.frame;
+    frame.origin.y -= 30;
+    bottomView.frame = frame;
 }
 
 - (void)dismissVC

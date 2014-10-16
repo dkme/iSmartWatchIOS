@@ -17,7 +17,7 @@
 
 @property (strong, nonatomic) UINavigationController *navigationCtrl;
 
-@property (nonatomic, readonly) RESideMenu *reSideMenu;
+@property (nonatomic, strong) RESideMenu *reSideMenu;
 
 @property (nonatomic, readonly) WMSBleControl *wmsBleControl;
 

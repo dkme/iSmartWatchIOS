@@ -55,12 +55,17 @@
         [userImgBtn setImage:[UIImage imageNamed:@"main_avatar_default.png"] forState:UIControlStateNormal];
         [userImgBtn setHighlighted:NO];
         [userImgBtn addTarget:self action:@selector(userImgBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [userImgBtn setClipsToBounds:YES];
+        [userImgBtn.layer setCornerRadius:userImgBtn.bounds.size.width/2];
+        [userImgBtn.layer setBorderWidth:0];
+        [userImgBtn.layer setBorderColor:[UIColor clearColor].CGColor];
         [_userInfoView addSubview:userImgBtn];
         
         UILabel *userLabel = [[UILabel alloc] initWithFrame:userLabelFrame];
         [userLabel setText:@""];
         [userLabel setTextAlignment:NSTextAlignmentCenter];
         [userLabel setTextColor:[UIColor whiteColor]];
+        [userLabel setFont:Font_DINCondensed(17)];
         [_userInfoView addSubview:userLabel];
     }
     return _userInfoView;
@@ -104,7 +109,7 @@
                        NSLocalizedString(@"My sports",nil),
                        NSLocalizedString(@"My sleep",nil),
                        NSLocalizedString(@"Set target",nil),
-                       NSLocalizedString(@"Binding accessories",nil),
+                       NSLocalizedString(@"绑定配件",nil),
                        nil];
     }
     return _titleArray;
@@ -185,12 +190,13 @@
     [self.view addSubview:self.buttonSetting];
     
     
-    [self reloadView];
+    //[self reloadView];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    [self reloadView];
     DEBUGLog(@"LeftViewController viewWillAppear");
 }
 - (void)dealloc
@@ -299,7 +305,7 @@
     cell.leftImageView.image = [UIImage imageNamed:[self.imageNameArray objectAtIndex:indexPath.row]];
     cell.leftImageView.highlightedImage = [UIImage imageNamed:[self.seletedImageNameArray objectAtIndex:indexPath.row]];
     cell.leftLabelText.textColor = [UIColor whiteColor];
-    cell.leftLabelText.font = [UIFont fontWithName:@"System" size:8.f];
+    cell.leftLabelText.font = Font_DINCondensed(18);
     cell.leftLabelText.text = [self.titleArray objectAtIndex:indexPath.row];
     
     return cell;

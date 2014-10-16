@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WMSSignupViewController : UIViewController
+@interface WMSSignupViewController : UIViewController<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *textEmail;
 @property (weak, nonatomic) IBOutlet UITextField *textUserName;

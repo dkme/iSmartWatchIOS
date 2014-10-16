@@ -8,12 +8,15 @@
 
 #import "WMSInputViewController.h"
 #import "WMSActivityRemindViewController.h"
+#import "NSDate+Formatter.h"
 
 #define TableView_Frame ( CGRectMake(0, 66, self.view.bounds.size.width, self.view.bounds.size.height) )
 #define DatePicker_Frame ( CGRectMake(0, (self.view.bounds.size.height-160)/2, 320, 160) )
 
 #define SECTION_NUMBER  1
 #define SECTION_FOOTER_HEIGHT   1
+
+#define Array_Length    7
 
 @interface WMSInputViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *tableView;
@@ -24,6 +27,10 @@
 @end
 
 @implementation WMSInputViewController
+{
+    int selected_index_intervals;
+    int selected_indexs_repeats[Array_Length];
+}
 
 #pragma mark - Getter
 - (UITableView *)tableView
@@ -58,7 +65,13 @@
 - (NSArray *)weekArray
 {
     if (!_weekArray) {
-        _weekArray = @[@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日"];
+        _weekArray = @[NSLocalizedString(@"周一",nil),
+                       NSLocalizedString(@"周二",nil),
+                       NSLocalizedString(@"周三",nil),
+                       NSLocalizedString(@"周四",nil),
+                       NSLocalizedString(@"周五",nil),
+                       NSLocalizedString(@"周六",nil),
+                       NSLocalizedString(@"周日",nil)];
     }
     return _weekArray;
 }
@@ -84,19 +97,56 @@
     
     self.labelTitle.text = self.VCTitle;
     
-    NSArray *arr = @[@(NO),@(NO),@(NO),@(NO),@(NO),@(NO),@(NO)];
-    _selectedWeekArray = [[NSMutableArray alloc] initWithArray:arr];
+    if (_selectedWeekArray == nil) {
+        NSArray *arr = @[@(NO),@(NO),@(NO),@(NO),@(NO),@(NO),@(NO)];
+        _selectedWeekArray = [[NSMutableArray alloc] initWithArray:arr];
+    }
     
     switch (self.selectIndex) {
         case StartTimeCell:
+        {
+            NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_startTimeHour,_startTimeMinute];
+            NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
+            self.datePicker.date = date;
+            [self.view addSubview:self.datePicker];
+            break;
+        }
         case FinishTimeCell:
         {
+            NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_finishTimeHour,_finishTimeMinute];
+            NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
+            self.datePicker.date = date;
             [self.view addSubview:self.datePicker];
             break;
         }
         case IntervalTimeCell:
+        {
+            int fg = -1;
+            for (int i=0; i<[self.smartSleepValueArray count]; i++) {
+                NSNumber *object = self.smartSleepValueArray[i];
+                if (_intervalMinute == [object integerValue]) {
+                    fg = i;
+                    break;
+                }
+            }
+            selected_index_intervals = fg;
+            
+            self.tableView.dataSource = self;
+            self.tableView.delegate = self;
+            self.tableView.scrollEnabled = NO;
+            [self.view addSubview:self.tableView];
+            break;
+        }
         case RepeatCell:
         {
+            memset(selected_indexs_repeats, 0, Array_Length);
+            for (int i=0; i<[_selectedWeekArray count]; i++) {
+                if (YES == [_selectedWeekArray[i] boolValue]) {
+                    if (i < Array_Length) {
+                        selected_indexs_repeats[i] = 1;
+                    }
+                }
+            }
             self.tableView.dataSource = self;
             self.tableView.delegate = self;
             self.tableView.scrollEnabled = NO;
@@ -174,12 +224,20 @@
         int minute = (int)[[self.smartSleepValueArray objectAtIndex:indexPath.row] integerValue];
         cell.textLabel.text = [NSString stringWithFormat:@"%d %@",minute,NSLocalizedString(@"Minutes clock",nil)];
         
-        //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        if (indexPath.row == selected_index_intervals) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
         return cell;
     }
     
     if (self.selectIndex == RepeatCell) {
         cell.textLabel.text = self.weekArray[indexPath.row];
+        
+        if (indexPath.row < Array_Length) {
+            if (selected_indexs_repeats[indexPath.row] == 1) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+        }
         
         return cell;
     }

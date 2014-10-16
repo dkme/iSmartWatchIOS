@@ -10,6 +10,7 @@
 #import "WMSSettingProfile.h"
 #import "WMSDeviceProfile.h"
 #import "WMSRemindProfile.h"
+#import "NSMutableArray+Stack.h"
 
 static const NSUInteger CONNECT_PERIPHERAL_INTERVAL = 10;
 static const NSUInteger DISCOVER_SERVICES_INTERVAL = 30;
@@ -19,13 +20,15 @@ static const NSUInteger DISCOVER_CHARACTERISTICS_INTERVAL = 10;
 //timeID
 enum {
     TimeIDSubscribeNotifyCharact = 100,
+    
+    TimeIDSwitchControlMode,
 };
 
 NSString * const WMSBleControlPeripheralDidConnect = @"com.guogee.ios.PeripheralDidConnect";
 NSString * const WMSBleControlPeripheralConnectFailed = @"com.guogee.ios.PeripheralConnectFailed";
 
 NSString * const WMSBleControlPeripheralDidDisConnect =
-    @"LGPeripheralDidDisconnect";//@"com.guogee.ios.PeripheralDidDisConnect";
+    @"LGPeripheralDidDisconnect";
 NSString * const WMSBleControlBluetoothStateUpdated =
     @"LGCentralManagerStateUpdatedNotification";
 NSString * const WMSBleControlScanFinish =
@@ -50,12 +53,14 @@ NSString * const WMSBleControlScanFinish =
 
 //Stack
 @property (nonatomic, strong) NSMutableArray *sendDataOperationStack;
-
+@property (nonatomic, strong) NSMutableArray *stackSwitchControlMode;
 @end
 
 @implementation WMSBleControl
 {
     NSUInteger findCharacteristicCount;
+    
+    Byte packet[PACKET_LENGTH];
 }
 
 #pragma mark - Getter
@@ -74,6 +79,21 @@ NSString * const WMSBleControlScanFinish =
         return YES;
     }
     return NO;
+}
+- (WMSBleState)bleState
+{
+    CBCentralManagerState state = self.centralManager.manager.state;
+    switch (state) {
+        case CBCentralManagerStateUnsupported:
+            return BleStateUnsupported;
+        case CBCentralManagerStatePoweredOff:
+            return BleStatePoweredOff;
+        case CBCentralManagerStatePoweredOn:
+            return BleStatePoweredOn;
+        default:
+            break;
+    }
+    return BleStateUnsupported;
 }
 
 - (NSMutableArray *)characteristicArray
@@ -100,6 +120,15 @@ NSString * const WMSBleControlScanFinish =
     return _sendDataOperationStack;
 }
 
+- (NSMutableArray *)stackSwitchControlMode
+{
+    if (!_stackSwitchControlMode) {
+        _stackSwitchControlMode = [NSMutableArray new];
+    }
+    return _stackSwitchControlMode;
+}
+
+
 #pragma mark - Init
 - (id)init
 {
@@ -119,6 +148,7 @@ NSString * const WMSBleControlScanFinish =
     findCharacteristicCount = 0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePeripheralDidDisconnect:) name:kLGPeripheralDidDisconnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
 }
 
 - (void)dealloc
@@ -235,10 +265,42 @@ NSString * const WMSBleControlScanFinish =
     [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
         [self disConnectedClearup];
         
-        //[[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:self userInfo:nil];
     }];
 }
 
+#pragma mark - 对包的处理
+- (Byte *)packet
+{
+    return packet;
+}
+- (void)resetPacket
+{
+    memset(packet, 0, PACKET_LENGTH);
+    packet[0] = COMPANG_LOGO;
+    packet[1] = DEVICE_TYPE;
+}
+- (void)setPacketCMD:(CMDType)cmd
+{
+    packet[2] = cmd;
+}
+- (void)setPacketData:(Byte[DATA_LENGTH])data length:(int)dataLength
+{
+    const int i = 3;
+    int size = DATA_LENGTH;
+    if (dataLength < DATA_LENGTH) {
+        size = dataLength;
+    }
+    for (int j = 0; j < size; j++) {
+        packet[i+j] = data[j];
+    }
+}
+- (void)setPacketCMD:(CMDType)cmd andData:(Byte *)data dataLength:(int)length
+{
+    [self resetPacket];
+    [self setPacketCMD:cmd];
+    [self setPacketData:data length:length];
+}
 
 #pragma mark - Peripheral operation
 - (void)sendDataToPeripheral:(NSData *)data
@@ -261,6 +323,38 @@ NSString * const WMSBleControlScanFinish =
                                     repeats:YES
                                      timeID:TimeIDSubscribeNotifyCharact];
 }
+
+- (void)switchToControlMode:(ControlMode)controlMode
+                openOrClose:(BOOL)status
+                 completion:(WMSBleSwitchToControlModeCallback)aCallBack
+{
+    if (self.isConnected == NO) {
+        return;
+    }
+    
+    Byte package[DATA_LENGTH] = {0};
+    package[0] = (Byte)controlMode;
+    package[1] = status;
+    
+    [self setPacketCMD:CMDSwitchControlMode andData:package dataLength:DATA_LENGTH];
+    
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSwitchControlMode];
+    }
+    
+    //send
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    
+    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDSwitchControlMode];
+}
+
 
 #pragma mark - Private Methods
 - (void)discoverCharacteristics:(NSArray *)services forPeripheral:(LGPeripheral *)peripheral
@@ -493,7 +587,28 @@ NSString * const WMSBleControlScanFinish =
 
 - (void)writeValueToCharactTimeout:(NSTimer *)timer
 {
+    [self.myTimers addTriggerCountToTimer:timer];
     
+    int triggerCount = [self.myTimers triggerCountForTimer:timer];
+    if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
+        [self.myTimers deleteAllTimers];
+        
+        DEBUGLog(@"写入超时，主动断开 %@",NSStringFromClass([self class]));
+        [self disconnect];
+        return;
+    }
+    
+    //重发时，蓝牙若为连接状态，则重新发送；否则清除所有Timer
+    if (self.isConnected) {
+        LGCharacteristic *charact = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_CHARACT];
+        NSData *value = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_VALUE];
+        
+        //__block LGCharacteristic *blockCharact = charact;
+        
+        [charact writeValue:value completion:nil];
+    } else {
+        [self.myTimers deleteAllTimers];
+    }
 }
 
 
@@ -518,10 +633,10 @@ NSString * const WMSBleControlScanFinish =
 
 - (void)handleDidGetNotifyValue:(NSNotification *)notification
 {
-    LGCharacteristic *charact = notification.object;
+    NSError *error = notification.object;
     NSData *value = [notification.userInfo objectForKey:@"value"];
-    NSError *error = [notification.userInfo objectForKey:@"error"];
-    
+    LGCharacteristic *charact = [notification.userInfo objectForKey:@"charact"];
+    DEBUGLog(@">>>>>notify value");
     if (charact == self.notifyCharacteristic) {
         if (error) {
             DEBUGLog(@"通知错误，主动断开 %@",NSStringFromClass([WMSBleControl class]));
@@ -532,12 +647,18 @@ NSString * const WMSBleControlScanFinish =
         [value getBytes:package length:PACKET_LENGTH];
         Byte cmd = package[2];
         
-        if (cmd == CMDSetPersonInfo) {//设置个人信息成功
-            WMSBleSendDataCallback callBack = [self popFromArray:self.sendDataOperationStack];
-            if (callBack) {
-                callBack(YES);
+        if (cmd == CMDSwitchControlMode) {
+            if ([self.myTimers isValidForTimeID:TimeIDSwitchControlMode]) {//成功
+                [self.myTimers deleteTimerForTimeID:TimeIDSwitchControlMode];
+            
+                WMSBleSwitchToControlModeCallback callBack = [NSMutableArray popFromArray:self.stackSwitchControlMode];
+                if (callBack) {
+                    callBack(YES,nil);
+                }
             }
+            return;
         }
+        
     }
 }
 

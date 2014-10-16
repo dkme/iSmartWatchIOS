@@ -37,7 +37,7 @@
         _trackUnderLayer.fillColor = [[UIColor clearColor] CGColor];
         _trackUnderLayer.strokeColor = UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
         _trackUnderLayer.opacity = 1;
-        _trackUnderLayer.lineCap = kCALineCapRound;
+        //_trackUnderLayer.lineCap = kCALineCapRound;
         _trackUnderLayer.lineWidth = PROGRESS_WIDTH;
     }
     return _trackUnderLayer;
@@ -48,10 +48,10 @@
         _trackLayer1 = [CAShapeLayer layer];
         _trackLayer1.frame = self.bounds;
         _trackLayer1.fillColor = [[UIColor clearColor] CGColor];
-        _trackLayer1.strokeColor = [UIColor greenColor].CGColor;
+        _trackLayer1.strokeColor = UIColorFromRGBAlpha(0xDFE88D, 1.0).CGColor;//[UIColor greenColor].CGColor;
         _trackLayer1.opacity = 1.0;
         //_trackLayer1.cornerRadius = 0;
-        _trackLayer1.lineCap = kCALineCapRound;
+        //_trackLayer1.lineCap = kCALineCapRound;
         _trackLayer1.lineWidth = PROGRESS_WIDTH;
     }
     return _trackLayer1;
@@ -62,9 +62,9 @@
         _trackLayer2 = [CAShapeLayer layer];
         _trackLayer2.frame = self.bounds;
         _trackLayer2.fillColor = [[UIColor clearColor] CGColor];
-        _trackLayer2.strokeColor = [UIColor orangeColor].CGColor;
+        _trackLayer2.strokeColor = UIColorFromRGBAlpha(0xDFE88D, 1.0).CGColor;//[UIColor orangeColor].CGColor;
         _trackLayer2.opacity = 1.0;
-        _trackLayer2.lineCap = kCALineCapRound;
+        //_trackLayer2.lineCap = kCALineCapRound;
         _trackLayer2.lineWidth = PROGRESS_WIDTH;
     }
     return _trackLayer2;
@@ -75,9 +75,9 @@
         _trackLayer3 = [CAShapeLayer layer];
         _trackLayer3.frame = self.bounds;
         _trackLayer3.fillColor = [[UIColor clearColor] CGColor];
-        _trackLayer3.strokeColor = [UIColor yellowColor].CGColor;
+        _trackLayer3.strokeColor = UIColorFromRGBAlpha(0xDFE88D, 1.0).CGColor;//[UIColor yellowColor].CGColor;
         _trackLayer3.opacity = 1.0;
-        _trackLayer3.lineCap = kCALineCapRound;
+        //_trackLayer3.lineCap = kCALineCapRound;
         _trackLayer3.lineWidth = PROGRESS_WIDTH;
     }
     return _trackLayer3;
@@ -228,6 +228,7 @@
 {
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:ARC_RADIUS startAngle:degreesToRadians(START_ANGLE) endAngle:degreesToRadians(END_ANGLE) clockwise:YES];
+    path.lineCapStyle = kCGLineCapButt;
     
     self.trackUnderLayer.path = [path CGPath];
     
@@ -238,7 +239,7 @@
 {
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:ARC_RADIUS startAngle:degreesToRadians(startAngle) endAngle:degreesToRadians(endAngle) clockwise:YES];
-    //path.lineJoinStyle = kCGLineJoinBevel;
+    path.lineCapStyle = kCGLineCapButt;
     
     layer.path = [path CGPath];
     
