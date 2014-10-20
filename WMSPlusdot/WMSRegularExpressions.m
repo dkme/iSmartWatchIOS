@@ -21,7 +21,7 @@
 //用户名
 + (BOOL)validateUserName:(NSString *)name
 {
-    NSString *userNameRegex = @"^[A-Za-z0-9]{6,20}+$";
+    NSString *userNameRegex = @"^[A-Za-z0-9]{1,20}+$";
     NSPredicate *userNamePredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",userNameRegex];
     BOOL B = [userNamePredicate evaluateWithObject:name];
     return B;

@@ -149,6 +149,7 @@
 		237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237545E119AF484600685CD1 /* WMSInputViewController.xib */; };
 		2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */; };
 		23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */; };
+		239569CF19EFCE2800CABEDC /* welecome.png in Resources */ = {isa = PBXBuildFile; fileRef = 239569CE19EFCE2800CABEDC /* welecome.png */; };
 		23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */; };
 		23B0094019D4FFEF008424FA /* WMSSportHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */; };
 		23B0094619D50100008424FA /* PNLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0094319D50100008424FA /* PNLineChartView.m */; };
@@ -381,6 +382,7 @@
 		2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSHTTPRequest.m; sourceTree = "<group>"; };
 		23911F1C19C290F8006E9CAF /* WMSSyncDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncDataView.h; sourceTree = "<group>"; };
 		23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncDataView.m; sourceTree = "<group>"; };
+		239569CE19EFCE2800CABEDC /* welecome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welecome.png; sourceTree = "<group>"; };
 		23B0093C19D4FFEF008424FA /* WMSSportHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportHistoryViewController.h; sourceTree = "<group>"; };
 		23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportHistoryViewController.m; sourceTree = "<group>"; };
 		23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSportHistoryViewController.xib; sourceTree = "<group>"; };
@@ -805,6 +807,7 @@
 		232846F419A43D0D001C148D /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				239569CB19EFCC0500CABEDC /* 欢迎页视图 Icon */,
 				23BCA12B19B4113D0032F19F /* 登陆注册视图 Icon */,
 				2326A41D19A5A25D0098657B /* 左右菜单视图 Icon */,
 				233511A619A4BF6400FBCC81 /* 我的运动视图 Icon */,
@@ -981,6 +984,14 @@
 				23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */,
 			);
 			name = WMSSyncDataView;
+			sourceTree = "<group>";
+		};
+		239569CB19EFCC0500CABEDC /* 欢迎页视图 Icon */ = {
+			isa = PBXGroup;
+			children = (
+				239569CE19EFCE2800CABEDC /* welecome.png */,
+			);
+			name = "欢迎页视图 Icon";
 			sourceTree = "<group>";
 		};
 		23B0093B19D4FF7C008424FA /* 运动历史视图 */ = {
@@ -1179,6 +1190,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = GUOGEE;
 				TargetAttributes = {
+					232846BC19A43668001C148D = {
+						DevelopmentTeam = 4E8WUK78VW;
+					};
 					232846D719A43668001C148D = {
 						TestTargetID = 232846BC19A43668001C148D;
 					};
@@ -1236,6 +1250,7 @@
 				230298CA19A83281009D4306 /* target_progress_bg.png in Resources */,
 				2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */,
 				2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */,
+				239569CF19EFCE2800CABEDC /* welecome.png in Resources */,
 				237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */,
 				237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */,
 				233511AE19A4C00600FBCC81 /* main_setting_icon_b.png in Resources */,
@@ -1505,13 +1520,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: an liu (6PAC8WLTAS)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1E5CF3D5-E9F5-4651-8131-C52161EED165";
+				PROVISIONING_PROFILE = "c21d3563-a085-4e0e-9e76-5546a82b7c54";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1521,13 +1537,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: an liu (6PAC8WLTAS)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1E5CF3D5-E9F5-4651-8131-C52161EED165";
+				PROVISIONING_PROFILE = "c21d3563-a085-4e0e-9e76-5546a82b7c54";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
