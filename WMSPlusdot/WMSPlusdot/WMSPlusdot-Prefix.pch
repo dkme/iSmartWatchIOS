@@ -1,0 +1,47 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <MobileCoreServices/MobileCoreServices.h>
+    #import <AssetsLibrary/AssetsLibrary.h>
+#endif
+
+#ifdef DEBUG
+    #define DEBUGLog(...) NSLog(__VA_ARGS__)
+    #define DEBUGLog_METHOD NSLog(@"%s", __func__)
+#else
+    #define DEBUGLog(...)
+    #define DEBUGLog_METHOD
+#endif
+
+//方法
+#define UIColorFromRGBAlpha(rgbValue,a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
+#define Rounded(floatValue) ( (int)(floatValue + 0.5) ) //四舍五入
+#define Font_DINCondensed(sz) ( [UIFont fontWithName:@"DIN Condensed" size:sz] )
+#define FilePath(fileName) ( [((NSString *)[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]) stringByAppendingPathComponent:fileName] )
+
+/*屏幕适配用到的宏*/
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iOS6 ( [[[UIDevice currentDevice] systemVersion] floatValue] < 7.0 )
+#define ScreenWidth  ( [[UIScreen mainScreen] bounds].size.width )
+#define ScreenHeight ( [[UIScreen mainScreen] bounds].size.height )
+
+
+//固定尺寸
+#define MBProgressHUD_MinSize   CGSizeMake(250, 120)
+
+
+
+
+

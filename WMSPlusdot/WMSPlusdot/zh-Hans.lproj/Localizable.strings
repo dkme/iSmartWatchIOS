@@ -1,0 +1,175 @@
+/* 
+  Localizable.strings
+  WMSPlusdot
+
+  Created by John on 14-8-21.
+  Copyright (c) 2014年 GUOGEE. All rights reserved.
+*/
+
+
+//LeftViewController String
+"My sports" = "我的运动";
+"My sleep" = "我的睡眠";
+"Set target" = "设置目标";
+"Bound watch" = "绑定配件";
+
+//RightViewController String
+"Remind Setting" = "提醒设置";
+"Social contact" = "社交";
+
+"Phone" = "电话";
+"Message" = "短信";
+"Email" = "邮件";
+"Battery" = "电池";
+
+"Wechat" = "微信";
+"QQ" = "QQ";
+"Facebook" = "Facebook";
+"Twitter" = "Twitter";
+
+"Take a photo" = "拍照";
+
+//MySport ViewController String
+"Today" = "今天";
+"Yesterday" = "昨天";
+"Target" = "目标";
+"Burn" = "燃烧";
+"Distance" = "距离";
+"Time" = "时间";
+"" = "";
+
+//MySleep ViewController String
+"Deep sleep" = "深睡";
+"Light sleep" = "浅睡";
+"Wake up" = "唤醒";
+"Hour" = "时";
+"Minutes" = "分";
+
+//Set Target ViewController String
+"Step" = "步";
+"%@ mode" = "%@模式";
+"Rookie" = "菜鸟";
+"Expert" = "砖家";
+"The range of %d-%d steps" = "范围%d-%d步";
+"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle" = "专家建议每天运动10000步是积极健康的生活方式";
+//"Insist to take exercise for a month" = "坚持锻炼一个月";
+
+
+//BindingAccessoryViewController String
+"Bound watch" = "绑定配件";
+"Searching Plusdot watches" = "正在搜索Plusdot手表";
+"Please make sure the watch power is on and near the phone" = "请确认手表电源已经开启并在手机附近";
+
+
+//WMSSmartClockViewController String
+"Smart alarm clock" = "智能闹钟";
+"Alarm clock time" = "闹钟时间";
+"Smart sleep Windows" = "智能睡眠视窗";
+"Repeat" = "重复";
+"Minutes clock" = "分钟";
+"Alarm clock" = "闹钟";
+
+//WMSAccountViewController String
+"My account" = "我的账户";
+"%@ watches" = "%@的手表";
+"Exit" = "退出登录";
+"Change password" = "修改密码";
+"Forget password" = "忘记密码";
+"About Plusdot" = "关于Plusdot";
+
+//WMSAccountViewController String
+"Personal data" = "个人资料";
+"Please enter a nickname" = "请输入昵称";
+"Please enter the character signature" = "请输入个性签名";
+"Height" = "身高";
+"Birthday" = "生日";
+"Current weight" = "当前体重";
+"Target weight" = "目标体重";
+"Year" = "年";
+"Month" = "月";
+"Day" = "日";
+"cm" = "厘米";
+"kg" = "千克";
+"Male" = "男";
+"Female" = "女";
+"Cancel" = "取消";
+"Confirm" = "确定";
+
+//WMSActivityRemindViewController String
+"Activities remind" = "活动提醒";
+"Start" = "开始";
+"Finish" = "结束";
+"Interval" = "间隔";
+"Remind" = "提醒";
+
+
+
+"同步" = "同步";
+"智能手表已连接" = "智能手表已连接";
+"智能手表连接中" = "智能手表连接中";
+"手表" = "手表";
+"解除绑定" = "解除绑定";
+"坚持锻炼一个月" = "坚持锻炼一个月";
+"并分享到朋友圈，即可获得精美礼品哦" = "并分享到朋友圈，即可获得精美礼品哦";
+"菜鸟" = "菜鸟";
+"砖家" = "砖家";
+"绑定配件" = "绑定配件";
+"重新扫描" = "重新扫描";
+"绑定的配件" = "绑定的配件";
+
+"一" = "一";
+"二" = "二";
+"三" = "三";
+"四" = "四";
+"五" = "五";
+"六" = "六";
+"七" = "七";
+"周一" = "周一";
+"周二" = "周二";
+"周三" = "周三";
+"周四" = "周四";
+"周五" = "周五";
+"周六" = "周六";
+"周日" = "周日";
+"每天" = "每天";
+
+"努力同步数据中..." = "努力同步数据中...";
+"运动记录" = "运动记录";
+"睡眠记录" = "睡眠记录";
+"完成目标的" = "完成目标的";
+"设置目标" = "设置目标";
+"拍照" = "拍照";
+"选取照片" = "选取照片";
+"防丢" = "防丢";
+"正在连接您的手表" = "正在连接您的手表";
+"拍摄的照片保存在照片库" = "拍摄的照片保存在照片库";
+"个性签名不能为空" = "个性签名不能为空";
+
+"用户名" = "用户名";
+"密码" = "密码";
+"确认密码" = "确认密码";
+"邮箱" = "邮箱";
+"完成" = "完成";
+"忘记密码？" = "忘记密码？";
+"登陆" = "登陆";
+"注册" = "注册";
+"请输入用户名" = "请输入用户名";
+"请输入密码" = "请输入密码";
+"登陆成功" = "登陆成功";
+"登陆失败" = "登陆失败";
+"网络请求超时" = "网络请求超时";
+"注册成功" = "注册成功";
+"注册失败" = "注册失败";
+"用户名已存在" = "用户名已存在";
+"邮箱已经注册" = "邮箱已经注册";
+"请输入邮箱" = "请输入邮箱";
+"请输入正确的邮箱" = "请输入正确的邮箱";
+"请输入正确的用户名" = "请输入正确的用户名";
+"两次输入的密码不同，请重新输入" = "两次输入的密码不同，请重新输入";
+
+"隐私条款" = "隐私条款";
+"注册代表您同意" = "注册代表您同意";
+
+"热量单位" = "cal";
+"距离单位" = "km";
+
