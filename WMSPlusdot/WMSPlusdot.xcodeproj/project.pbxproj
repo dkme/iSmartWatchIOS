@@ -173,6 +173,8 @@
 		23D7CF0719B5C57D00DFA678 /* WMSBleControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D7CF0619B5C57D00DFA678 /* WMSBleControl.m */; };
 		23D7CF0919B5D5D100DFA678 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7CF0819B5D5D100DFA678 /* CoreBluetooth.framework */; };
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
+		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
+		F4F037C219F23B110083DEE1 /* procotol.txt in Resources */ = {isa = PBXBuildFile; fileRef = F4F037C119F23B110083DEE1 /* procotol.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -423,6 +425,8 @@
 		23D7CF0819B5D5D100DFA678 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		23FB8B5719CA7C9100E7D77C /* WMSSleepDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSleepDatabase.h; sourceTree = "<group>"; };
 		23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSleepDatabase.m; sourceTree = "<group>"; };
+		F41930CD19F16B1400E7B0B5 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		F4F037C119F23B110083DEE1 /* procotol.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = procotol.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -719,7 +723,7 @@
 				2311611A19B1A3070012B066 /* Categories */,
 				23C350DA19C04D7200BCB7B8 /* Models */,
 				2326A44C19A604B80098657B /* Views */,
-				232846F419A43D0D001C148D /* Images */,
+				F4F037C019F23A9D0083DEE1 /* Resources */,
 				232846C619A43668001C148D /* WMSPlusdot */,
 				232846DF19A43668001C148D /* WMSPlusdotTests */,
 				232846BF19A43668001C148D /* Frameworks */,
@@ -1033,6 +1037,7 @@
 				2335119419A479DA00FBCC81 /* signup_arrow_b.png */,
 				232846F719A441FC001C148D /* login_btn_a.png */,
 				232846F819A441FC001C148D /* login_btn_b.png */,
+				F41930CD19F16B1400E7B0B5 /* check.png */,
 			);
 			name = "登陆注册视图 Icon";
 			sourceTree = "<group>";
@@ -1142,6 +1147,15 @@
 			name = BleProfile;
 			sourceTree = "<group>";
 		};
+		F4F037C019F23A9D0083DEE1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4F037C119F23B110083DEE1 /* procotol.txt */,
+				232846F419A43D0D001C148D /* Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1190,9 +1204,6 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = GUOGEE;
 				TargetAttributes = {
-					232846BC19A43668001C148D = {
-						DevelopmentTeam = 4E8WUK78VW;
-					};
 					232846D719A43668001C148D = {
 						TestTargetID = 232846BC19A43668001C148D;
 					};
@@ -1250,6 +1261,7 @@
 				230298CA19A83281009D4306 /* target_progress_bg.png in Resources */,
 				2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */,
 				2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */,
+				F4F037C219F23B110083DEE1 /* procotol.txt in Resources */,
 				239569CF19EFCE2800CABEDC /* welecome.png in Resources */,
 				237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */,
 				237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */,
@@ -1303,6 +1315,7 @@
 				2326A43B19A5C6970098657B /* main_menu_target_icon_b.png in Resources */,
 				2326A41119A593E20098657B /* main_target_btn_a.png in Resources */,
 				2326A43519A5C6970098657B /* main_menu_setting_icon_b.png in Resources */,
+				F41930CE19F16B1400E7B0B5 /* check.png in Resources */,
 				232846F619A43DC1001C148D /* main_bg.png in Resources */,
 				2316509419AB4A180066C301 /* WMSSmartClockViewController.xib in Resources */,
 				2326A43F19A5D71B0098657B /* main_menu_bg_b.png in Resources */,
@@ -1527,7 +1540,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c21d3563-a085-4e0e-9e76-5546a82b7c54";
+				PROVISIONING_PROFILE = "a8e2e743-79b0-49e0-9eda-62b0ebbf7698";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1544,7 +1557,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c21d3563-a085-4e0e-9e76-5546a82b7c54";
+				PROVISIONING_PROFILE = "a8e2e743-79b0-49e0-9eda-62b0ebbf7698";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
