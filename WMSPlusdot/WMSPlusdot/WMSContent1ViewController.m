@@ -9,21 +9,21 @@
 #import "WMSContent1ViewController.h"
 #import "UIViewController+RESideMenu.h"
 #import "RESideMenu.h"
-#import "WMSMySleepView.h"
 #import "WMSSmartClockViewController.h"
-#import "NSDate+Formatter.h"
-#import "WMSAppDelegate.h"
-#import "WMSSyncDataView.h"
-#import "WMSSleepModel.h"
-#import "WMSSleepDatabase.h"
-#import "MBProgressHUD.h"
 #import "WMSSleepHistoryViewController.h"
+#import "WMSAppDelegate.h"
+
+#import "WMSSyncDataView.h"
+#import "WMSMySleepView.h"
+#import "MBProgressHUD.h"
+
+#import "WMSSleepModel.h"
 #import "WMSDeviceModel.h"
+#import "WMSMyAccessory.h"
+#import "WMSSleepDatabase.h"
+#import "NSDate+Formatter.h"
 
-#define OneDayTimeInterval    (24*60*60)
-#define DateFormat           @"yyyy/MM/dd"
-
-#define TipViewFrame          ( (CGRect){0,125,ScreenWidth,35} )
+#import "WMSAdaptiveMacro.h"
 
 @interface WMSContent1ViewController ()
 {
@@ -156,6 +156,7 @@
     //self.labelSleepHour.text = [NSString stringWithFormat:@"%u",hour];
     //self.labelSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
     self.labelSleepHour.attributedText = text;
+    self.labelSleepHour.adjustsFontSizeToFitWidth = YES;
 }
 - (void)setDeepSleepDurations:(NSUInteger)deepSleepMinute
 {
@@ -182,6 +183,7 @@
     //self.labelDeepsleepHour.text = [NSString stringWithFormat:@"%u",hour];
     //self.labelDeepsleepMinute.text = [NSString stringWithFormat:@"%u",minute];
     self.labelDeepsleepHour.attributedText = text;
+    self.labelDeepsleepHour.adjustsFontSizeToFitWidth = YES;
 }
 - (void)setLightSleepDurations:(NSUInteger)lightSleepMinute
 {
@@ -208,6 +210,7 @@
     //self.labelLightSleepHour.text = [NSString stringWithFormat:@"%u",hour];
     //self.labelLightSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
     self.labelLightSleepHour.attributedText = text;
+    self.labelLightSleepHour.adjustsFontSizeToFitWidth = YES;
 }
 //- (void)setAwakeCount:(NSUInteger)awakeCount
 //{
@@ -238,6 +241,7 @@
     //self.labelWakeupSleepHour.text = [NSString stringWithFormat:@"%u",hour];
     //self.labelWakeupSleepMinute.text = [NSString stringWithFormat:@"%u",minute];
     self.labelWakeupSleepHour.attributedText = text;
+    self.labelWakeupSleepHour.adjustsFontSizeToFitWidth = YES;
 }
 
 #pragma mark - Life Cycle
@@ -295,10 +299,14 @@
     
     self.navigationController.navigationBarHidden = YES;
     
-    if ([self.bleControl isConnected]) {
-        [self showTipView:NO];
+    if ([WMSMyAccessory isBindAccessory] == NO) {
+        [self showTipView:2];
     } else {
-        [self showTipView:YES];
+        if ([self.bleControl isConnected]) {
+            [self showTipView:NO];
+        } else {
+            [self showTipView:YES];
+        }
     }
     
     [self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
@@ -362,31 +370,40 @@
         return;
     }
     CGRect frame = self.dateView.frame;
-    frame.origin.y -= 20;
+    frame.origin.y -= DATE_VIEW_MOVE_HEIGHT;
     self.dateView.frame = frame;
     
     frame = self.syncDataView.frame;
-    frame.origin.y -= 30;
+    frame.origin.y -= TIP_VIEW_MOVE_HEIGHT;
     self.syncDataView.frame = frame;
     frame = self.tipView.frame;
-    frame.origin.y -= 30;
+    frame.origin.y -= TIP_VIEW_MOVE_HEIGHT;
     self.tipView.frame = frame;
     
     frame = self.mySleepView.frame;
-    frame.origin.y -= 40;
+    frame.origin.y -= SPORT_SLEEP_VIEW_MOVE_HEIGHT;
     self.mySleepView.frame = frame;
     
     frame = self.buttonClock.frame;
-    frame.origin.y -= 50;
+    frame.origin.y -= BOTTOM_BUTTON_MOVE_HEIGHT;
     self.buttonClock.frame = frame;
-    
     frame = self.buttonHistory.frame;
-    frame.origin.y -= 50;
+    frame.origin.y -= BOTTOM_BUTTON_MOVE_HEIGHT;
     self.buttonHistory.frame = frame;
     
     frame = self.bottomView.frame;
-    frame.origin.y -= 60;
+    frame.origin.y -= BOTTOM_VIEW_MOVE_HEIGHT;
     self.bottomView.frame = frame;
+    
+    frame = self.labelDeepsleepHour.frame;
+    frame.origin.y -= BOTTOM_LABEL_MOVE_HEIGHT;
+    self.labelDeepsleepHour.frame = frame;
+    frame = self.labelLightSleepHour.frame;
+    frame.origin.y -= BOTTOM_LABEL_MOVE_HEIGHT;
+    self.labelLightSleepHour.frame = frame;
+    frame = self.labelWakeupSleepHour.frame;
+    frame.origin.y -= BOTTOM_LABEL_MOVE_HEIGHT;
+    self.labelWakeupSleepHour.frame = frame;
 }
 
 - (void)reloadView
@@ -412,14 +429,17 @@
     return nil;
 }
 
-//是否显示TipView
-- (void)showTipView:(BOOL)show
+//是否显示TipView，0表示显示syncDataView，1表示显示tipView，2表示两者都不显示
+- (void)showTipView:(int)show
 {
-    if (show) {
+    if (show == 0) {
+        [self.syncDataView setHidden:NO];
+        [self.tipView setHidden:YES];
+    } else if(show == 1) {
         [self.syncDataView setHidden:YES];
         [self.tipView setHidden:NO];
-    } else {
-        [self.syncDataView setHidden:NO];
+    } else if(show == 2) {
+        [self.syncDataView setHidden:YES];
         [self.tipView setHidden:YES];
     }
 }
@@ -522,13 +542,13 @@
 
 - (IBAction)gotoMyClockViewAction:(id)sender {
     WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
-    [self.navigationController pushViewController:VC animated:NO];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {
     WMSSleepHistoryViewController *vc = [[WMSSleepHistoryViewController alloc] initWithNibName:@"WMSSleepHistoryViewController" bundle:nil];
     vc.showDate = self.showDate;
-    [self.navigationController pushViewController:vc animated:NO];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)syncDataAction:(id)sender

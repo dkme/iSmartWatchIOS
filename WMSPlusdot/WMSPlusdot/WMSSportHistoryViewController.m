@@ -12,8 +12,11 @@
 #import "WMSNavBarView.h"
 #import "PNLineChartView.h"
 #import "PNPlot.h"
+
 #import "WMSSportDatabase.h"
 #import "WMSSportModel.h"
+
+#import "WMSAdaptiveMacro.h"
 #import "NSDate+Formatter.h"
 
 #define LEFT_INTERVAL   35.f
@@ -36,7 +39,7 @@
 
 @implementation WMSSportHistoryViewController
 
-#pragma mark - Getter
+#pragma mark - Getter/Setter
 - (PNPlot *)plot
 {
     if (!_plot) {
@@ -47,7 +50,6 @@
     return _plot;
 }
 
-#pragma mark - Set
 - (void)setLabelDateText:(NSDate *)date
 {
     self.showDate = date;
@@ -83,11 +85,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+//    CGRect frame = self.chartView.frame;
+//    frame.origin.y -= 60;
+//    self.chartView.frame = frame;
+    
     [self initNavBarView];
     [self initChartView];
     [self setupControl];
     [self setLabelDateText:self.showDate];
     //[self reloadView];
+    [self adaptiveIphone4];
     
     _labelStep.text = NSLocalizedString(@"Step", nil);
 }
@@ -109,6 +116,7 @@
     DEBUGLog(@"%@ dealloc",[self class]);
 }
 
+#pragma mark - Private Methods
 - (void)setupControl
 {
     [self.buttonPrev setTitle:@"" forState:UIControlStateNormal];
@@ -126,9 +134,27 @@
 //    self.labelDate.text = [self stringWithDate:[NSDate date] andFormart:DateFormat];
 }
 
+- (void)adaptiveIphone4
+{
+    if (iPhone4s) {
+        UIView *dateView = self.labelDate.superview;
+        CGRect frame = dateView.frame;
+        frame.origin.y -= TIP_VIEW_MOVE_HEIGHT;
+        dateView.frame = frame;
+        
+        frame = self.chartView.frame;
+        frame.origin.y -= TIP_VIEW_MOVE_HEIGHT;
+        self.chartView.frame = frame;
+        
+        frame = self.labelOnedaySteps.superview.frame;
+        frame.origin.y -= 50;
+        self.labelOnedaySteps.superview.frame = frame;
+    }
+}
+
 - (void)initNavBarView
 {
-    self.navBarView.backgroundColor = [UIColor clearColor];
+    self.navBarView.backgroundColor = UICOLOR_DEFAULT;
     self.navBarView.labelTitle.text = NSLocalizedString(@"运动记录",nil);
     self.navBarView.labelTitle.font = Font_DINCondensed(20.f);
     
@@ -153,7 +179,7 @@
     self.chartView.axisLineWidth = 1.0;
     self.chartView.xAxisFontColor = [UIColor whiteColor];
     self.chartView.horizontalLinesColor = [UIColor whiteColor];
-    self.chartView.backgroundColor = [UIColor clearColor];
+    self.chartView.backgroundColor = UICOLOR_DEFAULT;
     
     [self updateView:self.showDate];
 }
@@ -265,7 +291,7 @@
 
 - (void)buttonLeftClicked:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

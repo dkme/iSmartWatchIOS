@@ -8,4 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#define WATCH_NAME                  @"plusdout-watch"
+#define SCAN_PERIPHERAL_INTERVAL    5.f
 
+#define HUD_SIZE                    CGSizeMake(250, 120)

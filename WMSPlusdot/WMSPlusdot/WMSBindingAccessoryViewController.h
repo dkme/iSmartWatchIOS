@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonLeft;
 @property (weak, nonatomic) IBOutlet UIButton *buttonRight;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 @property (weak, nonatomic) IBOutlet UILabel *labelBLEStatus;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewBLEStatus;

@@ -11,6 +11,9 @@
 #import "WMSRegularExpressions.h"
 #import "MBProgressHUD.h"
 #import "WMSAppDelegate.h"
+#import "WMSMyAccountViewController.h"
+
+#define VIEW_ROLL_HEIGHT    100.f
 
 @interface WMSSignupViewController ()<MBProgressHUDDelegate>
 
@@ -19,13 +22,71 @@
 @property (weak, nonatomic) IBOutlet UIView *viewPassword;
 @property (weak, nonatomic) IBOutlet UIView *viewConfirmPassword;
 @property (weak, nonatomic) IBOutlet UILabel *labelLogin;
-@property (strong, nonatomic) IBOutlet UIButton *buttonProtocol;
-@property (strong, nonatomic) IBOutlet UIButton *buttonBox;
+@property (strong, nonatomic) UIView *viewLink;
 
 @end
 
 @implementation WMSSignupViewController
 
+#pragma mark - Getter
+- (UIView *)viewLink
+{
+    if (!_viewLink) {
+        CGRect rect = self.labelLogin.frame;
+        CGRect frame = CGRectZero;
+        frame.origin.x = rect.origin.x+rect.size.width + 20;
+        frame.origin.y = rect.origin.y;
+        frame.size.width = ScreenWidth - frame.origin.x;
+        frame.size.height = rect.size.height;
+        _viewLink = [[UIView alloc] initWithFrame:frame];
+        
+        CGRect labelFrame = CGRectZero;
+        CGSize size = CGSizeMake(100, 30);
+        labelFrame.origin = CGPointMake(_viewLink.bounds.size.width-size.width-10, (_viewLink.bounds.size.height-size.height)/2.0);
+        labelFrame.size = size;
+        UILabel *label2 = [[UILabel alloc] initWithFrame:labelFrame];
+        
+        size = CGSizeMake(150, 30);
+        labelFrame.origin = CGPointMake(labelFrame.origin.x-size.width, labelFrame.origin.y);
+        labelFrame.size = size;
+        UILabel *label1 = [[UILabel alloc] initWithFrame:labelFrame];
+        
+        label1.text = NSLocalizedString(@"注册代表您同意", nil);
+        label1.textColor = [UIColor whiteColor];
+        label1.numberOfLines = 1;
+        label2.text = NSLocalizedString(@"隐私条款", nil);
+        label2.textColor = UIColorFromRGBAlpha(0x18B2FA, 1);
+        label2.numberOfLines = 1;
+        label1.adjustsFontSizeToFitWidth = YES;
+        label2.adjustsFontSizeToFitWidth = YES;
+        label1.font = Font_System(15.0);//Font_DINCondensed(15.0);
+        label2.font = Font_System(15.0);//Font_DINCondensed(15.0);
+        
+        //[label1 sizeToFit];
+        [label2 sizeToFit];
+        
+        CGSize currtenSize = label1.bounds.size;
+        CGRect newFrame = label2.frame;
+        newFrame.origin.x = label1.frame.origin.x+currtenSize.width;
+        label2.frame = newFrame;
+        
+        CGRect viewLinkFrame = _viewLink.frame;
+        viewLinkFrame.origin.y += 4;
+        _viewLink.frame = viewLinkFrame;
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(protocolAction:)];
+        tapGesture.numberOfTapsRequired = 1;
+        tapGesture.numberOfTouchesRequired = 1;
+        label2.userInteractionEnabled = YES;
+        [label2 addGestureRecognizer:tapGesture];
+        
+        [_viewLink addSubview:label1];
+        [_viewLink addSubview:label2];
+    }
+    return _viewLink;
+}
+
+#pragma mark - Life Cycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -55,13 +116,9 @@
     [self.viewUsername setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
     [self.viewPassword setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
     [self.viewConfirmPassword setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
-    
-    [self.buttonProtocol setTitle:NSLocalizedString(@"隐私条款", nil) forState:UIControlStateNormal];
-    [self.buttonProtocol setTitleColor:UIColorFromRGBAlpha(0x18B2FA, 1) forState:UIControlStateNormal];
-    [self.buttonBox setTitle:NSLocalizedString(@"注册代表您同意", nil) forState:UIControlStateNormal];
-    
+
+    //[self.view addSubview:self.viewLink];
     [self localizableView];
-    
 }
 
 - (void)dealloc
@@ -106,7 +163,31 @@
         }
     }
     [self.buttonSignup setTitle:NSLocalizedString(@"完成", nil) forState:UIControlStateNormal];
+    [self.buttonSignup.titleLabel setFont:Font_System(15.0)];
     [self.labelLogin setText:NSLocalizedString(@"登陆", nil)];
+}
+
+//滚动view,YES表示向上滑动，NO表示向下滑动
+- (void)rollView:(BOOL)upOrdown
+{
+    CGFloat y = self.view.frame.origin.y;
+    if (upOrdown) {
+        if (y >= 0) {//此时，向上滑动
+            [UIView beginAnimations:@"TextField" context:nil];
+            CGRect rect = self.view.frame;
+            rect.origin.y -= VIEW_ROLL_HEIGHT;
+            self.view.frame = rect;
+            [UIView commitAnimations];
+        }
+    } else {
+        if (y < 0) {
+            [UIView beginAnimations:@"TextField" context:nil];
+            CGRect rect = self.view.frame;
+            rect.origin.y += VIEW_ROLL_HEIGHT;
+            self.view.frame = rect;
+            [UIView commitAnimations];
+        }
+    }
 }
 
 - (BOOL)checkout
@@ -164,13 +245,17 @@
     return flag;
 }
 
-- (void)loginSuccessed
+- (void)registerSuccessed
 {
     NSDictionary *writeData = @{@"userName":self.textUserName.text,@"password":self.textPassword.text};
     BOOL res = [writeData writeToFile:FilePath(UserInfoFile) atomically:YES];
     DEBUGLog(@"保存登陆信息%@",res?@"成功":@"失败");
-    [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
-    [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
+    
+    WMSMyAccountViewController *vc = [[WMSMyAccountViewController alloc] init];
+    vc.isNewUser = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+//    [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
+//    [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
 }
 
 
@@ -180,6 +265,7 @@
     [self.textUserName resignFirstResponder];
     [self.textPassword resignFirstResponder];
     [self.textConfirmPassword resignFirstResponder];
+    [self rollView:NO];
     
     if (![self checkout]) {
         return;
@@ -204,7 +290,7 @@
         if (result) {
             [hud setLabelText:NSLocalizedString(@"注册成功", nil)];
             [hud hide:YES];
-            [self loginSuccessed];
+            [self registerSuccessed];
             return ;
         } else if (!result && error==nil) {
             if (errorNO == 10001) {
@@ -230,9 +316,11 @@
     [self.textUserName resignFirstResponder];
     [self.textPassword resignFirstResponder];
     [self.textConfirmPassword resignFirstResponder];
+    
+    [self rollView:NO];
 }
 
-- (IBAction)protocolAction:(id)sender {
+- (void)protocolAction:(id)sender {
     NSError *error = nil;
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"procotol" ofType:@"txt"];
     NSString *text = [NSString stringWithContentsOfFile:filePath
@@ -243,7 +331,7 @@
         // an error occurred
         DEBUGLog(@"Error reading text file. %@", [error localizedFailureReason]);
     }
-    DEBUGLog(@"text:%@",text);
+    //DEBUGLog(@"text:%@",text);
     
     
     UIScrollView * vi = [[UIScrollView alloc]init];
@@ -263,26 +351,17 @@
     
     UIButton* btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.layer.cornerRadius = 8;
-    btn.frame = CGRectMake(8, (iOS6?870+20:870)-100, 304, 45);
+    btn.frame = CGRectMake(8, (iOS6?870+20:870)-120, 304, 45);
     [btn setTitle:@"确定" forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(okCancelAction:) forControlEvents:UIControlEventTouchUpInside];
-    btn.backgroundColor = iPhone5?[UIColor colorWithRed:109/255.0 green:169/255.0 blue:28/255.0 alpha:1]:[UIColor colorWithRed:100/255.0 green:191/255.0 blue:28/255.0 alpha:1];
-    btn.titleLabel.font = Font_DINCondensed(20.0);
+    btn.backgroundColor = UICOLOR_DEFAULT;
+    btn.titleLabel.font = Font_System(20.0);
     [vi addSubview:btn];
 }
 - (void)okCancelAction:(id)sender
 {
     UIScrollView * vi = (UIScrollView*)[self.view viewWithTag:12345];
     [vi removeFromSuperview];
-}
-
-- (IBAction)checkBoxAction:(id)sender {
-//    UIImage *image = [self.buttonBox imageForState:UIControlStateNormal];
-//    if ([image isEqual:[UIImage imageNamed:@"check.png"]]) {
-//        [self.buttonBox setBackgroundColor:[UIColor whiteColor]];
-//    } else {
-//        [self.buttonBox setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];
-//    }
 }
 
 
@@ -299,9 +378,17 @@
         [self.textConfirmPassword becomeFirstResponder];
     } else if (self.textConfirmPassword == textField) {
         [self.textConfirmPassword resignFirstResponder];
+        [self rollView:NO];
     }
     
     return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (iPhone4s) {
+        [self rollView:YES];
+    }
 }
 
 

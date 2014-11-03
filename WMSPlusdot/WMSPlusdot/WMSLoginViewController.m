@@ -81,8 +81,10 @@
         }
     }
     [self.buttonFogetPassword setTitle:NSLocalizedString(@"忘记密码？", nil) forState:UIControlStateNormal];
-    [self.buttonFogetPassword setTitleEdgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
+    [self.buttonFogetPassword.titleLabel setFont:Font_System(15.0)];
+    [self.buttonFogetPassword.titleLabel setAdjustsFontSizeToFitWidth:YES];
     [self.buttonLogin setTitle:NSLocalizedString(@"登陆", nil) forState:UIControlStateNormal];
+    [self.buttonLogin.titleLabel setFont:Font_System(15.0)];
     
     [self.labelSignup setText:NSLocalizedString(@"注册", nil)];
 }
@@ -134,6 +136,7 @@
     DEBUGLog(@"保存登陆信息%@",res?@"成功":@"失败");
     [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
     [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
+    [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
 }
 
 

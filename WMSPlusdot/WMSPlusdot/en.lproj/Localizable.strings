@@ -158,9 +158,39 @@
 "两次输入的密码不同，请重新输入" = "Two different input password, please enter again";
 
 "隐私条款" = "Privacy policy";
-"注册代表您同意" = "Registered Express agree";
+"注册代表您同意" = "Registered Express agree ";
 
 "热量单位" = "cal";
 "距离单位" = "km";
+
+"提醒方式" = "Remind way";
+"震动" = "Shake";
+"响铃" = "Beep";
+"震动+响铃" = "Shake+bell";
+"其他" = "Other";
+"永不" = "Never";
+"请先在“绑定配件”中绑定您的手表" = "First in “Bound watch” bind your watch";
+"您还没有连接手表或连接已断开" = "You have not connected the watch or connection disconnected";
+"智能手表搜索" = "Search watch";
+"追踪活动/睡眠，蓝牙4.0无线连接" = "Racking active/sleep, Bluetooth 4.0 wireless connection";
+"正在搜索蓝牙设备......" = "Sarching for watch......";
+"请确认智能手表已经开启并在手机附近" = "Please confirm smart watches have been open and mobile phone in the near";
+"没有找到蓝牙设备" = "Not find watch";
+"请确认手机蓝牙已开启\n请确认智能手表在附近" = "Please confirm smart watches have been open and mobile phone in the near";
+"点击绑定" = "Click bind";
+"绑定成功" = "Binding success";
+"提示" = "Warning";
+"知道了" = "Know";
+"您的设备不支持BLE4.0" = "Your device does not support BLE4.0";
+"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开" = "Your bluetooth has been closed, please in the “Settings - Bluetooth” will open it";
+"切换至拍照模式成功" = "Switch to camera mode successfully";
+"切换至拍照模式失败" = "Switch to camera mode failure";
+"重新建立了连接" = "To establish the connection";
+"您的连接已断开" = "Your Connection disconnected";
+"结束时间必须晚于开始时间" = "The end of time must be later than the start time";
+"设置活动提醒成功" = "Set the active remind success";
+"设置闹钟成功" = "Set the alarm success";
+
+
 
 

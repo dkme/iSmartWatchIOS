@@ -405,7 +405,7 @@ static const int STARTED_NUMBER = 50;
         }
         
         if (cmd == CMDReadDeviceRemoteData) {
-            DEBUGLog(@"监听到按键状态");
+            //DEBUGLog(@"监听到按键状态");
             //readDeviceRemoteDataCallBack callBack = [NSMutableArray popFromArray:self.stackReadDeviceRemoteData];
             readDeviceRemoteDataCallBack callBack = self.readDeviceRemoteDataBlock;
             if (callBack) {

@@ -8,9 +8,15 @@
 
 #import "WMSSmartClockViewController.h"
 #import "WMSSelectValueViewController.h"
+#import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
-#import "WMSBluetooth.h"
+
+#import "MBProgressHUD.h"
+
 #import "WMSAlarmClockModel.h"
+#import "WMSMyAccessory.h"
+
+#import "WMSRemindHelper.h"
 
 #define SECTION_NUMBER  1
 #define SECTION_FOOTER_HEIGHT   1
@@ -29,13 +35,17 @@
 @property (strong,nonatomic) NSArray *textArray;
 @property (strong,nonatomic) NSArray *detailTextArray;
 
-@property (strong,nonatomic) WMSAlarmClockModel *alarmClockModel;
-
 @end
 
 @implementation WMSSmartClockViewController
 {
     WMSSelectValueViewController *_selectValueVC;
+    
+    BOOL alarmClockStatus;
+    int alarmClockHour;
+    int alarmClockMimute;
+    int alarmClockSnooze;
+    NSArray *alarmClockRepeats;
 }
 
 #pragma mark - Property Getter Method
@@ -64,55 +74,12 @@
 - (NSArray *)detailTextArray
 {
     if (!_detailTextArray) {
-        NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",(int)self.alarmClockModel.startHour,(int)self.alarmClockModel.startMinute];
-        NSString *strSnooze = [NSString stringWithFormat:@"%d %@",(int)self.alarmClockModel.snoozeMinute,NSLocalizedString(@"Minutes clock",nil)];
-        
-        NSArray *arr = @[NSLocalizedString(@"一",nil),
-                         NSLocalizedString(@"二",nil),
-                         NSLocalizedString(@"三",nil),
-                         NSLocalizedString(@"四",nil),
-                         NSLocalizedString(@"五",nil),
-                         NSLocalizedString(@"六",nil),
-                         NSLocalizedString(@"七",nil)];
-        NSString *strRepeats = @"";
-        BOOL flag = YES;//标识是否每天都重复
-        for (int i=0; i<[self.alarmClockModel.repeats count]; i++) {
-            BOOL var = [self.alarmClockModel.repeats[i] boolValue];
-            if (YES == var) {
-                strRepeats = [strRepeats stringByAppendingString:@" "];
-                strRepeats = [strRepeats stringByAppendingString:arr[i]];
-            } else {flag = NO;}
-        }
-        if ([self.alarmClockModel.repeats count] > 0 && flag) {
-            strRepeats = NSLocalizedString(@"每天",nil);
-        }
-        
+        NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",alarmClockHour,alarmClockMimute];
+        NSString *strSnooze = [NSString stringWithFormat:@"%d %@",alarmClockSnooze,NSLocalizedString(@"Minutes clock",nil)];
+        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:alarmClockRepeats];
         _detailTextArray = @[@"",strStartTime,strSnooze,strRepeats];
     }
     return _detailTextArray;
-}
-
-- (WMSAlarmClockModel *)alarmClockModel
-{
-    if (!_alarmClockModel) {
-        WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-        NSString *identifier = bleControl.connectedPeripheral.UUIDString;
-        
-        NSArray *array = [self loadAlarmClock];
-        DEBUGLog(@"array:%@",array);
-        for (NSDictionary *dicObj in array) {
-            if (identifier == nil) {
-                identifier = @"";
-            }
-            //DEBUGLog();
-            _alarmClockModel = [dicObj objectForKey:identifier];
-        }
-
-        if (_alarmClockModel == nil) {
-            _alarmClockModel = [[WMSAlarmClockModel alloc] init];
-        }
-    }
-    return _alarmClockModel;
 }
 
 #pragma mark - Life Cycle
@@ -133,6 +100,10 @@
     [self.buttonBack setTitle:@"" forState:UIControlStateNormal];
     [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
     [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
+    [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
+    [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.buttonSync.titleLabel setFont:Font_System(17.0)];
+    [self.buttonSync.titleLabel setAdjustsFontSizeToFitWidth:YES];
     
     self.labelTitle.text = NSLocalizedString(@"Smart alarm clock",nil);
     self.view.backgroundColor = [UIColor whiteColor];
@@ -161,7 +132,30 @@
 
 - (void)initView
 {
-    self.cellSwitch.on = self.alarmClockModel.status;
+    WMSAlarmClockModel *model = nil;
+    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    NSString *identifier = bleControl.connectedPeripheral.UUIDString;
+    NSArray *array = [self loadAlarmClock];
+    for (NSDictionary *dicObj in array) {
+        if (identifier == nil) {
+            identifier = @"";
+        }
+        model = [dicObj objectForKey:identifier];
+    }
+    if (model == nil) {
+        alarmClockStatus = YES;
+        alarmClockHour = DEFAULT_START_HOUR;
+        alarmClockMimute = DEFAULT_START_MINUTE;
+        alarmClockSnooze = DEFAULT_SNOOZE_MINUTE;
+        alarmClockRepeats = 0;
+    } else {
+        alarmClockStatus = model.status;
+        alarmClockHour = model.startHour;
+        alarmClockMimute = model.startMinute;
+        alarmClockSnooze = model.snoozeMinute;
+        alarmClockRepeats = model.repeats;
+    }
+    self.cellSwitch.on = alarmClockStatus;
 }
 
 //
@@ -194,8 +188,8 @@
     
     int index = [self isExistForBleIdentifier:identifier];//是否已存在这个identifier
     NSArray *savedData = [self loadAlarmClock];
-    
-    NSDictionary *dictionary = @{identifier:model};
+    NSString *key = (identifier==nil?@"":identifier);
+    NSDictionary *dictionary = @{key:model};
     NSMutableArray *writeData = [NSMutableArray arrayWithArray:savedData];
     if (index >= 0) {//存在，则替换成新的数据
         //[writeData addObject:dictionary];
@@ -257,46 +251,61 @@
 
 - (void)setAlarmClock
 {
-    NSUInteger hour = self.alarmClockModel.startHour;
-    NSUInteger minute = self.alarmClockModel.startMinute;
-    BOOL status = self.alarmClockModel.status;
-    NSUInteger snooze = self.alarmClockModel.snoozeMinute;
+    WMSAlarmClockModel *model = [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
     Byte repeats[7] = {0};
     NSUInteger length = 7;
-    for (int i=0; i<[self.alarmClockModel.repeats count]; i++) {
-        Byte b = (Byte)self.alarmClockModel.repeats[i];
-        if (i < 7) {
+    for (int i=0; i<[model.repeats count]; i++) {
+        Byte b = (Byte)model.repeats[i];
+        if (i < length) {
             repeats[i] = b;
         }
     }
     
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    [bleControl.settingProfile setAlarmClockWithId:DefaultAlarmClockID withHour:hour withMinute:minute withStatus:status withRepeat:repeats withLength:length withSnoozeMinute:snooze withCompletion:^(BOOL success)
+    [bleControl.settingProfile setAlarmClockWithId:DefaultAlarmClockID withHour:model.startHour withMinute:model.startMinute withStatus:model.status withRepeat:repeats withLength:length withSnoozeMinute:model.snoozeMinute withCompletion:^(BOOL success)
      {
          DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
-         [self savaAlarmClock:self.alarmClockModel];
+//         MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+//         hud.mode = MBProgressHUDModeText;
+//         hud.yOffset = ScreenHeight/2.0-60;
+//         hud.minSize = CGSizeMake(250.0, 60.0);
+//         hud.labelText = NSLocalizedString(@"设置闹钟成功", nil);
+//         [self.view addSubview:hud];
+//         [hud showAnimated:YES whileExecutingBlock:^{
+//             sleep(1);
+//         } completionBlock:^{
+//             [hud removeFromSuperview];
+//         }];
+         [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
+         [self savaAlarmClock:model];
      }];
-    
-    //[self savaAlarmClock:self.alarmClockModel];
 }
 
 
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    if ([bleControl isConnected]) {
-        [self setAlarmClock];
-    }
-    
+    WMSAlarmClockModel *model = [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
+    [self savaAlarmClock:model];
     
     self.navigationController.delegate = nil;//一定要加入这条语句
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)syncSettingAction:(id)sender {
+    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    BOOL isBind = [WMSMyAccessory isBindAccessory];
+    BOOL isConnected = [bleControl isConnected];
+    BOOL result = [self checkoutWithIsBind:isBind isConnected:isConnected];
+    if (result == NO) {
+        return;
+    }
+    [self setAlarmClock];
 }
 
 - (void)switchBtnValueChanged:(id)sender
 {
     UISwitch *sw = (UISwitch *)sender;
-    self.alarmClockModel.status = sw.on;
+    alarmClockStatus = sw.on;
 }
 
 
@@ -349,7 +358,6 @@
     if (indexPath.row == 0) {
         return;
     }
-    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     WMSSelectValueViewController *VC = [[WMSSelectValueViewController alloc] init];
@@ -358,18 +366,17 @@
     _selectValueVC = VC;
     
     if (indexPath.row == 1) {
-        VC.alarmClockHour = self.alarmClockModel.startHour;
-        VC.alarmClockMinute = self.alarmClockModel.startMinute;
+        VC.alarmClockHour = alarmClockHour;
+        VC.alarmClockMinute = alarmClockMimute;
     } else if (indexPath.row == 2) {
-        VC.smartSleepMinute = self.alarmClockModel.snoozeMinute;
+        VC.smartSleepMinute = alarmClockSnooze;
     } else if (indexPath.row == 3) {
-        if (self.alarmClockModel.repeats) {
-            VC.selectedWeekArray = [NSMutableArray arrayWithArray:self.alarmClockModel.repeats];
+        if (alarmClockRepeats) {
+            VC.selectedWeekArray = [NSMutableArray arrayWithArray:alarmClockRepeats];
         }
     }
     
-    [self.navigationController pushViewController:VC animated:NO];
-    
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 
@@ -383,37 +390,19 @@
         if (_selectValueVC.selectIndex == SmartClockTimeCell) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%02d:%02d",_selectValueVC.alarmClockHour,_selectValueVC.alarmClockMinute];
             
-            self.alarmClockModel.startHour = _selectValueVC.alarmClockHour;
-            self.alarmClockModel.startMinute = _selectValueVC.alarmClockMinute;
+            alarmClockHour = _selectValueVC.alarmClockHour;
+            alarmClockMimute = _selectValueVC.alarmClockMinute;
             
         } else if (_selectValueVC.selectIndex == SmartClockSleepTimeCell) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%d %@",_selectValueVC.smartSleepMinute,NSLocalizedString(@"Minutes clock",nil)];
             
-            self.alarmClockModel.snoozeMinute = _selectValueVC.smartSleepMinute;
+            alarmClockSnooze = _selectValueVC.smartSleepMinute;
             
         } else if (_selectValueVC.selectIndex == SmartClockRepeatCell) {
-            NSArray *arr = @[NSLocalizedString(@"一",nil),
-                             NSLocalizedString(@"二",nil),
-                             NSLocalizedString(@"三",nil),
-                             NSLocalizedString(@"四",nil),
-                             NSLocalizedString(@"五",nil),
-                             NSLocalizedString(@"六",nil),
-                             NSLocalizedString(@"七",nil)];
-            NSString *str = @"";
-            BOOL flag = YES;//标识是否每天都重复
-            for (int i=0; i<_selectValueVC.selectedWeekArray.count; i++) {
-                BOOL var = [_selectValueVC.selectedWeekArray[i] boolValue];
-                if (YES == var) {
-                    str = [str stringByAppendingString:@" "];
-                    str = [str stringByAppendingString:arr[i]];
-                } else {flag = NO;}
-            }
-            if (flag) {
-                str = NSLocalizedString(@"每天",nil);
-            }
+            NSString *str = [WMSRemindHelper descriptionOfRepeats:_selectValueVC.selectedWeekArray];
             cell.detailTextLabel.text = str;
             
-            self.alarmClockModel.repeats = _selectValueVC.selectedWeekArray;
+            alarmClockRepeats = _selectValueVC.selectedWeekArray;
             
         }
         

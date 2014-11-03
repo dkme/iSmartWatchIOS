@@ -69,6 +69,7 @@
     //self.labelMySteps.text = [NSString stringWithFormat:@"%d",targetSteps];
     //self.labelModeType.text = [NSString stringWithFormat:NSLocalizedString(@"%@ mode", nil), mode];
     self.labelMySteps.attributedText = text;
+    self.labelMySteps.adjustsFontSizeToFitWidth = YES;
 }
 
 #pragma mark - Life Cycle

@@ -121,6 +121,7 @@
 		233511B519A4C3E500FBCC81 /* main_date_next_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B319A4C3E500FBCC81 /* main_date_next_a.png */; };
 		233511B619A4C3E500FBCC81 /* main_date_next_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B419A4C3E500FBCC81 /* main_date_next_b.png */; };
 		233511B819A4C45500FBCC81 /* main_progress_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B719A4C45500FBCC81 /* main_progress_bg.png */; };
+		233A431C19F8F15900BD295B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233A431B19F8F15900BD295B /* AVFoundation.framework */; };
 		234BF1EE19B0305C005D71A0 /* WMSNavBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */; };
 		234BF1F019B0308F005D71A0 /* WMSNavBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */; };
 		234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 234BF1F319B05914005D71A0 /* WMSMyAccountViewController.m */; };
@@ -134,6 +135,7 @@
 		2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2354A3B619A6E0CD0027C91F /* WMSContent1ViewController.m */; };
 		2354A3B919A6E0CD0027C91F /* WMSContent1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2354A3B719A6E0CD0027C91F /* WMSContent1ViewController.xib */; };
 		2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2354A5F119EE180C00751E92 /* WMSRegularExpressions.m */; };
+		236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 236032FA19FE3AE800A77B22 /* WMSRemindHelper.m */; };
 		2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2360CED119E6855000B10A0B /* WMSDeviceModel.m */; };
 		236D486A19D81C7900EFB5C8 /* WMSActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 236D486919D81C7900EFB5C8 /* WMSActivityModel.m */; };
 		237545C319AED3D200685CD1 /* account_head.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C219AED3D200685CD1 /* account_head.png */; };
@@ -147,9 +149,14 @@
 		237545DC19AF229C00685CD1 /* WMSActivityRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237545DA19AF229C00685CD1 /* WMSActivityRemindViewController.xib */; };
 		237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545E019AF484600685CD1 /* WMSInputViewController.m */; };
 		237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237545E119AF484600685CD1 /* WMSInputViewController.xib */; };
+		2378A3D919FF405500187836 /* WMSRemindWayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2378A3D719FF405500187836 /* WMSRemindWayViewController.m */; };
+		2378A3DA19FF405500187836 /* WMSRemindWayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2378A3D819FF405500187836 /* WMSRemindWayViewController.xib */; };
+		2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */ = {isa = PBXBuildFile; fileRef = 2378A3DF19FFA96900187836 /* UIViewController+Tip.m */; };
+		2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2378A3EC1A00F06100187836 /* AudioToolbox.framework */; };
+		2378A3F01A00F29F00187836 /* 嘀嘀报警声.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */; };
 		2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */; };
 		23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */; };
-		239569CF19EFCE2800CABEDC /* welecome.png in Resources */ = {isa = PBXBuildFile; fileRef = 239569CE19EFCE2800CABEDC /* welecome.png */; };
+		239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 239569CE19EFCE2800CABEDC /* Default-568h@2x.png */; };
 		23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */; };
 		23B0094019D4FFEF008424FA /* WMSSportHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */; };
 		23B0094619D50100008424FA /* PNLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0094319D50100008424FA /* PNLineChartView.m */; };
@@ -341,6 +348,8 @@
 		233511B319A4C3E500FBCC81 /* main_date_next_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_date_next_a.png; sourceTree = "<group>"; };
 		233511B419A4C3E500FBCC81 /* main_date_next_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_date_next_b.png; sourceTree = "<group>"; };
 		233511B719A4C45500FBCC81 /* main_progress_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_progress_bg.png; sourceTree = "<group>"; };
+		233A431B19F8F15900BD295B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAdaptiveMacro.h; sourceTree = "<group>"; };
 		234BF1EC19B0305C005D71A0 /* WMSNavBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSNavBarView.h; sourceTree = "<group>"; };
 		234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSNavBarView.m; sourceTree = "<group>"; };
 		234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSNavBarView.xib; sourceTree = "<group>"; };
@@ -360,6 +369,8 @@
 		2354A3B719A6E0CD0027C91F /* WMSContent1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSContent1ViewController.xib; sourceTree = "<group>"; };
 		2354A5F019EE180C00751E92 /* WMSRegularExpressions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSRegularExpressions.h; sourceTree = "<group>"; };
 		2354A5F119EE180C00751E92 /* WMSRegularExpressions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSRegularExpressions.m; sourceTree = "<group>"; };
+		236032F919FE3AE800A77B22 /* WMSRemindHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSRemindHelper.h; sourceTree = "<group>"; };
+		236032FA19FE3AE800A77B22 /* WMSRemindHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSRemindHelper.m; sourceTree = "<group>"; };
 		2360CED019E6855000B10A0B /* WMSDeviceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSDeviceModel.h; sourceTree = "<group>"; };
 		2360CED119E6855000B10A0B /* WMSDeviceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSDeviceModel.m; sourceTree = "<group>"; };
 		236D486819D81C7900EFB5C8 /* WMSActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSActivityModel.h; sourceTree = "<group>"; };
@@ -380,11 +391,19 @@
 		237545DF19AF484600685CD1 /* WMSInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSInputViewController.h; sourceTree = "<group>"; };
 		237545E019AF484600685CD1 /* WMSInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSInputViewController.m; sourceTree = "<group>"; };
 		237545E119AF484600685CD1 /* WMSInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSInputViewController.xib; sourceTree = "<group>"; };
+		2378A3D619FF405500187836 /* WMSRemindWayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSRemindWayViewController.h; sourceTree = "<group>"; };
+		2378A3D719FF405500187836 /* WMSRemindWayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSRemindWayViewController.m; sourceTree = "<group>"; };
+		2378A3D819FF405500187836 /* WMSRemindWayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSRemindWayViewController.xib; sourceTree = "<group>"; };
+		2378A3DB19FFA4A400187836 /* WMSConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSConstants.h; sourceTree = "<group>"; };
+		2378A3DE19FFA96900187836 /* UIViewController+Tip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Tip.h"; sourceTree = "<group>"; };
+		2378A3DF19FFA96900187836 /* UIViewController+Tip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Tip.m"; sourceTree = "<group>"; };
+		2378A3EC1A00F06100187836 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "嘀嘀报警声.m4a"; sourceTree = "<group>"; };
 		2388E5C019ED25A8005864D4 /* WMSHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSHTTPRequest.h; sourceTree = "<group>"; };
 		2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSHTTPRequest.m; sourceTree = "<group>"; };
 		23911F1C19C290F8006E9CAF /* WMSSyncDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncDataView.h; sourceTree = "<group>"; };
 		23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncDataView.m; sourceTree = "<group>"; };
-		239569CE19EFCE2800CABEDC /* welecome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welecome.png; sourceTree = "<group>"; };
+		239569CE19EFCE2800CABEDC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		23B0093C19D4FFEF008424FA /* WMSSportHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportHistoryViewController.h; sourceTree = "<group>"; };
 		23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportHistoryViewController.m; sourceTree = "<group>"; };
 		23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSportHistoryViewController.xib; sourceTree = "<group>"; };
@@ -434,6 +453,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */,
+				233A431C19F8F15900BD295B /* AVFoundation.framework in Frameworks */,
 				230FDC6C19D6977B00AE98FF /* CoreText.framework in Frameworks */,
 				2328CD2B19CFF8CA0085AD77 /* AssetsLibrary.framework in Frameworks */,
 				2328CD2919CFF8BB0085AD77 /* MobileCoreServices.framework in Frameworks */,
@@ -530,6 +551,9 @@
 				2326A44719A5E9CE0098657B /* WMSRightViewController.h */,
 				2326A44819A5E9CE0098657B /* WMSRightViewController.m */,
 				2326A44919A5E9CE0098657B /* WMSRightViewController.xib */,
+				2378A3D619FF405500187836 /* WMSRemindWayViewController.h */,
+				2378A3D719FF405500187836 /* WMSRemindWayViewController.m */,
+				2378A3D819FF405500187836 /* WMSRemindWayViewController.xib */,
 			);
 			name = "左右菜单视图";
 			sourceTree = "<group>";
@@ -582,6 +606,7 @@
 			children = (
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
 				2311611619B1A2620012B066 /* NSDate+Formatter */,
+				2378A3E119FFB0A000187836 /* UIViewController+Tip */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -743,6 +768,8 @@
 		232846BF19A43668001C148D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2378A3EC1A00F06100187836 /* AudioToolbox.framework */,
+				233A431B19F8F15900BD295B /* AVFoundation.framework */,
 				23305D9F19C83B2500F9EEE6 /* libsqlite3.0.dylib */,
 				2328CD2A19CFF8CA0085AD77 /* AssetsLibrary.framework */,
 				2328CD2819CFF8BB0085AD77 /* MobileCoreServices.framework */,
@@ -811,7 +838,7 @@
 		232846F419A43D0D001C148D /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				239569CB19EFCC0500CABEDC /* 欢迎页视图 Icon */,
+				239569CB19EFCC0500CABEDC /* Launch images */,
 				23BCA12B19B4113D0032F19F /* 登陆注册视图 Icon */,
 				2326A41D19A5A25D0098657B /* 左右菜单视图 Icon */,
 				233511A619A4BF6400FBCC81 /* 我的运动视图 Icon */,
@@ -907,6 +934,8 @@
 			children = (
 				2354A5F019EE180C00751E92 /* WMSRegularExpressions.h */,
 				2354A5F119EE180C00751E92 /* WMSRegularExpressions.m */,
+				236032F919FE3AE800A77B22 /* WMSRemindHelper.h */,
+				236032FA19FE3AE800A77B22 /* WMSRemindHelper.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -963,6 +992,23 @@
 			name = "活动提醒视图";
 			sourceTree = "<group>";
 		};
+		2378A3E119FFB0A000187836 /* UIViewController+Tip */ = {
+			isa = PBXGroup;
+			children = (
+				2378A3DE19FFA96900187836 /* UIViewController+Tip.h */,
+				2378A3DF19FFA96900187836 /* UIViewController+Tip.m */,
+			);
+			name = "UIViewController+Tip";
+			sourceTree = "<group>";
+		};
+		2378A3EE1A00F28D00187836 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
 		2388E5BF19ED24BC005864D4 /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
@@ -990,12 +1036,12 @@
 			name = WMSSyncDataView;
 			sourceTree = "<group>";
 		};
-		239569CB19EFCC0500CABEDC /* 欢迎页视图 Icon */ = {
+		239569CB19EFCC0500CABEDC /* Launch images */ = {
 			isa = PBXGroup;
 			children = (
-				239569CE19EFCE2800CABEDC /* welecome.png */,
+				239569CE19EFCE2800CABEDC /* Default-568h@2x.png */,
 			);
-			name = "欢迎页视图 Icon";
+			name = "Launch images";
 			sourceTree = "<group>";
 		};
 		23B0093B19D4FF7C008424FA /* 运动历史视图 */ = {
@@ -1023,6 +1069,8 @@
 			isa = PBXGroup;
 			children = (
 				23B0094919D5458D008424FA /* WMSMacro.h */,
+				233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */,
+				2378A3DB19FFA4A400187836 /* WMSConstants.h */,
 			);
 			name = Macro;
 			sourceTree = "<group>";
@@ -1151,6 +1199,7 @@
 			isa = PBXGroup;
 			children = (
 				F4F037C119F23B110083DEE1 /* procotol.txt */,
+				2378A3EE1A00F28D00187836 /* Sounds */,
 				232846F419A43D0D001C148D /* Images */,
 			);
 			name = Resources;
@@ -1204,6 +1253,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = GUOGEE;
 				TargetAttributes = {
+					232846BC19A43668001C148D = {
+						DevelopmentTeam = 4E8WUK78VW;
+					};
 					232846D719A43668001C148D = {
 						TestTargetID = 232846BC19A43668001C148D;
 					};
@@ -1242,6 +1294,7 @@
 				23114A4919D120D600FA594C /* unselect_woman.png in Resources */,
 				2326A41019A593E20098657B /* main_history_btn_b.png in Resources */,
 				234BF1FB19B05991005D71A0 /* select_man.png in Resources */,
+				2378A3DA19FF405500187836 /* WMSRemindWayViewController.xib in Resources */,
 				2326A40A19A5916A0098657B /* main_ico_burn.png in Resources */,
 				23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */,
 				230298D119A87DBF009D4306 /* WMSBindingAccessoryViewController.xib in Resources */,
@@ -1262,12 +1315,13 @@
 				2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */,
 				2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */,
 				F4F037C219F23B110083DEE1 /* procotol.txt in Resources */,
-				239569CF19EFCE2800CABEDC /* welecome.png in Resources */,
+				239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */,
 				237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */,
 				237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */,
 				233511AE19A4C00600FBCC81 /* main_setting_icon_b.png in Resources */,
 				233511B119A4C3D300FBCC81 /* main_date_prev_a.png in Resources */,
 				230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */,
+				2378A3F01A00F29F00187836 /* 嘀嘀报警声.m4a in Resources */,
 				230FDC6319D6548F00AE98FF /* WMSSleepHistoryViewController.xib in Resources */,
 				2326A40619A591320098657B /* main_ico_distance.png in Resources */,
 				230298C419A82FDC009D4306 /* WMSContent2ViewController.xib in Resources */,
@@ -1357,6 +1411,7 @@
 				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
 				2316508819AB30D90066C301 /* WMSMySleepView.m in Sources */,
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
+				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
 				23D7CF0119B5C49C00DFA678 /* LGPeripheral.m in Sources */,
 				2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */,
 				234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */,
@@ -1377,6 +1432,8 @@
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
 				2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */,
 				232846F219A43825001C148D /* WMSLoginViewController.m in Sources */,
+				2378A3D919FF405500187836 /* WMSRemindWayViewController.m in Sources */,
+				236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */,
 				2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */,
 				23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */,
 				23D7CEFF19B5C49C00DFA678 /* LGCentralManager.m in Sources */,
@@ -1458,6 +1515,73 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		230BAD5B19F53DB700D75550 /* ad hoc distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "ad hoc distribution";
+		};
+		230BAD5C19F53DB700D75550 /* ad hoc distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: an liu (4E8WUK78VW)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
+				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "22b8bc6f-0fa4-4694-bc24-ef9cd8ed0bf0";
+				WRAPPER_EXTENSION = app;
+			};
+			name = "ad hoc distribution";
+		};
+		230BAD5D19F53DB700D75550 /* ad hoc distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WMSPlusdot.app/WMSPlusdot";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
+				INFOPLIST_FILE = "WMSPlusdotTests/WMSPlusdotTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = "ad hoc distribution";
+		};
 		232846E719A43668001C148D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1533,14 +1657,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: an liu (6PAC8WLTAS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a8e2e743-79b0-49e0-9eda-62b0ebbf7698";
+				PROVISIONING_PROFILE = "22b8bc6f-0fa4-4694-bc24-ef9cd8ed0bf0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1551,13 +1675,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: an liu (4E8WUK78VW)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a8e2e743-79b0-49e0-9eda-62b0ebbf7698";
+				PROVISIONING_PROFILE = "22b8bc6f-0fa4-4694-bc24-ef9cd8ed0bf0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1610,6 +1734,7 @@
 			buildConfigurations = (
 				232846E719A43668001C148D /* Debug */,
 				232846E819A43668001C148D /* Release */,
+				230BAD5B19F53DB700D75550 /* ad hoc distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1619,6 +1744,7 @@
 			buildConfigurations = (
 				232846EA19A43668001C148D /* Debug */,
 				232846EB19A43668001C148D /* Release */,
+				230BAD5C19F53DB700D75550 /* ad hoc distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1628,6 +1754,7 @@
 			buildConfigurations = (
 				232846ED19A43668001C148D /* Debug */,
 				232846EE19A43668001C148D /* Release */,
+				230BAD5D19F53DB700D75550 /* ad hoc distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -57,8 +57,7 @@
 {
     if (!_smartSleepValueArray) {
         _smartSleepValueArray = [[NSArray alloc] initWithObjects:
-                                                @(5),
-                                                @(7),
+                                                @(DEFAULT_SNOOZE_MINUTE),
                                                 @(10),
                                                 @(15),
                                                 @(20),
@@ -187,7 +186,7 @@
         default:
             break;
     }
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

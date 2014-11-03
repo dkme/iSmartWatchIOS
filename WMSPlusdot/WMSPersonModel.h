@@ -33,7 +33,7 @@
 
 @property (nonatomic, assign) NSUInteger targetWeight;
 
-@property (nonatomic, assign) NSUInteger stride;
+@property (nonatomic, assign) NSUInteger stride;//单位cm
 
 - (id)initWithName:(NSString *)name
              image:(UIImage *)image

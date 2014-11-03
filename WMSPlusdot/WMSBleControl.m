@@ -12,7 +12,7 @@
 #import "WMSRemindProfile.h"
 #import "NSMutableArray+Stack.h"
 
-static const NSUInteger CONNECT_PERIPHERAL_INTERVAL = 10;
+static const NSUInteger CONNECT_PERIPHERAL_INTERVAL = 20;
 static const NSUInteger DISCOVER_SERVICES_INTERVAL = 30;
 static const NSUInteger DISCOVER_CHARACTERISTICS_INTERVAL = 10;
 
@@ -170,12 +170,8 @@ NSString * const WMSBleControlScanFinish =
     
     [self.centralManager scanForPeripheralsByInterval:aScanInterval completion:^(NSArray *peripherals)
     {
+        [scannedPeripheral removeObjectsInArray:peripherals];
         [scannedPeripheral addObjectsFromArray:peripherals];
-        
-//        for (LGPeripheral *p in peripherals) {
-//            DEBUGLog(@">>>>>>ps:%@",p.cbPeripheral);
-//        }
-        
         if (aCallback) {
             aCallback(scannedPeripheral);
         }

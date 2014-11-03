@@ -54,7 +54,10 @@ typedef void (^setAlarmClockCallBack)(BOOL success);
 typedef void(^setTargetCallBack)(BOOL success);
 typedef void(^setRemindModeCallBack)(BOOL success);
 typedef void(^setRemindEventsCallBack)(BOOL success);
+typedef void(^setRemindEventsAndModeCallBack)(BOOL success);
 typedef void (^setOtherRemindCallBack)(BOOL success);
+typedef void (^setStartLowBatteryRemind)(BOOL success);
+typedef void (^setStopLowBatteryRemind)(BOOL success);
 typedef void (^setSportRemindCallBack)(BOOL success);
 typedef void (^setAntiLostCallBack)(BOOL success);
 
@@ -113,7 +116,6 @@ typedef void (^setAntiLostCallBack)(BOOL success);
 
 /**
  设置提醒方式
- 
  */
 - (void)setRemindWithMode:(RemindMode)remindMode
            withCompletion:(setRemindModeCallBack)aCallBack;
@@ -125,10 +127,26 @@ typedef void (^setAntiLostCallBack)(BOOL success);
                  completion:(setRemindEventsCallBack)aCallBack;
 
 /**
+ 设置提醒方式和提醒事件
+ */
+- (void)setRemindEventsType:(RemindEventsType)remindEventsType
+                       mode:(RemindMode)remindMode
+                 completion:(setRemindEventsAndModeCallBack)aCallBack;
+
+/**
  设置其他提醒
  */
 - (void)setOtherRemind:(OtherRemindType)remindType
             completion:(setOtherRemindCallBack)aCallBack;
+
+/**
+ 开起低电量提醒
+ */
+- (void)setStartLowBatteryRemindCompletion:(setStartLowBatteryRemind)aCallBack;
+/**
+ 停止低电量提醒
+ */
+- (void)setStopLowBatteryRemindCompletion:(setStopLowBatteryRemind)aCallBack;
 
 /**
  久坐运动提醒

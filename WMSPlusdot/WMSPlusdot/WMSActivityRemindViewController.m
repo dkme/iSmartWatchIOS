@@ -8,9 +8,15 @@
 
 #import "WMSActivityRemindViewController.h"
 #import "WMSInputViewController.h"
+#import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
-#import "WMSBluetooth.h"
+
+#import "MBProgressHUD.h"
+
 #import "WMSActivityModel.h"
+#import "WMSMyAccessory.h"
+
+#import "WMSRemindHelper.h"
 
 #define SECTION_NUMBER  1
 #define SECTION_FOOTER_HEIGHT   1
@@ -68,28 +74,8 @@
     if (!_detailTextArray) {
         NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityStartHour,(int)activityStartMinute];
         NSString *strEndTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityEndHour,(int)activityEndMinute];
-        
         NSString *strInterval = [NSString stringWithFormat:@"%d %@",(int)activityInterval,NSLocalizedString(@"Minutes clock",nil)];
-        
-        NSArray *arr = @[NSLocalizedString(@"一",nil),
-                         NSLocalizedString(@"二",nil),
-                         NSLocalizedString(@"三",nil),
-                         NSLocalizedString(@"四",nil),
-                         NSLocalizedString(@"五",nil),
-                         NSLocalizedString(@"六",nil),
-                         NSLocalizedString(@"七",nil)];
-        NSString *strRepeats = @"";
-        BOOL flag = YES;//标识是否每天都重复
-        for (int i=0; i<[activityRepeats count]; i++) {
-            BOOL var = [activityRepeats[i] boolValue];
-            if (YES == var) {
-                strRepeats = [strRepeats stringByAppendingString:@" "];
-                strRepeats = [strRepeats stringByAppendingString:arr[i]];
-            } else {flag = NO;}
-        }
-        if ([activityRepeats count] > 0 && flag) {
-            strRepeats = NSLocalizedString(@"每天",nil);
-        }
+        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:activityRepeats];
         
         _detailTextArray = @[@"",strStartTime,strEndTime,strInterval,strRepeats];
     }
@@ -114,6 +100,10 @@
     [self.buttonBack setTitle:@"" forState:UIControlStateNormal];
     [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
     [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
+    [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
+    [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.buttonSync.titleLabel setFont:Font_System(17.0)];
+    [self.buttonSync.titleLabel setAdjustsFontSizeToFitWidth:YES];
     
     self.labelTitle.text = NSLocalizedString(@"Activities remind",nil);
     
@@ -149,14 +139,23 @@
         }
         model = [dicObj objectForKey:identifier];
     }
-    activityStatus = model.status;
-    activityStartHour = (int)model.startHour;
-    activityStartMinute = (int)model.startMinute;
-    activityEndHour = (int)model.endHour;
-    activityEndMinute = (int)model.endMinute;
-    activityInterval = (int)model.intervalMinute;
-    activityRepeats = model.repeats;
-    
+    if (model == nil) {
+        activityStatus = YES;
+        activityStartHour = DEFAULT_HOUR;
+        activityStartMinute = DEFAULT_MINUTE;
+        activityEndHour = DEFAULT_HOUR;
+        activityEndMinute = DEFAULT_MINUTE;
+        activityInterval = DEFAULT_ACTIVITY_INTERVAL;
+        activityRepeats = 0;
+    } else {
+        activityStatus = model.status;
+        activityStartHour = (int)model.startHour;
+        activityStartMinute = (int)model.startMinute;
+        activityEndHour = (int)model.endHour;
+        activityEndMinute = (int)model.endMinute;
+        activityInterval = (int)model.intervalMinute;
+        activityRepeats = model.repeats;
+    }
     self.cellSwitch.on = activityStatus;
 }
 
@@ -190,8 +189,8 @@
     
     int index = [self isExistForBleIdentifier:identifier];//是否已存在这个identifier
     NSArray *savedData = [self loadActivityRemind];
-    
-    NSDictionary *dictionary = @{identifier:model};
+    NSString *key = (identifier==nil?@"":identifier);
+    NSDictionary *dictionary = @{key:model};
     NSMutableArray *writeData = [NSMutableArray arrayWithArray:savedData];
     if (index >= 0) {//存在，则替换成新的数据
         [writeData replaceObjectAtIndex:index withObject:dictionary];
@@ -237,25 +236,56 @@
     WMSActivityModel *model = [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
     
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    
     //设置提醒成功
     [bleControl.settingProfile setSportRemindWithStatus:YES startHour:model.startHour startMinute:model.startMinute endHour:model.endHour endMinute:model.endMinute intervalMinute:model.intervalMinute repeats:model.repeats completion:^(BOOL success)
     {
         DEBUGLog(@"设置提醒%@",success?@"成功":@"失败");
+//        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+//        hud.mode = MBProgressHUDModeText;
+//        hud.yOffset = ScreenHeight/2.0-60;
+//        hud.minSize = CGSizeMake(250.0, 60.0);
+//        hud.labelText = NSLocalizedString(@"设置活动提醒成功", nil);
+//        [self.view addSubview:hud];
+//        [hud showAnimated:YES whileExecutingBlock:^{
+//            sleep(1);
+//        } completionBlock:^{
+//            [hud removeFromSuperview];
+//        }];
+        [self showTip:NSLocalizedString(@"设置活动提醒成功", nil)];
         [self savaActivityModel:model];
     }];
+}
+
+- (BOOL)checkoutTime 
+{
+    //将开始，结束时间都转成距离00:00的秒数，来比较时间先后
+    int startSeconds = activityStartHour*60*60+activityStartMinute*60;
+    int endSeconds = activityEndHour*60*60+activityEndMinute*60;
+    return (endSeconds>startSeconds?YES:NO);
 }
 
 
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    if ([bleControl isConnected]) {
-        [self setActivityRemind];
-    }
+    WMSActivityModel *model = [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
+    [self savaActivityModel:model];
     
     self.navigationController.delegate = nil;//一定要加入这条语句
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (IBAction)syncSettingAction:(id)sender {
+    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    BOOL isBind = [WMSMyAccessory isBindAccessory];
+    BOOL isConnected = [bleControl isConnected];
+    BOOL result = [self checkoutWithIsBind:isBind isConnected:isConnected];
+    if (result == NO) {
+        return;
+    }
+    if ([self checkoutTime] == NO) {
+        [self showTip:NSLocalizedString(@"结束时间必须晚于开始时间", nil)];
+    } else {
+        [self setActivityRemind];
+    }
 }
 
 - (void)switchBtnValueChanged:(id)sender
@@ -345,7 +375,7 @@
     }
     
     
-    [self.navigationController pushViewController:vc animated:NO];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -373,29 +403,11 @@
             activityInterval = _inputVC.intervalMinute;
             
         } else if (_inputVC.selectIndex == RepeatCell) {
-            NSArray *arr = @[NSLocalizedString(@"一",nil),
-                             NSLocalizedString(@"二",nil),
-                             NSLocalizedString(@"三",nil),
-                             NSLocalizedString(@"四",nil),
-                             NSLocalizedString(@"五",nil),
-                             NSLocalizedString(@"六",nil),
-                             NSLocalizedString(@"七",nil)];
-            NSString *str = @"";
-            BOOL flag = YES;//标识是否每天都重复
-            for (int i=0; i<_inputVC.selectedWeekArray.count; i++) {
-                BOOL var = [_inputVC.selectedWeekArray[i] boolValue];
-                if (YES == var) {
-                    str = [str stringByAppendingString:@" "];
-                    str = [str stringByAppendingString:arr[i]];
-                } else {flag = NO;}
-            }
-            if (flag) {
-                str = NSLocalizedString(@"每天",nil);
-            }
+            NSString *str = [WMSRemindHelper descriptionOfRepeats:_inputVC.selectedWeekArray];
             cell.detailTextLabel.text = str;
             
             activityRepeats = _inputVC.selectedWeekArray;
-            
+    
         }
         
         _inputVC = nil;

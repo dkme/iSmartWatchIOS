@@ -15,6 +15,9 @@
     #import <Foundation/Foundation.h>
     #import <MobileCoreServices/MobileCoreServices.h>
     #import <AssetsLibrary/AssetsLibrary.h>
+    #import <AVFoundation/AVFoundation.h>
+    #import <AudioToolbox/AudioToolbox.h>
+    #import "WMSMacro.h"
 #endif
 
 #ifdef DEBUG
@@ -27,12 +30,17 @@
 
 //方法
 #define UIColorFromRGBAlpha(rgbValue,a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
-#define Rounded(floatValue) ( (int)(floatValue + 0.5) ) //四舍五入
+#define Font_System(sz)       ( [UIFont systemFontOfSize:sz] )
 #define Font_DINCondensed(sz) ( [UIFont fontWithName:@"DIN Condensed" size:sz] )
+#define UICOLOR_DEFAULT       ( UIColorFromRGBAlpha(0x00D5E1, 1) )
+
 #define FilePath(fileName) ( [((NSString *)[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]) stringByAppendingPathComponent:fileName] )
+
+#define Rounded(floatValue) ( (int)(floatValue + 0.5) ) //四舍五入
 
 /*屏幕适配用到的宏*/
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 #define iOS6 ( [[[UIDevice currentDevice] systemVersion] floatValue] < 7.0 )
 #define ScreenWidth  ( [[UIScreen mainScreen] bounds].size.width )
 #define ScreenHeight ( [[UIScreen mainScreen] bounds].size.height )

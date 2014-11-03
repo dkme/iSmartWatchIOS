@@ -20,7 +20,5 @@
 - (IBAction)signupAction:(id)sender;
 - (IBAction)loginAction:(id)sender;
 - (IBAction)resignResponse:(id)sender;
-- (IBAction)protocolAction:(id)sender;
-- (IBAction)checkBoxAction:(id)sender;
 
 @end

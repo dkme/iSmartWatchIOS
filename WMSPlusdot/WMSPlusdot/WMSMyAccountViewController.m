@@ -217,9 +217,16 @@
     self.myPickerView.dataSource = self;
     self.myPickerView.delegate = self;
     
-    if (!self.isModifyAccount) {
+//    if (!self.isModifyAccount) {
+//        [self.view addSubview:self.buttonSava];
+//    }
+    if (self.isNewUser) {
+        self.navBarView.buttonLeft.hidden = YES;
         [self.view addSubview:self.buttonSava];
+    } else {
+        self.navBarView.buttonLeft.hidden = NO;
     }
+    
     [self.view addSubview:self.myPickerView];
     [self.view addSubview:self.myDatePicker];
     [self.view addSubview:self.myToolbar];
@@ -303,6 +310,10 @@
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     myName = [userDefaults stringForKey:@"name"];
+    if (!myName || [myName isEqualToString:@""]) {//若为@""，则使用登陆时的用户名
+        NSDictionary *readData =  [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
+        myName = [readData objectForKey:@"userName"];
+    }
     myImage = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
     NSDate *birthday = [userDefaults valueForKey:@"birthday"];
     mySex = [userDefaults integerForKey:@"gender"];
@@ -521,18 +532,20 @@
 #pragma mark - Action
 - (void)buttonLeftClicked:(id)sender
 {
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您要保存个人信息吗？" delegate:self cancelButtonTitle:@"不保存" otherButtonTitles:@"保存", nil];
-//    [alertView show];
-    if (self.isModifyAccount) {
-        WMSLeftViewController *leftVC = (WMSLeftViewController *)((RESideMenu *)self.presentingViewController).leftMenuViewController;
-        [leftVC setUserImage:myImage];
-        [leftVC setUserNickname:myName];
-        
-        [self savaInfoAction:nil];
-        return;
-    }
+//    if (self.isModifyAccount) {
+//        WMSLeftViewController *leftVC = (WMSLeftViewController *)((RESideMenu *)self.presentingViewController).leftMenuViewController;
+//        [leftVC setUserImage:myImage];
+//        [leftVC setUserNickname:myName];
+//        
+//        [self savaInfoAction:nil];
+//        return;
+//    }
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    WMSLeftViewController *leftVC = (WMSLeftViewController *)((RESideMenu *)self.presentingViewController).leftMenuViewController;
+    [leftVC setUserImage:myImage];
+    [leftVC setUserNickname:myName];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self savaInfoAction:nil];
 }
 
 - (void)buttonManClicked:(id)sender
@@ -712,15 +725,23 @@
     
     [self savaPersonInfoBirthday:birthday stride:stride];
     
-    if (self.isModifyAccount) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+//    if (self.isModifyAccount) {
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    } else {
+//        WMSBindingAccessoryViewController *vc = (WMSBindingAccessoryViewController *)self.presentingViewController;
+//        vc.isSavaUserInfo = YES;
+//        [self dismissViewControllerAnimated:YES completion:^{
+//            //DEBUGLog(@"bind VC:%@",vc);
+//            [vc dismissVC];
+//        }];
+//    }
+    
+    if (self.isNewUser) {
+        [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
+        [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
+        [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
     } else {
-        WMSBindingAccessoryViewController *vc = (WMSBindingAccessoryViewController *)self.presentingViewController;
-        vc.isSavaUserInfo = YES;
-        [self dismissViewControllerAnimated:YES completion:^{
-            //DEBUGLog(@"bind VC:%@",vc);
-            [vc dismissVC];
-        }];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

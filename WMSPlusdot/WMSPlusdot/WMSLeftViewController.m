@@ -13,9 +13,12 @@
 #import "WMSContent1ViewController.h"
 #import "WMSContent2ViewController.h"
 #import "WMSBindingAccessoryViewController.h"
-#import "WMSLeftViewCell.h"
 #import "WMSMyAccountViewController.h"
 #import "WMSMyAccessoryViewController.h"
+#import "WMSAppDelegate.h"
+
+#import "WMSLeftViewCell.h"
+
 
 #define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 64) )
 #define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 45, _userInfoView.center.y - 45 - 10, 79, 79) )
@@ -189,14 +192,13 @@
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.buttonSetting];
     
-    
-    //[self reloadView];
+    [self reloadView];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self reloadView];
+    //[self reloadView];
     DEBUGLog(@"LeftViewController viewWillAppear");
 }
 - (void)dealloc
@@ -215,7 +217,10 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     UIImage *image = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
     NSString *name = [userDefaults stringForKey:@"name"];
-    
+    if (!name || [name isEqualToString:@""]) {//若为@""，则使用登陆时的用户名
+        NSDictionary *readData =  [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
+        name = [readData objectForKey:@"userName"];
+    }
     [self setUserImage:image];
     [self setUserNickname:name];
 }
@@ -261,11 +266,20 @@
 {
     WMSMyAccountViewController *VC = [[WMSMyAccountViewController alloc] init];
     VC.isModifyAccount = YES;
+    VC.isNewUser = NO;
     [self presentViewController:VC animated:YES completion:nil];
 }
 - (void)settingBtnClick:(id)sender
 {
-    
+//    NSDictionary *writeData = @{@"userName":@"",@"password":@""};
+//    [writeData writeToFile:FilePath(UserInfoFile) atomically:YES];
+//    
+//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+//    
+//    [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].loginNavigationCtrl;
+//    [WMSAppDelegate appDelegate].reSideMenu = nil;
+//    [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
 }
 
 

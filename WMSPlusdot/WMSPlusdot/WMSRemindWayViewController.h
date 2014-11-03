@@ -1,16 +1,17 @@
 //
-//  WMSMyAccessoryViewController.h
+//  WMSRemindWayViewController.h
 //  WMSPlusdot
 //
-//  Created by Sir on 14-9-15.
+//  Created by Sir on 14-10-28.
 //  Copyright (c) 2014年 GUOGEE. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface WMSMyAccessoryViewController : UIViewController
+@interface WMSRemindWayViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-- (void)showTip;
+@property (nonatomic) int remindeWay;
+
 @end

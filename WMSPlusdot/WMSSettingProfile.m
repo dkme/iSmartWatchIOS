@@ -30,6 +30,7 @@ enum {
     TimeIDSetTarget,
     TimeIDSetRemindMode,
     TimeIDSetRemindEvents,
+    TimeIDSetRemindEventsAndMode,
     TimeIDSetSportRemind,
     TimeIDSetAntiLost,
     TimeIDStartSendOtherRemind,
@@ -56,7 +57,10 @@ enum {
 @property (nonatomic, strong) NSMutableArray *stackSetTarget;
 @property (nonatomic, strong) NSMutableArray *stackSetRemindMode;
 @property (nonatomic, strong) NSMutableArray *stackSetRemindEvents;
+@property (nonatomic, strong) NSMutableArray *stackSetRemindEventsAndMode;
 @property (nonatomic, strong) NSMutableArray *stackSetOtherRemind;
+@property (nonatomic, strong) NSMutableArray *stackSetStartLowBatteryRemind;
+@property (nonatomic, strong) NSMutableArray *stackSetStopLowBatteryRemind;
 @property (nonatomic, strong) NSMutableArray *stackSetSportRemind;
 @property (nonatomic, strong) NSMutableArray *stackSetAntiLost;
 @end
@@ -106,13 +110,35 @@ enum {
     }
     return _stackSetRemindEvents;
 }
+- (NSMutableArray *)stackSetRemindEventsAndMode
+{
+    if (!_stackSetRemindEventsAndMode) {
+        _stackSetRemindEventsAndMode = [NSMutableArray new];
+    }
+    return _stackSetRemindEventsAndMode;
+}
 - (NSMutableArray *)stackSetOtherRemind
 {
-    if (_stackSetOtherRemind) {
+    if (!_stackSetOtherRemind) {
         _stackSetOtherRemind = [NSMutableArray new];
     }
     return _stackSetOtherRemind;
 }
+- (NSMutableArray *)stackSetStartLowBatteryRemind
+{
+    if (!_stackSetStartLowBatteryRemind) {
+        _stackSetStartLowBatteryRemind = [NSMutableArray new];
+    }
+    return _stackSetStartLowBatteryRemind;
+}
+- (NSMutableArray *)stackSetStopLowBatteryRemind
+{
+    if (!_stackSetStopLowBatteryRemind) {
+        _stackSetStopLowBatteryRemind = [NSMutableArray new];
+    }
+    return _stackSetStopLowBatteryRemind;
+}
+
 - (NSMutableArray *)stackSetSportRemind
 {
     if (!_stackSetSportRemind) {
@@ -459,6 +485,34 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
                                      timeID:TimeIDSetRemindEvents];
 }
 
+- (void)setRemindEventsType:(RemindEventsType)remindEventsType
+                       mode:(RemindMode)remindMode
+                 completion:(setRemindEventsAndModeCallBack)aCallBack
+{
+    if (![self.bleControl isConnected]) {
+        return ;
+    }
+    
+    Byte package[DATA_LENGTH] = {0};
+    package[0] = remindMode;
+    package[1] = remindEventsType;
+    [self setPacketCMD:CMDSetRemind andData:package dataLength:DATA_LENGTH];
+    
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSetRemindEventsAndMode];
+    }
+    
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDSetRemindEventsAndMode];
+}
+
 - (void)setOtherRemind:(OtherRemindType)remindType
             completion:(setOtherRemindCallBack)aCallBack
 {
@@ -483,6 +537,55 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
                                    userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
                                     repeats:YES
                                      timeID:TimeIDStartSendOtherRemind];
+}
+
+- (void)setStartLowBatteryRemindCompletion:(setStartLowBatteryRemind)aCallBack
+{
+    if (![self.bleControl isConnected]) {
+        return ;
+    }
+    
+    Byte package[DATA_LENGTH] = {0};
+    package[0] = 0x11;
+    [self setPacketCMD:CMDStartSendOtherRemind andData:package dataLength:DATA_LENGTH];
+    
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSetStartLowBatteryRemind];
+    }
+    
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDStartSendOtherRemind];
+}
+- (void)setStopLowBatteryRemindCompletion:(setStartLowBatteryRemind)aCallBack
+{
+    if (![self.bleControl isConnected]) {
+        return ;
+    }
+    
+    Byte package[DATA_LENGTH] = {0};
+    package[0] = 0x11;
+    [self setPacketCMD:CMDEndSendOtherRemind andData:package dataLength:DATA_LENGTH];
+    
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSetStopLowBatteryRemind];
+    }
+    
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDEndSendOtherRemind];
 }
 
 - (void)setSportRemindWithStatus:(BOOL)openOrClose
@@ -694,8 +797,18 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
                 if (callBack) {
                     callBack(YES);
                 }
+                return;
             }
-            return;
+            if ([self.myTimers isValidForTimeID:TimeIDSetRemindEventsAndMode]) {
+                [self.myTimers deleteTimerForTimeID:TimeIDSetRemindEventsAndMode];
+                
+                setRemindEventsAndModeCallBack callBack = [NSMutableArray popFromArray:self.stackSetRemindEventsAndMode];
+                if (callBack) {
+                    callBack(YES);
+                }
+                return;
+            }
+            
         }
         
         if (cmd == CMDSetSportRemind) {
@@ -742,19 +855,10 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
         }
         [self.myTimers deleteTimerForTimeID:TimeIDStartSendOtherRemind];
         
-        Byte package[DATA_LENGTH] = {0};
-        package[0] = type;
-        [self setPacketCMD:CMDEndSendOtherRemind andData:package dataLength:DATA_LENGTH];
-        
-        NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
-        [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
-
-        [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                         target:self
-                                       selector:@selector(writeValueToCharactTimeout:)
-                                       userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                        repeats:YES
-                                         timeID:TimeIDEndSendOtherRemind];
+        setStartLowBatteryRemind callBack = [NSMutableArray popFromArray:self.stackSetStartLowBatteryRemind];
+        if (callBack) {
+            callBack(YES);
+        }
         return;
     }
     if (cmd == CMDEndSendOtherRemind) {
@@ -763,7 +867,7 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
         }
         [self.myTimers deleteTimerForTimeID:TimeIDEndSendOtherRemind];
         
-        setOtherRemindCallBack callBack = [NSMutableArray popFromArray:self.stackSetOtherRemind];
+        setStopLowBatteryRemind callBack = [NSMutableArray popFromArray:self.stackSetStopLowBatteryRemind];
         if (callBack) {
             callBack(YES);
         }

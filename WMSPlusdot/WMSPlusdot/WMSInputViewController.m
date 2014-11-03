@@ -52,12 +52,12 @@
 {
     if (!_smartSleepValueArray) {
         _smartSleepValueArray = [[NSArray alloc] initWithObjects:
-                                 @(5),
-                                 @(7),
-                                 @(10),
-                                 @(15),
-                                 @(20),
                                  @(30),
+                                 @(60),
+                                 @(90),
+                                 @(120),
+                                 @(150),
+                                 @(180),
                                  nil];
     }
     return _smartSleepValueArray;
@@ -192,7 +192,7 @@
         default:
             break;
     }
-    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

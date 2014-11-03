@@ -7,10 +7,16 @@
 //
 
 #import "WMSMyAccessoryViewController.h"
-#import "WMSNavBarView.h"
-#import "WMSAppDelegate.h"
 #import "UIViewController+RESideMenu.h"
+#import "WMSLeftViewController.h"
 #import "RESideMenu.h"
+#import "WMSBindingAccessoryViewController.h"
+#import "WMSContentViewController.h"
+
+#import "WMSAppDelegate.h"
+#import "MBProgressHUD.h"
+#import "WMSNavBarView.h"
+
 #import "WMSMyAccessory.h"
 
 #define SECTION_NUMBER  1
@@ -94,6 +100,28 @@
     [actionSheet showInView:self.view];
 }
 
+- (void)showTip
+{
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    hud.mode = MBProgressHUDModeText;
+    hud.minSize = CGSizeMake(250, 60);
+    //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
+    hud.yOffset = ScreenHeight/2.0-60;
+    hud.xOffset = 0;
+    hud.labelText = NSLocalizedString(@"绑定成功", nil);
+    [self.view addSubview:hud];
+    [hud showAnimated:YES whileExecutingBlock:^{
+        sleep(1);
+    } completionBlock:^{
+        [hud removeFromSuperview];
+    }];
+    
+    WMSLeftViewController *leftVC = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
+    WMSContentViewController *vc = leftVC.contentVCArray[0];
+    [vc scanAndConnectPeripheral];
+}
+
+
 #pragma mark - Action
 - (void)buttonLeftClicked:(id)sender
 {
@@ -119,9 +147,9 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([WMSMyAccessory isBindAccessory] == NO) {
-        return 0;
-    }
+//    if ([WMSMyAccessory isBindAccessory] == NO) {
+//        return 0;
+//    }
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -135,16 +163,24 @@
     }
     
     cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",@"plusdot",NSLocalizedString(@"手表", nil)];
-    cell.textLabel.font = Font_DINCondensed(23.0);
+    cell.textLabel.font = Font_System(23.0);//Font_DINCondensed(23.0);
+    cell.textLabel.textColor = [UIColor grayColor];
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
-    cell.detailTextLabel.text = @"    ";
-    cell.detailTextLabel.font = Font_DINCondensed(15.0);
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"    %@",NSLocalizedString(@"追踪活动/睡眠，蓝牙4.0无线连接", nil)];
+    cell.detailTextLabel.font = Font_System(15.0);//Font_DINCondensed(15.0);
+    cell.detailTextLabel.textColor = [UIColor grayColor];
+    cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
     
     CGRect frame = cell.textLabel.frame;
     frame.size.height += 10;
     cell.textLabel.frame = frame;
     
-    cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
+    if ([WMSMyAccessory isBindAccessory]) {
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
+    } else {
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
+    }
     
     return cell;
 }
@@ -163,7 +199,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self showActionSheet];
+    if ([WMSMyAccessory isBindAccessory]) {
+        [self showActionSheet];
+    } else {
+        WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 
