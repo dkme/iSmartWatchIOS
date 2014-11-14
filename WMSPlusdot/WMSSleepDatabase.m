@@ -107,7 +107,9 @@
         
         if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
             NSLog(@"Error: failed to prepare statement with message:get SleepDataTable.");
-            return NO;
+            sqlite3_finalize(statement);
+            sqlite3_close(_database);
+            return nil;
         }
         else {
             //查询结果集中一条一条的遍历所有的记录，这里的数字对应的是列值,注意这里的列值，跟上面sqlite3_bind_text绑定的列值不一样！一定要分开，不然会crash，只有这一处的列号不同，注意！
@@ -220,6 +222,95 @@
         sqlite3_close(_database);
     }
     return array;
+}
+
+- (NSArray *)querySleepDataWithYear:(NSUInteger)year month:(NSUInteger)month
+{
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:10];
+    //判断数据库是否打开
+    if ([self openDB]) {
+        
+        sqlite3_stmt *statement = nil;
+        //sql语句
+        NSString *strSQL = [NSString stringWithFormat:@"SELECT * FROM SleepDataTable WHERE sleepDate BETWEEN DATETIME('%u-%02u-01') AND DATETIME('%u-%02u-01')", year,month,year,month+1];
+        const char *sql = [strSQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            NSLog(@"Error: failed to prepare statement with message:get testValue.");
+            sqlite3_finalize(statement);
+            sqlite3_close(_database);
+            return nil;
+        }
+        else {
+            //查询结果集中一条一条的遍历所有的记录，这里的数字对应的是列值,注意这里的列值，跟上面sqlite3_bind_text绑定的列值不一样！一定要分开，不然会crash，只有这一处的列号不同，注意！
+            
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                char *strDate = (char *)sqlite3_column_text(statement, 1);
+                NSString *stringDate = [NSString stringWithUTF8String:strDate];
+                //stringDate = [stringDate substringToIndex:10];
+                //printf("read DateString:%s \n",strDate);
+                //DEBUGLog(@"read stringDate:%@",stringDate);
+                
+                NSUInteger endHour = sqlite3_column_int(statement, 2);
+                NSUInteger endMinute = sqlite3_column_int(statement, 3);
+                NSUInteger sleepMinute = sqlite3_column_int(statement, 4);
+                NSUInteger asleepMinute = sqlite3_column_int(statement, 5);
+                NSUInteger awakeCount = sqlite3_column_int(statement, 6);
+                NSUInteger deepSleepMinute = sqlite3_column_int(statement, 7);
+                NSUInteger lightSleepMinute = sqlite3_column_int(statement, 8);
+                int size = sqlite3_column_bytes(statement, 9);
+                UInt16 *startedMinutes = malloc(size);
+                memcpy(startedMinutes, sqlite3_column_blob(statement, 9), size);
+                
+                size = sqlite3_column_bytes(statement, 10);
+                UInt8 *startedStatus = malloc(size);
+                memcpy(startedStatus, sqlite3_column_blob(statement, 10), size);
+                
+                size = sqlite3_column_bytes(statement, 11);
+                UInt8 *statusDurations = malloc(size);
+                memcpy(statusDurations, sqlite3_column_blob(statement, 11), size);
+                
+                NSUInteger dataLength = size/sizeof(UInt8);
+                
+                //DEBUGLog(@"read string to date:%@",[NSDate dateFromString:stringDate format:@"yyyy-MM-dd"]);
+                NSDate *date = [NSDate dateFromString:stringDate format:@"yyyy-MM-dd"];
+                WMSSleepModel *model = [[WMSSleepModel alloc] initWithSleepDate:date sleepEndHour:endHour sleepEndMinute:endMinute sleepMinute:sleepMinute asleepMinute:asleepMinute awakeCount:awakeCount deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
+                
+                [array addObject:model];
+                free(startedMinutes);
+                free(startedStatus);
+                free(statusDurations);
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_database);
+    }
+    return array;
+}
+
+- (NSDate *)queryEarliestDate
+{
+    NSDate *date = nil;
+    if ([self openDB]) {
+        sqlite3_stmt *statement = nil;
+        const char *sql = "select * from SleepDataTable order by sleepDate limit 1";
+        
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            date = nil;
+        }
+        else
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                char *strDate = (char *)sqlite3_column_text(statement, 1);
+                NSString *stringDate = [NSString stringWithUTF8String:strDate];
+                date = [NSDate dateFromString:stringDate format:@"yyyy-MM-dd"];
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_database);
+        return date;
+    }
+    return nil;
 }
 
 - (BOOL)updateSleepData:(WMSSleepModel *)model;
@@ -348,7 +439,7 @@
     //如果数据库存在，则用sqlite3_open直接打开（不要担心，如果数据库不存在sqlite3_open会自动创建）
     if (find) {
         
-        NSLog(@"Database file have already existed.");
+        //NSLog(@"Database file have already existed.");
         
         //打开数据库，这里的[path UTF8String]是将NSString转换为C字符串，因为SQLite3是采用可移植的C(而不是
         //Objective-C)编写的，它不知道什么是NSString.

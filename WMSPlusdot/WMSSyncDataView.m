@@ -200,7 +200,13 @@
 
 - (void)drawCellLayer
 {
-    UIBezierPath *path = [UIBezierPath bezierPathWithRect:(CGRect){Cell_Left_Point.x+1.5,Cell_Left_Point.y+1.5, Cell_Width*(self.electricQuantity/MAX_ElectricQuantity)-3,Cell_Height-3}];
+    CGFloat cellWidth = 0;
+    if (self.electricQuantity >= 3) {
+        cellWidth = Cell_Width*(self.electricQuantity/MAX_ElectricQuantity)-3;
+    } else {
+        cellWidth = Cell_Width*(self.electricQuantity/MAX_ElectricQuantity);
+    }
+    UIBezierPath *path = [UIBezierPath bezierPathWithRect:(CGRect){Cell_Left_Point.x+1.5,Cell_Left_Point.y+1.5, cellWidth,Cell_Height-3}];
     path.lineJoinStyle = kCGLineJoinRound;
     path.lineCapStyle = kCGLineCapRound;
     

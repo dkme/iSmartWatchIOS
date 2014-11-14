@@ -9,6 +9,7 @@
 #import "WMSSelectValueViewController.h"
 #import "WMSSmartClockViewController.h"
 #import "NSDate+Formatter.h"
+#import "UIDatePicker+Time.h"
 
 #define TableView_Frame ( CGRectMake(0, 66, self.view.bounds.size.width, self.view.bounds.size.height) )
 #define DatePicker_Frame ( CGRectMake(0, (self.view.bounds.size.height-160)/2, 320, 160) )
@@ -46,10 +47,7 @@
     if (!_datePicker) {
         _datePicker = [[UIDatePicker alloc] initWithFrame:DatePicker_Frame];
         _datePicker.datePickerMode = UIDatePickerModeTime;
-        
-        NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_alarmClockHour,_alarmClockMinute];
-        NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
-        _datePicker.date = date;
+        _datePicker.locale = [NSLocale systemLocale];
     }
     return _datePicker;
 }
@@ -110,8 +108,10 @@
     switch (self.selectIndex) {
         case SmartClockTimeCell:
         {
+            NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_alarmClockHour,_alarmClockMinute];
+            NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
+            [self.datePicker setPickerDate:date];
             [self.view addSubview:self.datePicker];
-            //DEBUGLog(@"datePicker bounds:%f,%f",self.datePicker.bounds.size.width,self.datePicker.bounds.size.height);
             break;
         }
         case SmartClockSleepTimeCell:

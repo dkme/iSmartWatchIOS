@@ -27,8 +27,11 @@
 @property (nonatomic, strong) NSArray *plottingValues;
 @property (nonatomic, strong) NSArray *plottingPointsLabels;
 @property (nonatomic, strong) NSArray *barColors;
-@property (nonatomic, strong) UIColor* barColor;
-@property (nonatomic, strong) UIColor* barOuterColor;
-@property (nonatomic, assign) float barWidth;
-
+@property (nonatomic, strong) UIColor *barColor;
+@property (nonatomic, strong) UIColor *selectedBarColor;
+@property (nonatomic, strong) UIColor *barOuterColor;
+@property (nonatomic, strong) NSArray *barTags;
+@property (nonatomic, assign) CGFloat  barWidth;
+@property (nonatomic, assign) NSInteger barSelectedTag;
+@property (nonatomic, assign) CGFloat  barDefaultHeight;
 @end

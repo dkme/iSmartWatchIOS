@@ -23,6 +23,7 @@
 #import <UIKit/UIKit.h>
 
 @class PNBar;
+@protocol PNBarChartViewDelegate;
 
 @interface PNBarChartView : UIView
 
@@ -30,6 +31,9 @@
 @property (nonatomic, strong) NSArray *xAxisValues;
 @property (nonatomic, assign) NSInteger xAxisFontSize;
 @property (nonatomic, strong) UIColor*  xAxisFontColor;
+
+@property (nonatomic, assign) NSInteger yAxisFontSize;
+@property (nonatomic, strong) UIColor *yAxisFontColor;
 @property (nonatomic, assign) NSInteger numberOfVerticalElements;
 
 @property (nonatomic, strong) UIColor * horizontalLinesColor;
@@ -58,9 +62,13 @@
 @property (nonatomic, readonly, strong) NSMutableArray *plots;
 
 
+@property (nonatomic) id<PNBarChartViewDelegate> delegate;
 
+@property (nonatomic) BOOL xScrollEanble;
 
+@property (nonatomic, assign) BOOL adjustsSelectedBarToShow;
 
+@property (nonatomic, assign) float chartIntervalToYAxis;//图表与y轴的间距
 
 /**
  *  this method will add a Plot to the graph.
@@ -69,5 +77,20 @@
  */
 - (void)addPlot:(PNBar *)newPlot;
 
+- (void)clearPlot;
+
 - (void)update;
+
+- (BOOL)isNeedXscroll;
+
+@end
+
+
+@protocol PNBarChartViewDelegate <NSObject>
+
+@optional
+//- (UIColor *)barChartView:(PNBarChartView *)chartView colorOfselectedBarInPNBar:(PNBar *)pnBar;
+
+- (void)barChartView:(PNBarChartView *)chartView didSelectBarTag:(NSInteger)barTag atPNBar:(PNBar *)pnBar;
+
 @end

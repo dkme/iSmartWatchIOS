@@ -19,6 +19,10 @@
 
 - (NSArray *)querySleepData:(NSDate *)sleepDate;
 
+- (NSArray *)querySleepDataWithYear:(NSUInteger)year month:(NSUInteger)month;
+
+- (NSDate *)queryEarliestDate;
+
 - (BOOL)updateSleepData:(WMSSleepModel *)model;
 
 - (BOOL)deleteAllSleepData;

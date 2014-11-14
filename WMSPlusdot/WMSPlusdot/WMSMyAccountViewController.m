@@ -7,15 +7,19 @@
 //
 
 #import "WMSMyAccountViewController.h"
-#import "WMSNavBarView.h"
-#import "WMSAppDelegate.h"
-#import "WMSPersonModel.h"
-#import "NSDate+Formatter.h"
-#import "WMSMyAccessory.h"
 #import "WMSBindingAccessoryViewController.h"
-#import "MBProgressHUD.h"
 #import "WMSLeftViewController.h"
 #import "RESideMenu.h"
+#import "WMSAppDelegate.h"
+
+#import "MBProgressHUD.h"
+#import "WMSNavBarView.h"
+
+#import "WMSMyAccessory.h"
+#import "WMSPersonModel.h"
+
+#import "WMSUserInfoHelper.h"
+#import "NSDate+Formatter.h"
 #import "UIImage+QuartzProc.h"
 
 #define PickerViewHeight    216.f
@@ -34,11 +38,11 @@
 
 #define HeightUnit      @"cm"
 #define WeightUnit      @"kg"
+#define SEX_MAN         1
+#define SEX_WOMAN       0
 
 #define COMPONENT_NUMBER 2
 #define COMPONENT_WIDTH  50.f
-
-#define StrideWithGender(gender,height) ( gender ? 0.415*height : 0.413*height )
 
 #define ButtonSavaFrame ( CGRectMake((ScreenWidth-610/2.0)/2, (ScreenHeight-99/2.0-30), 610/2.0, 99/2.0) )
 
@@ -83,14 +87,15 @@
 
 @implementation WMSMyAccountViewController
 {
-    int mySex;//1表示男，0表示女
-    int myHeight;
-    int myBirthdayYear;
-    int myBirthdayMonth;
-    int myBirthdayDay;
-    int myCurrentWeight;
-    int myTargetWeight;
+    NSUInteger mySex;//1表示男，0表示女
+    NSUInteger myHeight;
+    NSUInteger myBirthdayYear;
+    NSUInteger myBirthdayMonth;
+    NSUInteger myBirthdayDay;
+    NSUInteger myCurrentWeight;
+    NSUInteger myTargetWeight;
     NSString *myName;
+    NSDate *myBirthday;
     UIImage *myImage;
 }
 
@@ -238,7 +243,6 @@
     _pickerViewComponent1Array = [NSMutableArray arrayWithArray:@[@"170",@"180",@"170",@"180"]];
     
     [self setupControl];
-    
     [self localized];
     
     [self loadData];
@@ -285,64 +289,73 @@
     if (myImage) {
         self.imageViewUserImage.image = myImage;
     }
-    
-    if (mySex == 1) {
+    if (mySex == SEX_MAN) {
         self.labelSex.text = NSLocalizedString(@"Male",nil);
         [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"select_man.png"] forState:UIControlStateNormal];
         [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"unselect_woman.png"] forState:UIControlStateNormal];
-    } else if (mySex == 0) {
+    } else if (mySex == SEX_WOMAN) {
         self.labelSex.text = NSLocalizedString(@"Female",nil);
         [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"select_woman.png"] forState:UIControlStateNormal];
         [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"unselect_man.png"] forState:UIControlStateNormal];
     }
-    
-    self.labelHeightValue.text = [NSString stringWithFormat:@"%d%@",myHeight,NSLocalizedString(@"cm",nil)];
-    self.labelCurrentWeight.text = [NSString stringWithFormat:@"%d%@",myCurrentWeight,NSLocalizedString(@"kg",nil)];
-    self.labelTargetWeight.text = [NSString stringWithFormat:@"%d%@",myTargetWeight,NSLocalizedString(@"kg",nil)];
-    
-    self.labelBirthdayYear.text = [NSString stringWithFormat:@"%d%@",myBirthdayYear,NSLocalizedString(@"Year",nil)];
-    self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%d%@%d%@",myBirthdayMonth,NSLocalizedString(@"Month",nil),myBirthdayDay,NSLocalizedString(@"Day",nil)];
+    self.labelHeightValue.text = [NSString stringWithFormat:@"%ld%@",myHeight,NSLocalizedString(@"cm",nil)];
+    self.labelCurrentWeight.text = [NSString stringWithFormat:@"%ld%@",myCurrentWeight,NSLocalizedString(@"kg",nil)];
+    self.labelTargetWeight.text = [NSString stringWithFormat:@"%ld%@",myTargetWeight,NSLocalizedString(@"kg",nil)];
+    self.labelBirthdayYear.text = [NSString stringWithFormat:@"%ld%@",myBirthdayYear,NSLocalizedString(@"Year",nil)];
+    self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%ld%@%ld%@",myBirthdayMonth,NSLocalizedString(@"Month",nil),myBirthdayDay,NSLocalizedString(@"Day",nil)];
 }
 
 #pragma mark - Data
 //加载初始数据
 - (void)loadData
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    myName = [userDefaults stringForKey:@"name"];
-    if (!myName || [myName isEqualToString:@""]) {//若为@""，则使用登陆时的用户名
-        NSDictionary *readData =  [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
-        myName = [readData objectForKey:@"userName"];
-    }
-    myImage = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
-    NSDate *birthday = [userDefaults valueForKey:@"birthday"];
-    mySex = [userDefaults integerForKey:@"gender"];
-    myHeight = [userDefaults integerForKey:@"height"];
-    myCurrentWeight = [userDefaults integerForKey:@"currentWeight"];
-    myTargetWeight = [userDefaults integerForKey:@"targetWeight"];
-    
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    myName = [userDefaults stringForKey:@"name"];
+//    if (!myName || [myName isEqualToString:@""]) {//若为@""，则使用登陆时的用户名
+//        NSDictionary *readData =  [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
+//        myName = [readData objectForKey:@"userName"];
+//    }
+//    myImage = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
+//    NSDate *birthday = [userDefaults valueForKey:@"birthday"];
+//    mySex = [userDefaults integerForKey:@"gender"];
+//    myHeight = [userDefaults integerForKey:@"height"];
+//    myCurrentWeight = [userDefaults integerForKey:@"currentWeight"];
+//    myTargetWeight = [userDefaults integerForKey:@"targetWeight"];
+//    
+//    myBirthdayYear = [NSDate yearOfDate:birthday];
+//    myBirthdayMonth = [NSDate monthOfDate:birthday];
+//    myBirthdayDay = [NSDate dayOfDate:birthday];
+//    
+//    if (myHeight <= 0) {
+//        myHeight = 170;
+//    }
+//    if (myCurrentWeight <= 0) {
+//        myCurrentWeight = 60;
+//    }
+//    if (myTargetWeight <= 0) {
+//        myTargetWeight = 60;
+//    }
+//    if (myBirthdayYear <= 0) {
+//        myBirthdayYear = 1970;
+//    }
+//    if (myBirthdayMonth <= 0) {
+//        myBirthdayMonth = 1;
+//    }
+//    if (myBirthdayDay <= 0) {
+//        myBirthdayDay = 1;
+//    }
+    WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
+    myName = model.name;
+    mySex = model.gender;
+    myHeight = model.height;
+    myCurrentWeight = model.currentWeight;
+    myTargetWeight = model.targetWeight;
+    myImage = model.image;
+    NSDate *birthday = model.birthday;
     myBirthdayYear = [NSDate yearOfDate:birthday];
     myBirthdayMonth = [NSDate monthOfDate:birthday];
     myBirthdayDay = [NSDate dayOfDate:birthday];
     
-    if (myHeight <= 0) {
-        myHeight = 170;
-    }
-    if (myCurrentWeight <= 0) {
-        myCurrentWeight = 60;
-    }
-    if (myTargetWeight <= 0) {
-        myTargetWeight = 60;
-    }
-    if (myBirthdayYear <= 0) {
-        myBirthdayYear = 1970;
-    }
-    if (myBirthdayMonth <= 0) {
-        myBirthdayMonth = 1;
-    }
-    if (myBirthdayDay <= 0) {
-        myBirthdayDay = 1;
-    }
 }
 //保存用户信息
 - (void)savaPersonInfoBirthday:(NSDate *)birthday stride:(NSUInteger)stride

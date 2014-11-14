@@ -114,6 +114,13 @@
     
     [self initView];
 }
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 - (void)dealloc
 {
     DEBUGLog(@"WMSActivityRemindViewController dealloc");
@@ -121,24 +128,10 @@
     self.tableView.delegate = nil;
     self.navigationController.delegate = nil;
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (void)initView
 {
-    NSArray *array = [self loadActivityRemind];
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    NSString *identifier = bleControl.connectedPeripheral.UUIDString;
-    WMSActivityModel *model = nil;
-    for (NSDictionary *dicObj in array) {
-        if (identifier == nil) {
-            identifier = @"";
-        }
-        model = [dicObj objectForKey:identifier];
-    }
+    WMSActivityModel *model = [self loadActivityRemind];
     if (model == nil) {
         activityStatus = YES;
         activityStartHour = DEFAULT_HOUR;
@@ -159,50 +152,27 @@
     self.cellSwitch.on = activityStatus;
 }
 
-//
-- (NSString *)filePath:(NSString *)fileName
+- (WMSActivityModel *)loadActivityRemind
 {
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [array objectAtIndex:0];
-    
-    return [path stringByAppendingPathComponent:fileName];
-}
-
-- (NSArray *)loadActivityRemind
-{
-    NSString *fileName = [self filePath:SavaActivityFileName];
+    NSString *fileName = FilePath(SavaActivityFileName);
     NSData *data = [NSData dataWithContentsOfFile:fileName];
     if ([data length] > 0) {
         NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-        NSArray *clockArray = [unArchiver decodeObjectForKey:ArchiverKey];
+        WMSActivityModel *model = [unArchiver decodeObjectForKey:ArchiverKey];
         [unArchiver finishDecoding];
         
-        return clockArray;
+        return model;
     }
     return nil;
 }
 
 - (void)savaActivityModel:(WMSActivityModel *)model
 {
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    NSString *identifier = bleControl.connectedPeripheral.UUIDString;
-    
-    int index = [self isExistForBleIdentifier:identifier];//是否已存在这个identifier
-    NSArray *savedData = [self loadActivityRemind];
-    NSString *key = (identifier==nil?@"":identifier);
-    NSDictionary *dictionary = @{key:model};
-    NSMutableArray *writeData = [NSMutableArray arrayWithArray:savedData];
-    if (index >= 0) {//存在，则替换成新的数据
-        [writeData replaceObjectAtIndex:index withObject:dictionary];
-    } else {//不存在，则添加新的数据，保留旧的数据
-        [writeData addObject:dictionary];
-    }
-    
     //coding
-    NSString *fileName = [self filePath:SavaActivityFileName];
+    NSString *fileName = FilePath(SavaActivityFileName);
     NSMutableData *data = [NSMutableData data];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:writeData forKey:ArchiverKey];
+    [archiver encodeObject:model forKey:ArchiverKey];
     [archiver finishEncoding];
     [data writeToFile:fileName atomically:YES];
 }

@@ -41,6 +41,9 @@
 		2316509919AB4E650066C301 /* back_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 2316509719AB4E650066C301 /* back_btn_b.png */; };
 		2316961519C7062500E3CA24 /* WMSMyAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316961319C7062500E3CA24 /* WMSMyAccessoryViewController.m */; };
 		2316961619C7062500E3CA24 /* WMSMyAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2316961419C7062500E3CA24 /* WMSMyAccessoryViewController.xib */; };
+		23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 23197EFB1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m */; };
+		23197F051A10BB8A00DDC3B3 /* model.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23197F041A10BB8A00DDC3B3 /* model.plist */; };
+		231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 231C80EC1A15A0FB0038BD79 /* GGIAnnulusView.m */; };
 		2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2321B78019B9500900278677 /* NSMutableArray+Stack.m */; };
 		2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323686019C1A30200E666D3 /* WMSPersonModel.m */; };
 		2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40119A58CCF0098657B /* main_circle_orange.png */; };
@@ -155,6 +158,7 @@
 		2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2378A3EC1A00F06100187836 /* AudioToolbox.framework */; };
 		2378A3F01A00F29F00187836 /* 嘀嘀报警声.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */; };
 		2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */; };
+		238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */; };
 		23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */; };
 		239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 239569CE19EFCE2800CABEDC /* Default-568h@2x.png */; };
 		23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */; };
@@ -166,6 +170,7 @@
 		23C74B0419A72F0B00C589A1 /* main_wakeup_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */; };
 		23C74B0719A733FA00C589A1 /* main_clock_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */; };
 		23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */; };
+		23CB0B791A1358140057E0A8 /* UIDatePicker+Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB0B781A1358140057E0A8 /* UIDatePicker+Time.m */; };
 		23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0C19C92C9D00DC915A /* MBProgressHUD.m */; };
 		23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0F19C9942D00DC915A /* WMSSleepModel.m */; };
 		23CBBF9219C1516700A3DA4C /* WMSSportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CBBF9119C1516700A3DA4C /* WMSSportModel.m */; };
@@ -240,6 +245,11 @@
 		2316961219C7062500E3CA24 /* WMSMyAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMyAccessoryViewController.h; sourceTree = "<group>"; };
 		2316961319C7062500E3CA24 /* WMSMyAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMyAccessoryViewController.m; sourceTree = "<group>"; };
 		2316961419C7062500E3CA24 /* WMSMyAccessoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSMyAccessoryViewController.xib; sourceTree = "<group>"; };
+		23197EFA1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSHistoryVCHelper.h; sourceTree = "<group>"; };
+		23197EFB1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSHistoryVCHelper.m; sourceTree = "<group>"; };
+		23197F041A10BB8A00DDC3B3 /* model.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = model.plist; sourceTree = "<group>"; };
+		231C80EB1A15A0FB0038BD79 /* GGIAnnulusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGIAnnulusView.h; sourceTree = "<group>"; };
+		231C80EC1A15A0FB0038BD79 /* GGIAnnulusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGIAnnulusView.m; sourceTree = "<group>"; };
 		2321B77F19B9500900278677 /* NSMutableArray+Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Stack.h"; sourceTree = "<group>"; };
 		2321B78019B9500900278677 /* NSMutableArray+Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Stack.m"; sourceTree = "<group>"; };
 		2321B78319B95E8E00278677 /* WMSBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBluetooth.h; sourceTree = "<group>"; };
@@ -401,6 +411,8 @@
 		2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "嘀嘀报警声.m4a"; sourceTree = "<group>"; };
 		2388E5C019ED25A8005864D4 /* WMSHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSHTTPRequest.h; sourceTree = "<group>"; };
 		2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSHTTPRequest.m; sourceTree = "<group>"; };
+		238E2F051A0A1E1300FBABD9 /* WMSUserInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSUserInfoHelper.h; sourceTree = "<group>"; };
+		238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSUserInfoHelper.m; sourceTree = "<group>"; };
 		23911F1C19C290F8006E9CAF /* WMSSyncDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncDataView.h; sourceTree = "<group>"; };
 		23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncDataView.m; sourceTree = "<group>"; };
 		239569CE19EFCE2800CABEDC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -417,6 +429,8 @@
 		23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_wakeup_icon.png; sourceTree = "<group>"; };
 		23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_clock_btn_a.png; sourceTree = "<group>"; };
 		23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_clock_btn_b.png; sourceTree = "<group>"; };
+		23CB0B771A1358140057E0A8 /* UIDatePicker+Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDatePicker+Time.h"; sourceTree = "<group>"; };
+		23CB0B781A1358140057E0A8 /* UIDatePicker+Time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDatePicker+Time.m"; sourceTree = "<group>"; };
 		23CB9F0B19C92C9D00DC915A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		23CB9F0C19C92C9D00DC915A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		23CB9F0E19C9942D00DC915A /* WMSSleepModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSleepModel.h; sourceTree = "<group>"; };
@@ -607,6 +621,7 @@
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
 				2311611619B1A2620012B066 /* NSDate+Formatter */,
 				2378A3E119FFB0A000187836 /* UIViewController+Tip */,
+				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -691,6 +706,15 @@
 			name = "我的配件视图";
 			sourceTree = "<group>";
 		};
+		231C80EA1A15A0C30038BD79 /* AnnulusView */ = {
+			isa = PBXGroup;
+			children = (
+				231C80EB1A15A0FB0038BD79 /* GGIAnnulusView.h */,
+				231C80EC1A15A0FB0038BD79 /* GGIAnnulusView.m */,
+			);
+			name = AnnulusView;
+			sourceTree = "<group>";
+		};
 		2321B78219B950ED00278677 /* NSMutableArray+Stack */ = {
 			isa = PBXGroup;
 			children = (
@@ -724,6 +748,7 @@
 		2326A44C19A604B80098657B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				231C80EA1A15A0C30038BD79 /* AnnulusView */,
 				2316508419AB15560066C301 /* LeftViewController Cell */,
 				2316507A19AAE4AA0066C301 /* WMSSwitchCell */,
 				2316507E19AB14D50066C301 /* MySportView */,
@@ -936,6 +961,10 @@
 				2354A5F119EE180C00751E92 /* WMSRegularExpressions.m */,
 				236032F919FE3AE800A77B22 /* WMSRemindHelper.h */,
 				236032FA19FE3AE800A77B22 /* WMSRemindHelper.m */,
+				238E2F051A0A1E1300FBABD9 /* WMSUserInfoHelper.h */,
+				238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */,
+				23197EFA1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.h */,
+				23197EFB1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -1125,6 +1154,15 @@
 			name = "我的睡眠视图 Icon";
 			sourceTree = "<group>";
 		};
+		23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */ = {
+			isa = PBXGroup;
+			children = (
+				23CB0B771A1358140057E0A8 /* UIDatePicker+Time.h */,
+				23CB0B781A1358140057E0A8 /* UIDatePicker+Time.m */,
+			);
+			name = "UIDatePicker+Time";
+			sourceTree = "<group>";
+		};
 		23CB9F0A19C92C7500DC915A /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -1198,6 +1236,7 @@
 		F4F037C019F23A9D0083DEE1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				23197F041A10BB8A00DDC3B3 /* model.plist */,
 				F4F037C119F23B110083DEE1 /* procotol.txt */,
 				2378A3EE1A00F28D00187836 /* Sounds */,
 				232846F419A43D0D001C148D /* Images */,
@@ -1355,6 +1394,7 @@
 				2316509919AB4E650066C301 /* back_btn_b.png in Resources */,
 				232846FA19A441FC001C148D /* login_btn_b.png in Resources */,
 				2316509819AB4E650066C301 /* back_btn_a.png in Resources */,
+				23197F051A10BB8A00DDC3B3 /* model.plist in Resources */,
 				23C74B0219A72EFA00C589A1 /* main_lightsleep_icon.png in Resources */,
 				23C74B0719A733FA00C589A1 /* main_clock_btn_a.png in Resources */,
 				232846FD19A442F3001C148D /* login_arrow_a.png in Resources */,
@@ -1403,12 +1443,14 @@
 				2316507D19AAEA350066C301 /* WMSMySportView.m in Sources */,
 				2331CDA119B84AB500719976 /* WMSMyTimers.m in Sources */,
 				237545DB19AF229C00685CD1 /* WMSActivityRemindViewController.m in Sources */,
+				23CB0B791A1358140057E0A8 /* UIDatePicker+Time.m in Sources */,
 				2335119119A476EF00FBCC81 /* WMSSignupViewController.m in Sources */,
 				23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */,
 				2326A45019A605660098657B /* WMSSwitchCell.m in Sources */,
 				2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */,
 				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
 				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
+				238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */,
 				2316508819AB30D90066C301 /* WMSMySleepView.m in Sources */,
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
 				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
@@ -1434,6 +1476,7 @@
 				232846F219A43825001C148D /* WMSLoginViewController.m in Sources */,
 				2378A3D919FF405500187836 /* WMSRemindWayViewController.m in Sources */,
 				236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */,
+				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,
 				2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */,
 				23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */,
 				23D7CEFF19B5C49C00DFA678 /* LGCentralManager.m in Sources */,
@@ -1449,6 +1492,7 @@
 				23D7CF0319B5C49C00DFA678 /* LGUtils.m in Sources */,
 				2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */,
 				2316509319AB4A180066C301 /* WMSSmartClockViewController.m in Sources */,
+				23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
 				23CDDD9919AC2DBB00A12820 /* WMSSelectValueViewController.m in Sources */,
@@ -1559,7 +1603,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "22b8bc6f-0fa4-4694-bc24-ef9cd8ed0bf0";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "ad hoc distribution";
@@ -1664,7 +1708,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "22b8bc6f-0fa4-4694-bc24-ef9cd8ed0bf0";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1681,7 +1725,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "22b8bc6f-0fa4-4694-bc24-ef9cd8ed0bf0";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

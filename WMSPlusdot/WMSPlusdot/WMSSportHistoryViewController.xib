@@ -28,7 +28,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" id="76V-Tw-5rH">
+                <view hidden="YES" contentMode="scaleToFill" id="76V-Tw-5rH">
                     <rect key="frame" x="0.0" y="75" width="320" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -62,12 +62,12 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" id="oce-S3-Rdl" customClass="PNLineChartView">
-                    <rect key="frame" x="0.0" y="135" width="320" height="319"/>
+                <view hidden="YES" contentMode="scaleToFill" id="oce-S3-Rdl" customClass="PNLineChartView">
+                    <rect key="frame" x="0.0" y="91" width="320" height="319"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                 </view>
-                <view contentMode="scaleToFill" id="fQT-sb-HDH">
+                <view hidden="YES" contentMode="scaleToFill" id="fQT-sb-HDH">
                     <rect key="frame" x="0.0" y="454" width="320" height="115"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>

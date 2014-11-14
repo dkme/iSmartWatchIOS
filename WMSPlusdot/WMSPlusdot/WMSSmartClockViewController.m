@@ -119,29 +119,20 @@
     [self initView];
 }
 
-- (void)dealloc
-{
-    DEBUGLog(@"WMSSmartClockViewController dealloc");
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc
+{
+    DEBUGLog(@"WMSSmartClockViewController dealloc");
+}
+
 - (void)initView
 {
-    WMSAlarmClockModel *model = nil;
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    NSString *identifier = bleControl.connectedPeripheral.UUIDString;
-    NSArray *array = [self loadAlarmClock];
-    for (NSDictionary *dicObj in array) {
-        if (identifier == nil) {
-            identifier = @"";
-        }
-        model = [dicObj objectForKey:identifier];
-    }
+    WMSAlarmClockModel *model = [self loadAlarmClock];
     if (model == nil) {
         alarmClockStatus = YES;
         alarmClockHour = DEFAULT_START_HOUR;
@@ -158,51 +149,27 @@
     self.cellSwitch.on = alarmClockStatus;
 }
 
-//
-- (NSString *)filePath:(NSString *)fileName
+- (WMSAlarmClockModel *)loadAlarmClock
 {
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [array objectAtIndex:0];
-    
-    return [path stringByAppendingPathComponent:fileName];
-}
-
-- (NSArray *)loadAlarmClock
-{
-    NSString *fileName = [self filePath:SavaAlramClockFileName];
+    NSString *fileName = FilePath(SavaAlramClockFileName);
     NSData *data = [NSData dataWithContentsOfFile:fileName];
     if ([data length] > 0) {
         NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-        NSArray *clockArray = [unArchiver decodeObjectForKey:ArchiverKey];
+        WMSAlarmClockModel *model= [unArchiver decodeObjectForKey:ArchiverKey];
         [unArchiver finishDecoding];
         
-        return clockArray;
+        return model;
     }
     return nil;
 }
 
 - (void)savaAlarmClock:(WMSAlarmClockModel *)model
 {
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    NSString *identifier = bleControl.connectedPeripheral.UUIDString;
-    
-    int index = [self isExistForBleIdentifier:identifier];//是否已存在这个identifier
-    NSArray *savedData = [self loadAlarmClock];
-    NSString *key = (identifier==nil?@"":identifier);
-    NSDictionary *dictionary = @{key:model};
-    NSMutableArray *writeData = [NSMutableArray arrayWithArray:savedData];
-    if (index >= 0) {//存在，则替换成新的数据
-        //[writeData addObject:dictionary];
-        [writeData replaceObjectAtIndex:index withObject:dictionary];
-    } else {//不存在，则添加新的数据，保留旧的数据
-        [writeData addObject:dictionary];
-    }
-    
     //coding
-    NSString *fileName = [self filePath:SavaAlramClockFileName];
+    NSString *fileName = FilePath(SavaAlramClockFileName);
     NSMutableData *data = [NSMutableData data];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:writeData forKey:ArchiverKey];
+    [archiver encodeObject:model forKey:ArchiverKey];
     [archiver finishEncoding];
     [data writeToFile:fileName atomically:YES];
 }

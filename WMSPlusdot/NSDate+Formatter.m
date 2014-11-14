@@ -8,34 +8,54 @@
 
 #import "NSDate+Formatter.h"
 
-const NSInteger oneDayTimeInterval = 24*60*60;
+const NSTimeInterval oneDayTimeInterval = 24*60*60;
+const NSTimeInterval hour8TimeInterval = 8*60*60;
 
 @implementation NSDate (Formatter)
 
++ (NSDate *)systemDate
+{
+    //获取的系统时间会少8h，所以将获取的系统时间加上8h，才是正确的系统时间
+    return [NSDate dateWithTimeIntervalSinceNow:hour8TimeInterval];
+}
+
++ (NSString *)stringFromDate:(NSDate *)date format:(NSString *)dateFormat
+{
+    //NSDate---->NSString   会多8h，所以先减8h
+    NSDate *newDate = [NSDate dateWithTimeInterval:(-1*hour8TimeInterval) sinceDate:date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = dateFormat;
+    return [formatter stringFromDate:newDate];
+}
+
++ (NSDate *)dateFromString:(NSString *)dateString format:(NSString *)formatter
+{
+    //NSString---->NSDate   会少8h，所以结果要加8h
+    NSDateFormatter *dateFormatter= [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = formatter;
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    return [NSDate dateWithTimeInterval:hour8TimeInterval sinceDate:date];
+}
+
+
 + (NSUInteger)yearOfDate:(NSDate *)date
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy";
-    NSString *strYear = [dateFormatter stringFromDate:date];
+    NSString *strYear = [NSDate stringFromDate:date format:@"yyyy"];
     
     return [strYear integerValue];
 }
 
 + (NSUInteger)monthOfDate:(NSDate *)date
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"MM";
-    NSString *strMonth = [dateFormatter stringFromDate:date];
+    NSString *strMonth = [NSDate stringFromDate:date format:@"MM"];
     
     return [strMonth integerValue];
 }
 
 + (NSUInteger)dayOfDate:(NSDate *)date
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"dd";
-    NSString *strDay = [dateFormatter stringFromDate:date];
-
+    NSString *strDay = [NSDate stringFromDate:date format:@"dd"];
+    
     return [strDay integerValue];
 }
 
@@ -68,34 +88,15 @@ const NSInteger oneDayTimeInterval = 24*60*60;
     }
 }
 
-+ (NSString *)formatDate:(NSDate *)date withFormat:(NSString *)dateFormat
-{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = dateFormat;
-    return [formatter stringFromDate:date];
-}
-
-+ (NSDate *)dateFromString:(NSString *)dateString format:(NSString *)formatter
-{    
-    NSDateFormatter *dateFormatter= [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:formatter];
-    NSDate *date = [dateFormatter dateFromString:dateString];
-    return [NSDate dateWithTimeInterval:24*60*60 sinceDate:date];
-}
-
-+ (NSInteger)daysOfDuringDate:(NSDate *)date1 andDate:(NSDate *)date2
++ (NSUInteger)daysOfDuringDate:(NSDate *)date1 andDate:(NSDate *)date2
 {
     //只保留日期中的年月日
     NSString *date1String = [[date1 description] substringToIndex:10];
     NSString *date2String = [[date2 description] substringToIndex:10];
-    //DEBUGLog(@"date1String:%@,date2String:%@",date1String,date2String);
     NSDate *dt1 = [NSDate dateFromString:date1String format:@"yyyy-MM-dd"];
     NSDate *dt2 = [NSDate dateFromString:date2String format:@"yyyy-MM-dd"];
-    //DEBUGLog(@"dt1:%@,dt2:%@",[dt1 description],[dt2 description]);
     NSTimeInterval interval = [dt1 timeIntervalSinceDate:dt2];
-    //DEBUGLog(@"interval:%f",interval);
-    //DEBUGLog(@"days:%f",interval/60/60/24);
-    return (interval/60/60/24);
+    return (interval/oneDayTimeInterval);
 }
 
 @end

@@ -12,6 +12,7 @@
 #import "RESideMenu.h"
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSContentViewController.h"
+#import "UIViewController+Tip.h"
 
 #import "WMSAppDelegate.h"
 #import "MBProgressHUD.h"
@@ -100,25 +101,30 @@
     [actionSheet showInView:self.view];
 }
 
-- (void)showTip
+- (void)showBindingTip:(BOOL)successOrFail
 {
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    hud.mode = MBProgressHUDModeText;
-    hud.minSize = CGSizeMake(250, 60);
-    //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
-    hud.yOffset = ScreenHeight/2.0-60;
-    hud.xOffset = 0;
-    hud.labelText = NSLocalizedString(@"绑定成功", nil);
-    [self.view addSubview:hud];
-    [hud showAnimated:YES whileExecutingBlock:^{
-        sleep(1);
-    } completionBlock:^{
-        [hud removeFromSuperview];
-    }];
+//    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+//    hud.mode = MBProgressHUDModeText;
+//    hud.minSize = CGSizeMake(250, 60);
+//    //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
+//    hud.yOffset = ScreenHeight/2.0-60;
+//    hud.xOffset = 0;
+//    hud.labelText = NSLocalizedString(@"绑定成功", nil);
+//    [self.view addSubview:hud];
+//    [hud showAnimated:YES whileExecutingBlock:^{
+//        sleep(1);
+//    } completionBlock:^{
+//        [hud removeFromSuperview];
+//    }];
+    if (successOrFail) {
+        [self showTip:NSLocalizedString(@"绑定成功", nil)];
+    } else {
+        [self showTip:NSLocalizedString(@"绑定失败", nil)];
+    }
     
-    WMSLeftViewController *leftVC = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
-    WMSContentViewController *vc = leftVC.contentVCArray[0];
-    [vc scanAndConnectPeripheral];
+//    WMSLeftViewController *leftVC = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
+//    WMSContentViewController *vc = leftVC.contentVCArray[0];
+//    [vc scanAndConnectPeripheral];
 }
 
 

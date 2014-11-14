@@ -47,7 +47,8 @@
 
 #define AXIX_LINE_WIDTH (0.5)
 
-
+#define BUTTON_TAG_INITIAL_VALUE    (100)
+#define BAR_SELECTED_COLOR  [UIColor whiteColor]
 
 #pragma mark -
 
@@ -55,10 +56,16 @@
 
 @property (nonatomic, strong) NSString* fontName;
 @property (nonatomic, assign) CGPoint contentScroll;
+@property (nonatomic, strong) PNBar *pnBar;
+@property (nonatomic, assign) NSInteger selectedBarButtonTag;
 @end
 
 
 @implementation PNBarChartView
+{
+    CGRect _touchBeganRect;
+    CGRect _touchEndRect;
+}
 
 
 #pragma mark -
@@ -70,6 +77,8 @@
     self.numberOfVerticalElements=NUMBER_VERTICAL_ELEMENTS;
     self.xAxisFontColor = [UIColor darkGrayColor];
     self.xAxisFontSize = AXIS_FONT_SIZE;
+    self.yAxisFontColor = [UIColor darkGrayColor];
+    self.yAxisFontSize = AXIS_FONT_SIZE;
     self.horizontalLinesColor = [UIColor lightGrayColor];
     
     self.horizontalLineInterval = HORIZONTAL_LINE_SPACES;
@@ -82,6 +91,9 @@
     self.axisLineWidth = AXIX_LINE_WIDTH;
     
     self.floatNumberFormatterString = FLOAT_NUMBER_FORMATTER_STRING;
+    
+    self.xScrollEanble = NO;
+    self.adjustsSelectedBarToShow = YES;
 }
 
 - (instancetype)init {
@@ -131,6 +143,19 @@
         _plots = [NSMutableArray array];
     }
     
+    self.pnBar = newPlot;
+    self.selectedBarButtonTag = newPlot.barSelectedTag+BUTTON_TAG_INITIAL_VALUE;
+    
+    if ([self isNeedXscroll]==YES && self.adjustsSelectedBarToShow) {
+        CGFloat startWidth = self.axisLeftLineWidth;
+        CGFloat coordinateSystemWidth = self.bounds.size.width-startWidth;
+        CGFloat chartWidth = self.pointerInterval*(newPlot.barSelectedTag-1)+self.pnBar.barWidth+self.chartIntervalToYAxis;
+        CGFloat mod = Rounded(chartWidth) % Rounded(coordinateSystemWidth);
+        int multiple = (chartWidth - coordinateSystemWidth) / coordinateSystemWidth;
+        CGFloat offset = multiple * coordinateSystemWidth + mod;
+        _contentScroll.x = -1*offset;
+    }
+    
     [self.plots addObject:newPlot];
     
     [self layoutIfNeeded];
@@ -147,81 +172,91 @@
     [self setNeedsDisplay];
 }
 
+- (BOOL)isNeedXscroll
+{
+    CGFloat chartWidth = self.pointerInterval*(self.xAxisValues.count-1)+self.pnBar.barWidth+self.chartIntervalToYAxis;
+    if (chartWidth > self.frame.size.width) {
+        return YES;
+    }
+    return NO;
+}
+
+
+
+#pragma mark - Private Methods
+- (UIColor *)selectedBarColor
+{
+//    UIColor *selectedColor = BAR_SELECTED_COLOR;
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(barChartView:colorOfselectedBarInPNBar:)]) {
+//        selectedColor = [self.delegate barChartView:self colorOfselectedBarInPNBar:self.pnBar];
+//    }
+//    return selectedColor;
+    return self.pnBar.selectedBarColor;
+}
+
 #pragma mark -
 #pragma mark Draw the lineChart
-
+/*
 -(void)drawRect:(CGRect)rect{
+    for (UIView *obj in [self subviews]) {
+        [obj removeFromSuperview];
+    }
+    
     CGFloat startHeight = self.axisBottomLinetHeight;//x轴距离view底部的height
     CGFloat startWidth = self.axisLeftLineWidth;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, 0.0f , self.bounds.size.height);
     CGContextScaleCTM(context, 1, -1);
-    
     // set text size and font
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-    //CGContextSelectFont(context, [self.fontName UTF8String], self.xAxisFontSize, kCGEncodingMacRoman);
     
-  //使用新的方法
-    // Prepare font
-    CTFontRef ctfont = CTFontCreateWithName((CFStringRef)self.fontName, self.xAxisFontSize, NULL);
-    //CTFontRef ctfont = CTFontCreateWithName(CFSTR(""), self.xAxisFontSize, NULL);
-    CGColorRef cgColor = [self.horizontalLinesColor CGColor];
-    
+    //Y轴文字的属性
+    CTFontRef Yctfont = CTFontCreateWithName((CFStringRef)self.fontName, self.yAxisFontSize, NULL);
+    CGColorRef YcgColor = [self.yAxisFontColor CGColor];
     // Create an attributed string
-    CFStringRef keys[] = {kCTFontAttributeName,kCTForegroundColorAttributeName};
-    CFTypeRef values[] = {ctfont,cgColor};
-    CFDictionaryRef attr = CFDictionaryCreate(NULL, (const void **)&keys, (const void **)&values, sizeof(keys)/sizeof(keys[0]), &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    
-  //
-    
+    CFStringRef Ykeys[] = {kCTFontAttributeName,kCTForegroundColorAttributeName};
+    CFTypeRef Yvalues[] = {Yctfont,YcgColor};
+    CFDictionaryRef Yattr = CFDictionaryCreate(NULL, (const void **)&Ykeys, (const void **)&Yvalues, sizeof(Ykeys)/sizeof(Ykeys[0]), &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     
     // draw yAxis 绘制水平线，不包含X轴
     for (int i=1; i<=self.numberOfVerticalElements; i++) {
         int height =self.horizontalLineInterval*i;
         float verticalLine = height + startHeight - self.contentScroll.y;
         
-        CGContextSetLineWidth(context, self.horizontalLineWidth);
-        
         [self.horizontalLinesColor set];
-        
+        CGContextSetLineWidth(context, self.horizontalLineWidth);
         CGContextMoveToPoint(context, startWidth, verticalLine);
         CGContextAddLineToPoint(context, self.bounds.size.width, verticalLine);
         CGContextStrokePath(context);
         
-        
+        //绘制Y轴上的文字
         NSNumber* yAxisVlue = [self.yAxisValues objectAtIndex:i];
-        
         NSString* numberString = [NSString stringWithFormat:self.floatNumberFormatterString, yAxisVlue.floatValue];
         
-        //NSInteger length = [numberString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-        //CGContextShowTextAtPoint(context, 0, verticalLine - self.xAxisFontSize/2, [numberString UTF8String], length);
-//        [numberString drawAtPoint:CGPointMake(0, verticalLine - self.xAxisFontSize/2)
-//                   withAttributes:@{NSFontAttributeName:[UIFont fontWithName:self.fontName size:self.xAxisFontSize]}];
         CFStringRef ctStr = CFStringCreateWithCString(nil, [numberString UTF8String], kCFStringEncodingUTF8);
-        CFAttributedStringRef attrString = CFAttributedStringCreate(NULL,ctStr, attr);
+        CFAttributedStringRef attrString = CFAttributedStringCreate(NULL,ctStr, Yattr);
         CTLineRef line = CTLineCreateWithAttributedString(attrString);
-        CGContextSetTextPosition(context, 0, verticalLine - self.xAxisFontSize/2);
+        CGContextSetTextPosition(context, 0, verticalLine - self.yAxisFontSize/2);
         CTLineDraw(line, context);
         
         CFRelease(line);
         CFRelease(attrString);
         CFRelease(ctStr);
     }
+    CFRelease(Yattr);
+    CFRelease(Yctfont);
     
     
-    // draw lines
+    // draw Bar
     for (int i=0; i<self.plots.count; i++)
     {
         PNBar* plot = [self.plots objectAtIndex:i];
-        
-//        [plot.lineColor set];
-//        CGContextSetLineWidth(context, plot.lineWidth);
-        
+        self.pnBar = plot;
         NSArray* pointArray = plot.plottingValues;
         NSArray *barColors = plot.barColors;
-        
-        // draw lines
+        NSArray *barTags = plot.barTags;
+        // draw Bar
         for (int i=0; i<pointArray.count; i++) {
             NSNumber* value = [pointArray objectAtIndex:i];
             float floatValue = value.floatValue;
@@ -242,17 +277,8 @@
                 
                 float nextWidth = width+ self.pointerInterval;
                 CGContextMoveToPoint(context, nextWidth, nextHeight);
-                //CGContextMoveToPoint(context, startWidth, nextHeight);
-                
                 continue;
             }
-            
-//            if (i==0) {
-//                CGContextMoveToPoint(context,  width, height);
-//            }
-//            else{
-//                CGContextAddLineToPoint(context, width, height);
-//            }
             
             CGRect barRect=CGRectMake(width, startHeight, plot.barWidth, height-startHeight);
             [plot.barOuterColor set];
@@ -263,60 +289,58 @@
             }
             [color set];
             UIRectFill(barRect);
+            
+            NSInteger buttonTag = BUTTON_TAG_INITIAL_VALUE;
+            if (barTags.count >= pointArray.count) {
+                buttonTag = [barTags[i] integerValue]+BUTTON_TAG_INITIAL_VALUE;
+            }
+            UIButton *tapButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            CGRect buttonFrame = barRect;
+            buttonFrame.origin.y = self.frame.size.height - buttonFrame.origin.y-buttonFrame.size.height;
+            tapButton.frame = buttonFrame;
+            tapButton.tag = buttonTag;
+            if (tapButton.tag == self.selectedBarButtonTag) {
+                tapButton.backgroundColor = [self selectedBarColor];
+            } else {
+                tapButton.backgroundColor = [UIColor clearColor];
+            }
+            [tapButton addTarget:self action:@selector(clickedTapButton:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:tapButton];
         }
-        
-//        CGContextStrokePath(context);
-
-        
-        // draw pointer
-//        for (int i=0; i<pointArray.count; i++) {
-//            NSNumber* value = [pointArray objectAtIndex:i];
-//            float floatValue = value.floatValue;
-//            
-//            float height = (floatValue-self.min)/self.interval*self.horizontalLineInterval-self.contentScroll.y+startHeight;
-//            //float width =self.pointerInterval*(i+1)+self.contentScroll.x+ startWidth;//感觉没必要+startHeight（与drow lines中的width对应）
-//            float width =self.pointerInterval*(i+1)+self.contentScroll.x;
-//            
-//            if (width>startWidth){
-//                CGContextFillEllipseInRect(context, CGRectMake(width-POINT_CIRCLE/2, height-POINT_CIRCLE/2, POINT_CIRCLE, POINT_CIRCLE));
-//            }
-//        }
-//        CGContextStrokePath(context);
     }
     
     //绘制x，y轴
-    [self.xAxisFontColor set];
+    [self.yAxisFontColor set];
     CGContextSetLineWidth(context, self.axisLineWidth);
-    
     CGContextMoveToPoint(context, startWidth, startHeight);
     CGContextAddLineToPoint(context, startWidth, self.bounds.size.height);
     CGContextStrokePath(context);//绘制y轴
     
+    [self.horizontalLinesColor set];
     CGContextMoveToPoint(context, startWidth, startHeight);
     CGContextAddLineToPoint(context, self.bounds.size.width, startHeight);
     CGContextStrokePath(context);//绘制x轴
+    
+    //X轴文字的属性
+    // Prepare font
+    CTFontRef Xctfont = CTFontCreateWithName((CFStringRef)self.fontName, self.xAxisFontSize, NULL);
+    CGColorRef XcgColor = [self.xAxisFontColor CGColor];
+    // Create an attributed string
+    CFStringRef Xkeys[] = {kCTFontAttributeName,kCTForegroundColorAttributeName};
+    CFTypeRef Xvalues[] = {Xctfont,XcgColor};
+    CFDictionaryRef Xattr = CFDictionaryCreate(NULL, (const void **)&Xkeys, (const void **)&Xvalues, sizeof(Xkeys)/sizeof(Xkeys[0]), &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     
     // x axis text 绘制x坐标
     for (int i=0; i<self.xAxisValues.count; i++) {
         //float width =self.pointerInterval*(i+1)+self.contentScroll.x+ startHeight;//感觉没必要+startHeight（与drow lines中的width对应）
         float width =self.pointerInterval*(i+1)+self.contentScroll.x;
         float height = self.xAxisFontSize;
-        
         if (width<startWidth) {
             continue;
         }
-
-        
-        //NSInteger length = [[self.xAxisValues objectAtIndex:i] lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-        //CGContextShowTextAtPoint(context, width, height, [[self.xAxisValues objectAtIndex:i] UTF8String], length);
-        
-//        NSString *str = self.xAxisValues[i];
-//        CGPoint point = CGPointMake(width, height);
-//        NSDictionary *attributes = @{NSFontAttributeName:[UIFont fontWithName:self.fontName size:self.xAxisFontSize]};
-//        [str drawAtPoint:point withAttributes:attributes];
         
         CFStringRef ctStr = CFStringCreateWithCString(nil, [[self.xAxisValues objectAtIndex:i] UTF8String], kCFStringEncodingUTF8);
-        CFAttributedStringRef attrString = CFAttributedStringCreate(NULL,ctStr, attr);
+        CFAttributedStringRef attrString = CFAttributedStringCreate(NULL,ctStr, Xattr);
         CTLineRef line = CTLineCreateWithAttributedString(attrString);
         CGContextSetTextPosition(context, width, height);
         CTLineDraw(line, context);
@@ -325,19 +349,212 @@
         CFRelease(attrString);
         CFRelease(ctStr);
     }
-    CFRelease(attr);
-    CFRelease(ctfont);
+    CFRelease(Xattr);
+    CFRelease(Xctfont);
 }
+*/
+-(void)drawRect:(CGRect)rect
+{
+    //准备上下文(这样做，坐标原点在左下角)
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0.0f, self.bounds.size.height);
+    CGContextScaleCTM(context, 1, -1);
+    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+    
+    [self clearupView];
+    [self drawXYAxisAndScale:context];
+    [self drawChart:context];
+}
+
+- (void)clearupView
+{
+    for (UIView *obj in [self subviews]) {
+        [obj removeFromSuperview];
+    }
+}
+
+- (void)drawXYAxisAndScale:(CGContextRef)context
+{
+    CGFloat startHeight = self.axisBottomLinetHeight;//x轴距离view底部的height
+    CGFloat startWidth = self.axisLeftLineWidth;//y轴距离view左边的距离
+    //绘制x，y轴
+    [self.yAxisFontColor set];
+    CGContextSetLineWidth(context, self.axisLineWidth);
+    CGContextMoveToPoint(context, startWidth, startHeight);
+    CGContextAddLineToPoint(context, startWidth, self.bounds.size.height);
+    CGContextStrokePath(context);//绘制y轴
+    
+    [self.horizontalLinesColor set];
+    CGContextSetLineWidth(context, self.axisLineWidth);
+    CGContextMoveToPoint(context, startWidth, startHeight);
+    CGContextAddLineToPoint(context, self.bounds.size.width, startHeight);
+    CGContextStrokePath(context);//绘制x轴
+    
+    //Y轴文字的属性
+    CTFontRef Yctfont = CTFontCreateWithName((CFStringRef)self.fontName, self.yAxisFontSize, NULL);
+    CGColorRef YcgColor = [self.yAxisFontColor CGColor];
+    CFStringRef Ykeys[] = {kCTFontAttributeName,kCTForegroundColorAttributeName};
+    CFTypeRef Yvalues[] = {Yctfont,YcgColor};
+    CFDictionaryRef Yattr = CFDictionaryCreate(NULL, (const void **)&Ykeys, (const void **)&Yvalues, sizeof(Ykeys)/sizeof(Ykeys[0]), &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    // draw yAxis 绘制水平线，不包含X轴
+    for (int i=1; i<=self.numberOfVerticalElements; i++) {
+        int height =self.horizontalLineInterval*i;
+        float verticalLine = height + startHeight - self.contentScroll.y;
+        
+        [self.horizontalLinesColor set];
+        CGContextSetLineWidth(context, self.horizontalLineWidth);
+        CGContextMoveToPoint(context, startWidth, verticalLine);
+        CGContextAddLineToPoint(context, self.bounds.size.width, verticalLine);
+        CGContextStrokePath(context);
+        
+        //绘制Y轴上的文字(刻度)
+        NSNumber *yAxisVlue = [self.yAxisValues objectAtIndex:i];
+        NSString *numberString = [NSString stringWithFormat:self.floatNumberFormatterString, yAxisVlue.floatValue];
+        
+        CFStringRef ctStr = CFStringCreateWithCString(nil, [numberString UTF8String], kCFStringEncodingUTF8);
+        CFAttributedStringRef attrString = CFAttributedStringCreate(NULL,ctStr, Yattr);
+        CTLineRef line = CTLineCreateWithAttributedString(attrString);
+        CGContextSetTextPosition(context, 0, verticalLine - self.yAxisFontSize/2);
+        CTLineDraw(line, context);
+        
+        CFRelease(line);
+        CFRelease(attrString);
+        CFRelease(ctStr);
+    }
+    CFRelease(Yattr);
+    CFRelease(Yctfont);
+    
+    
+    //X轴文字的属性
+    CTFontRef Xctfont = CTFontCreateWithName((CFStringRef)self.fontName, self.xAxisFontSize, NULL);
+    CGColorRef XcgColor = [self.xAxisFontColor CGColor];
+    CFStringRef Xkeys[] = {kCTFontAttributeName,kCTForegroundColorAttributeName};
+    CFTypeRef Xvalues[] = {Xctfont,XcgColor};
+    CFDictionaryRef Xattr = CFDictionaryCreate(NULL, (const void **)&Xkeys, (const void **)&Xvalues, sizeof(Xkeys)/sizeof(Xkeys[0]), &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    //绘制x坐标
+    for (int i=0; i<self.xAxisValues.count; i++) {
+        float width = 0;
+        if (i == 0) {
+            width = self.chartIntervalToYAxis+self.contentScroll.x+startWidth;
+        } else {
+            width = self.chartIntervalToYAxis+self.pointerInterval*i+self.contentScroll.x+startWidth;
+        }
+        float height = self.xAxisFontSize;
+        
+        NSString *strText = [self.xAxisValues objectAtIndex:i];
+        UIFont *theFont = [UIFont fontWithName:self.fontName size:self.xAxisFontSize];
+        CGFloat textWidth = [self textSizeWithText:strText font:theFont].width;
+        CGFloat x = width+(self.pnBar.barWidth-textWidth)/2;//文字居中显示
+        CFStringRef ctStr = CFStringCreateWithCString(nil, [strText UTF8String], kCFStringEncodingUTF8);
+        CFAttributedStringRef attrString = CFAttributedStringCreate(NULL,ctStr, Xattr);
+        CTLineRef line = CTLineCreateWithAttributedString(attrString);
+        CGContextSetTextPosition(context, x, height);
+        CTLineDraw(line, context);
+        
+        CFRelease(line);
+        CFRelease(attrString);
+        CFRelease(ctStr);
+    }
+    CFRelease(Xattr);
+    CFRelease(Xctfont);
+}
+
+- (void)drawChart:(CGContextRef)context
+{
+    CGFloat startHeight = self.axisBottomLinetHeight;
+    CGFloat startWidth = self.axisLeftLineWidth;
+    // draw Bar
+    for (int i=0; i<self.plots.count; i++)
+    {
+        PNBar *plot = [self.plots objectAtIndex:i];
+        self.pnBar = plot;
+        NSArray *pointArray = plot.plottingValues;
+        //NSArray *barColors  = plot.barColors;
+        NSArray *barTags    = plot.barTags;
+        // draw Bar
+        for (int i=0; i<pointArray.count; i++) {
+            NSNumber *value = [pointArray objectAtIndex:i];
+            float floatValue = value.floatValue;
+            
+            float height = (floatValue-self.min)/self.interval*self.horizontalLineInterval-self.contentScroll.y+startHeight + self.pnBar.barDefaultHeight;
+            float width = 0;
+            if (i == 0) {
+                width = self.chartIntervalToYAxis+self.contentScroll.x+startWidth;
+            } else {
+                width = self.chartIntervalToYAxis+self.pointerInterval*i+self.contentScroll.x+startWidth;
+            }
+        
+            CGFloat x = width;
+            CGRect barRect=CGRectMake(x, startHeight, plot.barWidth, height-startHeight);
+            [plot.barOuterColor set];
+            CGContextStrokeRect(context, barRect);
+            [plot.barColor set];
+            UIRectFill(barRect);
+            
+            NSInteger buttonTag = BUTTON_TAG_INITIAL_VALUE;
+            if (barTags.count >= pointArray.count) {
+                buttonTag = [barTags[i] integerValue]+BUTTON_TAG_INITIAL_VALUE;
+            }
+            [self addClickedEvent:barRect tag:buttonTag];
+        }
+    }
+}
+
+- (void)valueToCoordinate
+{
+    
+}
+
+- (void)addClickedEvent:(CGRect)frame tag:(NSInteger)tag
+{
+    UIButton *tapButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect buttonFrame = frame;
+    buttonFrame.origin.y = self.frame.size.height-frame.origin.y-frame.size.height;
+    tapButton.frame = buttonFrame;
+    tapButton.tag = tag;
+    tapButton.userInteractionEnabled = NO;
+    if (tapButton.tag == self.selectedBarButtonTag) {
+        //tapButton.backgroundColor = [self selectedBarColor];
+        [self clickedTapButton:tapButton];
+    } else {
+        tapButton.backgroundColor = [UIColor clearColor];
+    }
+    [tapButton addTarget:self action:@selector(clickedTapButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:tapButton];
+}
+
+- (CGSize)textSizeWithText:(NSString *)text font:(UIFont *)font
+{
+    NSDictionary *attribute = @{NSFontAttributeName:font};
+    NSStringDrawingOptions options = NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+    CGSize size = [text boundingRectWithSize:CGSizeMake(100, 0) options:options  attributes:attribute context:nil].size;
+    return size;
+}
+
 
 #pragma mark -
 #pragma mark touch handling
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [super touchesBegan:touches withEvent:event];
     
+    CGPoint touchPoint=[[touches anyObject] locationInView:self];
+    for (UIView *viewObj in self.subviews) {
+        if ([viewObj class] == [UIButton class]) {
+            UIButton *btn = (UIButton *)viewObj;
+            BOOL result = CGRectContainsPoint(btn.frame, touchPoint);
+            if (result) {
+                _touchBeganRect = btn.frame;
+                break;
+            }
+        }
+    }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [super touchesMoved:touches withEvent:event];
+    
     CGPoint touchLocation=[[touches anyObject] locationInView:self];
     CGPoint prevouseLocation=[[touches anyObject] previousLocationInView:self];
     float xDiffrance=touchLocation.x-prevouseLocation.x;
@@ -364,7 +581,9 @@
     
     
     _contentScroll.y = 0;// close the move up 禁止y轴滑动
-    _contentScroll.x = 0;//禁止x轴滑动
+    if ([self isNeedXscroll] == NO) {
+        _contentScroll.x = 0;//禁止x轴滑动
+    }
     
     [self setNeedsDisplay];
 }
@@ -375,7 +594,48 @@
 }
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    CGPoint touchPoint=[[touches anyObject] locationInView:self];
+    UIButton *clickBtn = nil;
+    for (UIView *viewObj in self.subviews) {
+        if ([viewObj class] == [UIButton class]) {
+            UIButton *btn = (UIButton *)viewObj;
+            BOOL result = CGRectContainsPoint(btn.frame, touchPoint);
+            if (result) {
+                _touchEndRect = btn.frame;
+                clickBtn = btn;
+                break;
+            }
+        }
+    }
     
+    if (CGRectContainsRect(_touchBeganRect, _touchEndRect) && clickBtn) {
+        [self clickedTapButton:clickBtn];
+    }
+    
+    _touchBeganRect = CGRectZero;
+    _touchEndRect = CGRectZero;
+}
+
+
+#pragma mark - Action
+- (void)clickedTapButton:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    self.selectedBarButtonTag = button.tag;
+    for (UIView *view in self.subviews) {
+        UIButton *obj = (UIButton *)view;
+        obj.backgroundColor = [UIColor clearColor];
+    }
+//    UIColor *selectedColor = BAR_SELECTED_COLOR;
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(barChartView:colorOfselectedBarInPNBar:)]) {
+//        selectedColor = [self.delegate barChartView:self colorOfselectedBarInPNBar:self.pnBar];
+//    }
+//    button.backgroundColor = selectedColor;
+    button.backgroundColor = [self selectedBarColor];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(barChartView:didSelectBarTag:atPNBar:)]) {
+        [self.delegate barChartView:self didSelectBarTag:(button.tag-BUTTON_TAG_INITIAL_VALUE) atPNBar:self.pnBar];
+    }
 }
 
 

@@ -27,12 +27,14 @@
 #import "WMSDeviceModel.h"
 #import "WMSMyAccessory.h"
 #import "WMSSportDatabase.h"
+#import "WMSPersonModel.h"
 
 #import "NSDate+Formatter.h"
 #import "WMSAdaptiveMacro.h"
 #import "WMSConstants.h"
+#import "WMSUserInfoHelper.h"
 
-#define Calorie(weight,steps) ( ((weight-15)*0.000693+0.005895) * steps )//单位为cal
+#define TARGET_STEPS    20000
 
 @interface WMSContentViewController ()
 {
@@ -174,12 +176,12 @@
     //[self.labelTargetSetps setText:[NSString stringWithFormat:@"%u",steps]];
     [self.labelTargetSetps setAttributedText:text];
     [self.labelTargetSetps setAdjustsFontSizeToFitWidth:YES];
-    [self.mySportView setTargetSetps:steps];
+    [self.mySportView setTargetSetps:(int)steps];
 }
 - (void)setSportTimeValue:(NSUInteger)minute
 {
-    NSString *hour = [NSString stringWithFormat:@"%u",minute/60];
-    NSString *mu = [NSString stringWithFormat:@"%u",minute%60];
+    NSString *hour = [NSString stringWithFormat:@"%lu",minute/60];
+    NSString *mu = [NSString stringWithFormat:@"%lu",minute%60];
     NSString *hourLbl = NSLocalizedString(@"Hour",nil);
     NSString *muLbl = NSLocalizedString(@"Minutes",nil);
     NSString *str = [NSString stringWithFormat:@"%@%@%@%@",hour,hourLbl,mu,muLbl];
@@ -412,10 +414,10 @@
 
 - (void)reloadView
 {
-    self.showDate = [NSDate date];
-    self.labelDate.text = [self stringWithDate:[NSDate date] andFormart:DateFormat];
+    self.showDate = [NSDate systemDate];
+    self.labelDate.text = [self stringWithDate:self.showDate andFormart:DateFormat];
     
-    [self setTargetStepsValue:20000];
+    [self setTargetStepsValue:TARGET_STEPS];
     [self setSportStepsValue:0];
     [self setSportTimeValue:0];
     [self setSportDistanceValue:0];
@@ -434,7 +436,7 @@
         case NSDateModeTomorrow:
             return NSLocalizedString(@"Today",nil);
         case NSDateModeUnknown:
-            return [NSDate formatDate:date withFormat:formart];
+            return [NSDate stringFromDate:date format:formart];
         default:
             return nil;
     }
@@ -483,9 +485,8 @@
         [self setSportTimeValue:sportModel.sportMinute];
         [self setSportDistanceValue:sportModel.sportDistance];
         [self setSportCalorieValue:sportModel.sportCalorie];
-        //DEBUGLog(@"setSportSteps");
     } else {
-        [self setTargetStepsValue:20000];
+        [self setTargetStepsValue:TARGET_STEPS];
         [self setSportStepsValue:0];
         [self setSportTimeValue:0];
         [self setSportDistanceValue:0];
@@ -556,9 +557,12 @@
 #pragma mark - Data
 - (void)savaSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations perHourData:(UInt16 *)perHourData dataLength:(NSUInteger)dataLength
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSUInteger stride = [userDefaults integerForKey:@"stride"];
-    NSUInteger weight = [userDefaults integerForKey:@"currentWeight"];
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSUInteger stride = [userDefaults integerForKey:@"stride"];
+//    NSUInteger weight = [userDefaults integerForKey:@"currentWeight"];
+    WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
+    NSUInteger stride = model.stride;
+    NSUInteger weight = model.currentWeight;
     NSUInteger distances = stride * steps;//单位为cm
     NSUInteger calorie = Rounded(Calorie(weight,steps));
     //DEBUGLog(@"sava sportDate:%@",date);
@@ -573,7 +577,7 @@
             break;
         }
     }
-    NSUInteger targetSteps = (setTargetVC ? setTargetVC.sportTargetSteps : 20000);
+    NSUInteger targetSteps = (setTargetVC ? setTargetVC.sportTargetSteps : TARGET_STEPS);
     
     WMSSportModel *sportModel = [[WMSSportModel alloc] initWithSportDate:date sportTargetSteps:targetSteps sportSteps:steps sportMinute:durations sportDistance:distances sportCalorie:calorie perHourData:perHourData dataLength:dataLength];
     
@@ -701,7 +705,7 @@
 {
     [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
      {
-         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
+//         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
 //         DEBUGLog(@"====>Per Hour Data:");
 //         printf("\t\t{");
 //         for (int i=0; i<dataLength; i++) {
@@ -711,7 +715,6 @@
          
          
          NSDate *date = [NSDate dateFromString:sportdate format:@"yyyy-MM-dd"];
-         
          //保存数据
          [self savaSportDate:date steps:todaySteps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
          
@@ -777,17 +780,8 @@
     if (self.isShowBindVC) {//若在绑定配件，连接成功，该VC不做任何操作(下同)
         return;
     }
-    
+    DEBUGLog(@"操作。。。。。");
     [self connectedOperation];
-    
-///////开启提醒
-//    [self.bleControl.settingProfile setRemindEventsType:RemindEventsTypeSMS|RemindEventsTypeCall|RemindEventsTypeQQ completion:^(BOOL success)
-//    {
-//        DEBUGLog(@"开启提醒%@",success?@"成功":@"失败");;
-//    }];
-    
-    //[[WMSSportDatabase sportDatabase] deleteAllSportData];
-    
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {

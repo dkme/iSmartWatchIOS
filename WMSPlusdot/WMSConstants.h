@@ -17,3 +17,25 @@
 #define HUD_SHOW_RIGHT_VC_X_OFFSET  ( 20.0 )
 
 
+#pragma mark - 用户信息
+#define USERINFO_GENDER             1//男
+#define USERINFO_HEIGHT             170//cm
+#define USERINFO_CURRENT_WEIGHT     60//kg
+#define USERINFO_TARGET_WEIGHT      60//kg
+#define USERINFO_BIRTHDAY           @"1970-01-01"
+#define USERINFO_STRIDE      StrideWithGender(USERINFO_GENDER,USERINFO_HEIGHT)
+
+
+//#pragma mark - 日期
+//#define ONE_YEAR_FIRST_MONTH         1
+//#define ONE_YEAR_LAST_MONTH          12
+
+#pragma mark - 图表
+#define LEFT_INTERVAL               0
+#define BOTTOM_INTERVAL             30.f
+#define POINTER_INTERVAL            50.f
+#define LEVEL_LINE_NUMBER           6
+#define CHART_INTERVAL_TO_YAXIS     20
+#define PNBAR_WIDTH                 30
+#define BAR_DEFAULT_HEIGHT          5
+

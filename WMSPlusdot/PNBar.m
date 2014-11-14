@@ -22,12 +22,20 @@
 
 #import "PNBar.h"
 
+#define BAR_SELECTED_COLOR  [UIColor whiteColor]
+
 @implementation PNBar
 
 - (instancetype)init {
   if((self = [super init])) {
+      [self commonInit];
   }
   return self;
+}
+
+- (void)commonInit
+{
+    _selectedBarColor = BAR_SELECTED_COLOR;
 }
 
 @end

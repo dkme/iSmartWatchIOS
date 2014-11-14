@@ -11,10 +11,10 @@
 #import "RESideMenu.h"
 #import "WMSAppDelegate.h"
 #import "WMSMyAccountViewController.h"
-#import "WMSMyAccessory.h"
 #import "WMSContentViewController.h"
 #import "WMSMyAccessoryViewController.h"
-#import "WMSContentViewController.h"
+
+#import "WMSMyAccessory.h"
 
 #define SECTION_NUMBER  1
 #define CELL_HIGHT      60
@@ -26,7 +26,7 @@
 
 #define TAG_BOTTOM_VIEW     100
 
-@interface WMSBindingAccessoryViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface WMSBindingAccessoryViewController ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 {
     __weak IBOutlet UILabel *_labelTitle;
     __weak IBOutlet UILabel *_labelTip;
@@ -35,6 +35,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *listData;
 @property (strong, nonatomic) WMSBleControl *bleControl;
+@property (strong, nonatomic) MBProgressHUD *hud;
 @end
 
 @implementation WMSBindingAccessoryViewController
@@ -254,6 +255,17 @@
     self.imageViewBLEStatus.image = image;
 }
 
+- (void)closeVC:(BOOL)successOrFail
+{
+    [self.hud hide:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+    UIViewController *vc = self.navigationController.topViewController;
+    if ([vc class] == [WMSMyAccessoryViewController class]) {
+        WMSMyAccessoryViewController *topVC = (WMSMyAccessoryViewController *)vc;
+        [topVC.tableView reloadData];
+        [topVC showBindingTip:successOrFail];
+    }
+}
 
 #pragma mark - Action
 - (IBAction)showLeftViewAction:(id)sender {
@@ -322,23 +334,44 @@
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
-    
     [self updateImage:[UIImage imageNamed:@"link_connect_success_icon.png"]];
     [self.buttonBottom setTitle:ButtonBindTitle forState:UIControlStateNormal];
+    
+//    [self.bleControl bindSettingCMD:bindSettingCMDBind completion:^(BOOL success)
+//    {
+//        DEBUGLog(@"绑定配件%@",success?@"成功":@"失败");
+//        if (success) {
+//            NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
+//            if (identify) {
+//                [WMSMyAccessory bindAccessory:identify];
+//                [self closeVC:YES];
+//            } else {
+//                [self closeVC:NO];
+//            }
+//        } else {
+//            [self closeVC:NO];
+//        }
+//    }];
+    //测试
+    NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
+    [WMSMyAccessory bindAccessory:identify];
+    [self closeVC:YES];
 }
 - (void)handleDisConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接断开 %@",NSStringFromClass([self class]));
-    
     [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
     [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
+    
+    [self closeVC:NO];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接失败 %@",NSStringFromClass([self class]));
-    
     [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
     [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
+    
+    [self closeVC:NO];
 }
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
@@ -348,7 +381,7 @@
 //    if ([self.bleControl isConnecting] || [self.bleControl isConnected]) {
 //        return ;
 //    }
-    DEBUGLog(@"self.listData:%@",self.listData);
+    
     if (self.listData && [self.listData count]>0) {
         NSMutableArray *array = [NSMutableArray array];
         for (LGPeripheral *pObject in self.listData) {
@@ -357,9 +390,6 @@
                 [array addObject:pObject];
             }
         }
-        //排除相同的设备
-        
-        
         self.listData = array;
     }
     if (self.listData && [self.listData count] > 0) {
@@ -371,6 +401,11 @@
 
 }
 
+#pragma mark - MBProgressHUDDelegate
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -422,18 +457,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     LGPeripheral *peripheral = self.listData[indexPath.row];
-    NSString *identify = peripheral.UUIDString;
-    if (identify == nil) {
-        identify = @"";
-    }
-    [WMSMyAccessory bindAccessory:identify];
-    [self.navigationController popViewControllerAnimated:YES];
-    UIViewController *vc = self.navigationController.topViewController;
-    if ([vc class] == [WMSMyAccessoryViewController class]) {
-        WMSMyAccessoryViewController *topVC = (WMSMyAccessoryViewController *)vc;
-        [topVC.tableView reloadData];
-        [topVC showTip];
-    }
+    [self.bleControl connect:peripheral];
+    
+    _hud = [[MBProgressHUD alloc] initWithView:self.view];
+    _hud.mode = MBProgressHUDModeIndeterminate;
+    _hud.labelText = NSLocalizedString(@"正在绑定配件...", nil);
+    _hud.delegate = self;
+    [self.view addSubview:_hud];
+    [_hud show:YES];
 }
 
 @end

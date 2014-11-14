@@ -19,6 +19,10 @@
 
 - (NSArray *)querySportData:(NSDate *)sportDate;
 
+- (NSArray *)querySportDataWithYear:(NSUInteger)year month:(NSUInteger)month;
+
+- (NSDate *)queryEarliestDate;
+
 - (BOOL)updateSportData:(WMSSportModel *)model;
 
 - (BOOL)deleteAllSportData;

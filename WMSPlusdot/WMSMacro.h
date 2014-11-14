@@ -6,8 +6,6 @@
 //  Copyright (c) 2014年 GUOGEE. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #define WATCH_NAME                  @"plusdout-watch"
 #define SCAN_PERIPHERAL_INTERVAL    5.f
 

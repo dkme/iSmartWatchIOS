@@ -19,6 +19,11 @@
 
 #import "WMSLeftViewCell.h"
 
+#import "WMSPersonModel.h"
+
+#import "WMSConstants.h"
+#import "WMSUserInfoHelper.h"
+
 
 #define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 64) )
 #define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 45, _userInfoView.center.y - 45 - 10, 79, 79) )
@@ -214,15 +219,19 @@
 
 - (void)reloadView
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    UIImage *image = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
-    NSString *name = [userDefaults stringForKey:@"name"];
-    if (!name || [name isEqualToString:@""]) {//若为@""，则使用登陆时的用户名
-        NSDictionary *readData =  [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
-        name = [readData objectForKey:@"userName"];
-    }
-    [self setUserImage:image];
-    [self setUserNickname:name];
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    UIImage *image = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
+//    NSString *name = [userDefaults stringForKey:@"name"];
+//    if (!name || [name isEqualToString:@""]) {//若为@""，则使用登陆时的用户名
+//        NSDictionary *readData =  [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
+//        name = [readData objectForKey:@"userName"];
+//    }
+//    [self setUserImage:image];
+//    [self setUserNickname:name];
+    
+    WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
+    [self setUserImage:model.image];
+    [self setUserNickname:model.name];
 }
 
 

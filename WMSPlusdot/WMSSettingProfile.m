@@ -616,7 +616,7 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
     }
     
     Byte package[DATA_LENGTH] = {0};
-    package[0] = intervalMinute & 0x0FF;
+    package[0] = intervalMinute & 0xFF;
     package[1] = (intervalMinute & 0xFF00) >> 8;
     package[2] = repetitions;
     package[3] = startHour;
@@ -625,7 +625,11 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
     package[6] = endMinute;
     
     [self setPacketCMD:CMDSetSportRemind andData:package dataLength:DATA_LENGTH];
-    
+    printf("package: 0x");
+    for (int i=0; i<PACKET_LENGTH; i++) {
+        printf("%02X",[self packet][i]);
+    }
+    printf("\n");
     if (aCallBack) {
         [NSMutableArray push:aCallBack toArray:self.stackSetSportRemind];
     }

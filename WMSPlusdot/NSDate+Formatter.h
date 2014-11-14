@@ -17,16 +17,20 @@ typedef NS_ENUM(NSInteger, NSDateMode) {
 
 @interface NSDate (Formatter)
 
-//+ (NSString *)stringDateForDate:(NSDate *)date;
-+ (NSUInteger)yearOfDate:(NSDate *)date;
-+ (NSUInteger)monthOfDate:(NSDate *)date;
-+ (NSUInteger)dayOfDate:(NSDate *)date;
++ (NSDate *)systemDate;
 
-+ (NSDateMode)compareDate:(NSDate *)date;
-+ (NSString *)formatDate:(NSDate *)date withFormat:(NSString *)dateFormat;
++ (NSString *)stringFromDate:(NSDate *)date format:(NSString *)dateFormat;
 
 + (NSDate *)dateFromString:(NSString *)dateString format:(NSString *)formatter;
 
-+ (NSInteger)daysOfDuringDate:(NSDate *)date1 andDate:(NSDate *)date2;
++ (NSUInteger)yearOfDate:(NSDate *)date;
+
++ (NSUInteger)monthOfDate:(NSDate *)date;
+
++ (NSUInteger)dayOfDate:(NSDate *)date;
+
++ (NSDateMode)compareDate:(NSDate *)date;
+
++ (NSUInteger)daysOfDuringDate:(NSDate *)date1 andDate:(NSDate *)date2;
 
 @end

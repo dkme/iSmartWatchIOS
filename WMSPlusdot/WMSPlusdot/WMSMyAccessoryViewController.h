@@ -12,5 +12,5 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-- (void)showTip;
+- (void)showBindingTip:(BOOL)successOrFail;
 @end

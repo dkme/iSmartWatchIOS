@@ -16,6 +16,7 @@
 #import "WMSSyncDataView.h"
 #import "WMSMySleepView.h"
 #import "MBProgressHUD.h"
+#import "GGIAnnulusView.h"
 
 #import "WMSSleepModel.h"
 #import "WMSDeviceModel.h"
@@ -259,23 +260,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-//    self.title = @"plusdot";
-//    UIBarButtonItem *leftBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"main_menu_icon_a.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showLeftViewAction:)];
-//    [leftBtn setBackgroundImage:[UIImage imageNamed:@"main_menu_icon_b.png"] forState:UIControlStateHighlighted style:UIBarButtonItemStylePlain barMetrics:UIBarMetricsDefault];
-//    self.navigationItem.leftBarButtonItem = leftBtn;
-//    
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"main_setting_icon_a.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showRightViewAction:)];
-    
     [self.view addSubview:self.syncDataView];
     [self.view addSubview:self.tipView];
     [self.view addSubview:self.hud];
     
     [self setupControl];
-    
     [self localizableView];
-    
     [self adaptiveIphone4];
-    
     [self reloadView];
     
     
@@ -309,20 +300,21 @@
         }
     }
     
-    [self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
-}
-
-- (void)dealloc
-{
-    DEBUGLog(@"Content1ViewController dealloc");
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    //[self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
+    [self readDeviceInfo];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    DEBUGLog(@"%@ dealloc",[self class]);
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setupControl
@@ -366,7 +358,7 @@
 
 - (void)adaptiveIphone4
 {
-    if (iPhone5) {
+    if (!iPhone4s) {
         return;
     }
     CGRect frame = self.dateView.frame;
@@ -408,8 +400,8 @@
 
 - (void)reloadView
 {
-    self.showDate = [NSDate date];
-    self.labelDate.text = [self stringWithDate:[NSDate date] andFormart:DateFormat];
+    self.showDate = [NSDate systemDate];
+    self.labelDate.text = [self stringWithDate:self.showDate andFormart:DateFormat];
 }
 
 - (NSString *)stringWithDate:(NSDate *)date andFormart:(NSString *)formart
@@ -422,7 +414,7 @@
         case NSDateModeTomorrow:
             return NSLocalizedString(@"Today",nil);
         case NSDateModeUnknown:
-            return [NSDate formatDate:date withFormat:formart];
+            return [NSDate stringFromDate:date format:formart];
         default:
             return nil;
     }
@@ -448,15 +440,6 @@
 - (void)updateView
 {
     WMSSleepModel *sleepModel = nil;
-//    for (WMSSleepModel *model in self.everydaySleepDataArray) {
-//        NSInteger interval_days = [NSDate daysOfDuringDate:self.showDate andDate:model.sleepDate];
-//        if (interval_days == 0)
-//        {
-//            DEBUGLog(@"两个日期是同一天");
-//            sleepModel = model;
-//            break;
-//        }
-//    }
     
     //从数据库中查询数据
     NSArray *results = [[WMSSleepDatabase sleepDatabase] querySleepData:self.showDate];
@@ -479,6 +462,15 @@
         //[self setAwakeCount:0];
         [self setAwakeDurations:0];
     }
+}
+
+- (void)readDeviceInfo
+{
+    [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
+     {
+         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
+         [self.syncDataView setCellElectricQuantity:batteryEnergy];
+     }];
 }
 
 #pragma mark - Date

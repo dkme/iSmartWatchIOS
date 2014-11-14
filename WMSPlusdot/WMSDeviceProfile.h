@@ -33,10 +33,12 @@ typedef void(^readDeviceTimeCallBack)(NSString *dateString,BOOL success);
 
 /**
  参数:PerHourData 每个小时的运动数据，从00:00到第二天00:00
+    todaySportDurations 单位min
  */
 typedef void (^syncDeviceSportDataCallBack)(NSString *sportdate,NSUInteger todaySteps,NSUInteger todaySportDurations,NSUInteger surplusDays,UInt16 *PerHourData,NSUInteger dataLength);
 /**
- 参数:startedMinutes  距离开始的时间
+ 参数:
+    startedMinutes    距离开始的时间
     startedStatus     睡眠状态，参考 SleepStatus
     statusDurations   这个状态持续的时间
     dataLength        数据的长度

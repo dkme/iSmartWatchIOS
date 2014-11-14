@@ -20,7 +20,7 @@ static const NSUInteger DISCOVER_CHARACTERISTICS_INTERVAL = 10;
 //timeID
 enum {
     TimeIDSubscribeNotifyCharact = 100,
-    
+    TimeIDBindSetting,
     TimeIDSwitchControlMode,
 };
 
@@ -53,6 +53,7 @@ NSString * const WMSBleControlScanFinish =
 
 //Stack
 @property (nonatomic, strong) NSMutableArray *sendDataOperationStack;
+@property (nonatomic, strong) NSMutableArray *stackBindSetting;
 @property (nonatomic, strong) NSMutableArray *stackSwitchControlMode;
 @end
 
@@ -127,6 +128,13 @@ NSString * const WMSBleControlScanFinish =
     }
     return _stackSwitchControlMode;
 }
+- (NSMutableArray *)stackBindSetting
+{
+    if (!_stackBindSetting) {
+        _stackBindSetting = [NSMutableArray new];
+    }
+    return _stackBindSetting;
+}
 
 
 #pragma mark - Init
@@ -170,22 +178,36 @@ NSString * const WMSBleControlScanFinish =
     
     [self.centralManager scanForPeripheralsByInterval:aScanInterval completion:^(NSArray *peripherals)
     {
-        [scannedPeripheral removeObjectsInArray:peripherals];
-        [scannedPeripheral addObjectsFromArray:peripherals];
+        //排除重复的设备
+        LGPeripheral *oldObj = nil;
+        LGPeripheral *newObj = [peripherals lastObject];
+        NSString *identifier = newObj.UUIDString;
+        for (LGPeripheral *p in scannedPeripheral) {
+            if ([p.UUIDString isEqualToString:identifier]) {
+                oldObj = p;
+                break ;
+            }
+        }
+        if (oldObj) {
+            [scannedPeripheral removeObject:oldObj];
+        }
+        [scannedPeripheral addObject:newObj];
+        //[scannedPeripheral addObjectsFromArray:peripherals];
         if (aCallback) {
             aCallback(scannedPeripheral);
         }
     }];
     
     NSArray *serviceUUIDs = @[[CBUUID UUIDWithString:@"0A60"]];
-    NSArray *array = [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];//获取系统已连接的外设
-    for (LGPeripheral *p in array) {
-        [scannedPeripheral addObject:p];
-        
-        if (aCallback) {
-            aCallback(scannedPeripheral);
-        }
-    }
+    [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];
+//    NSArray *array = [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];//获取系统已连接的外设
+//    for (LGPeripheral *p in array) {
+//        [scannedPeripheral addObject:p];
+//        DEBUGLog(@"system connected");
+//        if (aCallback) {
+//            aCallback(scannedPeripheral);
+//        }
+//    }
     
 }
 
@@ -196,7 +218,6 @@ NSString * const WMSBleControlScanFinish =
 
 - (void)connect:(LGPeripheral *)peripheral
 {    
-    DEBUGLog(@"BleControl Connect");
     _isConnecting = YES;
     
     if (self.isScanning) {
@@ -318,6 +339,37 @@ NSString * const WMSBleControlScanFinish =
                                    userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:_readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:data}
                                     repeats:YES
                                      timeID:TimeIDSubscribeNotifyCharact];
+}
+
+
+- (void)bindSettingCMD:(BindSettingCMD)cmd
+            completion:(WMSBleBindSettingCallBack)aCallBack
+{
+    if (self.isConnected == NO) {
+        return;
+    }
+    Byte package[DATA_LENGTH] = {0};
+    package[0] = cmd;
+    [self setPacketCMD:CMDSetBinding andData:package dataLength:DATA_LENGTH];
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackBindSetting];
+    }
+//    printf("package: 0x");
+//    for (int i=0; i<PACKET_LENGTH; i++) {
+//        printf("%02X",[self packet][i]);
+//    }
+//    printf("\n");
+    //send
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    
+    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDBindSetting];
 }
 
 - (void)switchToControlMode:(ControlMode)controlMode
@@ -643,6 +695,17 @@ NSString * const WMSBleControlScanFinish =
         [value getBytes:package length:PACKET_LENGTH];
         Byte cmd = package[2];
         
+        if (cmd == CMDSetBinding) {
+            if ([self.myTimers isValidForTimeID:TimeIDBindSetting]) {//成功
+                [self.myTimers deleteTimerForTimeID:TimeIDBindSetting];
+                
+                WMSBleBindSettingCallBack callBack = [NSMutableArray popFromArray:self.stackBindSetting];
+                if (callBack) {
+                    callBack(YES);
+                }
+            }
+            return;
+        }
         if (cmd == CMDSwitchControlMode) {
             if ([self.myTimers isValidForTimeID:TimeIDSwitchControlMode]) {//成功
                 [self.myTimers deleteTimerForTimeID:TimeIDSwitchControlMode];

@@ -7,6 +7,7 @@
 //
 
 #import "WMSMySleepView.h"
+#import "GGIAnnulusView.h"
 
 #define degreesToRadians(x) (M_PI*(x)/180.0)    //角度转弧度
 #define PROGRESS_WIDTH      25.f
@@ -24,6 +25,8 @@
 @property (nonatomic) int myDeepSleepMinute;
 @property (nonatomic) int myLightSleepMinute;
 @property (nonatomic) int myWakeupMinute;
+
+@property (strong, nonatomic) GGIAnnulusView *annulusView;
 @end
 
 @implementation WMSMySleepView
@@ -92,6 +95,21 @@
     }
     return self;
 }
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        
+    }
+    return self;
+}
+
+- (void)setup
+{
+    _annulusView = [[GGIAnnulusView alloc] init];
+}
+
 - (void)addSubLayers
 {
     if (self.layer != [self.trackUnderLayer superlayer]) {
@@ -117,9 +135,11 @@
        deepSleepMinute:(NSUInteger)deepSleepMinute
       lightSleepMinute:(NSUInteger)lightSleepMinute
 {
-    [self setSleepTime:sleepMinute];
-    [self setDeepSleepTime:deepSleepMinute andLightSleepTime:lightSleepMinute];
-    [self setNeedsDisplay];
+//    [self setSleepTime:sleepMinute];
+//    [self setDeepSleepTime:deepSleepMinute andLightSleepTime:lightSleepMinute];
+//    [self setNeedsDisplay];
+    
+    
 }
 
 

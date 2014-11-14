@@ -9,6 +9,7 @@
 #import "WMSInputViewController.h"
 #import "WMSActivityRemindViewController.h"
 #import "NSDate+Formatter.h"
+#import "UIDatePicker+Time.h"
 
 #define TableView_Frame ( CGRectMake(0, 66, self.view.bounds.size.width, self.view.bounds.size.height) )
 #define DatePicker_Frame ( CGRectMake(0, (self.view.bounds.size.height-160)/2, 320, 160) )
@@ -45,6 +46,7 @@
     if (!_datePicker) {
         _datePicker = [[UIDatePicker alloc] initWithFrame:DatePicker_Frame];
         _datePicker.datePickerMode = UIDatePickerModeTime;
+        _datePicker.locale = [NSLocale systemLocale];
     }
     return _datePicker;
 }
@@ -107,7 +109,7 @@
         {
             NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_startTimeHour,_startTimeMinute];
             NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
-            self.datePicker.date = date;
+            [self.datePicker setPickerDate:date];
             [self.view addSubview:self.datePicker];
             break;
         }
@@ -115,7 +117,7 @@
         {
             NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_finishTimeHour,_finishTimeMinute];
             NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
-            self.datePicker.date = date;
+            [self.datePicker setPickerDate:date];
             [self.view addSubview:self.datePicker];
             break;
         }
@@ -157,15 +159,16 @@
             break;
     }
 }
-- (void)dealloc
-{
-    DEBUGLog(@"WMSInputViewController dealloc");
-}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    DEBUGLog(@"WMSInputViewController dealloc");
 }
 
 #pragma mark - Action

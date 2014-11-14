@@ -49,6 +49,11 @@ typedef NS_ENUM(NSUInteger, ControlMode) {
     ControlModeOTA = 0x30,
 };
 
+typedef NS_ENUM(NSUInteger, BindSettingCMD) {
+    bindSettingCMDBind = 0x01,
+    bindSettingCMDUnbind = 0x02,
+};
+
 //通讯命令字
 typedef NS_ENUM(Byte, CMDType) {
     CMDSetCurrentDate = 0x01,
@@ -56,6 +61,7 @@ typedef NS_ENUM(Byte, CMDType) {
     CMDSetAlarmClock = 0x03,
     CMDSetTarger = 0x04,
     CMDSetRemind = 0x05,
+    CMDSetBinding = 0x07,
     CMDSetSportRemind = 0x08,
     CMDSetAntiLost = 0x09,
     
@@ -91,6 +97,8 @@ typedef void (^WMSBleSwitchToControlModeCallback)(BOOL success,NSString *failRea
 
 typedef void (^WMSBleSendDataCallback)(BOOL success);
 
+typedef void (^WMSBleBindSettingCallBack)(BOOL success);
+
 
 @interface WMSBleControl : NSObject
 
@@ -122,7 +130,13 @@ typedef void (^WMSBleSendDataCallback)(BOOL success);
  发送数据
  */
 - (void)sendDataToPeripheral:(NSData *)data
-                  completion:(WMSBleSendDataCallback)aCallBack;
+                  completion:(WMSBleSendDataCallback)aCallBack;//废弃的
+
+/*
+ 绑定配件
+ */
+- (void)bindSettingCMD:(BindSettingCMD)cmd
+            completion:(WMSBleBindSettingCallBack)aCallBack;
 
 /**
  模式控制
