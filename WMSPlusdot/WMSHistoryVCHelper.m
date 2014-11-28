@@ -32,8 +32,8 @@
     NSArray *months=[self xAxisShowMonthsFromEarliestDate:date currentDate:date2];
     for (NSNumber *number in months) {
         NSUInteger mm = [number unsignedIntegerValue];
-        NSString *format = NSLocalizedString(@"%u月", nil);
-        NSString *obj = [NSString stringWithFormat:format,(unsigned int)mm];
+        NSString *key = [NSString stringWithFormat:@"%u月",(unsigned int)mm];
+        NSString *obj = NSLocalizedString(key, nil);
         [values addObject:obj];
     }
     return values;

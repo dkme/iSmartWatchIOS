@@ -17,12 +17,12 @@
 #import "WMSMyAccessory.h"
 
 #import "WMSRemindHelper.h"
+#import "WMSFileMacro.h"
 
 #define SECTION_NUMBER  1
 #define SECTION_FOOTER_HEIGHT   1
 
 #define DefaultAlarmClockID 1
-#define SavaAlramClockFileName @"alarmClockModels.archiver"
 #define ArchiverKey            @"alarmClockModels"
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
@@ -64,8 +64,8 @@
     if (!_textArray) {
         _textArray = [[NSArray alloc] initWithObjects:
                                 NSLocalizedString(@"Alarm clock",nil),
-                                NSLocalizedString(@"Alarm clock time",nil),
-                                NSLocalizedString(@"Smart sleep Windows",nil),
+                                NSLocalizedString(@"Start",nil),
+                                NSLocalizedString(@"唤醒时段",nil),
                                 NSLocalizedString(@"Repeat",nil),
                                 nil];
     }
@@ -102,8 +102,7 @@
     [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
     [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
     [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.buttonSync.titleLabel setFont:Font_System(17.0)];
-    [self.buttonSync.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    [self.buttonSync.titleLabel setFont:Font_System(18.0)];
     
     self.labelTitle.text = NSLocalizedString(@"Smart alarm clock",nil);
     self.view.backgroundColor = [UIColor whiteColor];
@@ -151,7 +150,7 @@
 
 - (WMSAlarmClockModel *)loadAlarmClock
 {
-    NSString *fileName = FilePath(SavaAlramClockFileName);
+    NSString *fileName = FilePath(FILE_ALRAM_CLOCK);
     NSData *data = [NSData dataWithContentsOfFile:fileName];
     if ([data length] > 0) {
         NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
@@ -166,7 +165,7 @@
 - (void)savaAlarmClock:(WMSAlarmClockModel *)model
 {
     //coding
-    NSString *fileName = FilePath(SavaAlramClockFileName);
+    NSString *fileName = FilePath(FILE_ALRAM_CLOCK);
     NSMutableData *data = [NSMutableData data];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:model forKey:ArchiverKey];

@@ -10,6 +10,8 @@
 
 @interface GGIAnnulusView : UIView
 
-- (void)setAnnulusColors:(NSArray *)colors andAngle:(NSArray*)angles;
+//- (void)setAnnulusColors:(NSArray *)colors andAngle:(NSArray*)angles;
+
+- (void)setAnnulusColors:(NSArray *)colors andPercents:(NSArray*)percents;
 
 @end

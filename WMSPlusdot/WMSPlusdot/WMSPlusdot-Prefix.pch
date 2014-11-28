@@ -20,6 +20,7 @@
     #import "WMSMacro.h"
     #import "MBProgressHUD.h"
     #import "NSDate+Formatter.h"
+    #import "UIImage+QuartzProc.h"
 #endif
 
 #ifdef DEBUG
@@ -31,16 +32,17 @@
 #endif
 
 //方法
-#define UIColorFromRGBAlpha(rgbValue,a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
+#define UIColorFromRGBAlpha(rgbValue,a) ( [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a] )
+#define UICOLOR_DEFAULT       ( UIColorFromRGBAlpha(0x00D5E1, 1) )
 #define Font_System(sz)       ( [UIFont systemFontOfSize:sz] )
 #define Font_DINCondensed(sz) ( [UIFont fontWithName:@"DIN Condensed" size:sz] )
-#define UICOLOR_DEFAULT       ( UIColorFromRGBAlpha(0x00D5E1, 1) )
 
 #define FilePath(fileName) ( [((NSString *)[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]) stringByAppendingPathComponent:fileName] )
 
 #define StrideWithGender(gender,height) ( gender ? 0.415*height : 0.413*height )
 #define Calorie(weight,steps) ( ((weight-15)*0.000693+0.005895) * steps )//weight单位为kg，结果单位为cal
 #define Rounded(floatValue) ( (int)(floatValue + 0.5) ) //四舍五入
+#define Rounded_decimal(doubleValue,decimalNumber) ( (double)( (int)(doubleValue*pow(10,decimalNumber)+0.5) ) / pow(10,decimalNumber) )
 
 /*屏幕适配用到的宏*/
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)

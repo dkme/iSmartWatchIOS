@@ -44,6 +44,7 @@
 		23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 23197EFB1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m */; };
 		23197F051A10BB8A00DDC3B3 /* model.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23197F041A10BB8A00DDC3B3 /* model.plist */; };
 		231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 231C80EC1A15A0FB0038BD79 /* GGIAnnulusView.m */; };
+		231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 231C80F21A15D4D80038BD79 /* WMSHelper.m */; };
 		2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2321B78019B9500900278677 /* NSMutableArray+Stack.m */; };
 		2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323686019C1A30200E666D3 /* WMSPersonModel.m */; };
 		2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40119A58CCF0098657B /* main_circle_orange.png */; };
@@ -161,6 +162,7 @@
 		238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */; };
 		23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */; };
 		239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 239569CE19EFCE2800CABEDC /* Default-568h@2x.png */; };
+		23ABD59F1A1DC0010062FC99 /* bind_success.png in Resources */ = {isa = PBXBuildFile; fileRef = 23ABD59E1A1DC0010062FC99 /* bind_success.png */; };
 		23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */; };
 		23B0094019D4FFEF008424FA /* WMSSportHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */; };
 		23B0094619D50100008424FA /* PNLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0094319D50100008424FA /* PNLineChartView.m */; };
@@ -174,6 +176,7 @@
 		23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0C19C92C9D00DC915A /* MBProgressHUD.m */; };
 		23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0F19C9942D00DC915A /* WMSSleepModel.m */; };
 		23CBBF9219C1516700A3DA4C /* WMSSportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CBBF9119C1516700A3DA4C /* WMSSportModel.m */; };
+		23CD58531A27104900C8D96C /* sportData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23CD58521A27104900C8D96C /* sportData.plist */; };
 		23CDDD9919AC2DBB00A12820 /* WMSSelectValueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CDDD9719AC2DBB00A12820 /* WMSSelectValueViewController.m */; };
 		23CDDD9A19AC2DBB00A12820 /* WMSSelectValueViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23CDDD9819AC2DBB00A12820 /* WMSSelectValueViewController.xib */; };
 		23D7CEFE19B5C49C00DFA678 /* CBUUID+StringExtraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D7CEF219B5C49C00DFA678 /* CBUUID+StringExtraction.m */; };
@@ -250,6 +253,8 @@
 		23197F041A10BB8A00DDC3B3 /* model.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = model.plist; sourceTree = "<group>"; };
 		231C80EB1A15A0FB0038BD79 /* GGIAnnulusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGIAnnulusView.h; sourceTree = "<group>"; };
 		231C80EC1A15A0FB0038BD79 /* GGIAnnulusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGIAnnulusView.m; sourceTree = "<group>"; };
+		231C80F11A15D4D80038BD79 /* WMSHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSHelper.h; sourceTree = "<group>"; };
+		231C80F21A15D4D80038BD79 /* WMSHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSHelper.m; sourceTree = "<group>"; };
 		2321B77F19B9500900278677 /* NSMutableArray+Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Stack.h"; sourceTree = "<group>"; };
 		2321B78019B9500900278677 /* NSMutableArray+Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Stack.m"; sourceTree = "<group>"; };
 		2321B78319B95E8E00278677 /* WMSBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBluetooth.h; sourceTree = "<group>"; };
@@ -360,6 +365,7 @@
 		233511B719A4C45500FBCC81 /* main_progress_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_progress_bg.png; sourceTree = "<group>"; };
 		233A431B19F8F15900BD295B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAdaptiveMacro.h; sourceTree = "<group>"; };
+		2345B01D1A25D75F00DF3175 /* WMSFileMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSFileMacro.h; sourceTree = "<group>"; };
 		234BF1EC19B0305C005D71A0 /* WMSNavBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSNavBarView.h; sourceTree = "<group>"; };
 		234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSNavBarView.m; sourceTree = "<group>"; };
 		234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSNavBarView.xib; sourceTree = "<group>"; };
@@ -416,6 +422,7 @@
 		23911F1C19C290F8006E9CAF /* WMSSyncDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncDataView.h; sourceTree = "<group>"; };
 		23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncDataView.m; sourceTree = "<group>"; };
 		239569CE19EFCE2800CABEDC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		23ABD59E1A1DC0010062FC99 /* bind_success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bind_success.png; sourceTree = "<group>"; };
 		23B0093C19D4FFEF008424FA /* WMSSportHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportHistoryViewController.h; sourceTree = "<group>"; };
 		23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportHistoryViewController.m; sourceTree = "<group>"; };
 		23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSportHistoryViewController.xib; sourceTree = "<group>"; };
@@ -437,6 +444,7 @@
 		23CB9F0F19C9942D00DC915A /* WMSSleepModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSleepModel.m; sourceTree = "<group>"; };
 		23CBBF9019C1516700A3DA4C /* WMSSportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportModel.h; sourceTree = "<group>"; };
 		23CBBF9119C1516700A3DA4C /* WMSSportModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportModel.m; sourceTree = "<group>"; };
+		23CD58521A27104900C8D96C /* sportData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = sportData.plist; sourceTree = "<group>"; };
 		23CDDD9619AC2DBB00A12820 /* WMSSelectValueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSelectValueViewController.h; sourceTree = "<group>"; };
 		23CDDD9719AC2DBB00A12820 /* WMSSelectValueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSelectValueViewController.m; sourceTree = "<group>"; };
 		23CDDD9819AC2DBB00A12820 /* WMSSelectValueViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSelectValueViewController.xib; sourceTree = "<group>"; };
@@ -516,6 +524,7 @@
 		230298D219A87EAD009D4306 /* 绑定配件视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
+				23ABD59E1A1DC0010062FC99 /* bind_success.png */,
 				230298D319A87F0A009D4306 /* link_bg.png */,
 				230298D419A87F0A009D4306 /* link_connect_failure_icon.png */,
 				230298D519A87F0A009D4306 /* link_connect_ing_icon.png */,
@@ -706,13 +715,13 @@
 			name = "我的配件视图";
 			sourceTree = "<group>";
 		};
-		231C80EA1A15A0C30038BD79 /* AnnulusView */ = {
+		231C80EA1A15A0C30038BD79 /* GGIAnnulusView */ = {
 			isa = PBXGroup;
 			children = (
 				231C80EB1A15A0FB0038BD79 /* GGIAnnulusView.h */,
 				231C80EC1A15A0FB0038BD79 /* GGIAnnulusView.m */,
 			);
-			name = AnnulusView;
+			name = GGIAnnulusView;
 			sourceTree = "<group>";
 		};
 		2321B78219B950ED00278677 /* NSMutableArray+Stack */ = {
@@ -748,7 +757,7 @@
 		2326A44C19A604B80098657B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				231C80EA1A15A0C30038BD79 /* AnnulusView */,
+				231C80EA1A15A0C30038BD79 /* GGIAnnulusView */,
 				2316508419AB15560066C301 /* LeftViewController Cell */,
 				2316507A19AAE4AA0066C301 /* WMSSwitchCell */,
 				2316507E19AB14D50066C301 /* MySportView */,
@@ -776,8 +785,8 @@
 				F4F037C019F23A9D0083DEE1 /* Resources */,
 				232846C619A43668001C148D /* WMSPlusdot */,
 				232846DF19A43668001C148D /* WMSPlusdotTests */,
-				232846BF19A43668001C148D /* Frameworks */,
 				232846BE19A43668001C148D /* Products */,
+				232846BF19A43668001C148D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -965,6 +974,8 @@
 				238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */,
 				23197EFA1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.h */,
 				23197EFB1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m */,
+				231C80F11A15D4D80038BD79 /* WMSHelper.h */,
+				231C80F21A15D4D80038BD79 /* WMSHelper.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -1100,6 +1111,7 @@
 				23B0094919D5458D008424FA /* WMSMacro.h */,
 				233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */,
 				2378A3DB19FFA4A400187836 /* WMSConstants.h */,
+				2345B01D1A25D75F00DF3175 /* WMSFileMacro.h */,
 			);
 			name = Macro;
 			sourceTree = "<group>";
@@ -1237,6 +1249,7 @@
 			isa = PBXGroup;
 			children = (
 				23197F041A10BB8A00DDC3B3 /* model.plist */,
+				23CD58521A27104900C8D96C /* sportData.plist */,
 				F4F037C119F23B110083DEE1 /* procotol.txt */,
 				2378A3EE1A00F28D00187836 /* Sounds */,
 				232846F419A43D0D001C148D /* Images */,
@@ -1338,6 +1351,7 @@
 				23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */,
 				230298D119A87DBF009D4306 /* WMSBindingAccessoryViewController.xib in Resources */,
 				234BF1F619B05914005D71A0 /* WMSMyAccountViewController.xib in Resources */,
+				23CD58531A27104900C8D96C /* sportData.plist in Resources */,
 				2335119619A479DA00FBCC81 /* signup_arrow_b.png in Resources */,
 				230298CB19A83281009D4306 /* target_progress_btn.png in Resources */,
 				234BF1F019B0308F005D71A0 /* WMSNavBarView.xib in Resources */,
@@ -1412,6 +1426,7 @@
 				F41930CE19F16B1400E7B0B5 /* check.png in Resources */,
 				232846F619A43DC1001C148D /* main_bg.png in Resources */,
 				2316509419AB4A180066C301 /* WMSSmartClockViewController.xib in Resources */,
+				23ABD59F1A1DC0010062FC99 /* bind_success.png in Resources */,
 				2326A43F19A5D71B0098657B /* main_menu_bg_b.png in Resources */,
 				233511AD19A4C00600FBCC81 /* main_setting_icon_a.png in Resources */,
 				2326A43319A5C6970098657B /* main_menu_binding_icon_b.png in Resources */,
@@ -1492,6 +1507,7 @@
 				23D7CF0319B5C49C00DFA678 /* LGUtils.m in Sources */,
 				2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */,
 				2316509319AB4A180066C301 /* WMSSmartClockViewController.m in Sources */,
+				231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */,
 				23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
@@ -1604,6 +1620,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = "ad hoc distribution";
@@ -1709,6 +1726,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1726,6 +1744,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

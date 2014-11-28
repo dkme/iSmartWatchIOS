@@ -116,8 +116,8 @@
         _titleArray = [[NSArray alloc] initWithObjects:
                        NSLocalizedString(@"My sports",nil),
                        NSLocalizedString(@"My sleep",nil),
-                       NSLocalizedString(@"Set target",nil),
-                       NSLocalizedString(@"绑定配件",nil),
+                       NSLocalizedString(@"Target settings",nil),
+                       NSLocalizedString(@"Bound watch",nil),
                        nil];
     }
     return _titleArray;
@@ -219,16 +219,6 @@
 
 - (void)reloadView
 {
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    UIImage *image = [UIImage imageWithData:[userDefaults dataForKey:@"image"]];
-//    NSString *name = [userDefaults stringForKey:@"name"];
-//    if (!name || [name isEqualToString:@""]) {//若为@""，则使用登陆时的用户名
-//        NSDictionary *readData =  [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
-//        name = [readData objectForKey:@"userName"];
-//    }
-//    [self setUserImage:image];
-//    [self setUserNickname:name];
-    
     WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
     [self setUserImage:model.image];
     [self setUserNickname:model.name];
@@ -344,86 +334,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-/*
-    if (indexPath.row == 0) {
-        if ([WMSContentViewController class] == [self.sideMenuViewController.contentViewController class]) {
-            [self.sideMenuViewController hideMenuViewController];
-            return;
-        }
-        UIViewController *VC = nil;
-        if ([Null_Object isEqualToString:[self.contentVCArray objectAtIndex:indexPath.row]]) {
-            VC = [[WMSContentViewController alloc] init];
-            [self.contentVCArray setObject:VC atIndexedSubscript:indexPath.row];
-        } else {
-            VC = [self.contentVCArray objectAtIndex:indexPath.row];
-        }
-        [self.sideMenuViewController setContentViewController:VC
-                                                     animated:YES];
-        [self.sideMenuViewController hideMenuViewController];
-        
-        return;
-    }
-    
-    if (indexPath.row == 1) {
-        if ([WMSContent1ViewController class] == [self.sideMenuViewController.contentViewController class]) {
-            [self.sideMenuViewController hideMenuViewController];
-            return;
-        }
-        UIViewController *VC = nil;
-        if ([Null_Object isEqualToString:[self.contentVCArray objectAtIndex:indexPath.row]]) {
-            VC =
-            [[UINavigationController alloc] initWithRootViewController:[[WMSContent1ViewController alloc] init]];
-            [self.contentVCArray setObject:VC atIndexedSubscript:indexPath.row];
-        } else {
-            VC = [self.contentVCArray objectAtIndex:indexPath.row];
-        }
-        [self.sideMenuViewController setContentViewController:VC
-                                                     animated:YES];
-        [self.sideMenuViewController hideMenuViewController];
-        
-        return;
-    }
-    
-    if (indexPath.row == 2) {
-        if ([WMSContent2ViewController class] == [self.sideMenuViewController.contentViewController class]) {
-            [self.sideMenuViewController hideMenuViewController];
-            return;
-        }
-        UIViewController *VC = nil;
-        if ([Null_Object isEqualToString:[self.contentVCArray objectAtIndex:indexPath.row]]) {
-            VC =
-            [[UINavigationController alloc] initWithRootViewController:[[WMSContent2ViewController alloc] init]];
-            [self.contentVCArray setObject:VC atIndexedSubscript:indexPath.row];
-        } else {
-            VC = [self.contentVCArray objectAtIndex:indexPath.row];
-        }
-        [self.sideMenuViewController setContentViewController:VC
-                                                     animated:YES];
-        [self.sideMenuViewController hideMenuViewController];
-        
-        return;
-    }
-    
-    if (indexPath.row == 3) {
-        if ([WMSBindingAccessoryViewController class] == [self.sideMenuViewController.contentViewController class]) {
-            [self.sideMenuViewController hideMenuViewController];
-            return;
-        }
-        UIViewController *VC = nil;
-        if ([Null_Object isEqualToString:[self.contentVCArray objectAtIndex:indexPath.row]]) {
-            VC =
-            [[UINavigationController alloc] initWithRootViewController:[[WMSBindingAccessoryViewController alloc] init]];
-            [self.contentVCArray setObject:VC atIndexedSubscript:indexPath.row];
-        } else {
-            VC = [self.contentVCArray objectAtIndex:indexPath.row];
-        }
-        [self.sideMenuViewController setContentViewController:VC
-                                                     animated:YES];
-        [self.sideMenuViewController hideMenuViewController];
-        
-        return;
-    }
-*/
     
     if ([self.specifyContentVCClassArray objectAtIndex:indexPath.row] == [self.sideMenuViewController.contentViewController class]) {
         [self.sideMenuViewController hideMenuViewController];

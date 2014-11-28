@@ -75,9 +75,14 @@
         _labelElectricQuantity = [[UILabel alloc] initWithFrame:
                                   CGRectMake(Cell_Left_Point.x+Cell_Width+10, (self.frame.size.height-labelSize.height)/2, labelSize.width, labelSize.height)];
         _labelElectricQuantity.textColor = [UIColor whiteColor];
-        _labelElectricQuantity.font = Font_DINCondensed(12.0);
+        _labelElectricQuantity.font = [UIFont systemFontOfSize:12.0];
     }
     return _labelElectricQuantity;
+}
+
+- (void)setQuantityFont:(UIFont *)quantityFont
+{
+    self.labelElectricQuantity.font = quantityFont;
 }
 
 #pragma mark - Init
@@ -97,17 +102,17 @@
     _labelTip.textAlignment = NSTextAlignmentRight;
     
     CGPoint or = CGPointZero;
-    or.x = _labelTip.frame.origin.x+_labelTip.frame.size.width + 2;
+    or.x = _labelTip.frame.origin.x+_labelTip.frame.size.width + 5;
     or.y = _labelTip.frame.origin.y+2;
     UIView *intervalView = [[UIView alloc] initWithFrame:CGRectMake(or.x, or.y, 1, 20)];
     intervalView.backgroundColor = [UIColor whiteColor];
     
     _buttonSync = [UIButton buttonWithType:UIButtonTypeCustom];
     CGSize size = CGSizeMake(70, 30);
-    CGPoint point = CGPointMake(self.frame.size.width-size.width-15, (self.frame.size.height-size.height)/2);
+    CGPoint point = CGPointMake(self.frame.size.width-size.width-10, (self.frame.size.height-size.height)/2);
     _buttonSync.frame = (CGRect){point,size};
     
-    point = CGPointMake(point.x-10, point.y);
+    point = CGPointMake(point.x-5, point.y);
     _imageView = [[UIImageView alloc] initWithFrame:(CGRect){point,size}];
     
     
@@ -120,7 +125,6 @@
     [self.layer addSublayer:self.underLayer];
     [self.layer addSublayer:self.headLayer];
     [self.layer addSublayer:self.cellLayer];
-    
     
     [self setCellElectricQuantity:100];
 }

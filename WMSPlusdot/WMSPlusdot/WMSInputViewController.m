@@ -54,12 +54,14 @@
 {
     if (!_smartSleepValueArray) {
         _smartSleepValueArray = [[NSArray alloc] initWithObjects:
+                                 @(DEFAULT_ACTIVITY_INTERVAL),
                                  @(30),
+                                 @(45),
                                  @(60),
+                                 @(75),
                                  @(90),
+                                 @(105),
                                  @(120),
-                                 @(150),
-                                 @(180),
                                  nil];
     }
     return _smartSleepValueArray;

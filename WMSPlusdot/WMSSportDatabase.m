@@ -10,8 +10,8 @@
 #import "sqlite3.h"
 #import "WMSSportModel.h"
 #import "NSDate+Formatter.h"
+#import "WMSFileMacro.h"
 
-#define DatabaseName    @"sportData.db"
 #define TableName       @"SportDataTable"
 
 @implementation WMSSportDatabase
@@ -82,6 +82,137 @@
     }
     return NO;
 }
+
+//更新数据
+- (BOOL)updateSportData:(WMSSportModel *)model
+{
+    if ([self openDB]) {
+        sqlite3_stmt *statement;//这相当一个容器，放转化OK的sql语句
+        //组织SQL语句
+        char *sql = "update SportDataTable set targetSteps = ?, sportSteps = ?, sportDurations = ?, sportDistance = ?, sportCalorie = ?, perHourData = ?, dataLength = ? WHERE sportDate = ?";
+        
+        //将SQL语句放入sqlite3_stmt中
+        int success = sqlite3_prepare_v2(_database, sql, -1, &statement, NULL);
+        if (success != SQLITE_OK) {
+            NSLog(@"Error: failed to SportDataTable");
+            sqlite3_close(_database);
+            return NO;
+        }
+        
+        sqlite3_bind_int(statement, 1, model.targetSteps);
+        sqlite3_bind_int(statement, 2, model.sportSteps);
+        sqlite3_bind_int(statement, 3, model.sportMinute);
+        sqlite3_bind_int(statement, 4, model.sportDistance);
+        sqlite3_bind_int(statement, 5, model.sportCalorie);
+        int len = 0;
+        if (model.dataLength > 0) {
+            len = sizeof(model.perHourData[0]) * model.dataLength;
+        }
+        sqlite3_bind_blob(statement, 6, model.perHourData, len, SQLITE_STATIC);
+        sqlite3_bind_int(statement, 7, model.dataLength);
+        NSString *strDate = [model.sportDate.description substringToIndex:10];
+        sqlite3_bind_text(statement, 8, [strDate UTF8String], -1, SQLITE_TRANSIENT);
+        
+        //执行SQL语句。这里是更新数据库
+        success = sqlite3_step(statement);
+        //释放statement
+        sqlite3_finalize(statement);
+        
+        //如果执行失败
+        if (success == SQLITE_ERROR) {
+            NSLog(@"Error: failed to update the database with message.");
+            //关闭数据库
+            sqlite3_close(_database);
+            return NO;
+        }
+        //执行成功后依然要关闭数据库
+        sqlite3_close(_database);
+        return YES;
+    }
+    return NO;
+}
+
+//删除数据
+- (BOOL)deleteAllSportData
+{
+    if ([self openDB] == NO) {
+        return NO;
+    }
+    
+    //删除所有数据，条件为1>0永真
+    const char *deleteAllSql="delete from SportDataTable where 1>0";
+    //执行删除语句
+    if(sqlite3_exec(_database, deleteAllSql, NULL, NULL, NULL)==SQLITE_OK){
+        NSLog(@"删除所有数据成功");
+    } else {
+        NSLog(@"删除失败");
+        sqlite3_close(_database);
+        return NO;
+    }
+    sqlite3_close(_database);
+    return YES;
+}
+- (BOOL)deleteSportData:(WMSSportModel *)model
+{
+    //    if ([self openDB] == NO) {
+    //        return NO;
+    //    }
+    //
+    //    //删除某条数据
+    //    NSString *deleteString=[NSString stringWithFormat:@"delete from SportDataTable where sportDate = '%@'", model.sportDate];
+    //    //转成utf-8的c的风格
+    //    const char *deleteSql=[deleteString UTF8String];
+    //    //执行删除语句
+    //    char *errorMsg;
+    //    if(sqlite3_exec(_database, deleteSql, NULL, NULL, &errorMsg)==SQLITE_OK){
+    //        NSLog(@"删除成功, %s",errorMsg);
+    //    } else {
+    //        NSLog(@"删除失败 %s",errorMsg);
+    //        sqlite3_close(_database);
+    //        return NO;
+    //    }
+    //    sqlite3_close(_database);
+    //    return YES;
+    
+    return [self delete1:model];
+}
+
+- (BOOL)delete1:(WMSSportModel *)model
+{
+    if ([self openDB]) {
+        
+        sqlite3_stmt *statement;
+        //组织SQL语句
+        char *sql = "delete from SportDataTable where sportDate = ?";
+        //将SQL语句放入sqlite3_stmt中
+        int success = sqlite3_prepare_v2(_database, sql, -1, &statement, NULL);
+        if (success != SQLITE_OK) {
+            NSLog(@"Error: failed to delete:testTable");
+            sqlite3_close(_database);
+            return NO;
+        }
+        
+        NSString *strDate = [model.sportDate.description substringToIndex:10];
+        sqlite3_bind_text(statement, 1, [strDate UTF8String], -1, SQLITE_TRANSIENT);
+        //执行SQL语句。这里是更新数据库
+        success = sqlite3_step(statement);
+        //释放statement
+        sqlite3_finalize(statement);
+        
+        //如果执行失败
+        if (success == SQLITE_ERROR) {
+            NSLog(@"Error: failed to delete the database with message.");
+            //关闭数据库
+            sqlite3_close(_database);
+            return NO;
+        }
+        //执行成功后依然要关闭数据库
+        sqlite3_close(_database);
+        return YES;
+    }
+    return NO;
+}
+
 
 //获取数据
 - (NSArray *)queryAllSportData
@@ -238,7 +369,7 @@
     NSDate *date = nil;
     if ([self openDB]) {
         sqlite3_stmt *statement = nil;
-        const char *sql = "select * from SportDataTable order by sportDate limit 1";
+        const char *sql = "SELECT sportDate FROM SportDataTable ORDER BY sportDate LIMIT 1";
         
         if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
             date = nil;
@@ -246,7 +377,7 @@
         else
         {
             while (sqlite3_step(statement) == SQLITE_ROW) {
-                char *strDate = (char *)sqlite3_column_text(statement, 1);
+                char *strDate = (char *)sqlite3_column_text(statement, 0);
                 NSString *stringDate = [NSString stringWithUTF8String:strDate];
                 date = [NSDate dateFromString:stringDate format:@"yyyy-MM-dd"];
             }
@@ -258,134 +389,30 @@
     return nil;
 }
 
-//更新数据
-- (BOOL)updateSportData:(WMSSportModel *)model
-{
-    if ([self openDB]) {
-        sqlite3_stmt *statement;//这相当一个容器，放转化OK的sql语句
-        //组织SQL语句
-        char *sql = "update SportDataTable set targetSteps = ?, sportSteps = ?, sportDurations = ?, sportDistance = ?, sportCalorie = ?, perHourData = ?, dataLength = ? WHERE sportDate = ?";
-        
-        //将SQL语句放入sqlite3_stmt中
-        int success = sqlite3_prepare_v2(_database, sql, -1, &statement, NULL);
-        if (success != SQLITE_OK) {
-            NSLog(@"Error: failed to SportDataTable");
-            sqlite3_close(_database);
-            return NO;
-        }
-        
-        sqlite3_bind_int(statement, 1, model.targetSteps);
-        sqlite3_bind_int(statement, 2, model.sportSteps);
-        sqlite3_bind_int(statement, 3, model.sportMinute);
-        sqlite3_bind_int(statement, 4, model.sportDistance);
-        sqlite3_bind_int(statement, 5, model.sportCalorie);
-        int len = 0;
-        if (model.dataLength > 0) {
-            len = sizeof(model.perHourData[0]) * model.dataLength;
-        }
-        sqlite3_bind_blob(statement, 6, model.perHourData, len, SQLITE_STATIC);
-        sqlite3_bind_int(statement, 7, model.dataLength);
-        NSString *strDate = [model.sportDate.description substringToIndex:10];
-        sqlite3_bind_text(statement, 8, [strDate UTF8String], -1, SQLITE_TRANSIENT);
-        
-        //执行SQL语句。这里是更新数据库
-        success = sqlite3_step(statement);
-        //释放statement
-        sqlite3_finalize(statement);
-        
-        //如果执行失败
-        if (success == SQLITE_ERROR) {
-            NSLog(@"Error: failed to update the database with message.");
-            //关闭数据库
-            sqlite3_close(_database);
-            return NO;
-        }
-        //执行成功后依然要关闭数据库
-        sqlite3_close(_database);
-        return YES;
-    }
-    return NO;
-}
 
-//删除数据
-- (BOOL)deleteAllSportData
+
+- (NSUInteger)sumSportStepsFromYear:(NSUInteger)year month:(NSUInteger)month
 {
-    if ([self openDB] == NO) {
-        return NO;
+    float sum = 0;
+    if ([self openDB]) {
+        sqlite3_stmt *statement = nil;
+        NSString *strSQL = [NSString stringWithFormat:@"SELECT SUM(sportSteps) FROM SportDataTable WHERE sportDate BETWEEN DATETIME('%04u-%02u-01') AND DATETIME('%04u-%02u-01')", year,month,year,month+1];
+        const char *sql = [strSQL UTF8String];
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            
+        }
+        else
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                sum = sqlite3_column_int(statement, 0);
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_database);
+        return sum;
     }
     
-    //删除所有数据，条件为1>0永真
-    const char *deleteAllSql="delete from SportDataTable where 1>0";
-    //执行删除语句
-    if(sqlite3_exec(_database, deleteAllSql, NULL, NULL, NULL)==SQLITE_OK){
-        NSLog(@"删除所有数据成功");
-    } else {
-        NSLog(@"删除失败");
-        sqlite3_close(_database);
-        return NO;
-    }
-    sqlite3_close(_database);
-    return YES;
-}
-- (BOOL)deleteSportData:(WMSSportModel *)model
-{
-//    if ([self openDB] == NO) {
-//        return NO;
-//    }
-//    
-//    //删除某条数据
-//    NSString *deleteString=[NSString stringWithFormat:@"delete from SportDataTable where sportDate = '%@'", model.sportDate];
-//    //转成utf-8的c的风格
-//    const char *deleteSql=[deleteString UTF8String];
-//    //执行删除语句
-//    char *errorMsg;
-//    if(sqlite3_exec(_database, deleteSql, NULL, NULL, &errorMsg)==SQLITE_OK){
-//        NSLog(@"删除成功, %s",errorMsg);
-//    } else {
-//        NSLog(@"删除失败 %s",errorMsg);
-//        sqlite3_close(_database);
-//        return NO;
-//    }
-//    sqlite3_close(_database);
-//    return YES;
-    
-    return [self delete1:model];
-}
-
-- (BOOL)delete1:(WMSSportModel *)model
-{
-    if ([self openDB]) {
-        
-        sqlite3_stmt *statement;
-        //组织SQL语句
-        char *sql = "delete from SportDataTable where sportDate = ?";
-        //将SQL语句放入sqlite3_stmt中
-        int success = sqlite3_prepare_v2(_database, sql, -1, &statement, NULL);
-        if (success != SQLITE_OK) {
-            NSLog(@"Error: failed to delete:testTable");
-            sqlite3_close(_database);
-            return NO;
-        }
-
-        NSString *strDate = [model.sportDate.description substringToIndex:10];
-        sqlite3_bind_text(statement, 1, [strDate UTF8String], -1, SQLITE_TRANSIENT);
-        //执行SQL语句。这里是更新数据库
-        success = sqlite3_step(statement);
-        //释放statement
-        sqlite3_finalize(statement);
-        
-        //如果执行失败
-        if (success == SQLITE_ERROR) {
-            NSLog(@"Error: failed to delete the database with message.");
-            //关闭数据库
-            sqlite3_close(_database);
-            return NO;
-        }
-        //执行成功后依然要关闭数据库
-        sqlite3_close(_database);
-        return YES;
-    }
-    return NO;
+    return 0;
 }
 
 
@@ -397,7 +424,7 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     //NSLog(@"=======%@",documentsDirectory);
-    return [documentsDirectory stringByAppendingPathComponent:DatabaseName];//这里很神奇，可以定义成任何类型的文件，也可以不定义成.db文件，任何格式都行，定义成.sb文件都行，达到了很好的数据隐秘性
+    return [documentsDirectory stringByAppendingPathComponent:FILE_SPORT_DATABASE];//这里很神奇，可以定义成任何类型的文件，也可以不定义成.db文件，任何格式都行，定义成.sb文件都行，达到了很好的数据隐秘性
 }
 
 //创建，打开数据库

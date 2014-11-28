@@ -18,7 +18,9 @@
                 <outlet property="_labelMinute2" destination="y4h-BJ-pAc" id="w5u-0P-OlM"/>
                 <outlet property="_labelMinute3" destination="TmS-hD-BA9" id="iGT-KF-Ymr"/>
                 <outlet property="_labelMySleep" destination="uUr-QY-Udp" id="GVs-XD-RHV"/>
+                <outlet property="_labelTitle" destination="SYM-F9-NdR" id="qAO-fP-ZMx"/>
                 <outlet property="_labelWakeup" destination="bAQ-GH-wog" id="um4-K3-Wf8"/>
+                <outlet property="annulusView" destination="tE0-C1-b82" id="T1W-Kw-6Pu"/>
                 <outlet property="bottomView" destination="nQq-N5-dvr" id="MSn-GP-Egj"/>
                 <outlet property="buttonClock" destination="S8U-rB-Rg5" id="nPz-gy-ylA"/>
                 <outlet property="buttonHistory" destination="tdG-lG-ih9" id="lWt-s1-J28"/>
@@ -36,7 +38,6 @@
                 <outlet property="labelSleepMinute" destination="nPz-l3-5pp" id="mP8-4b-CbK"/>
                 <outlet property="labelWakeupSleepHour" destination="zgf-e9-jzX" id="ypN-yk-gXj"/>
                 <outlet property="labelWakeupSleepMinute" destination="fex-rB-Hv1" id="KJr-lj-86g"/>
-                <outlet property="mySleepView" destination="tE0-C1-b82" id="8aQ-kJ-a7E"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -50,7 +51,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="4oD-XB-y6G">
-                            <rect key="frame" x="20" y="7" width="35" height="35"/>
+                            <rect key="frame" x="20" y="0.0" width="35" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -60,7 +61,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ccy-Xg-LeT">
-                            <rect key="frame" x="265" y="7" width="35" height="35"/>
+                            <rect key="frame" x="265" y="0.0" width="35" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -70,9 +71,9 @@
                             </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Plusdot" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SYM-F9-NdR">
-                            <rect key="frame" x="75" y="0.0" width="170" height="44"/>
+                            <rect key="frame" x="75" y="-3" width="170" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="35"/>
+                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -113,7 +114,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" id="tE0-C1-b82" customClass="WMSMySleepView">
+                <view contentMode="scaleToFill" id="tE0-C1-b82" customClass="GGIAnnulusView">
                     <rect key="frame" x="35" y="148" width="251" height="251"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -123,7 +124,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的睡眠" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uUr-QY-Udp">
-                            <rect key="frame" x="86" y="61" width="78" height="21"/>
+                            <rect key="frame" x="86" y="63" width="78" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -151,9 +152,9 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uEq-b1-Uac">
-                            <rect key="frame" x="62" y="99" width="138" height="51"/>
+                            <rect key="frame" x="62" y="101" width="138" height="59"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="53"/>
+                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="55"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -187,34 +188,34 @@
                         <view contentMode="scaleToFill" id="wMK-lj-zSF">
                             <rect key="frame" x="106" y="5" width="1" height="72"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.5607843137254902" green="0.90588235294117647" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="FJj-lR-dt7">
                             <rect key="frame" x="213" y="5" width="1" height="72"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.5607843137254902" green="0.90588235294117647" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_deepsleep_icon.png" id="q9p-VV-D0w">
-                            <rect key="frame" x="11" y="0.0" width="25" height="25"/>
+                            <rect key="frame" x="16" y="0.0" width="25" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_lightsleep_icon.png" id="zSg-ie-95e">
-                            <rect key="frame" x="116" y="0.0" width="25" height="25"/>
+                            <rect key="frame" x="123" y="0.0" width="25" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_wakeup_icon.png" id="S6Y-ZP-ajr">
-                            <rect key="frame" x="225" y="0.0" width="25" height="25"/>
+                            <rect key="frame" x="230" y="0.0" width="25" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="浅睡" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="npN-tt-ag3">
-                            <rect key="frame" x="145" y="5" width="72" height="26"/>
+                            <rect key="frame" x="151" y="5" width="58" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="唤醒" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bAQ-GH-wog">
-                            <rect key="frame" x="255" y="5" width="58" height="26"/>
+                            <rect key="frame" x="257" y="5" width="58" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -298,7 +299,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="深睡" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8or-A4-U8J">
-                            <rect key="frame" x="40" y="5" width="72" height="26"/>
+                            <rect key="frame" x="44" y="5" width="58" height="26"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

@@ -13,6 +13,7 @@
 #define START_ANGLE         (-220.0)
 #define END_ANGLE           (40.0)
 #define degreesToRadians(x) (M_PI*(x)/180.0) //把角度转换成弧度的方式
+#define radiansToDegrees(x) (180.0*(x)/M_PI)
 
 @implementation GGIAnnulusView
 {
@@ -50,18 +51,29 @@
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     [path addArcWithCenter:center radius:RADIUS startAngle:degreesToRadians(START_ANGLE) endAngle:degreesToRadians(END_ANGLE) clockwise:YES];
     
+    CAShapeLayer *underLayer = [CAShapeLayer layer];
+    underLayer.strokeColor = UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
+    underLayer.fillColor = [UIColor clearColor].CGColor;
+    underLayer.frame = self.bounds;
+    underLayer.lineWidth = PROGRESS_WIDTH;
+    underLayer.path = [path CGPath];
+    [path stroke];
+    [self.layer addSublayer:underLayer];
+    
     layer=[CAShapeLayer layer];
     layer.strokeColor=[UIColor redColor].CGColor;
     layer.fillColor=[UIColor clearColor].CGColor;
     layer.frame=self.bounds;
-    layer.lineWidth=25;
+    layer.lineWidth=PROGRESS_WIDTH;
     layer.path=path.CGPath;
     layer.strokeEnd=0;
+    [path stroke];
     
     contain=[CALayer layer];
     contain.frame=self.bounds;
     contain.mask=layer;
     [self.layer addSublayer:contain];
+    
 }
 
 -(UIImage*)getArcImageWithSize:(CGSize)size andCenter:(CGPoint)pt andRadius:(CGFloat)radius andColors:(NSArray*)colors andAngle:(NSArray*)angles
@@ -82,7 +94,7 @@
     path.lineCapStyle=kCGLineCapButt;
     path.lineWidth=PROGRESS_WIDTH;
     [path stroke];
-    
+
     //第二段弧
     startAngle=endAngle;
     endAngle=startAngle+[(NSNumber*)angles[1] floatValue];
@@ -92,7 +104,7 @@
     path.lineCapStyle=kCGLineCapButt;
     path.lineWidth=PROGRESS_WIDTH;
     [path stroke];
-    
+
     //第三段弧
     startAngle=endAngle;
     endAngle=startAngle+[(NSNumber*)angles[2] floatValue];
@@ -102,7 +114,7 @@
     path.lineCapStyle=kCGLineCapButt;
     path.lineWidth=PROGRESS_WIDTH;
     [path stroke];
-    
+
     UIImage* im = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return im;
@@ -128,17 +140,31 @@
     [layer addAnimation:animation forKey:@"strokeEnd"];
 }
 
-- (void)setSleepMinute:(NSUInteger)sleepMinute
-       deepSleepMinute:(NSUInteger)deepSleepMinute
-      lightSleepMinute:(NSUInteger)lightSleepMinute
-           awakeMinute:(NSUInteger)awakeMinute
+- (void)setAnnulusColors:(NSArray *)colors andPercents:(NSArray*)percents
 {
-    float total = degreesToRadians(END_ANGLE-START_ANGLE);
-    NSArray *angles = @[@(deepSleepMinute*1.0/sleepMinute * total),
-                        @(lightSleepMinute*1.0/sleepMinute * total),
-                        @(awakeMinute*1.0/sleepMinute *total)];
+    CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+    CGSize size = self.bounds.size;
     
-    [self setAnnulusColors:@[[UIColor blueColor],[UIColor redColor],[UIColor greenColor]] andAngle:angles];
+    NSMutableArray *angles = [NSMutableArray arrayWithCapacity:1];
+    float total = degreesToRadians(END_ANGLE-START_ANGLE);
+    for (NSNumber *number in percents) {
+        float per= [number floatValue];
+        [angles addObject:@(per*total)];
+    }
+    
+    UIImage *img=[self getArcImageWithSize:size andCenter:center andRadius:RADIUS andColors:colors andAngle:angles];
+    contain.contents=(id)img.CGImage;
+    
+    
+    layer.strokeEnd=1;
+    
+    CABasicAnimation *animation = [CABasicAnimation animation];
+    animation.keyPath = @"strokeEnd";
+    animation.fromValue=@(0);
+    animation.toValue=@(1);
+    
+    animation.duration = 1.0;
+    [layer addAnimation:animation forKey:@"strokeEnd"];
 }
 
 @end

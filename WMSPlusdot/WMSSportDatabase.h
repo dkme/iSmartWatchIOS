@@ -15,6 +15,12 @@
 
 - (BOOL)insertSportData:(WMSSportModel *)model;
 
+- (BOOL)updateSportData:(WMSSportModel *)model;
+
+- (BOOL)deleteAllSportData;
+
+- (BOOL)deleteSportData:(WMSSportModel *)model;
+
 - (NSArray *)queryAllSportData;
 
 - (NSArray *)querySportData:(NSDate *)sportDate;
@@ -23,10 +29,6 @@
 
 - (NSDate *)queryEarliestDate;
 
-- (BOOL)updateSportData:(WMSSportModel *)model;
-
-- (BOOL)deleteAllSportData;
-
-- (BOOL)deleteSportData:(WMSSportModel *)model;
+- (NSUInteger)sumSportStepsFromYear:(NSUInteger)year month:(NSUInteger)month;
 
 @end

@@ -8,8 +8,8 @@
 
 #import "WMSNavBarView.h"
 
-#define LEFT_BUTTON_RECT CGRectMake(20, 22, 35, 35)
-#define TITLE_LABEL_RECT CGRectMake(75, 20, 170, 44)
+#define LEFT_BUTTON_RECT CGRectMake(20, 20, 35, 35)
+#define TITLE_LABEL_RECT CGRectMake(75, 17, 170, 44)
 
 @interface WMSNavBarView ()
 
@@ -23,7 +23,6 @@
     if (!_buttonLeft) {
         _buttonLeft = [UIButton buttonWithType:UIButtonTypeCustom];
         _buttonLeft.frame = LEFT_BUTTON_RECT;
-        
         //[_buttonLeft addTarget:self action:@selector(clickedButtonLeft:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _buttonLeft;

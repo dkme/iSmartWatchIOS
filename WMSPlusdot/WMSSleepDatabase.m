@@ -10,8 +10,8 @@
 #import "sqlite3.h"
 #import "WMSSleepModel.h"
 #import "NSDate+Formatter.h"
+#import "WMSFileMacro.h"
 
-#define DatabaseName    @"sleepData.db"
 #define TableName       @"SleepDataTable"
 
 @implementation WMSSleepDatabase
@@ -91,6 +91,108 @@
         return YES;
     }
     return NO;
+}
+
+- (BOOL)updateSleepData:(WMSSleepModel *)model;
+{
+    if ([self openDB]) {
+        sqlite3_stmt *statement;//这相当一个容器，放转化OK的sql语句
+        //组织SQL语句
+        char *sql = "update SleepDataTable set sleepEndHour = ?, sleepEndMinute = ?, sleepMinute = ?, asleepMinute = ?, awakeCount = ?, deepSleepMinute = ?, lightSleepMinute = ?, startedMinutes = ?, startedStatus = ?, statusDurations = ?, dataLength = ? WHERE sleepDate = ?";
+        
+        //将SQL语句放入sqlite3_stmt中
+        int success = sqlite3_prepare_v2(_database, sql, -1, &statement, NULL);
+        if (success != SQLITE_OK) {
+            NSLog(@"Error: failed to SleepDataTable");
+            sqlite3_close(_database);
+            return NO;
+        }
+        
+        sqlite3_bind_int(statement, 1, model.sleepEndHour);
+        sqlite3_bind_int(statement, 2, model.sleepEndMinute);
+        sqlite3_bind_int(statement, 3, model.sleepMinute);
+        sqlite3_bind_int(statement, 4, model.asleepMinute);
+        sqlite3_bind_int(statement, 5, model.awakeCount);
+        sqlite3_bind_int(statement, 6, model.deepSleepMinute);
+        sqlite3_bind_int(statement, 7, model.lightSleepMinute);
+        int len = 0;
+        if (model.dataLength > 0) {
+            len = sizeof(model.startedMinutes[0]) * model.dataLength;
+        }
+        sqlite3_bind_blob(statement, 8, model.startedMinutes, len, SQLITE_STATIC);
+        
+        len = sizeof(model.startedStatus[0]) * model.dataLength;
+        sqlite3_bind_blob(statement, 9, model.startedStatus, len, SQLITE_STATIC);
+        
+        len = sizeof(model.statusDurations[0]) * model.dataLength;
+        sqlite3_bind_blob(statement, 10, model.statusDurations, len, SQLITE_STATIC);
+        
+        sqlite3_bind_int(statement, 11, model.dataLength);
+        
+        NSString *strDate = [model.sleepDate.description substringToIndex:10];
+        sqlite3_bind_text(statement, 12, [strDate UTF8String], -1, SQLITE_TRANSIENT);
+        
+        
+        //执行SQL语句。这里是更新数据库
+        success = sqlite3_step(statement);
+        //释放statement
+        sqlite3_finalize(statement);
+        
+        //如果执行失败
+        if (success == SQLITE_ERROR) {
+            NSLog(@"Error: failed to update the database with message.");
+            //关闭数据库
+            sqlite3_close(_database);
+            return NO;
+        }
+        //执行成功后依然要关闭数据库
+        sqlite3_close(_database);
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)deleteAllSleepData
+{
+    if ([self openDB] == NO) {
+        return NO;
+    }
+    
+    //删除所有数据，条件为1>0永真
+    const char *deleteAllSql="delete from SleepDataTable where 1>0";
+    //执行删除语句
+    if(sqlite3_exec(_database, deleteAllSql, NULL, NULL, NULL)==SQLITE_OK){
+        NSLog(@"删除所有数据成功");
+    } else {
+        NSLog(@"删除失败");
+        sqlite3_close(_database);
+        return NO;
+    }
+    sqlite3_close(_database);
+    return YES;
+}
+
+- (BOOL)deleteSleepData:(WMSSleepModel *)model
+{
+    if ([self openDB] == NO) {
+        return NO;
+    }
+    
+    //删除某条数据
+    NSString *deleteString=[NSString stringWithFormat:@"delete from SleepDataTable where sleepDate = '%@' ", model.sleepDate];
+    //转成utf-8的c的风格
+    const char *deleteSql=[deleteString UTF8String];
+    //执行删除语句
+    char *errorMsg;
+    if(sqlite3_exec(_database, deleteSql, NULL, NULL, &errorMsg)==SQLITE_OK){
+        NSLog(@"删除成功");
+    } else {
+        NSLog(@"删除失败 %s",errorMsg);
+        sqlite3_close(_database);
+        return NO;
+    }
+    sqlite3_close(_database);
+    return YES;
 }
 
 //获取数据
@@ -293,7 +395,7 @@
     NSDate *date = nil;
     if ([self openDB]) {
         sqlite3_stmt *statement = nil;
-        const char *sql = "select * from SleepDataTable order by sleepDate limit 1";
+        const char *sql = "SELECT sleepDate FROM SleepDataTable ORDER BY sleepDate LIMIT 1";
         
         if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
             date = nil;
@@ -301,7 +403,7 @@
         else
         {
             while (sqlite3_step(statement) == SQLITE_ROW) {
-                char *strDate = (char *)sqlite3_column_text(statement, 1);
+                char *strDate = (char *)sqlite3_column_text(statement, 0);
                 NSString *stringDate = [NSString stringWithUTF8String:strDate];
                 date = [NSDate dateFromString:stringDate format:@"yyyy-MM-dd"];
             }
@@ -313,106 +415,28 @@
     return nil;
 }
 
-- (BOOL)updateSleepData:(WMSSleepModel *)model;
+- (double)avgSleepTimeFromYear:(NSUInteger)year month:(NSUInteger)month
 {
+    float avg = 0;
     if ([self openDB]) {
-        sqlite3_stmt *statement;//这相当一个容器，放转化OK的sql语句
-        //组织SQL语句
-        char *sql = "update SleepDataTable set sleepEndHour = ?, sleepEndMinute = ?, sleepMinute = ?, asleepMinute = ?, awakeCount = ?, deepSleepMinute = ?, lightSleepMinute = ?, startedMinutes = ?, startedStatus = ?, statusDurations = ?, dataLength = ? WHERE sleepDate = ?";
-        
-        //将SQL语句放入sqlite3_stmt中
-        int success = sqlite3_prepare_v2(_database, sql, -1, &statement, NULL);
-        if (success != SQLITE_OK) {
-            NSLog(@"Error: failed to SleepDataTable");
-            sqlite3_close(_database);
-            return NO;
+        sqlite3_stmt *statement = nil;
+        NSString *strSQL = [NSString stringWithFormat:@"SELECT AVG(sleepMinute) FROM SleepDataTable WHERE sleepDate BETWEEN DATETIME('%04u-%02u-01') AND DATETIME('%04u-%02u-01')", year,month,year,month+1];
+        const char *sql = [strSQL UTF8String];
+        if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+            
         }
-        
-        sqlite3_bind_int(statement, 1, model.sleepEndHour);
-        sqlite3_bind_int(statement, 2, model.sleepEndMinute);
-        sqlite3_bind_int(statement, 3, model.sleepMinute);
-        sqlite3_bind_int(statement, 4, model.asleepMinute);
-        sqlite3_bind_int(statement, 5, model.awakeCount);
-        sqlite3_bind_int(statement, 6, model.deepSleepMinute);
-        sqlite3_bind_int(statement, 7, model.lightSleepMinute);
-        int len = 0;
-        if (model.dataLength > 0) {
-            len = sizeof(model.startedMinutes[0]) * model.dataLength;
+        else
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                avg = sqlite3_column_double(statement, 0);
+            }
         }
-        sqlite3_bind_blob(statement, 8, model.startedMinutes, len, SQLITE_STATIC);
-        
-        len = sizeof(model.startedStatus[0]) * model.dataLength;
-        sqlite3_bind_blob(statement, 9, model.startedStatus, len, SQLITE_STATIC);
-        
-        len = sizeof(model.statusDurations[0]) * model.dataLength;
-        sqlite3_bind_blob(statement, 10, model.statusDurations, len, SQLITE_STATIC);
-        
-        sqlite3_bind_int(statement, 11, model.dataLength);
-        
-        NSString *strDate = [model.sleepDate.description substringToIndex:10];
-        sqlite3_bind_text(statement, 12, [strDate UTF8String], -1, SQLITE_TRANSIENT);
-        
-        
-        //执行SQL语句。这里是更新数据库
-        success = sqlite3_step(statement);
-        //释放statement
         sqlite3_finalize(statement);
-        
-        //如果执行失败
-        if (success == SQLITE_ERROR) {
-            NSLog(@"Error: failed to update the database with message.");
-            //关闭数据库
-            sqlite3_close(_database);
-            return NO;
-        }
-        //执行成功后依然要关闭数据库
         sqlite3_close(_database);
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)deleteAllSleepData
-{
-    if ([self openDB] == NO) {
-        return NO;
+        return avg;
     }
     
-    //删除所有数据，条件为1>0永真
-    const char *deleteAllSql="delete from SleepDataTable where 1>0";
-    //执行删除语句
-    if(sqlite3_exec(_database, deleteAllSql, NULL, NULL, NULL)==SQLITE_OK){
-        NSLog(@"删除所有数据成功");
-    } else {
-        NSLog(@"删除失败");
-        sqlite3_close(_database);
-        return NO;
-    }
-    sqlite3_close(_database);
-    return YES;
-}
-
-- (BOOL)deleteSleepData:(WMSSleepModel *)model
-{
-    if ([self openDB] == NO) {
-        return NO;
-    }
-    
-    //删除某条数据
-    NSString *deleteString=[NSString stringWithFormat:@"delete from SleepDataTable where sleepDate = '%@' ", model.sleepDate];
-    //转成utf-8的c的风格
-    const char *deleteSql=[deleteString UTF8String];
-    //执行删除语句
-    char *errorMsg;
-    if(sqlite3_exec(_database, deleteSql, NULL, NULL, &errorMsg)==SQLITE_OK){
-        NSLog(@"删除成功");
-    } else {
-        NSLog(@"删除失败 %s",errorMsg);
-        sqlite3_close(_database);
-        return NO;
-    }
-    sqlite3_close(_database);
-    return YES;
+    return 0;
 }
 
 
@@ -423,7 +447,7 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     //NSLog(@"=======%@",documentsDirectory);
-    return [documentsDirectory stringByAppendingPathComponent:DatabaseName];//这里很神奇，可以定义成任何类型的文件，也可以不定义成.db文件，任何格式都行，定义成.sb文件都行，达到了很好的数据隐秘性
+    return [documentsDirectory stringByAppendingPathComponent:FILE_SLEEP_DATABASE];//这里很神奇，可以定义成任何类型的文件，也可以不定义成.db文件，任何格式都行，定义成.sb文件都行，达到了很好的数据隐秘性
 }
 
 //创建，打开数据库

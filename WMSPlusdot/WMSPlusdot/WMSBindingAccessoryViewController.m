@@ -94,8 +94,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.isSavaUserInfo = NO;
-    
     UIView *centerView = self.labelBLEStatus.superview;
     [centerView addSubview:self.buttonBottom];
     [self.view addSubview:self.tableView];
@@ -118,20 +116,6 @@
     [super viewDidAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
-
-//    if ([WMSMyAccessory isBindAccessory]) {
-//        [self.sideMenuViewController setPanGestureEnabled:YES];
-//        [self dismissViewControllerAnimated:NO completion:nil];
-//    } else {
-//        [self.sideMenuViewController setPanGestureEnabled:NO];
-//    }
-    DEBUGLog(@"%@ viewDidAppear",NSStringFromClass([self class]));
-//    if (self.isSavaUserInfo) {
-//        [self.sideMenuViewController setPanGestureEnabled:YES];
-//        //[self dismissViewControllerAnimated:NO completion:nil];
-//    } else {
-//        [self.sideMenuViewController setPanGestureEnabled:NO];
-//    }
 }
 
 - (void)dealloc
@@ -279,31 +263,6 @@
 
 - (void)buttonBottomAction:(id)sender
 {
-//    if ([self.bleControl isConnected] == NO) {
-//        return ;
-//    }
-//    UIButton *button = (UIButton *)sender;
-//    NSString *buttonTitle = [button titleForState:UIControlStateNormal];
-//    if ([buttonTitle isEqualToString:ButtonScanTitle]) {
-//        //扫描
-//        UINavigationController *nav = (UINavigationController *)((RESideMenu *)self.presentingViewController).contentViewController;
-//        WMSContentViewController *contentVC = (WMSContentViewController *)nav.topViewController;
-//        [contentVC scanAndConnectPeripheral];
-//
-//    } else {
-//        //绑定
-//        NSString *identifier = self.bleControl.connectedPeripheral.UUIDString;
-//        if (identifier == nil) {
-//            identifier = @"";
-//        }
-//        [WMSMyAccessory bindAccessory:identifier];
-//        
-//        WMSMyAccountViewController *VC = [[WMSMyAccountViewController alloc] init];
-//        VC.isModifyAccount = NO;
-//        
-//        [self presentViewController:VC animated:YES completion:nil];
-//    }
-    
     [self showScanning:YES];
     [self scanBle];
 }
@@ -398,7 +357,11 @@
     } else {
         [self showScanning:NO];
     }
-
+    
+    LGPeripheral *p = self.listData[0];
+    [p readRSSIValueCompletion:^(NSNumber *RSSI, NSError *error) {
+        
+    }];
 }
 
 #pragma mark - MBProgressHUDDelegate

@@ -568,6 +568,7 @@ NSString * const WMSBleControlScanFinish =
     if (CBPeripheralStateConnected == state) {
         [peripheral disconnectWithCompletion:nil];
     }
+    //[peripheral disconnectWithCompletion:nil];
     [self disConnectedClearup];
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:self userInfo:nil];
 }

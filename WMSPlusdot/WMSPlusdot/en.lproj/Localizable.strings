@@ -10,7 +10,7 @@
 //LeftViewController String
 "My sports" = "My sports";
 "My sleep" = "My sleep";
-"Set target" = "Set target";
+"Target settings" = "Target settings";
 "Bound watch" = "Bound watch";
 
 //RightViewController String
@@ -95,15 +95,15 @@
 
 
 "同步" = "Sync";
-"智能手表已连接" = "Smart watch connected";
+"智能手表已连接" = "Connected smart watch";
 "智能手表连接中" = "Connecting smart watch";
 "手表" = "watch";
-"解除绑定" = "Remove the binding";
+"解除绑定" = "Unbind the watch";
 "坚持锻炼一个月" = "Insist to take exercise for a month";
 "并分享到朋友圈，即可获得精美礼品哦" = "and for the exquisite gift to share to the circle of friends";
 "菜鸟" = "菜鸟";
 "砖家" = "砖家";
-"绑定配件" = "Bound watch";
+"绑定配件" = "Bind device";
 "重新扫描" = "Research";
 "绑定的配件" = "Binding accessories";
 
@@ -130,10 +130,11 @@
 "设置目标" = "Target settings";
 "拍照" = "Take a photo";
 "选取照片" = "Choose photo";
-"防丢" = "Anti lost";
+"防丢" = "Anti-lost";
 "正在连接您的手表" = "Connecting smart watch";
 "拍摄的照片保存在照片库" = "Photos stored in the library";
 "个性签名不能为空" = "Signature cannot be empty";
+"保存信息" = "Save user information";
 
 "用户名" = "User name";
 "密码" = "Password";
@@ -164,15 +165,15 @@
 "距离单位" = "km";
 
 "提醒方式" = "Remind way";
-"震动" = "Shake";
-"响铃" = "Beep";
-"震动+响铃" = "Shake+bell";
+"震动" = "Vibration";
+"蜂鸣" = "Beep";
+"震动+蜂鸣" = "Vibration+Beep";
 "其他" = "Other";
 "永不" = "Never";
 "请先在“绑定配件”中绑定您的手表" = "First in “Bound watch” bind your watch";
 "您还没有连接手表或连接已断开" = "You have not connected the watch or connection disconnected";
 "智能手表搜索" = "Search watch";
-"追踪活动/睡眠，蓝牙4.0无线连接" = "Racking active/sleep, Bluetooth 4.0 wireless connection";
+"追踪活动/睡眠，蓝牙4.0无线连接" = "Track active/sleep, Bluetooth 4.0 wireless connection";
 "正在搜索蓝牙设备......" = "Sarching for watch......";
 "请确认智能手表已经开启并在手机附近" = "Please confirm smart watches have been open and mobile phone in the near";
 "没有找到蓝牙设备" = "Not find watch";
@@ -190,7 +191,43 @@
 "结束时间必须晚于开始时间" = "The end of time must be later than the start time";
 "设置活动提醒成功" = "Set the active remind success";
 "设置闹钟成功" = "Set the alarm success";
+"提醒设置成功" = "Set remind success";
+"提醒方式设置成功" = "Set remind way success";
+"防丢设置成功" = "Set lost success";
+"正在切换至遥控模式..." = "Is switch to the remote control mode...";
+"正在绑定配件..." = "Is binding accessories...";
+"正在配置设置项，请稍等..." = "Is config settings, please wait...";
+"设置项配置成功" = "Config settings success";
+"当前步数" = "Current step";
+"个人信息" = "Private details";
+"睡眠时长" = "Sleep time";
+"唤醒时段" = "Wakeup space";
 
-
+"1月" = "Jan";
+"2月" = "Feb";
+"3月" = "Mar";
+"4月" = "Apr";
+"5月" = "May";
+"6月" = "Jun";
+"7月" = "Jul";
+"8月" = "Aug";
+"9月" = "Sept";
+"10月" = "Oct";
+"11月" = "Nov";
+"12月" = "Dec";
+"平均每日睡眠" = "The average sleep duration every day";
+"时" = "hour";
+"分" = "minute";
+"本月累计步数" = "This month total steps";
+"步" = "STEP";
+"累计消耗" = "Total calories";
+"卡路里" = "cal";
+"累计里程" = "Total distance";
+"米" = "m";
+"公里" = "km";
+"瓶" = "bottle ";
+"可乐" = "coke";
+"圈" = "circle ";
+"400米操场" = "400m playground";
 
 

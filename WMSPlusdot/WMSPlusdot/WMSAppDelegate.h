@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "WMSBluetooth.h"
-
+#import "WMSFileMacro.h"
 @class RESideMenu;
-
-#define UserInfoFile    @"userInfo.plist"
 
 @interface WMSAppDelegate : UIResponder <UIApplicationDelegate>
 

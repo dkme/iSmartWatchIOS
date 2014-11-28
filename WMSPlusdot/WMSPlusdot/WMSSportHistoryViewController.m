@@ -31,7 +31,9 @@
 
 #define TAG_BOTTOM_LABEL_STEPS      1000
 #define TAG_BOTTOM_LABEL_CALORIE    1001
-#define TAG_BOTTOM_LABEL_DISTANCE   1002
+#define TAG_BOTTOM_LABEL_DESCRIBE1  1002
+#define TAG_BOTTOM_LABEL_DISTANCE   1003
+#define TAG_BOTTOM_LABEL_DESCRIBE2  1004
 
 #define OneDayTimeInterval    (24*60*60)
 #define DateFormat            @"yyyy/MM/dd"
@@ -80,31 +82,51 @@
         _bottomView = [[UIView alloc] initWithFrame:viewFrame];
         _bottomView.backgroundColor = [UIColor clearColor];
         
-        CGRect labelFrame = CGRectMake(0, (viewFrame.size.height-40)/2.0-70, ScreenWidth, 40);
+        CGRect labelFrame = CGRectMake(20, (viewFrame.size.height-40)/2.0-70, ScreenWidth, 40);
         UILabel *labelSteps = [[UILabel alloc] initWithFrame:labelFrame];
         labelSteps.textColor = [UIColor darkGrayColor];
-        labelSteps.textAlignment = NSTextAlignmentCenter;
+        labelSteps.textAlignment = NSTextAlignmentLeft;
         labelSteps.tag = TAG_BOTTOM_LABEL_STEPS;
+        labelSteps.backgroundColor = [UIColor clearColor];
         
         CGRect labelCalorieFrame = CGRectZero;
-        labelCalorieFrame.origin = CGPointMake(40, labelFrame.origin.y+labelFrame.size.height+0);
+        labelCalorieFrame.origin = CGPointMake(labelFrame.origin.x, labelFrame.origin.y+labelFrame.size.height+10);
         labelCalorieFrame.size = CGSizeMake(ScreenWidth-labelCalorieFrame.origin.x, 35);
         UILabel *labelCalorie = [[UILabel alloc] initWithFrame:labelCalorieFrame];
         labelCalorie.textColor = [UIColor darkGrayColor];
         labelCalorie.textAlignment = NSTextAlignmentLeft;
         labelCalorie.tag = TAG_BOTTOM_LABEL_CALORIE;
         
+//        CGRect labelDescribe1Frame = CGRectZero;
+//        labelDescribe1Frame.origin = CGPointMake(labelCalorieFrame.origin.x+20, labelCalorieFrame.origin.y+labelCalorieFrame.size.height);
+//        labelDescribe1Frame.size = CGSizeMake(ScreenWidth-labelDescribe1Frame.origin.x, 35);
+//        UILabel *labelDescribe1 = [[UILabel alloc] initWithFrame:labelDescribe1Frame];
+//        labelDescribe1.textColor = [UIColor darkGrayColor];
+//        labelDescribe1.textAlignment = NSTextAlignmentLeft;
+//        labelDescribe1.tag = TAG_BOTTOM_LABEL_DESCRIBE1;
+        
+        
         CGRect labelDistanceFrame = CGRectZero;
-        labelDistanceFrame.origin = CGPointMake(labelCalorieFrame.origin.x, labelCalorieFrame.origin.y+labelCalorieFrame.size.height+25);
+        labelDistanceFrame.origin = CGPointMake(labelCalorieFrame.origin.x, labelCalorieFrame.origin.y+labelCalorieFrame.size.height+10);
         labelDistanceFrame.size = CGSizeMake(ScreenWidth-labelDistanceFrame.origin.x, 35);
         UILabel *labelDistance = [[UILabel alloc] initWithFrame:labelDistanceFrame];
         labelDistance.textColor = [UIColor darkGrayColor];
         labelDistance.textAlignment = NSTextAlignmentLeft;
         labelDistance.tag = TAG_BOTTOM_LABEL_DISTANCE;
         
+//        CGRect labelDescribe2Frame = CGRectZero;
+//        labelDescribe2Frame.origin = CGPointMake(labelDistanceFrame.origin.x+20, labelDistanceFrame.origin.y+labelDistanceFrame.size.height);
+//        labelDescribe2Frame.size = CGSizeMake(ScreenWidth-labelDescribe2Frame.origin.x, 35);
+//        UILabel *labelDescribe2 = [[UILabel alloc] initWithFrame:labelDescribe2Frame];
+//        labelDescribe2.textColor = [UIColor darkGrayColor];
+//        labelDescribe2.textAlignment = NSTextAlignmentLeft;
+//        labelDescribe2.tag = TAG_BOTTOM_LABEL_DESCRIBE2;
+        
         [_bottomView addSubview:labelSteps];
         [_bottomView addSubview:labelCalorie];
+//        [_bottomView addSubview:labelDescribe1];
         [_bottomView addSubview:labelDistance];
+//        [_bottomView addSubview:labelDescribe2];
     }
     return _bottomView;
 }
@@ -112,7 +134,7 @@
 - (void)setBottomLabelSteps:(NSUInteger)steps
 {
     NSString *stepStr = [NSString stringWithFormat:@"%u",steps];
-    NSString *describe = NSLocalizedString(@"本月累计步数", nil);
+    NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"本月累计步数", nil),@": "];
     NSString *unit = NSLocalizedString(@"步", nil);
     NSString *str = [NSString stringWithFormat:@"%@%@%@",describe,stepStr,unit];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
@@ -133,10 +155,16 @@
 }
 - (void)setBottomLabelCalorie:(NSUInteger)calorie
 {
+    NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计消耗", nil),@": "];
     NSString *calorieStr = [NSString stringWithFormat:@"%u",calorie];
-    NSString *describe = NSLocalizedString(@"累计消耗", nil);
     NSString *unit = NSLocalizedString(@"卡路里", nil);
-    NSString *str = [NSString stringWithFormat:@"%@%@%@",describe,calorieStr,unit];
+    NSString *symbol = @" ≈ ";
+    //1大卡=1000卡，1000毫升(标准)可乐=43大卡
+    //float value = calorie/1000.0/43;
+    NSString *number = [NSString stringWithFormat:@"%d",Rounded((calorie/1000.0/43))];
+    NSString *unit2 = NSLocalizedString(@"瓶", nil);
+    NSString *des2 = NSLocalizedString(@"可乐", nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",describe,calorieStr,unit, symbol,number,unit2,des2];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
     loc = 0;
@@ -148,6 +176,19 @@
     loc += len;
     len = unit.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = symbol.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(25.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = number.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
+    [text addAttribute:NSForegroundColorAttributeName value:UICOLOR_DEFAULT range:NSMakeRange(loc, len)];
+    loc += len;
+    len = unit2.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = des2.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
     
     UILabel *label = (UILabel *)[self.bottomView viewWithTag:TAG_BOTTOM_LABEL_CALORIE];
     label.attributedText = text;
@@ -155,11 +196,31 @@
 }
 - (void)setBottomLabelDistance:(NSUInteger)distance
 {
-    NSUInteger dis = Rounded(distance/100.0/1000.0);
-    NSString *distanceStr = [NSString stringWithFormat:@"%u",dis];
-    NSString *describe = NSLocalizedString(@"累计里程", nil);
-    NSString *unit = NSLocalizedString(@"公里", nil);
-    NSString *str = [NSString stringWithFormat:@"%@%@%@",describe,distanceStr,unit];
+    NSString *unit = nil;
+    //distance的单位是cm
+    int dis_m = Rounded(distance/100.0);//单位为m
+    NSUInteger value = 0;
+    float number = 0;
+    //distance<1000m,单位用m，>1000m,单位用km
+    if (dis_m < 1000) {
+        value = dis_m;
+        unit = NSLocalizedString(@"米", nil);
+        number = value/400.0;
+    } else {
+        value = dis_m + 5;
+        NSUInteger gewei = value%10;
+        value -= gewei;//对个位进行4舍5入
+        value = Rounded(dis_m/1000.0);//单位为km
+        unit = NSLocalizedString(@"公里", nil);
+        number = value*1000/400.0;
+    }
+    NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计里程", nil),@": "];
+    NSString *distanceStr = [NSString stringWithFormat:@"%u",value];
+    NSString *symbol = @" ≈ ";
+    NSString *numberStr = [NSString stringWithFormat:@"%d",Rounded(number)];
+    NSString *unti2 = NSLocalizedString(@"圈", nil);
+    NSString *des2 = NSLocalizedString(@"400米操场", nil);
+    NSString *str = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",describe,distanceStr,unit, symbol,numberStr,unti2,des2];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
     loc = 0;
@@ -171,11 +232,57 @@
     loc += len;
     len = unit.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = symbol.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(25.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = numberStr.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
+    [text addAttribute:NSForegroundColorAttributeName value:UICOLOR_DEFAULT range:NSMakeRange(loc, len)];
+    loc += len;
+    len = unti2.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    loc += len;
+    len = des2.length;
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
     
     UILabel *label = (UILabel *)[self.bottomView viewWithTag:TAG_BOTTOM_LABEL_DISTANCE];
     label.attributedText = text;
     label.adjustsFontSizeToFitWidth = YES;
 }
+- (void)setBottomLabelCalorieDescribe:(float)number
+{
+//    NSUInteger dis = Rounded(distance/100.0/1000.0);
+//    NSString *distanceStr = [NSString stringWithFormat:@"%u",dis];
+//    NSString *describe = NSLocalizedString(@"累计里程", nil);
+//    NSString *unit = NSLocalizedString(@"公里", nil);
+//    NSString *str = [NSString stringWithFormat:@"%@%@%@",describe,distanceStr,unit];
+//    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
+//    NSUInteger loc,len;
+//    loc = 0;
+//    len = describe.length;
+//    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+//    loc += len;
+//    len = distanceStr.length;
+//    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
+//    loc += len;
+//    len = unit.length;
+//    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
+    
+//    UILabel *label = (UILabel *)[self.bottomView viewWithTag:TAG_BOTTOM_LABEL_DESCRIBE1];
+//    label.backgroundColor = [UIColor redColor];
+//    //label.attributedText = text;
+//    label.text = @"。。。。。。。。。。";
+//    label.adjustsFontSizeToFitWidth = YES;
+}
+- (void)setBottomLabelDistanceDescribe:(float)number
+{
+//    UILabel *label = (UILabel *)[self.bottomView viewWithTag:TAG_BOTTOM_LABEL_DESCRIBE2];
+//    label.backgroundColor = [UIColor blueColor];
+//    label.text = @"。。。。。。。。。。";
+//    label.adjustsFontSizeToFitWidth = YES;
+}
+
 
 - (void)setLabelDateText:(NSDate *)date
 {
@@ -212,22 +319,26 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-//    CGRect frame = self.chartView.frame;
-//    frame.origin.y -= 60;
-//    self.chartView.frame = frame;
     self.dataBase = [WMSSportDatabase sportDatabase];
     self.earliestDate = [self.dataBase queryEarliestDate];
+//    DEBUGLog(@"Sport earliest date:%@",self.earliestDate);
+//    NSArray *array=[self.dataBase queryAllSportData];
+//    DEBUGLog(@"array:%@",array);
+//    for (WMSSportModel *model in array) {
+//        DEBUGLog(@"date:%@",model.sportDate);
+//    }
+    //[self analogData];
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.barChartView];
     [self.view addSubview:self.bottomView];
     
+    [self setupControl];
+    [self adaptiveIphone4];
+    [self setLabelDateText:self.showDate];
     [self initNavBarView];
     //[self initChartView];
     [self initBarChartView];
-    [self setupControl];
-    [self setLabelDateText:self.showDate];
-    [self adaptiveIphone4];
     
     //[self reloadView];
     //_labelStep.text = NSLocalizedString(@"Step", nil);
@@ -262,28 +373,24 @@
     [self.buttonNext setBackgroundImage:[UIImage imageNamed:@"main_date_next_b.png"] forState:UIControlStateHighlighted];
 }
 
-- (void)reloadView
-{
-//    self.showDate = [NSDate date];
-//    self.labelDate.text = [self stringWithDate:[NSDate date] andFormart:DateFormat];
-}
-
 - (void)adaptiveIphone4
 {
-    if (iPhone4s) {
-        UIView *dateView = self.labelDate.superview;
-        CGRect frame = dateView.frame;
-        frame.origin.y -= TIP_VIEW_MOVE_HEIGHT;
-        dateView.frame = frame;
-        
-        frame = self.chartView.frame;
-        frame.origin.y -= TIP_VIEW_MOVE_HEIGHT;
-        self.chartView.frame = frame;
-        
-        frame = self.labelOnedaySteps.superview.frame;
-        frame.origin.y -= 50;
-        self.labelOnedaySteps.superview.frame = frame;
+    if (iPhone5) {
+        return;
     }
+    CGRect frame = self.barChartView.frame;
+    frame.size.height -= BAR_CHART_VIEW_REDUCE_HEIGHT;
+    self.barChartView.frame = frame;
+    
+    frame = self.bottomView.frame;
+    frame.origin.y -= BOTTOM_VIEW_UP_MOVE_HEIGHT;
+    self.bottomView.frame = frame;
+}
+
+- (void)reloadView
+{
+    //    self.showDate = [NSDate date];
+    //    self.labelDate.text = [self stringWithDate:[NSDate date] andFormart:DateFormat];
 }
 
 - (void)initNavBarView
@@ -329,6 +436,7 @@
     self.barChartView.pointerInterval = POINTER_INTERVAL;
     self.barChartView.axisLineWidth = 1.0;
     self.barChartView.xAxisFontColor = [UIColor darkGrayColor];
+    self.barChartView.xAxisColor = [UIColor grayColor];
     self.barChartView.horizontalLinesColor = [UIColor clearColor];
     self.barChartView.yAxisFontColor = [UIColor clearColor];
     self.barChartView.backgroundColor = [UIColor clearColor];
@@ -367,11 +475,7 @@
     NSMutableArray *yAxisValues = [NSMutableArray arrayWithCapacity:12];
     for (NSUInteger i=[NSDate monthOfDate:startDate];i<=[NSDate monthOfDate:endDate];i++)
     {
-        NSArray *array = [self.dataBase querySportDataWithYear:currentYear month:i];
-        long sum_sportSteps = 0;
-        for (WMSSportModel *model in array) {
-            sum_sportSteps += model.sportSteps;
-        }
+        long sum_sportSteps = [self.dataBase sumSportStepsFromYear:currentYear month:i];
         [yAxisValues addObject:@(sum_sportSteps)];
     }
     return yAxisValues;
@@ -485,6 +589,27 @@
     [self setLabelOnedayStepsValue:model];
     [self updateChartViewWithSportModel:model];
     [self.chartView update];
+}
+
+- (void)analogData
+{
+    [self.dataBase deleteAllSportData];
+    UInt16 perHourData[5] = {10,40,30,20,20};
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"sportData" ofType:@"plist"];
+    NSArray *readData = [NSArray arrayWithContentsOfFile:path];
+    
+    for (NSDictionary *dic in readData) {
+        NSDate *date = [dic objectForKey:@"date"];
+        int target = [[dic objectForKey:@"target"] intValue];
+        int sport = [[dic objectForKey:@"sport"] intValue];
+        int minutes = [[dic objectForKey:@"minutes"] intValue];
+        int distance = [[dic objectForKey:@"distance"] intValue];
+        int calorie = [[dic objectForKey:@"calorie"] intValue];
+        
+        WMSSportModel *model = [[WMSSportModel alloc] initWithSportDate:date sportTargetSteps:target sportSteps:sport sportMinute:minutes sportDistance:distance sportCalorie:calorie perHourData:perHourData dataLength:5];
+        [self.dataBase insertSportData:model];
+    }
+    
 }
 
 

@@ -12,6 +12,7 @@
 #import "RESideMenu.h"
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSContentViewController.h"
+#import "WMSRightViewController.h"
 #import "UIViewController+Tip.h"
 
 #import "WMSAppDelegate.h"
@@ -19,6 +20,7 @@
 #import "WMSNavBarView.h"
 
 #import "WMSMyAccessory.h"
+#import "WMSHelper.h"
 
 #define SECTION_NUMBER  1
 #define CELL_HIGHT      60
@@ -27,6 +29,9 @@
 @interface WMSMyAccessoryViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
 
 @property (nonatomic, strong) WMSNavBarView *navBarView;
+
+@property (nonatomic, strong) UIAlertView *alertView;
+
 @end
 
 @implementation WMSMyAccessoryViewController
@@ -36,8 +41,8 @@
 {
     if (!_navBarView) {
         _navBarView = [[WMSNavBarView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 64)];
-        _navBarView.backgroundColor = UIColorFromRGBAlpha(0x00D5E1, 1);
-        _navBarView.labelTitle.text = NSLocalizedString(@"绑定的配件",nil);
+        _navBarView.backgroundColor = UICOLOR_DEFAULT;
+        _navBarView.labelTitle.text = NSLocalizedString(@"绑定配件",nil);
         _navBarView.labelTitle.font = Font_DINCondensed(20.f);
     }
     return _navBarView;
@@ -65,6 +70,8 @@
     self.tableView.delegate = self;
     
     [self setupControl];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -86,10 +93,6 @@
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"main_menu_icon_a.png"] forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"main_menu_icon_b.png"] forState:UIControlStateHighlighted];
     [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    CGRect frame = self.navBarView.buttonLeft.frame;
-    frame.origin.y -= 5;
-    self.navBarView.buttonLeft.frame = frame;
 }
 
 
@@ -125,6 +128,30 @@
 //    WMSLeftViewController *leftVC = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
 //    WMSContentViewController *vc = leftVC.contentVCArray[0];
 //    [vc scanAndConnectPeripheral];
+
+}
+
+- (BOOL)showAlertView
+{
+    self.alertView = nil;
+    WMSBleState state = [[WMSAppDelegate appDelegate].wmsBleControl bleState];
+    switch (state) {
+        case BleStateUnsupported:
+        {
+            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+            [_alertView show];
+            return YES;
+        }
+        case BleStatePoweredOff:
+        {
+            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+            [_alertView show];
+            return YES;
+        }
+        default:
+            break;
+    }
+    return NO;
 }
 
 
@@ -143,6 +170,11 @@
         //。。。。。。
         [WMSMyAccessory unBindAccessory];
         [self.tableView reloadData];
+        
+        WMSRightViewController *rightVC = (WMSRightViewController *)self.sideMenuViewController.rightMenuViewController;
+        [rightVC resetFirstConnectedConfig];
+        
+        [WMSHelper clearCache];//清除缓存
     }
 }
 
@@ -153,9 +185,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    if ([WMSMyAccessory isBindAccessory] == NO) {
-//        return 0;
-//    }
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -168,12 +197,14 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",@"plusdot",NSLocalizedString(@"手表", nil)];
+    //cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",@"plusdot",NSLocalizedString(@"手表", nil)];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",@"Plusdot",NSLocalizedString(@"手表", nil)];
     cell.textLabel.font = Font_System(23.0);//Font_DINCondensed(23.0);
     cell.textLabel.textColor = [UIColor grayColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"    %@",NSLocalizedString(@"追踪活动/睡眠，蓝牙4.0无线连接", nil)];
+    //cell.detailTextLabel.text = [NSString stringWithFormat:@"    %@",NSLocalizedString(@"追踪活动/睡眠，蓝牙4.0无线连接", nil)];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",NSLocalizedString(@"追踪活动/睡眠，蓝牙4.0无线连接", nil)];
     cell.detailTextLabel.font = Font_System(15.0);//Font_DINCondensed(15.0);
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
@@ -183,7 +214,13 @@
     cell.textLabel.frame = frame;
     
     if ([WMSMyAccessory isBindAccessory]) {
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
+        UIImageView *imageView = [[UIImageView alloc] init];
+        CGRect frame = imageView.frame;
+        frame.size = CGSizeMake(25, 25);
+        imageView.frame = frame;
+        UIImage *image = [UIImage imageNamed:@"bind_success.png"];
+        imageView.image = image;
+        cell.accessoryView = imageView;
     } else {
         cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
     }
@@ -208,9 +245,19 @@
     if ([WMSMyAccessory isBindAccessory]) {
         [self showActionSheet];
     } else {
+        if ([self showAlertView]) {
+            return;
+        }
         WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+#pragma mark - Notification
+- (void)appWillEnterBackground:(NSNotification *)notification
+{
+    [self.alertView dismissWithClickedButtonIndex:0 animated:NO];
+    self.alertView = nil;
 }
 
 

@@ -56,8 +56,6 @@
     if (!_smartSleepValueArray) {
         _smartSleepValueArray = [[NSArray alloc] initWithObjects:
                                                 @(DEFAULT_SNOOZE_MINUTE),
-                                                @(10),
-                                                @(15),
                                                 @(20),
                                                 @(30),
                                                 nil];

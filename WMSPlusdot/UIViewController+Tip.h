@@ -17,4 +17,9 @@
 
 - (void)showTip:(NSString *)tip;
 
+
+- (void)showHUDAtViewCenter:(NSString *)text;
+
+- (void)hideHUDAtViewCenter;
+
 @end

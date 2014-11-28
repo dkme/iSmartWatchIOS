@@ -17,13 +17,13 @@
 #import "WMSMyAccessory.h"
 
 #import "WMSRemindHelper.h"
+#import "WMSFileMacro.h"
 
 #define SECTION_NUMBER  1
 #define SECTION_FOOTER_HEIGHT   1
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
-#define SavaActivityFileName    @"activityModels.archiver"
 #define ArchiverKey             @"ActivityModels"
 
 @interface WMSActivityRemindViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate>
@@ -102,8 +102,8 @@
     [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
     [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
     [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.buttonSync.titleLabel setFont:Font_System(17.0)];
-    [self.buttonSync.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    [self.buttonSync.titleLabel setFont:Font_System(18.0)];
+    //[self.buttonSync.titleLabel setAdjustsFontSizeToFitWidth:YES];
     
     self.labelTitle.text = NSLocalizedString(@"Activities remind",nil);
     
@@ -154,7 +154,7 @@
 
 - (WMSActivityModel *)loadActivityRemind
 {
-    NSString *fileName = FilePath(SavaActivityFileName);
+    NSString *fileName = FilePath(FILE_ACTIVITY);
     NSData *data = [NSData dataWithContentsOfFile:fileName];
     if ([data length] > 0) {
         NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
@@ -169,7 +169,7 @@
 - (void)savaActivityModel:(WMSActivityModel *)model
 {
     //coding
-    NSString *fileName = FilePath(SavaActivityFileName);
+    NSString *fileName = FilePath(FILE_ACTIVITY);
     NSMutableData *data = [NSMutableData data];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:model forKey:ArchiverKey];

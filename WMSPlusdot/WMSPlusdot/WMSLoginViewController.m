@@ -11,6 +11,7 @@
 #import "WMSHTTPRequest.h"
 #import "MBProgressHUD.h"
 #import "WMSAppDelegate.h"
+#import "WMSFileMacro.h"
 
 @interface WMSLoginViewController ()<MBProgressHUDDelegate>
 
@@ -132,7 +133,7 @@
 - (void)loginSuccessed
 {
     NSDictionary *writeData = @{@"userName":self.textEmail.text,@"password":self.textPassword.text};
-    BOOL res = [writeData writeToFile:FilePath(UserInfoFile) atomically:YES];
+    BOOL res = [writeData writeToFile:FilePath(FILE_LOGIN_INFO) atomically:YES];
     DEBUGLog(@"保存登陆信息%@",res?@"成功":@"失败");
     [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
     [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;

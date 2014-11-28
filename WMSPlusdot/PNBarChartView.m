@@ -384,7 +384,8 @@
     CGContextAddLineToPoint(context, startWidth, self.bounds.size.height);
     CGContextStrokePath(context);//绘制y轴
     
-    [self.horizontalLinesColor set];
+    //[self.horizontalLinesColor set];
+    [self.xAxisColor set];
     CGContextSetLineWidth(context, self.axisLineWidth);
     CGContextMoveToPoint(context, startWidth, startHeight);
     CGContextAddLineToPoint(context, self.bounds.size.width, startHeight);

@@ -31,14 +31,11 @@
 #define LOW_BATTERY_LEVEL3       0.10f
 #define LOW_BATTERY_LEVEL4       0.05f
 #define LOW_BATTERY_REMIND_TIMEINTERVAL 20
+#define ANTI_LOST_DISTANCE       95
 
 __weak WMSRightViewController *global_Self = nil;
 
-#define SettingItemsFile    @"settingItems.plist"
-#define OtherRemindItemsFile    @"otherRemind.plist"
-#define RemindWayFile       @"remindWay.plist"
-
-@interface WMSRightViewController ()<WMSSwitchCellDelegage,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface WMSRightViewController ()<WMSSwitchCellDelegage,RESideMenuDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @property (strong, nonatomic) NSArray *section1TitleArray;
 @property (strong, nonatomic) NSArray *section2TitleArray;
@@ -59,6 +56,9 @@ __weak WMSRightViewController *global_Self = nil;
 @implementation WMSRightViewController
 {
     SystemSoundID soundID;
+    
+    int _configIndex;
+    BOOL _isVisible;
 }
 
 #pragma mark - Property Getter Method
@@ -88,8 +88,8 @@ __weak WMSRightViewController *global_Self = nil;
 {
     if (!_section3TitleArray) {
         _section3TitleArray = @[NSLocalizedString(@"震动",nil),
-                                NSLocalizedString(@"响铃",nil),
-                                NSLocalizedString(@"震动+响铃",nil),
+                                NSLocalizedString(@"蜂鸣",nil),
+                                NSLocalizedString(@"震动+蜂鸣",nil),
                                 ];
     }
     return _section3TitleArray;
@@ -162,7 +162,6 @@ __weak WMSRightViewController *global_Self = nil;
     return _cellIndexPathArray;
 }
 
-
 #pragma mark - Life Cycle
 - (void)viewDidLoad
 {
@@ -172,21 +171,15 @@ __weak WMSRightViewController *global_Self = nil;
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_bg.png"]]];
+
+    [UIDevice currentDevice].batteryMonitoringEnabled = YES;
     [self.view setBackgroundColor:[UIColor clearColor]];
     
+    self.sideMenuViewController.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //self.tableView.style = UITableViewStyleGrouped;
     
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    //    NSDictionary *dic = [[NSDictionary alloc] init];
-    //    [dic writeToFile:[self filePath:SettingItemsFile] atomically:YES];
     
-    [UIDevice currentDevice].batteryMonitoringEnabled = YES;
-    float level = [[UIDevice currentDevice] batteryLevel];
-    DEBUGLog(@"当前手机电量：%f",level);
     //监测电量
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(batteyChanged:) name:UIDeviceBatteryLevelDidChangeNotification object:nil];
     
@@ -201,9 +194,16 @@ __weak WMSRightViewController *global_Self = nil;
 {
     [super viewWillAppear:animated];
     
-    DEBUGLog(@"RightViewController viewWillAppear");
+    DEBUGLog(@"+++++RightViewController viewWillAppear");
     //    self.sideMenuViewController.scaleContentView = NO;
 }
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 - (void)dealloc
 {
     DEBUGLog(@"RightViewController dealloc");
@@ -212,12 +212,6 @@ __weak WMSRightViewController *global_Self = nil;
     AudioServicesDisposeSystemSoundID(soundID);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 //根据cell的indexPath，得出该cell表示的设置项在字典中的key
@@ -249,7 +243,7 @@ __weak WMSRightViewController *global_Self = nil;
 }
 - (NSDictionary *)readSettingItemData
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:SettingItemsFile]];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_SETTINGS]];
     NSMutableDictionary *mutiDic = [NSMutableDictionary dictionaryWithDictionary:readData];
     if (readData == nil) {
         for (int i=0; i<[self.settingItemArray count]; i++) {
@@ -263,47 +257,55 @@ __weak WMSRightViewController *global_Self = nil;
     NSDictionary *readData = [self readSettingItemData];
     NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
     [writeData setObject:object forKey:key];
-    BOOL b = [writeData writeToFile:[self filePath:SettingItemsFile] atomically:YES];
+    BOOL b = [writeData writeToFile:[self filePath:FILE_SETTINGS] atomically:YES];
     DEBUGLog(@"保存数据%@",b?@"成功":@"失败");
 }
 
 - (BOOL)antiLostStatus
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:OtherRemindItemsFile]];
-    return [[readData objectForKey:@"antiLost"] boolValue];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
+    id obj = [readData objectForKey:@"antiLost"];
+    if (obj == nil) {
+        return 1;
+    }
+    return [obj boolValue];
 }
 - (BOOL)lowBatteryStatus
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:OtherRemindItemsFile]];
-    return [[readData objectForKey:@"battery"] boolValue];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
+    id obj = [readData objectForKey:@"battery"];
+    if (obj == nil) {
+        return 1;//默认为打开状态
+    }
+    return [obj boolValue];
 }
 - (void)setAntiLost:(BOOL)openOrClose
 {
     //设置防丢成功，保存设置
-    [self.bleControl.settingProfile setAntiLostStatus:YES distance:100 completion:^(BOOL success)
+    [self.bleControl.settingProfile setAntiLostStatus:openOrClose distance:ANTI_LOST_DISTANCE completion:^(BOOL success)
      {
          DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
          [self showOperationSuccessTip:NSLocalizedString(@"防丢设置成功", nil)];
-         NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:OtherRemindItemsFile]];
+         NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
          NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
          [writeData setObject:@(openOrClose) forKey:@"antiLost"];
-         [writeData writeToFile:[self filePath:OtherRemindItemsFile] atomically:YES];
+         [writeData writeToFile:[self filePath:FILE_REMIND] atomically:YES];
      }];
 }
 - (void)setLowBattery:(BOOL)openOrClose
 {
     [self showOperationSuccessTip:NSLocalizedString(@"提醒设置成功", nil)];
     //直接保存
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:OtherRemindItemsFile]];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
     NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
     [writeData setObject:@(openOrClose) forKey:@"battery"];
-    [writeData writeToFile:[self filePath:OtherRemindItemsFile] atomically:YES];
+    [writeData writeToFile:[self filePath:FILE_REMIND] atomically:YES];
 }
 
 //0：不提醒，1：震动，2：响铃，3：震动+响铃
 - (int)readRemindWay
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(RemindWayFile)];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND_WAY)];
     int way = [[readData objectForKey:@"remindWay"] intValue];
     if (readData == nil || way == 0) {
         return 3;//默认“震动+响铃”
@@ -313,7 +315,7 @@ __weak WMSRightViewController *global_Self = nil;
 - (void)savaRemindWay:(int)way
 {
     NSDictionary *writeData = @{@"remindWay":@(way)};
-    [writeData writeToFile:FilePath(RemindWayFile) atomically:YES];
+    [writeData writeToFile:FilePath(FILE_REMIND_WAY) atomically:YES];
 }
 
 - (void)setRemindWay:(int)way
@@ -328,14 +330,14 @@ __weak WMSRightViewController *global_Self = nil;
      }];
 }
 
-- (NSUInteger)remindEventsType
+- (RemindEventsType)remindEventsType
 {
     NSDictionary *readData = [self readSettingItemData];
     DEBUGLog(@"readData:%@",readData);
     NSArray *values = [readData objectsForKeys:self.settingItemArray notFoundMarker:@"aa"];
     
     NSUInteger events[7] = {RemindEventsTypeCall,RemindEventsTypeSMS,RemindEventsTypeEmail,RemindEventsTypeWeixin,RemindEventsTypeQQ,RemindEventsTypeFacebook,RemindEventsTypeTwitter};
-    NSUInteger eventsType = 0x00;
+    RemindEventsType eventsType = 0x00;
     for (int i=0; i<[values count]; i++) {
         BOOL openOrClose = [[values objectAtIndex:i] boolValue];
         if (openOrClose) {
@@ -345,6 +347,100 @@ __weak WMSRightViewController *global_Self = nil;
     return eventsType;
 }
 
+#pragma mark - 第一次连接成功后，对设置项的配置
+- (void)resetFirstConnectedConfig
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:NO forKey:@"firstConnected"];
+}
+
+- (void)firstConnectedConfig
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL isFirst = [userDefaults boolForKey:@"firstConnected"];
+    if (isFirst == NO) {
+        //配置设置项
+        [self showHUDAtViewCenter:NSLocalizedString(@"正在配置设置项，请稍等...", nil)];
+        [self startFirstConnectedConfig:^{
+            //配置成功
+            [self hideHUDAtViewCenter];
+            [self showTip:NSLocalizedString(@"设置项配置成功", nil)];
+            [userDefaults setBool:YES forKey:@"firstConnected"];
+        }];
+    }
+}
+
+- (void)startFirstConnectedConfig:(void(^)(void))aCallBack
+{
+    RemindEventsType eventsType = [self remindEventsType];
+    _configIndex = 0;
+    [self.bleControl.settingProfile setRemindEventsType:eventsType completion:^(BOOL success)
+     {
+         if (success) {
+             [self continueFirstConnectedConfig:^{
+                 if (aCallBack) {
+                     aCallBack();
+                 }
+             }];
+         }
+     }];
+}
+- (void)continueFirstConnectedConfig:(void(^)(void))aCallBack
+{
+    RemindEventsType eventsType = [self remindEventsType];
+    RemindMode mode = [self readRemindWay];
+    BOOL antiLostStatus = [self antiLostStatus];
+    _configIndex ++;
+    switch (_configIndex) {
+        case 1:
+        {
+            [self.bleControl.settingProfile setRemindEventsType:eventsType mode:mode completion:^(BOOL success)
+             {
+                 if (success) {
+                     [self continueFirstConnectedConfig:aCallBack];
+                 }
+             }];
+            break;
+        }
+        case 2:
+        {
+            [self.bleControl.settingProfile setAntiLostStatus:antiLostStatus distance:ANTI_LOST_DISTANCE completion:^(BOOL success)
+            {
+                if (success) {
+                    if (aCallBack) {
+                        aCallBack();
+                    }
+                }
+            }];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+#pragma mark - 电量提醒
+- (BOOL)isSendLowBatteryRemind:(float)batteryLevel
+{
+    if (batteryLevel == LOW_BATTERY_LEVEL1 ||
+        batteryLevel == LOW_BATTERY_LEVEL2 ||
+        batteryLevel == LOW_BATTERY_LEVEL3 ||
+        batteryLevel == LOW_BATTERY_LEVEL4)
+    {
+        return YES;
+    }
+    return NO;
+}
+- (void)startLowBatteryRemind
+{
+    if ([self lowBatteryStatus]) {
+        [self.bleControl.settingProfile setStartLowBatteryRemindCompletion:^(BOOL success) {
+            DEBUGLog(@"开启低电量提醒成功");
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopLowBatteryRemind) object:nil];
+            [self performSelector:@selector(stopLowBatteryRemind) withObject:nil afterDelay:LOW_BATTERY_REMIND_TIMEINTERVAL];
+        }];
+    }
+}
 - (void)stopLowBatteryRemind
 {
     [self.bleControl.settingProfile setStopLowBatteryRemindCompletion:^(BOOL success) {
@@ -416,8 +512,10 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
 #pragma mark - 遥控拍照
 - (void)switchToRemoteMode
 {
+    [self showHUDAtViewCenter:NSLocalizedString(@"正在切换至遥控模式...",nil)];
     [self.bleControl switchToControlMode:ControlModeRemote openOrClose:YES completion:^(BOOL success, NSString *failReason)
      {
+         [self hideHUDAtViewCenter];
          if (success) {//切换模式成功，进入相机界面
              [self showTip:NSLocalizedString(@"切换至拍照模式成功", nil)];
              
@@ -461,18 +559,8 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
 {
     UIDevice *device = notification.object;
     DEBUGLog(@">>>battery:%f",device.batteryLevel);
-    if (device.batteryLevel == LOW_BATTERY_LEVEL1 ||
-        device.batteryLevel == LOW_BATTERY_LEVEL2 ||
-        device.batteryLevel == LOW_BATTERY_LEVEL3 ||
-        device.batteryLevel == LOW_BATTERY_LEVEL4)
-    {
-        if ([self lowBatteryStatus]) {
-            [self.bleControl.settingProfile setStartLowBatteryRemindCompletion:^(BOOL success) {
-                DEBUGLog(@"开启低电量提醒成功");
-                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopLowBatteryRemind) object:nil];
-                [self performSelector:@selector(stopLowBatteryRemind) withObject:nil afterDelay:LOW_BATTERY_REMIND_TIMEINTERVAL];
-            }];
-        }
+    if ([self isSendLowBatteryRemind:device.batteryLevel]) {
+        [self startLowBatteryRemind];
     }
 }
 
@@ -480,6 +568,17 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
 {
     [self.tableView reloadData];
     
+    if (_isVisible) {
+        [self firstConnectedConfig];
+    }
+    
+    //
+    float level = [[UIDevice currentDevice] batteryLevel];
+    if ([self isSendLowBatteryRemind:level]) {
+        [self startLowBatteryRemind];
+    }
+    
+    ///
     [self.bleControl.deviceProfile readDeviceRemoteDataWithCompletion:^(RemoteDataType dataType)
      {
          DEBUGLog(@"监听到的按键dataType:0x%X",(int)dataType);
@@ -497,7 +596,40 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
 {
     //[self.tableView reloadData];
     DEBUGLog(@"self.pickerController:%@",self.pickerController);
+    [self hideHUDAtViewCenter];
     [self.pickerController showTip:NSLocalizedString(@"您的连接已断开", nil)];
+}
+
+#pragma mark - RESideMenuDelegate
+- (void)sideMenu:(RESideMenu *)sideMenu willShowMenuViewController:(UIViewController *)menuViewController
+{
+    if ( [self class] == [menuViewController class] ) {
+        sideMenu.scaleContentView = NO;
+    } else {
+        sideMenu.scaleContentView = YES;
+    }
+}
+- (void)sideMenu:(RESideMenu *)sideMenu willHideMenuViewController:(UIViewController *)menuViewController
+{
+    if ([self class] == [menuViewController class]) {
+        sideMenu.scaleContentView = YES;
+    }
+}
+
+- (void)sideMenu:(RESideMenu *)sideMenu didShowMenuViewController:(UIViewController *)menuViewController
+{
+    if ( [self class] == [menuViewController class] ) {
+        _isVisible = YES;
+        if ([self.bleControl isConnected]) {
+            [self firstConnectedConfig];
+        }
+    }
+}
+- (void)sideMenu:(RESideMenu *)sideMenu didHideMenuViewController:(UIViewController *)menuViewController
+{
+    if ([self class] == [menuViewController class]) {
+        _isVisible = NO;
+    }
 }
 
 
@@ -636,7 +768,7 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
             cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.font = Font_DINCondensed(18);
             if ([self.bleControl isConnected]) {
-                if ([self readRemindWay]-1 == indexPath.row) {
+                if ([self readRemindWay] == indexPath.row + 1) {
                     cell.accessoryType = UITableViewCellAccessoryCheckmark;
                 } else {
                     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -808,7 +940,7 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
         //UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         //[self presentViewController:nav animated:YES completion:nil];
         
-        if ([self readRemindWay] != indexPath.row) {//当提醒方式改变时再去设置
+        if ([self readRemindWay] != indexPath.row+1) {//当提醒方式改变时再去设置
             for (int i=0; i<[self.section3TitleArray count]; i++) {
                 NSIndexPath *path = [NSIndexPath indexPathForRow:i inSection:indexPath.section];
                 UITableViewCell *cell=[self.tableView cellForRowAtIndexPath:path];

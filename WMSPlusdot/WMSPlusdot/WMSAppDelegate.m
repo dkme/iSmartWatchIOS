@@ -20,6 +20,8 @@
 
 @interface WMSAppDelegate ()<RESideMenuDelegate>
 
+@property (nonatomic, strong) UIAlertView *alertView;
+
 @end
 
 @implementation WMSAppDelegate
@@ -92,7 +94,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
  
 
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(UserInfoFile)];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_LOGIN_INFO)];
     DEBUGLog(@"userInfo:%@",readData);
 
     _wmsBleControl  = [[WMSBleControl alloc] init];
@@ -161,7 +163,7 @@
     sideMenu.leftMenuViewController = leftVC;
     sideMenu.rightMenuViewController = rightVC;
     sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
-    sideMenu.delegate = self;
+    //sideMenu.delegate = self;
     
     return sideMenu;
 }

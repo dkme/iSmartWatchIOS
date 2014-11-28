@@ -14,8 +14,9 @@
 
 #import "WMSSleepDatabase.h"
 #import "WMSSleepModel.h"
-#import "WMSConstants.h"
 
+#import "WMSConstants.h"
+#import "WMSAdaptiveMacro.h"
 #import "WMSHistoryVCHelper.h"
 
 #define Y_MAX_DEFAULT       300
@@ -76,11 +77,15 @@
 
 - (void)setBottomViewLabelText:(NSUInteger)sleepMinute
 {
+    NSString *describe = NSLocalizedString(@"平均每日睡眠", nil);
     NSString *hour = [NSString stringWithFormat:@"%u",sleepMinute/60];
     NSString *mu = [NSString stringWithFormat:@"%u",sleepMinute%60];
-    NSString *describe = NSLocalizedString(@"本月平均每天睡眠", nil);
-    NSString *hourLbl = NSLocalizedString(@"小时",nil);
-    NSString *muLbl = NSLocalizedString(@"分钟",nil);
+    NSString *hourLbl = NSLocalizedString(@"时",nil);
+    NSString *muLbl = NSLocalizedString(@"分",nil);
+    if (sleepMinute/60 <= 0) {
+        hour = @"";
+        hourLbl = @"";
+    }
     NSString *str = [NSString stringWithFormat:@"%@%@%@%@%@",describe,hour,hourLbl,mu,muLbl];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
@@ -90,13 +95,14 @@
     loc += len;
     len = hour.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
-    
+    [text addAttribute:NSForegroundColorAttributeName value:UICOLOR_DEFAULT range:NSMakeRange(loc, len)];
     loc += len;
     len = hourLbl.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
     loc += len;
     len = mu.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
+    [text addAttribute:NSForegroundColorAttributeName value:UICOLOR_DEFAULT range:NSMakeRange(loc, len)];
     loc += len;
     len = muLbl.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
@@ -126,9 +132,10 @@
     self.view.backgroundColor = [UIColor whiteColor];
     //[self analogData];
     [self.view addSubview:self.bottomView];
+    [self setupControl];
+    [self adaptiveIphone4];
     [self initNavBarView];
     [self initChartView];
-    [self setupControl];
     [self setLabelDateText:self.showDate];
 }
 - (void)viewDidAppear:(BOOL)animated
@@ -160,6 +167,20 @@
     [self.buttonNext setBackgroundImage:[UIImage imageNamed:@"main_date_next_b.png"] forState:UIControlStateHighlighted];
 }
 
+- (void)adaptiveIphone4
+{
+    if (iPhone5) {
+        return;
+    }
+    CGRect frame = self.barChartView.frame;
+    frame.size.height -= BAR_CHART_VIEW_REDUCE_HEIGHT;
+    self.barChartView.frame = frame;
+    
+    frame = self.bottomView.frame;
+    frame.origin.y -= BOTTOM_VIEW_UP_MOVE_HEIGHT;
+    self.bottomView.frame = frame;
+}
+
 - (void)initNavBarView
 {
     self.navBarView.backgroundColor = UICOLOR_DEFAULT;
@@ -182,6 +203,7 @@
     self.barChartView.pointerInterval = POINTER_INTERVAL;
     self.barChartView.axisLineWidth = 1.0;
     self.barChartView.xAxisFontColor = [UIColor darkGrayColor];
+    self.barChartView.xAxisColor = [UIColor grayColor];
     self.barChartView.horizontalLinesColor = [UIColor clearColor];
     self.barChartView.yAxisFontColor = [UIColor clearColor];
     self.barChartView.backgroundColor = [UIColor clearColor];
@@ -194,6 +216,35 @@
     
     [self drawChart];
 }
+
+- (void)drawChart
+{
+    NSArray *values = [self plottingValues];
+    NSArray *tags = [WMSHistoryVCHelper xAxisShowMonthsFromEarliestDate:self.earliestDate currentDate:[NSDate systemDate]];
+    NSInteger selectedMonth = [NSDate monthOfDate:[NSDate systemDate]];
+    long max = [self yAxisMaxValueFromValues:values];
+    [self setChartViewYmax:max];
+    [self.pnBar setPlottingValues:values];
+    [self.pnBar setBarTags:tags];
+    [self.pnBar setBarSelectedTag:selectedMonth];
+    [self.barChartView clearPlot];
+    [self.barChartView addPlot:self.pnBar];
+}
+
+- (NSArray *)plottingValues
+{
+    NSDate *startDate =[WMSHistoryVCHelper chartStartDateFromEarliestDate:self.earliestDate currentDate:[NSDate systemDate]];
+    NSDate *endDate = [NSDate systemDate];
+    NSUInteger currentYear = [NSDate yearOfDate:[NSDate systemDate]];
+    NSMutableArray *yAxisValues = [NSMutableArray arrayWithCapacity:12];
+    for (int i=(int)[NSDate monthOfDate:startDate]; i<=(int)[NSDate monthOfDate:endDate]; i++)
+    {
+        long avg_sleepMin = Rounded( [self.dataBase avgSleepTimeFromYear:currentYear month:i] );
+        [yAxisValues addObject:@(avg_sleepMin)];
+    }
+    return yAxisValues;
+}
+
 - (void)setChartViewYmax:(float)max
 {
     if (max > Y_MAX_DEFAULT) {
@@ -211,25 +262,6 @@
     self.barChartView.floatNumberFormatterString = @"%.0f";
 }
 
-- (NSArray *)plottingValues
-{
-    NSDate *startDate =[WMSHistoryVCHelper chartStartDateFromEarliestDate:self.earliestDate currentDate:[NSDate systemDate]];
-    NSDate *endDate = [NSDate systemDate];
-    NSUInteger currentYear = [NSDate yearOfDate:[NSDate systemDate]];
-    NSMutableArray *yAxisValues = [NSMutableArray arrayWithCapacity:12];
-    for (int i=(int)[NSDate monthOfDate:startDate]; i<=(int)[NSDate monthOfDate:endDate]; i++)
-    {
-        NSArray *array = [self.dataBase querySleepDataWithYear:currentYear month:i];
-        long sum_sleepMin = 0;
-        for (WMSSleepModel *model in array) {
-            sum_sleepMin += model.sleepMinute;
-        }
-        long avg_sleepMin = Rounded(sum_sleepMin/(array.count*1.0));
-        [yAxisValues addObject:@(avg_sleepMin)];
-    }
-    return yAxisValues;
-}
-
 - (long)yAxisMaxValueFromValues:(NSArray *)values
 {
     long max = 0;
@@ -240,20 +272,6 @@
         }
     }
     return max;
-}
-
-- (void)drawChart
-{
-    NSArray *values = [self plottingValues];
-    NSArray *tags = [WMSHistoryVCHelper xAxisShowMonthsFromEarliestDate:self.earliestDate currentDate:[NSDate systemDate]];
-    NSInteger selectedMonth = [NSDate monthOfDate:[NSDate systemDate]];
-    long max = [self yAxisMaxValueFromValues:values];
-    [self setChartViewYmax:max];
-    [self.pnBar setPlottingValues:values];
-    [self.pnBar setBarTags:tags];
-    [self.pnBar setBarSelectedTag:selectedMonth];
-    [self.barChartView clearPlot];
-    [self.barChartView addPlot:self.pnBar];
 }
 
 - (void)updateChartViewWithSportModel:(WMSSleepModel *)model
@@ -318,6 +336,7 @@
 
 - (void)analogData
 {
+    [self.dataBase deleteAllSleepData];
     UInt16 startedMinutes[5] = {10,50,80,100,120};
     UInt8 startedStatus[5] = {0,1,1,2,2};
     UInt8 statusDurations[5] = {10,40,30,20,20};

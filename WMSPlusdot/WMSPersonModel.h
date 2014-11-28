@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WMSPersonModel : NSObject
+@interface WMSPersonModel : NSObject<NSCoding>
 
 @property (nonatomic, strong) NSString *name;
 

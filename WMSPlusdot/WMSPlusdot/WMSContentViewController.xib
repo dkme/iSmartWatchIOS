@@ -16,6 +16,7 @@
                 <outlet property="_labelShiJian" destination="ji6-Qm-Yfq" id="meM-zr-G8H"/>
                 <outlet property="_labelStep" destination="RmQ-49-iQg" id="9Fa-WW-owd"/>
                 <outlet property="_labelStep2" destination="vtn-NX-JDE" id="rLR-eq-ask"/>
+                <outlet property="_labelTitle" destination="xDW-S1-UFd" id="CJh-yY-HJC"/>
                 <outlet property="bottomView" destination="p4L-CD-die" id="7po-IB-T67"/>
                 <outlet property="buttonHistory" destination="e30-wx-e4y" id="Qe5-fm-na6"/>
                 <outlet property="buttonLeft" destination="i24-c7-Gp8" id="ygF-92-eIG"/>
@@ -63,7 +64,7 @@
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Plusdot" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xDW-S1-UFd">
                     <rect key="frame" x="75" y="17" width="170" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="35"/>
+                    <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -110,7 +111,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的运动" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="B53-Fy-GOr">
-                            <rect key="frame" x="86" y="53" width="78" height="25"/>
+                            <rect key="frame" x="86" y="55" width="78" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -138,21 +139,21 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VdW-Ph-Ur4">
-                            <rect key="frame" x="63" y="135" width="125" height="54"/>
+                            <rect key="frame" x="63" y="144" width="125" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="25"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" id="z7x-MT-kzn">
-                            <rect key="frame" x="62" y="133" width="126" height="1"/>
+                            <rect key="frame" x="62" y="142" width="126" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jl8-qT-UzG">
-                            <rect key="frame" x="63" y="80" width="129" height="54"/>
+                            <rect key="frame" x="63" y="90" width="129" height="57"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="45"/>
+                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="55"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -184,7 +185,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_ico_burn.png" id="SDy-1h-lBn">
-                            <rect key="frame" x="21" y="0.0" width="25" height="25"/>
+                            <rect key="frame" x="20" y="0.0" width="25" height="25"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_ico_distance.png" id="Bcx-xU-tJO">
@@ -192,11 +193,11 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="main_ico_time.png" id="12u-Pf-kIQ">
-                            <rect key="frame" x="225" y="0.0" width="25" height="25"/>
+                            <rect key="frame" x="230" y="0.0" width="25" height="25"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="燃烧" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rmK-Uq-YGi">
-                            <rect key="frame" x="50" y="5" width="58" height="25"/>
+                            <rect key="frame" x="48" y="5" width="58" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -210,7 +211,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="时间" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ji6-Qm-Yfq">
-                            <rect key="frame" x="255" y="5" width="58" height="25"/>
+                            <rect key="frame" x="257" y="5" width="58" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -233,12 +234,12 @@
                         <view contentMode="scaleToFill" id="01c-y0-oxP">
                             <rect key="frame" x="106" y="5" width="1" height="72"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.5607843137254902" green="0.90588235294117647" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view contentMode="scaleToFill" id="fnx-sy-kVu">
                             <rect key="frame" x="213" y="5" width="1" height="72"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.5607843137254902" green="0.90588235294117647" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="时" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bMj-V3-IFo">
                             <rect key="frame" x="217" y="79" width="17" height="21"/>
@@ -273,6 +274,7 @@
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.83529411760000005" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+            <point key="canvasLocation" x="210" y="130"/>
         </view>
     </objects>
     <resources>

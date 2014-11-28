@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#define MIN_SPORT_STEPS     6000
-#define MAX_SPORT_STEPS     20000
+#define MIN_SPORT_STEPS         6000
+#define MAX_SPORT_STEPS         20000
+#define DEFAULT_TARGET_STEPS    20000
 
 @interface WMSContent2ViewController : UIViewController
 

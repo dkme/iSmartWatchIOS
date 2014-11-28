@@ -15,6 +15,12 @@
 
 - (BOOL)insertSleepData:(WMSSleepModel *)model;
 
+- (BOOL)updateSleepData:(WMSSleepModel *)model;
+
+- (BOOL)deleteAllSleepData;
+
+- (BOOL)deleteSleepData:(WMSSleepModel *)model;
+
 - (NSArray *)queryAllSleepData;
 
 - (NSArray *)querySleepData:(NSDate *)sleepDate;
@@ -23,10 +29,8 @@
 
 - (NSDate *)queryEarliestDate;
 
-- (BOOL)updateSleepData:(WMSSleepModel *)model;
+- (double)avgSleepTimeFromYear:(NSUInteger)year month:(NSUInteger)month;
 
-- (BOOL)deleteAllSleepData;
 
-- (BOOL)deleteSleepData:(WMSSleepModel *)model;
 
 @end

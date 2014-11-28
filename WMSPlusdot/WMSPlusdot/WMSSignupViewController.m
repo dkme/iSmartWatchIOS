@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import "WMSAppDelegate.h"
 #import "WMSMyAccountViewController.h"
+#import "WMSFileMacro.h"
 
 #define VIEW_ROLL_HEIGHT    100.f
 
@@ -248,7 +249,7 @@
 - (void)registerSuccessed
 {
     NSDictionary *writeData = @{@"userName":self.textUserName.text,@"password":self.textPassword.text};
-    BOOL res = [writeData writeToFile:FilePath(UserInfoFile) atomically:YES];
+    BOOL res = [writeData writeToFile:FilePath(FILE_LOGIN_INFO) atomically:YES];
     DEBUGLog(@"保存登陆信息%@",res?@"成功":@"失败");
     
     WMSMyAccountViewController *vc = [[WMSMyAccountViewController alloc] init];
@@ -386,9 +387,15 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (iPhone4s) {
-        [self rollView:YES];
+    DEBUGLog(@"UIScreen:(%f,%f)",[[UIScreen mainScreen] currentMode].size.width,[[UIScreen mainScreen] currentMode].size.height);
+    DEBUGLog(@"ScreenWidth:%f,ScreenHeight:%f",ScreenWidth,ScreenHeight);
+//    if (iPhone4s) {
+//        [self rollView:YES];
+//    }
+    if (iPhone5) {
+        return;
     }
+    [self rollView:YES];
 }
 
 

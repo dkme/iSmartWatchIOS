@@ -12,8 +12,9 @@
 #import "TemperaBar.h"
 #import "WMSBluetooth.h"
 #import "WMSAppDelegate.h"
+#import "WMSHelper.h"
 
-#define CRITICAL_SPORT_STEPS 10000
+#define CRITICAL_SPORT_STEPS    10000
 
 #define LABEL_MAX_WIDTH     172.f
 #define LABEL_MAX_HEIGHT    100.f
@@ -55,13 +56,13 @@
         mode = NSLocalizedString(@"砖家", nil);
     }
     NSString *steps = [NSString stringWithFormat:@"%u",targetSteps];
-    NSString *unit = NSLocalizedString(@"Step",nil);
+    NSString *unit = NSLocalizedString(@"步",nil);
     NSString *str = [NSString stringWithFormat:@"%@%@",steps,unit];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
     loc = 0;
     len = steps.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(49.0) range:NSMakeRange(loc, len)];
+    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(55.0) range:NSMakeRange(loc, len)];
     loc += len;
     len = unit.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
@@ -87,23 +88,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    //DEBUGLog(@"temperaBar frame:(%f,%f,%f,%f)",self.temperaBar.frame.origin.x,self.temperaBar.frame.origin.y,self.temperaBar.frame.size.width,self.temperaBar.frame.size.height);
     [self.view addSubview:self.temperaBar];
-    //[self.centerView addSubview:self.temperaBar];
     
     CGPoint center = [[self.temperaBar superview] center];
     self.temperaBar.center = center;
     CGRect frame = self.temperaBar.frame;
     frame.origin = (CGPoint){frame.origin.x-1,frame.origin.y-20};
     self.temperaBar.frame = frame;
-    
 
     [self setupControl];
     [self localizableView];
     [self adaptiveIphone4];
-    
-    
     [self reloadView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -129,6 +128,8 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setupControl
@@ -159,8 +160,9 @@
 
 - (void)reloadView
 {
-    self.sportTargetSteps = MIN_SPORT_STEPS;
-    [self setTargetSteps:MIN_SPORT_STEPS];
+    self.sportTargetSteps = [WMSHelper readTodayTargetSteps];
+    [self setTargetSteps:self.sportTargetSteps];
+    [self.temperaBar setCurrentTempera:self.sportTargetSteps];
 }
 
 - (void)adaptiveIphone4
@@ -215,20 +217,31 @@
 - (void)onTemperaBarChange:(id)sender
 {
     TemperaBar *bar = (TemperaBar *)sender;
-
+    self.sportTargetSteps = bar.currentTempera;
     [self setTargetSteps:bar.currentTempera];
 }
 - (void)onTmpTouchUp:(id)sender
 {
-    TemperaBar *bar = (TemperaBar *)sender;
-    
-    //设置目标
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    [bleControl.settingProfile setTargetWithStep:bar.currentTempera withSleepMinute:0 withCompletion:^(BOOL success)
-    {
-        DEBUGLog(@"设置运动目标%@",success?@"成功":@"失败");
-        self.sportTargetSteps = bar.currentTempera;
-    }];
+//    TemperaBar *bar = (TemperaBar *)sender;
+//    
+//    //设置目标
+//    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+//    [bleControl.settingProfile setTargetWithStep:(UInt32)bar.currentTempera withSleepMinute:0 withCompletion:^(BOOL success)
+//    {
+//        DEBUGLog(@"设置运动目标%@",success?@"成功":@"失败");
+//        self.sportTargetSteps = bar.currentTempera;
+//    }];
+}
+
+#pragma mark - Notification
+- (void)appDidEnterBackground:(NSNotification *)notification
+{
+    [WMSHelper savaTodayTargetSteps:self.sportTargetSteps];
+}
+
+- (void)appWillTerminate:(NSNotification *)notification
+{
+    //[WMSHelper savaTodayTargetSteps:self.sportTargetSteps];
 }
 
 @end

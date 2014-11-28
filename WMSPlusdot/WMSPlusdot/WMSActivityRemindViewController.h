@@ -10,7 +10,7 @@
 
 #define DEFAULT_HOUR                8
 #define DEFAULT_MINUTE              0
-#define DEFAULT_ACTIVITY_INTERVAL   30
+#define DEFAULT_ACTIVITY_INTERVAL   15
 
 //cell所在行的下标
 enum {

@@ -70,6 +70,8 @@
 
 @property (nonatomic, assign) float chartIntervalToYAxis;//图表与y轴的间距
 
+@property (nonatomic, strong) UIColor *xAxisColor;
+
 /**
  *  this method will add a Plot to the graph.
  *

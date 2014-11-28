@@ -13,7 +13,9 @@
 
 #pragma mark - 尺寸、坐标
 #define HUD_LOCATED_BOTTOM_SIZE     CGSizeMake(250.0, 60.0)
+#define HUD_LOCATED_CENTER_SIZE     CGSizeMake(250.0, 120.0)
 #define HUD_LOCATED_BOTTOM_Y_OFFSET ( ScreenHeight/2.0-60 )
+#define HUD_LOCATED_CENTER_Y_OFFSET ( 0 )
 #define HUD_SHOW_RIGHT_VC_X_OFFSET  ( 20.0 )
 
 

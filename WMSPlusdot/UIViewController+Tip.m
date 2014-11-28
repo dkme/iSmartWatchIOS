@@ -14,6 +14,8 @@
 
 #import "WMSConstants.h"
 
+#define HUD_TAG         10000
+
 @implementation UIViewController (Tip)
 
 - (BOOL)checkoutWithIsBind:(BOOL)bindYesOrNo
@@ -66,6 +68,30 @@
 - (void)showTip:(NSString *)tip
 {
     [self showOperationSuccessTip:tip];
+}
+
+- (void)showHUDAtViewCenter:(NSString *)text
+{
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:[WMSAppDelegate appDelegate].window];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.yOffset = HUD_LOCATED_CENTER_Y_OFFSET;
+    hud.minSize = HUD_LOCATED_CENTER_SIZE;
+    hud.labelText = text;
+    hud.tag = HUD_TAG;
+    [[WMSAppDelegate appDelegate].window addSubview:hud];
+    [hud show:YES];
+}
+
+- (void)hideHUDAtViewCenter
+{
+    NSArray *subViews = [[WMSAppDelegate appDelegate].window subviews];
+    for (UIView *view in subViews) {
+        if ([view class] == [MBProgressHUD class] &&
+            view.tag == HUD_TAG) {
+            MBProgressHUD *hud = (MBProgressHUD *)view;
+            [hud removeFromSuperview];
+        }
+    }
 }
 
 @end
