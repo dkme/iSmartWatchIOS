@@ -25,6 +25,9 @@
 #define ButtonBindTitle     NSLocalizedString(@"绑定配件", nil)
 
 #define TAG_BOTTOM_VIEW     100
+#define BIND_TIME_INTERVAL  8
+
+typedef void (^BindSettingCallBack)(BOOL success);
 
 @interface WMSBindingAccessoryViewController ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 {
@@ -36,9 +39,14 @@
 @property (strong, nonatomic) NSArray *listData;
 @property (strong, nonatomic) WMSBleControl *bleControl;
 @property (strong, nonatomic) MBProgressHUD *hud;
+@property (copy, nonatomic) BindSettingCallBack bindBlock;
 @end
 
 @implementation WMSBindingAccessoryViewController
+{
+    int _countdown;
+    NSTimer *_timer;
+}
 
 #pragma mark - Getter
 - (UIButton *)buttonBottom
@@ -103,7 +111,7 @@
     [self setupControl];
     [self localizableView];
     [self adaptiveIphone4];
-    
+
     //
     [self bleOperation];
     
@@ -121,7 +129,7 @@
 - (void)dealloc
 {
     DEBUGLog(@"WMSBindingAccessoryViewController dealloc");
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -242,13 +250,14 @@
 - (void)closeVC:(BOOL)successOrFail
 {
     [self.hud hide:YES];
+    [self setHud:nil];
     [self.navigationController popViewControllerAnimated:YES];
     UIViewController *vc = self.navigationController.topViewController;
     if ([vc class] == [WMSMyAccessoryViewController class]) {
         WMSMyAccessoryViewController *topVC = (WMSMyAccessoryViewController *)vc;
-        [topVC.tableView reloadData];
         [topVC showBindingTip:successOrFail];
     }
+    
 }
 
 #pragma mark - Action
@@ -267,6 +276,34 @@
     [self scanBle];
 }
 
+#pragma mark - NSTimer
+- (void)fireTimer
+{
+    _countdown = BIND_TIME_INTERVAL;
+    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
+    NSString *str = [NSString stringWithFormat:format,_countdown];
+    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"请点击手表上的确认键，确认绑定...",nil),str];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countdown:) userInfo:nil repeats:YES];
+}
+- (void)invalidateTimer
+{
+    [_timer invalidate];
+    _timer = nil;
+}
+
+- (void)countdown:(NSTimer *)timer
+{
+    _countdown -= 1;
+    if (_countdown == 0) {
+        [self.bleControl disconnect];
+        [self invalidateTimer];
+        [self closeVC:NO];
+        return;
+    }
+    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
+    NSString *str = [NSString stringWithFormat:format,_countdown];
+    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"请点击手表上的确认键，确认绑定...",nil),str];
+}
 
 #pragma mark - 蓝牙操作
 - (void)bleOperation
@@ -293,43 +330,52 @@
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
-    [self updateImage:[UIImage imageNamed:@"link_connect_success_icon.png"]];
-    [self.buttonBottom setTitle:ButtonBindTitle forState:UIControlStateNormal];
+//    [self updateImage:[UIImage imageNamed:@"link_connect_success_icon.png"]];
+//    [self.buttonBottom setTitle:ButtonBindTitle forState:UIControlStateNormal];
+
+    [self fireTimer];
+    __weak __typeof(&*self) weakSelf = self;
+    [self.bleControl bindSettingCMD:bindSettingCMDBind completion:^(BOOL success)
+    {
+        __strong __typeof(&*self) strongSelf = weakSelf;
+        DEBUGLog(@"weakSelf:%@",weakSelf);
+        if (!strongSelf) {
+            return ;
+        }
+        
+        [strongSelf invalidateTimer];
+        if (success) {
+            NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
+            if (identify) {
+                [WMSMyAccessory bindAccessory:identify];
+                [strongSelf closeVC:YES];
+            } else {
+                [strongSelf closeVC:NO];
+            }
+        } else {
+            [strongSelf closeVC:NO];
+        }
+    }];
     
-//    [self.bleControl bindSettingCMD:bindSettingCMDBind completion:^(BOOL success)
-//    {
-//        DEBUGLog(@"绑定配件%@",success?@"成功":@"失败");
-//        if (success) {
-//            NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
-//            if (identify) {
-//                [WMSMyAccessory bindAccessory:identify];
-//                [self closeVC:YES];
-//            } else {
-//                [self closeVC:NO];
-//            }
-//        } else {
-//            [self closeVC:NO];
-//        }
-//    }];
     //测试
-    NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
-    [WMSMyAccessory bindAccessory:identify];
-    [self closeVC:YES];
+//    NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
+//    [WMSMyAccessory bindAccessory:identify];
+//    [self closeVC:YES];
 }
 - (void)handleDisConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接断开 %@",NSStringFromClass([self class]));
-    [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
-    [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
-    
+//    [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
+//    [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
+    [self invalidateTimer];
     [self closeVC:NO];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接失败 %@",NSStringFromClass([self class]));
-    [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
-    [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
-    
+//    [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
+//    [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
+    [self invalidateTimer];
     [self closeVC:NO];
 }
 
@@ -362,12 +408,6 @@
     [p readRSSIValueCompletion:^(NSNumber *RSSI, NSError *error) {
         
     }];
-}
-
-#pragma mark - MBProgressHUDDelegate
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-    [hud removeFromSuperview];
 }
 
 #pragma mark - UITableViewDataSource
@@ -425,7 +465,6 @@
     _hud = [[MBProgressHUD alloc] initWithView:self.view];
     _hud.mode = MBProgressHUDModeIndeterminate;
     _hud.labelText = NSLocalizedString(@"正在绑定配件...", nil);
-    _hud.delegate = self;
     [self.view addSubview:_hud];
     [_hud show:YES];
 }

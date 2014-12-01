@@ -95,6 +95,13 @@
     [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
+- (void)reset
+{
+    //复位操作
+    WMSRightViewController *rightVC = (WMSRightViewController *)self.sideMenuViewController.rightMenuViewController;
+    [rightVC resetFirstConnectedConfig];
+    [WMSHelper clearCache];//清除缓存
+}
 
 #pragma mark - Other
 - (void)showActionSheet
@@ -121,6 +128,7 @@
 //    }];
     if (successOrFail) {
         [self showTip:NSLocalizedString(@"绑定成功", nil)];
+        [self.tableView reloadData];
     } else {
         [self showTip:NSLocalizedString(@"绑定失败", nil)];
     }
@@ -167,14 +175,18 @@
 {
     if (buttonIndex == 0) {//destructive
         //。。。。。。
-        //。。。。。。
-        [WMSMyAccessory unBindAccessory];
-        [self.tableView reloadData];
-        
-        WMSRightViewController *rightVC = (WMSRightViewController *)self.sideMenuViewController.rightMenuViewController;
-        [rightVC resetFirstConnectedConfig];
-        
-        [WMSHelper clearCache];//清除缓存
+        WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BOOL success) {
+            if (success) {
+                [self showTip:NSLocalizedString(@"解绑成功", nil)];
+                [WMSMyAccessory unBindAccessory];
+                [self reset];
+                [bleControl disconnect];
+                [self.tableView reloadData];
+            } else {
+                [self showTip:NSLocalizedString(@"解绑失败", nil)];
+            }
+        }];
     }
 }
 

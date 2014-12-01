@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
-            timestampString = "437883030.435259"
+            timestampString = "439100916.499946"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "-adaptiveIphone4"
             landmarkType = "5">
          </BreakpointContent>

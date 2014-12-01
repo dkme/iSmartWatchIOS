@@ -501,7 +501,8 @@ NSString * const WMSBleControlScanFinish =
         __weak WMSBleControl *weakSelf = self;
         __strong WMSBleControl *strongSelf = weakSelf;
         [_notifyCharacteristic setNotifyValue:YES completion:^(NSError *error) {
-            [strongSelf handleDidSubscribeForCharact:strongSelf.notifyCharacteristic error:error];
+            //[strongSelf handleDidSubscribeForCharact:strongSelf.notifyCharacteristic error:error];
+            [strongSelf handleDidSubscribeForCharact:self.notifyCharacteristic error:error];
         }];
         
         [self.myTimers addTimerWithTimeInterval:SUBSCRIBE_CHARACTERISTICS_INTERVAL
