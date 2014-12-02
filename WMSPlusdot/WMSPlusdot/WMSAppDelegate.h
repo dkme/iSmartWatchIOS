@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WMSBluetooth.h"
 #import "WMSFileMacro.h"
-@class RESideMenu;
+#import "RESideMenu.h"
 
 @interface WMSAppDelegate : UIResponder <UIApplicationDelegate>
 

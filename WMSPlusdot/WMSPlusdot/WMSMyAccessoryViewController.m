@@ -139,11 +139,12 @@
 
 }
 
-- (BOOL)showAlertView
+//cmd：0表示解绑，1表示绑定
+- (BOOL)showAlertView:(int)cmd
 {
     self.alertView = nil;
-    WMSBleState state = [[WMSAppDelegate appDelegate].wmsBleControl bleState];
-    switch (state) {
+    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    switch ([bleControl bleState]) {
         case BleStateUnsupported:
         {
             _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
@@ -158,6 +159,13 @@
         }
         default:
             break;
+    }
+    if (cmd == 0) {
+        if ([bleControl isConnected] == NO) {
+            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请先连接您的手表",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+            [_alertView show];
+            return YES;
+        }
     }
     return NO;
 }
@@ -175,9 +183,14 @@
 {
     if (buttonIndex == 0) {//destructive
         //。。。。。。
+        
+        if ([self showAlertView:0]) {
+            return;
+        }
         WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
         [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BOOL success) {
             if (success) {
+                //NSString *tip = [NSString stringWithFormat:@"%@,%@",NSLocalizedString(@"解绑成功", nil),NSLocalizedString(@"记得在“设置-蓝牙”中，点击设备右边的图标忽略此设备", nil)];
                 [self showTip:NSLocalizedString(@"解绑成功", nil)];
                 [WMSMyAccessory unBindAccessory];
                 [self reset];
@@ -257,7 +270,7 @@
     if ([WMSMyAccessory isBindAccessory]) {
         [self showActionSheet];
     } else {
-        if ([self showAlertView]) {
+        if ([self showAlertView:1]) {
             return;
         }
         WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 GUOGEE. All rights reserved.
 //
 
-#define WATCH_NAME                  @"plusdout-watch"
+#define WATCH_NAME                  @"plusdot-watch"
 #define SCAN_PERIPHERAL_INTERVAL    5.f
 
 #define HUD_SIZE                    CGSizeMake(250, 120)

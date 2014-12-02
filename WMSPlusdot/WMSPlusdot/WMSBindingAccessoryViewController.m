@@ -25,7 +25,7 @@
 #define ButtonBindTitle     NSLocalizedString(@"绑定配件", nil)
 
 #define TAG_BOTTOM_VIEW     100
-#define BIND_TIME_INTERVAL  8
+#define BIND_TIME_INTERVAL  10
 
 typedef void (^BindSettingCallBack)(BOOL success);
 
@@ -282,7 +282,7 @@ typedef void (^BindSettingCallBack)(BOOL success);
     _countdown = BIND_TIME_INTERVAL;
     NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
     NSString *str = [NSString stringWithFormat:format,_countdown];
-    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"请点击手表上的确认键，确认绑定...",nil),str];
+    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),str];
     _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countdown:) userInfo:nil repeats:YES];
 }
 - (void)invalidateTimer
@@ -302,7 +302,7 @@ typedef void (^BindSettingCallBack)(BOOL success);
     }
     NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
     NSString *str = [NSString stringWithFormat:format,_countdown];
-    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"请点击手表上的确认键，确认绑定...",nil),str];
+    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),str];
 }
 
 #pragma mark - 蓝牙操作
@@ -403,11 +403,6 @@ typedef void (^BindSettingCallBack)(BOOL success);
     } else {
         [self showScanning:NO];
     }
-    
-    LGPeripheral *p = self.listData[0];
-    [p readRSSIValueCompletion:^(NSNumber *RSSI, NSError *error) {
-        
-    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -464,7 +459,7 @@ typedef void (^BindSettingCallBack)(BOOL success);
     
     _hud = [[MBProgressHUD alloc] initWithView:self.view];
     _hud.mode = MBProgressHUDModeIndeterminate;
-    _hud.labelText = NSLocalizedString(@"正在绑定配件...", nil);
+    _hud.labelText = NSLocalizedString(@"正在连接手表...", nil);
     [self.view addSubview:_hud];
     [_hud show:YES];
 }

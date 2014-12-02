@@ -34,4 +34,10 @@
  */
 + (void)clearCache;
 
+/*
+ 判断是否第一次启动app
+ */
++ (BOOL)isFirstLaunchApp;
++ (void)finishFirstLaunchApp;
+
 @end

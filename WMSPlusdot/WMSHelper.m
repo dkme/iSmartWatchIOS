@@ -66,4 +66,16 @@
     });
 }
 
++ (BOOL)isFirstLaunchApp
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    return ![userDefaults boolForKey:@"isFirst"];
+}
++ (void)finishFirstLaunchApp
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:@"isFirst"];
+}
+
 @end

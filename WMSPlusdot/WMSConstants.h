@@ -35,7 +35,7 @@
 #pragma mark - 图表
 #define LEFT_INTERVAL               0
 #define BOTTOM_INTERVAL             30.f
-#define POINTER_INTERVAL            50.f
+#define POINTER_INTERVAL            45.f
 #define LEVEL_LINE_NUMBER           6
 #define CHART_INTERVAL_TO_YAXIS     20
 #define PNBAR_WIDTH                 30

@@ -14,7 +14,9 @@
 #import "WMSContentViewController.h"
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSMyAccessoryViewController.h"
+#import "WMSGuideVC.h"
 #import "WMSBleControl.h"
+#import "WMSHelper.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -78,29 +80,18 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
 
-
-    //设置导航栏的颜色，标题字体和颜色
-    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
-    //[[UINavigationBar appearance] setTranslucent:YES];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = UIColorFromRGBAlpha(0x000000, 0.8);
-    shadow.shadowOffset = CGSizeMake(0, 1);
-    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                            [UIColor whiteColor],NSForegroundColorAttributeName,
-                            shadow, NSShadowAttributeName
-                            , nil]];//[UIFont fontWithName:@"DIN Condensed" size:35.f],NSFontAttributeName
-
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
- 
+    [self setupApp];
+    _wmsBleControl  = [[WMSBleControl alloc] init];
+    
+    if ([WMSHelper isFirstLaunchApp]) {
+        self.window.rootViewController = [WMSGuideVC guide];
+        [self.window makeKeyAndVisible];
+        return YES;
+    }
 
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_LOGIN_INFO)];
-    DEBUGLog(@"userInfo:%@",readData);
-
-    _wmsBleControl  = [[WMSBleControl alloc] init];
     if (readData && ![[readData objectForKey:@"userName"] isEqualToString:@""]) {//已经登陆过
         self.window.rootViewController = [self reSideMenu];
-        //self.window.rootViewController = [self loginNavigationCtrl];
     } else {
         self.window.rootViewController = [self loginNavigationCtrl];
     }
@@ -142,30 +133,47 @@
 }
 
 #pragma mark - Private
-- (RESideMenu *)sideMenu
+//- (RESideMenu *)sideMenu
+//{
+//    RESideMenu *sideMenu = [[RESideMenu alloc] init];
+//    sideMenu.menuPreferredStatusBarStyle = UIStatusBarStyleLightContent;
+//    sideMenu.contentViewShadowColor = [UIColor blackColor];
+//    sideMenu.contentViewShadowOffset = CGSizeMake(0, 0);
+//    sideMenu.contentViewShadowOpacity = 0.6;
+//    sideMenu.contentViewShadowRadius = 3;
+//    sideMenu.contentViewShadowEnabled = NO;
+//    sideMenu.panGestureEnabled = YES;
+//    
+//    WMSContentViewController *contentVC = [[WMSContentViewController alloc] init];
+//    //WMSBindingAccessoryViewController *contentVC = [[WMSBindingAccessoryViewController alloc] init];
+//    //WMSMyAccessoryViewController *contentVC = [[WMSMyAccessoryViewController alloc] init];
+//    WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
+//    WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
+//    
+//    sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
+//    sideMenu.leftMenuViewController = leftVC;
+//    sideMenu.rightMenuViewController = rightVC;
+//    sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
+//    //sideMenu.delegate = self;
+//    
+//    return sideMenu;
+//}
+
+- (void)setupApp
 {
-    RESideMenu *sideMenu = [[RESideMenu alloc] init];
-    sideMenu.menuPreferredStatusBarStyle = UIStatusBarStyleLightContent;
-    sideMenu.contentViewShadowColor = [UIColor blackColor];
-    sideMenu.contentViewShadowOffset = CGSizeMake(0, 0);
-    sideMenu.contentViewShadowOpacity = 0.6;
-    sideMenu.contentViewShadowRadius = 3;
-    sideMenu.contentViewShadowEnabled = NO;
-    sideMenu.panGestureEnabled = YES;
+    //设置导航栏的颜色，标题字体和颜色
+    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
+    //[[UINavigationBar appearance] setTranslucent:YES];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = UIColorFromRGBAlpha(0x000000, 0.8);
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIColor whiteColor],NSForegroundColorAttributeName,
+                                                          shadow, NSShadowAttributeName
+                                                          , nil]];//[UIFont fontWithName:@"DIN Condensed" size:35.f],NSFontAttributeName
     
-    WMSContentViewController *contentVC = [[WMSContentViewController alloc] init];
-    //WMSBindingAccessoryViewController *contentVC = [[WMSBindingAccessoryViewController alloc] init];
-    //WMSMyAccessoryViewController *contentVC = [[WMSMyAccessoryViewController alloc] init];
-    WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
-    WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
-    
-    sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
-    sideMenu.leftMenuViewController = leftVC;
-    sideMenu.rightMenuViewController = rightVC;
-    sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
-    //sideMenu.delegate = self;
-    
-    return sideMenu;
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 

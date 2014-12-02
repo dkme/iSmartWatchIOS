@@ -245,13 +245,13 @@
     //distance<1000m,单位用m，>1000m,单位用km
     if (dis_m < 1000) {
         value = dis_m;
-        unit = NSLocalizedString(@"m", nil);
+        unit = NSLocalizedString(@"米", nil);
     } else {
         value = dis_m + 5;
         NSUInteger gewei = value%10;
         value -= gewei;//对个位进行4舍5入
         value = Rounded(dis_m/1000.0);//单位为km
-        unit = NSLocalizedString(@"km", nil);
+        unit = NSLocalizedString(@"公里", nil);
     }
     
     NSString *distanceLbl = [NSString stringWithFormat:@"%g",value*1.0];
@@ -273,7 +273,7 @@
 - (void)setSportCalorieValue:(NSUInteger)calorie
 {
     NSString *calorieLbl = [NSString stringWithFormat:@"%u",calorie];
-    NSString *unit = NSLocalizedString(@"热量单位",nil);
+    NSString *unit = NSLocalizedString(@"卡",nil);
     NSString *str = [NSString stringWithFormat:@"%@%@",calorieLbl,unit];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
@@ -802,7 +802,7 @@
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
     
     [self showTipView:NO];
-    [self connectedOperation];
+//    [self connectedOperation];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
         [self startSyncSportData];
