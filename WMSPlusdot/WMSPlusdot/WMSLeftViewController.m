@@ -25,8 +25,8 @@
 #import "WMSUserInfoHelper.h"
 
 
-#define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 64) )
-#define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 45, _userInfoView.center.y - 45 - 10, 79, 79) )
+#define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 30) )
+#define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 40, _userInfoView.center.y - 45 - 10, 79, 79) )
 #define userLabelFrame ( CGRectMake(0, userImgBtn.center.y + 45, _userInfoView.frame.size.width, 35) )
 #define tableViewFrame ( iPhone5 ? (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 60, self.view.frame.size.width, 65 * 5)) : (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 150, self.view.frame.size.width, 65 * 5)) )
 #define settingBtnFrame ( iPhone5 ? CGRectMake(16, self.view.frame.size.height - 50, 30, 30) : CGRectMake(16, self.view.frame.size.height - 150, 30, 30) )
@@ -34,7 +34,7 @@
 #define Null_Object     @"Null_Object"
 
 #define SECTION_NUMBER  1
-#define CELL_HEIGHT     44
+#define CELL_HEIGHT     46
 
 @interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -73,6 +73,7 @@
         [userLabel setText:@""];
         [userLabel setTextAlignment:NSTextAlignmentCenter];
         [userLabel setTextColor:[UIColor whiteColor]];
+        [userLabel setBackgroundColor:[UIColor clearColor]];
         [userLabel setFont:Font_DINCondensed(17)];
         [_userInfoView addSubview:userLabel];
     }

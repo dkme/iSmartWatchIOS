@@ -15,7 +15,7 @@
 
 #import "WMSHelper.h"
 
-#define INTRO_CONTENT_OFFSET    30.f
+#define INTRO_CONTENT_OFFSET    (iPhone5?30.f:30.f+568-480)
 #define INTRO_BUTTON_TAG        100
 
 @interface WMSGuideVC ()<EAIntroDelegate>
@@ -129,6 +129,7 @@
     
     CGSize btnSize = CGSizeMake(150, 40);
     CGPoint btnOrigin = CGPointMake((intro.frame.size.width-btnSize.width)/2.0, intro.frame.size.height-btnSize.height-10);
+    btnOrigin.y = (iPhone5?btnOrigin.y:btnOrigin.y-(568-480));
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = (CGRect){btnOrigin,btnSize};
     button.backgroundColor = [UIColor redColor];

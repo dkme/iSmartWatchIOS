@@ -247,6 +247,15 @@ typedef void (^BindSettingCallBack)(BOOL success);
     self.imageViewBLEStatus.image = image;
 }
 
+- (void)updateHUDSchedule:(NSTimeInterval)timeInterval
+{
+    NSString *format = NSLocalizedString(@"(剩余%.0f秒)",nil);
+    NSString *str = [NSString stringWithFormat:format,timeInterval];
+    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),@""];
+    self.hud.detailsLabelText = str;
+    //self.hud.detailsLabelFont = self.hud.labelFont;
+}
+
 - (void)closeVC:(BOOL)successOrFail
 {
     [self.hud hide:YES];
@@ -280,9 +289,10 @@ typedef void (^BindSettingCallBack)(BOOL success);
 - (void)fireTimer
 {
     _countdown = BIND_TIME_INTERVAL;
-    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
-    NSString *str = [NSString stringWithFormat:format,_countdown];
-    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),str];
+//    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
+//    NSString *str = [NSString stringWithFormat:format,_countdown];
+//    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),str];
+    [self updateHUDSchedule:_countdown];
     _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countdown:) userInfo:nil repeats:YES];
 }
 - (void)invalidateTimer
@@ -300,9 +310,12 @@ typedef void (^BindSettingCallBack)(BOOL success);
         [self closeVC:NO];
         return;
     }
-    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
-    NSString *str = [NSString stringWithFormat:format,_countdown];
-    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),str];
+//    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
+//    NSString *str = [NSString stringWithFormat:format,_countdown];
+//    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),@""];
+//    self.hud.detailsLabelText = str;
+//    self.hud.detailsLabelFont = self.hud.labelFont;
+    [self updateHUDSchedule:_countdown];
 }
 
 #pragma mark - 蓝牙操作

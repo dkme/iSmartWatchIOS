@@ -83,7 +83,7 @@
         
         _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
         _syncDataView.labelTip.font = Font_DINCondensed(17.0);
-        [_syncDataView setQuantityFont:Font_DINCondensed(15.0)];
+        [_syncDataView setLabelElectricQuantityFont:Font_DINCondensed(15.0)];
         
         UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
         CGRect frame = _syncDataView.imageView.frame;
@@ -325,7 +325,6 @@
     
     //
     [self bleOperation];
-    //[self appWillEnterForeground:nil];
     if ([WMSMyAccessory isBindAccessory] == NO) {
         [self showTip:NSLocalizedString(TIP_NO_BINDING, nil)];
     } else {
@@ -682,8 +681,6 @@
      {
          DEBUGLog(@"设置系统时间%@",success?@"成功":@"失败");
          [self readDeviceInfo];
-         
-         //[self startSyncSportData];
      }];
 }
 
@@ -692,8 +689,13 @@
     [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
      {
          DEBUGLog(@"电池电量：%d",batteryEnergy);
-         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
+         if (batteryEnergy <= WATCH_LOW_BATTERY) {
+             [self.syncDataView setCellColor:[UIColor redColor]];
+         } else {
+             [self.syncDataView setCellColor:[UIColor whiteColor]];
+         }
          [self.syncDataView setCellElectricQuantity:batteryEnergy];
+         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
      }];
 }
 
@@ -753,7 +755,6 @@
 - (void)stopSyncSportData
 {
     [self.syncDataView stopAnimating];
-    //[self.hud setLabelText:NSLocalizedString(@"同步完成", nil)];
     [self.hud hide:YES afterDelay:0];
     
     [self setLabelShowDate:[NSDate systemDate]];
@@ -777,7 +778,6 @@
     [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
                                        completion:^(NSArray *peripherals)
      {
-         //DEBUGLog(@"scaned Peripheral:%@",[[[peripherals lastObject] cbPeripheral] identifier]);
          if ([self.bleControl isConnecting]) {
              return ;
          }
@@ -790,9 +790,6 @@
                  [self.bleControl connect:p];
              }
          }
-//         else if (p && [p.cbPeripheral.name isEqualToString:WATCH_NAME]) {
-//             [self.bleControl connect:p];
-//         }
      }];
 }
 
@@ -802,7 +799,7 @@
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
     
     [self showTipView:NO];
-//    [self connectedOperation];
+    [self connectedOperation];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
         [self startSyncSportData];
@@ -810,13 +807,6 @@
     } else {
         self.isNeedUpdate = YES;
     }
-
-    
-//    if (self.isShowBindVC) {//若在绑定配件，连接成功，该VC不做任何操作(下同)
-//        return;
-//    }
-//    DEBUGLog(@"操作。。。。。");
-//    [self connectedOperation];
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
@@ -829,15 +819,6 @@
     if ([self isBindingVC] == NO) {
         [self scanAndConnectPeripheral];
     }
-    
-//    if (self.isShowBindVC) {
-//        return;
-//    }
-//    [self showTipView:YES];
-//    [self.hud hide:YES afterDelay:0];
-//    [self.syncDataView stopAnimating];
-//    
-//    [self scanAndConnectPeripheral];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
@@ -850,15 +831,6 @@
     if ([self isBindingVC] == NO) {
         [self scanAndConnectPeripheral];
     }
-    
-//    if (self.isShowBindVC) {
-//        return;
-//    }
-//    [self showTipView:YES];
-//    [self.hud hide:YES afterDelay:0];
-//    [self.syncDataView stopAnimating];
-//    
-//    [self scanAndConnectPeripheral];
 }
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
@@ -872,10 +844,6 @@
     if ([self isBindingVC] == NO) {
         [self scanAndConnectPeripheral];
     }
-//    if (self.isShowBindVC) {
-//        return;
-//    }
-//    [self scanAndConnectPeripheral];
 }
 
 

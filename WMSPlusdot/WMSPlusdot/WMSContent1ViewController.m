@@ -25,6 +25,7 @@
 
 #import "WMSHelper.h"
 #import "WMSAdaptiveMacro.h"
+#import "WMSConstants.h"
 
 @interface WMSContent1ViewController ()
 {
@@ -87,7 +88,7 @@
         
         _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
         _syncDataView.labelTip.font = Font_DINCondensed(17.0);
-        [_syncDataView setQuantityFont:Font_DINCondensed(15.0)];
+        [_syncDataView setLabelElectricQuantityFont:Font_DINCondensed(15.0)];
         
         UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
         CGRect frame = _syncDataView.imageView.frame;
@@ -349,7 +350,13 @@
     } else {
         if ([self.bleControl isConnected]) {
             [self showTipView:NO];
-            [self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
+            int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
+            if (batteryEnergy <= WATCH_LOW_BATTERY) {
+                [self.syncDataView setCellColor:[UIColor redColor]];
+            } else {
+                [self.syncDataView setCellColor:[UIColor whiteColor]];
+            }
+            [self.syncDataView setCellElectricQuantity:batteryEnergy];
         } else {
             [self showTipView:YES];
         }

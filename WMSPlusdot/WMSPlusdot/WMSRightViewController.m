@@ -15,6 +15,7 @@
 
 #import "WMSSwitchCell.h"
 #import "MBProgressHUD.h"
+#import "CRToast.h"
 
 #import "WMSMyAccessory.h"
 #import "WMSConstants.h"
@@ -234,16 +235,9 @@ __weak WMSRightViewController *global_Self = nil;
 }
 
 ///
-- (NSString *)filePath:(NSString *)fileName
-{
-    NSArray *array = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [array objectAtIndex:0];
-    
-    return [path stringByAppendingPathComponent:fileName];
-}
 - (NSDictionary *)readSettingItemData
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_SETTINGS]];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_SETTINGS)];
     NSMutableDictionary *mutiDic = [NSMutableDictionary dictionaryWithDictionary:readData];
     if (readData == nil) {
         for (int i=0; i<[self.settingItemArray count]; i++) {
@@ -257,13 +251,13 @@ __weak WMSRightViewController *global_Self = nil;
     NSDictionary *readData = [self readSettingItemData];
     NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
     [writeData setObject:object forKey:key];
-    BOOL b = [writeData writeToFile:[self filePath:FILE_SETTINGS] atomically:YES];
+    BOOL b = [writeData writeToFile:FilePath(FILE_SETTINGS) atomically:YES];
     DEBUGLog(@"保存数据%@",b?@"成功":@"失败");
 }
 
 - (BOOL)antiLostStatus
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
     id obj = [readData objectForKey:@"antiLost"];
     if (obj == nil) {
         return 1;
@@ -272,7 +266,7 @@ __weak WMSRightViewController *global_Self = nil;
 }
 - (BOOL)lowBatteryStatus
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
     id obj = [readData objectForKey:@"battery"];
     if (obj == nil) {
         return 1;//默认为打开状态
@@ -286,20 +280,20 @@ __weak WMSRightViewController *global_Self = nil;
      {
          DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
          [self showOperationSuccessTip:NSLocalizedString(@"防丢设置成功", nil)];
-         NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
+         NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
          NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
          [writeData setObject:@(openOrClose) forKey:@"antiLost"];
-         [writeData writeToFile:[self filePath:FILE_REMIND] atomically:YES];
+         [writeData writeToFile:FilePath(FILE_REMIND) atomically:YES];
      }];
 }
 - (void)setLowBattery:(BOOL)openOrClose
 {
     [self showOperationSuccessTip:NSLocalizedString(@"提醒设置成功", nil)];
     //直接保存
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_REMIND]];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
     NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
     [writeData setObject:@(openOrClose) forKey:@"battery"];
-    [writeData writeToFile:[self filePath:FILE_REMIND] atomically:YES];
+    [writeData writeToFile:FilePath(FILE_REMIND) atomically:YES];
 }
 
 //0：不提醒，1：震动，2：响铃，3：震动+响铃
@@ -345,6 +339,21 @@ __weak WMSRightViewController *global_Self = nil;
         }
     }
     return eventsType;
+}
+
+- (NSDictionary*)options
+{
+    NSString *txt = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"记得在手机的“设置-通知中心”中，找到你将要提醒的事件（如：电话，QQ...），点击它进入设置界面，打开“在‘通知中心’中显示”，然后返回即可", nil)];
+    NSMutableDictionary *options = [@{                            kCRToastNotificationTypeKey             :@(CRToastTypeStatusBar),
+        kCRToastNotificationPresentationTypeKey :@(CRToastPresentationTypeCover),
+        kCRToastUnderStatusBarKey               :@(NO),
+        kCRToastTextKey                         :txt,
+        kCRToastTextAlignmentKey                :@(NSTextAlignmentCenter),
+        kCRToastTextShadowColorKey              :[UIColor orangeColor],
+        kCRToastTimeIntervalKey                 :@(100),
+        kCRToastAnimationInDirectionKey         :@(CRToastAnimationDirectionRight),
+        kCRToastAnimationOutDirectionKey        :@(CRToastAnimationDirectionRight)} mutableCopy];
+    return [NSDictionary dictionaryWithDictionary:options];
 }
 
 #pragma mark - 第一次连接成功后，对设置项的配置

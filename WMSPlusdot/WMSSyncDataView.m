@@ -26,6 +26,8 @@
 @end
 
 @implementation WMSSyncDataView
+{
+}
 
 #pragma mark - Getter
 - (CAShapeLayer *)underLayer
@@ -80,11 +82,6 @@
     return _labelElectricQuantity;
 }
 
-- (void)setQuantityFont:(UIFont *)quantityFont
-{
-    self.labelElectricQuantity.font = quantityFont;
-}
-
 #pragma mark - Init
 - (id)initWithFrame:(CGRect)frame
 {
@@ -130,6 +127,11 @@
 }
 
 #pragma mark - Public
+- (void)setLabelElectricQuantityFont:(UIFont *)font
+{
+    self.labelElectricQuantity.font = font;
+}
+
 - (void)setCellElectricQuantity:(NSUInteger)quantity
 {
     if (MAX_ElectricQuantity > quantity) {
@@ -141,6 +143,12 @@
     self.labelElectricQuantity.text = [NSString stringWithFormat:@"%d%%",self.electricQuantity];
     
     [self setNeedsDisplay];
+}
+
+- (void)setCellColor:(UIColor *)color
+{
+    self.cellLayer.fillColor = [color CGColor];
+    self.cellLayer.strokeColor = [color CGColor];
 }
 
 - (void)startAnimating

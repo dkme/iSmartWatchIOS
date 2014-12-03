@@ -98,6 +98,7 @@
 		2328CD2919CFF8BB0085AD77 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2328CD2819CFF8BB0085AD77 /* MobileCoreServices.framework */; };
 		2328CD2B19CFF8CA0085AD77 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2328CD2A19CFF8CA0085AD77 /* AssetsLibrary.framework */; };
 		2328CD2F19CFFEE50085AD77 /* UIImage+QuartzProc.m in Sources */ = {isa = PBXBuildFile; fileRef = 2328CD2E19CFFEE50085AD77 /* UIImage+QuartzProc.m */; };
+		232AC5981A2EB69F00186FFD /* CRToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 232AC5971A2EB69F00186FFD /* CRToast.m */; };
 		23305D9A19C7CFAF00F9EEE6 /* WMSMyAccessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 23305D9919C7CFAF00F9EEE6 /* WMSMyAccessory.m */; };
 		23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23305D9D19C8375D00F9EEE6 /* WMSSportDatabase.m */; };
 		23305DA019C83B2500F9EEE6 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23305D9F19C83B2500F9EEE6 /* libsqlite3.0.dylib */; };
@@ -327,6 +328,8 @@
 		2328CD2A19CFF8CA0085AD77 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		2328CD2D19CFFEE50085AD77 /* UIImage+QuartzProc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+QuartzProc.h"; sourceTree = "<group>"; };
 		2328CD2E19CFFEE50085AD77 /* UIImage+QuartzProc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+QuartzProc.m"; sourceTree = "<group>"; };
+		232AC5961A2EB69F00186FFD /* CRToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRToast.h; sourceTree = "<group>"; };
+		232AC5971A2EB69F00186FFD /* CRToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRToast.m; sourceTree = "<group>"; };
 		23305D9819C7CFAF00F9EEE6 /* WMSMyAccessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMyAccessory.h; sourceTree = "<group>"; };
 		23305D9919C7CFAF00F9EEE6 /* WMSMyAccessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMyAccessory.m; sourceTree = "<group>"; };
 		23305D9C19C8375D00F9EEE6 /* WMSSportDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportDatabase.h; sourceTree = "<group>"; };
@@ -906,6 +909,15 @@
 			name = "UIImage+QuartzProc";
 			sourceTree = "<group>";
 		};
+		232AC5951A2EB67200186FFD /* CRToast */ = {
+			isa = PBXGroup;
+			children = (
+				232AC5961A2EB69F00186FFD /* CRToast.h */,
+				232AC5971A2EB69F00186FFD /* CRToast.m */,
+			);
+			name = CRToast;
+			sourceTree = "<group>";
+		};
 		23305D9B19C836EF00F9EEE6 /* 数据库 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1224,6 +1236,7 @@
 				2335119719A4B82700FBCC81 /* ResideMenu */,
 				23CB9F0A19C92C7500DC915A /* MBProgressHUD */,
 				239F51CE1A2D94E20058F6DE /* EAIntroView */,
+				232AC5951A2EB67200186FFD /* CRToast */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -1489,6 +1502,7 @@
 			files = (
 				237545CD19AF00CF00685CD1 /* TemperaBar.m in Sources */,
 				2331834B19B6EBEA005B2BA0 /* WMSSettingProfile.m in Sources */,
+				232AC5981A2EB69F00186FFD /* CRToast.m in Sources */,
 				23CBBF9219C1516700A3DA4C /* WMSSportModel.m in Sources */,
 				2316507D19AAEA350066C301 /* WMSMySportView.m in Sources */,
 				2331CDA119B84AB500719976 /* WMSMyTimers.m in Sources */,
@@ -1651,7 +1665,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: an liu (4E8WUK78VW)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
@@ -1756,8 +1770,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: an liu (6PAC8WLTAS)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
@@ -1775,7 +1789,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: an liu (4E8WUK78VW)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";

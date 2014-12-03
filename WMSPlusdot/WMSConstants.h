@@ -41,3 +41,6 @@
 #define PNBAR_WIDTH                 30
 #define BAR_DEFAULT_HEIGHT          5
 
+#pragma mark - 手表低电量
+#define WATCH_LOW_BATTERY           20
+

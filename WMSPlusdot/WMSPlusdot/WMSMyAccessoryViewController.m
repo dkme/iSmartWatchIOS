@@ -63,6 +63,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, CELL_HIGHT+HEADER_HEIGHT+10, ScreenWidth-15, 60)];
+    NSString *text = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"解绑后，记得在“设置-蓝牙”中，点击设备右边的图标，然后点击“忽略此设备”，这样下次绑定手表时连接更稳定哦！", nil)];
+    label.text = text;
+    label.textColor = [UIColor grayColor];
+    label.numberOfLines = -1;
+    label.adjustsFontSizeToFitWidth = YES;
+    [self.tableView addSubview:label];
     [self.view addSubview:self.navBarView];
     
     self.tableView.backgroundColor = [UIColor whiteColor];
@@ -113,30 +120,12 @@
 
 - (void)showBindingTip:(BOOL)successOrFail
 {
-//    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-//    hud.mode = MBProgressHUDModeText;
-//    hud.minSize = CGSizeMake(250, 60);
-//    //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
-//    hud.yOffset = ScreenHeight/2.0-60;
-//    hud.xOffset = 0;
-//    hud.labelText = NSLocalizedString(@"绑定成功", nil);
-//    [self.view addSubview:hud];
-//    [hud showAnimated:YES whileExecutingBlock:^{
-//        sleep(1);
-//    } completionBlock:^{
-//        [hud removeFromSuperview];
-//    }];
     if (successOrFail) {
         [self showTip:NSLocalizedString(@"绑定成功", nil)];
         [self.tableView reloadData];
     } else {
         [self showTip:NSLocalizedString(@"绑定失败", nil)];
     }
-    
-//    WMSLeftViewController *leftVC = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
-//    WMSContentViewController *vc = leftVC.contentVCArray[0];
-//    [vc scanAndConnectPeripheral];
-
 }
 
 //cmd：0表示解绑，1表示绑定
@@ -190,7 +179,6 @@
         WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
         [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BOOL success) {
             if (success) {
-                //NSString *tip = [NSString stringWithFormat:@"%@,%@",NSLocalizedString(@"解绑成功", nil),NSLocalizedString(@"记得在“设置-蓝牙”中，点击设备右边的图标忽略此设备", nil)];
                 [self showTip:NSLocalizedString(@"解绑成功", nil)];
                 [WMSMyAccessory unBindAccessory];
                 [self reset];
@@ -222,15 +210,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    //cell.textLabel.text = [NSString stringWithFormat:@"   %@ %@",@"plusdot",NSLocalizedString(@"手表", nil)];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",@"Plusdot",NSLocalizedString(@"手表", nil)];
-    cell.textLabel.font = Font_System(23.0);//Font_DINCondensed(23.0);
+    cell.textLabel.font = Font_System(23.0);
     cell.textLabel.textColor = [UIColor grayColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
-    //cell.detailTextLabel.text = [NSString stringWithFormat:@"    %@",NSLocalizedString(@"追踪活动/睡眠，蓝牙4.0无线连接", nil)];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",NSLocalizedString(@"追踪活动/睡眠，蓝牙4.0无线连接", nil)];
-    cell.detailTextLabel.font = Font_System(15.0);//Font_DINCondensed(15.0);
+    cell.detailTextLabel.font = Font_System(15.0);
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
     

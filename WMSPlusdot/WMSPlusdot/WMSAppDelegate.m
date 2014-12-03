@@ -83,7 +83,7 @@
     [self setupApp];
     _wmsBleControl  = [[WMSBleControl alloc] init];
     
-    if ([WMSHelper isFirstLaunchApp]) {
+    if ([WMSHelper isFirstLaunchApp] && NO) {
         self.window.rootViewController = [WMSGuideVC guide];
         [self.window makeKeyAndVisible];
         return YES;

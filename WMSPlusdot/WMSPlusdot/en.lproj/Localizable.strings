@@ -180,6 +180,7 @@
 "请确认手机蓝牙已开启\n请确认智能手表在附近" = "Please confirm smart watches have been open and mobile phone in the near";
 "点击绑定" = "Click bind";
 "绑定成功" = "Binding success";
+"绑定失败" = "Binding failure";
 "提示" = "Warning";
 "知道了" = "Know";
 "您的设备不支持BLE4.0" = "Your device does not support BLE4.0";
@@ -230,5 +231,13 @@
 "可乐" = "coke";
 "圈" = "circle ";
 "400米操场" = "400m playground";
+
+"解绑成功" = "Unbind success";
+"解绑失败" = "Unbind failure";
+"正在连接手表..." = "Is connecting the watch...";
+"正在绑定配件，请按手表上的确认键..." = "Binding accessories,please click on the watch to confirm key...";
+"(剩余%.0f秒)" = "(Remaining %.0f seconds)";
+"提示" = "Tip";
+"解绑后，记得在“设置-蓝牙”中，点击设备右边的图标，然后点击“忽略此设备”，这样下次绑定手表时连接更稳定哦！" = "Unbundling, remember in the “Settings - Bluetooth”, click on the device to the right of the icon, and then click the “Forget this Device”, so that next time binding watch connection more stable!";
 
 
