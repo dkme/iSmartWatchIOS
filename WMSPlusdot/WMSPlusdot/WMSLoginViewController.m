@@ -136,6 +136,11 @@
     BOOL res = [writeData writeToFile:FilePath(FILE_LOGIN_INFO) atomically:YES];
     DEBUGLog(@"保存登陆信息%@",res?@"成功":@"失败");
     [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
+    UIView *view = [WMSAppDelegate appDelegate].reSideMenu.view;
+    view.alpha = 0;
+    [UIView animateWithDuration:1.0 animations:^{
+        view.alpha = 1.0;
+    }];
     [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
     [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
 }

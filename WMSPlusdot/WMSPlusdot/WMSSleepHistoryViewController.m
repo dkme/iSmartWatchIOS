@@ -232,7 +232,7 @@
 }
 
 - (NSArray *)plottingValues
-{
+{    
     NSDate *startDate =[WMSHistoryVCHelper chartStartDateFromEarliestDate:self.earliestDate currentDate:[NSDate systemDate]];
     NSDate *endDate = [NSDate systemDate];
     NSUInteger currentYear = [NSDate yearOfDate:[NSDate systemDate]];

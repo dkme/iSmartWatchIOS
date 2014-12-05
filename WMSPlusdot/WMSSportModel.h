@@ -15,7 +15,7 @@
 @property (nonatomic, assign) NSUInteger sportSteps;
 @property (nonatomic, assign) NSUInteger sportMinute;
 @property (nonatomic, assign) NSUInteger sportDistance;
-@property (nonatomic, assign) NSUInteger sportCalorie;
+@property (nonatomic, assign) NSUInteger sportCalorie;//单位大卡
 @property (nonatomic, assign) UInt16 *perHourData;
 @property (nonatomic, assign) NSUInteger dataLength;
 

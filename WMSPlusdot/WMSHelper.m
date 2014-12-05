@@ -9,6 +9,7 @@
 #import "WMSHelper.h"
 #import "NSDate+Formatter.h"
 #import "WMSFileMacro.h"
+#import "WMSURLMacro.h"
 
 #define DEFAULT_TARGET_STEPS    20000
 
@@ -76,6 +77,63 @@
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setBool:YES forKey:@"isFirst"];
+}
+
++ (void)checkUpdate:(void(^)(BOOL isCanUpdate,NSString *strURL))aCallBack
+{
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
+    double curVersion = [currentVersion doubleValue];
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_async(queue, ^{
+        NSDictionary *appInfo = [self appInfo];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (appInfo) {
+                double newVersion = [[appInfo objectForKey:@"version"] doubleValue];
+                NSString *appOpenLink = [appInfo objectForKey:@"trackViewUrl"];
+                if (aCallBack) {
+                    if (newVersion > curVersion) {
+                        aCallBack(YES,appOpenLink);
+                    } else {
+                        aCallBack(NO,appOpenLink);
+                    }
+                }
+            } else {
+                if (aCallBack) {
+                    aCallBack(NO,nil);
+                }
+            }
+        });
+    });
+}
+//从iTunes获取最新的app信息
++ (NSDictionary *)appInfo
+{
+    NSString *urlString = URL_APP_INFO;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:URL_REQUEST_TIMEOUT_INTERVAL];
+    if (!request) {
+        return nil;
+    }
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    
+    if (returnData) {
+        NSError *error = nil;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&error];
+        if (jsonData && error==nil) {
+            if ([jsonData isKindOfClass:[NSDictionary class]]) {
+                NSArray *result = [jsonData objectForKey:@"results"];
+                if (result && [result count]>0) {
+                    return result[0];
+                }
+            }
+        } else {
+            DEBUGLog(@"not data or error");
+        }
+    } else {
+        return nil;
+    }
+    return nil;
 }
 
 @end

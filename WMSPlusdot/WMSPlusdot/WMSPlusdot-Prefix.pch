@@ -40,7 +40,7 @@
 #define FilePath(fileName) ( [((NSString *)[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]) stringByAppendingPathComponent:fileName] )
 
 #define StrideWithGender(gender,height) ( gender ? 0.415*height : 0.413*height )
-#define Calorie(weight,steps) ( ((weight-15)*0.000693+0.005895) * steps )//weight单位为kg，结果单位为cal
+#define Calorie(weight,steps) ( ((weight-15)*0.000693+0.005895) * steps )//weight单位为kg，结果单位为大卡
 #define Rounded(floatValue) ( (int)(floatValue + 0.5) ) //四舍五入
 #define Rounded_decimal(doubleValue,decimalNumber) ( (double)( (int)(doubleValue*pow(10,decimalNumber)+0.5) ) / pow(10,decimalNumber) )
 

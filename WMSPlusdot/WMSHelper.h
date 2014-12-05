@@ -13,13 +13,6 @@
 + (NSString *)describeWithDate:(NSDate *)date andFormart:(NSString *)formart;
 
 /*
- @parm
-    distance 单位为cm
-    返回值 单位为m/km
- */
-+ (NSUInteger)distance:(NSUInteger)distance;
-
-/*
  读取当天的目标步数
  */
 + (NSUInteger)readTodayTargetSteps;
@@ -39,5 +32,10 @@
  */
 + (BOOL)isFirstLaunchApp;
 + (void)finishFirstLaunchApp;
+
+/*
+ 监测是否可以更新
+ */
++ (void)checkUpdate:(void(^)(BOOL isCanUpdate,NSString *strURL))aCallBack;
 
 @end

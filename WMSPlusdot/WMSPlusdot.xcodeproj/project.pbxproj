@@ -160,6 +160,7 @@
 		2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2378A3EC1A00F06100187836 /* AudioToolbox.framework */; };
 		2378A3F01A00F29F00187836 /* 嘀嘀报警声.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */; };
 		2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */; };
+		238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = 238C63161A30698700CC71F1 /* UIViewController+Update.m */; };
 		238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */; };
 		23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */; };
 		239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 239569CE19EFCE2800CABEDC /* Default-568h@2x.png */; };
@@ -424,6 +425,9 @@
 		2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "嘀嘀报警声.m4a"; sourceTree = "<group>"; };
 		2388E5C019ED25A8005864D4 /* WMSHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSHTTPRequest.h; sourceTree = "<group>"; };
 		2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSHTTPRequest.m; sourceTree = "<group>"; };
+		238C630F1A304EFB00CC71F1 /* WMSURLMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSURLMacro.h; sourceTree = "<group>"; };
+		238C63151A30698700CC71F1 /* UIViewController+Update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Update.h"; sourceTree = "<group>"; };
+		238C63161A30698700CC71F1 /* UIViewController+Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Update.m"; sourceTree = "<group>"; };
 		238E2F051A0A1E1300FBABD9 /* WMSUserInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSUserInfoHelper.h; sourceTree = "<group>"; };
 		238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSUserInfoHelper.m; sourceTree = "<group>"; };
 		23911F1C19C290F8006E9CAF /* WMSSyncDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncDataView.h; sourceTree = "<group>"; };
@@ -644,6 +648,7 @@
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
 				2311611619B1A2620012B066 /* NSDate+Formatter */,
 				2378A3E119FFB0A000187836 /* UIViewController+Tip */,
+				23244D7D1A314640006C925C /* UIViewController+Update */,
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 			);
 			name = Categories;
@@ -745,6 +750,15 @@
 				2321B78019B9500900278677 /* NSMutableArray+Stack.m */,
 			);
 			name = "NSMutableArray+Stack";
+			sourceTree = "<group>";
+		};
+		23244D7D1A314640006C925C /* UIViewController+Update */ = {
+			isa = PBXGroup;
+			children = (
+				238C63151A30698700CC71F1 /* UIViewController+Update.h */,
+				238C63161A30698700CC71F1 /* UIViewController+Update.m */,
+			);
+			name = "UIViewController+Update";
 			sourceTree = "<group>";
 		};
 		2326A41D19A5A25D0098657B /* 左右菜单视图 Icon */ = {
@@ -1157,6 +1171,7 @@
 				233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */,
 				2378A3DB19FFA4A400187836 /* WMSConstants.h */,
 				2345B01D1A25D75F00DF3175 /* WMSFileMacro.h */,
+				238C630F1A304EFB00CC71F1 /* WMSURLMacro.h */,
 			);
 			name = Macro;
 			sourceTree = "<group>";
@@ -1539,6 +1554,7 @@
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
 				2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */,
 				232846F219A43825001C148D /* WMSLoginViewController.m in Sources */,
+				238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */,
 				2378A3D919FF405500187836 /* WMSRemindWayViewController.m in Sources */,
 				236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */,
 				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,

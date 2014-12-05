@@ -16,11 +16,13 @@
 #import "WMSMyAccessoryViewController.h"
 #import "WMSGuideVC.h"
 #import "WMSBleControl.h"
+
 #import "WMSHelper.h"
+#import "WMSConstants.h"
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface WMSAppDelegate ()<RESideMenuDelegate>
+@interface WMSAppDelegate ()<RESideMenuDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 
@@ -80,14 +82,16 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
 
-    [self setupApp];
     _wmsBleControl  = [[WMSBleControl alloc] init];
+    
+    [self setupApp];
     
     if ([WMSHelper isFirstLaunchApp] && NO) {
         self.window.rootViewController = [WMSGuideVC guide];
         [self.window makeKeyAndVisible];
         return YES;
     }
+    
 
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_LOGIN_INFO)];
     if (readData && ![[readData objectForKey:@"userName"] isEqualToString:@""]) {//已经登陆过
@@ -133,32 +137,6 @@
 }
 
 #pragma mark - Private
-//- (RESideMenu *)sideMenu
-//{
-//    RESideMenu *sideMenu = [[RESideMenu alloc] init];
-//    sideMenu.menuPreferredStatusBarStyle = UIStatusBarStyleLightContent;
-//    sideMenu.contentViewShadowColor = [UIColor blackColor];
-//    sideMenu.contentViewShadowOffset = CGSizeMake(0, 0);
-//    sideMenu.contentViewShadowOpacity = 0.6;
-//    sideMenu.contentViewShadowRadius = 3;
-//    sideMenu.contentViewShadowEnabled = NO;
-//    sideMenu.panGestureEnabled = YES;
-//    
-//    WMSContentViewController *contentVC = [[WMSContentViewController alloc] init];
-//    //WMSBindingAccessoryViewController *contentVC = [[WMSBindingAccessoryViewController alloc] init];
-//    //WMSMyAccessoryViewController *contentVC = [[WMSMyAccessoryViewController alloc] init];
-//    WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
-//    WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
-//    
-//    sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
-//    sideMenu.leftMenuViewController = leftVC;
-//    sideMenu.rightMenuViewController = rightVC;
-//    sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
-//    //sideMenu.delegate = self;
-//    
-//    return sideMenu;
-//}
-
 - (void)setupApp
 {
     //设置导航栏的颜色，标题字体和颜色
@@ -175,7 +153,6 @@
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
-
 
 #pragma mark - RESideMenuDelegate
 - (void)sideMenu:(RESideMenu *)sideMenu didRecognizePanGesture:(UIPanGestureRecognizer *)recognizer

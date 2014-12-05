@@ -157,11 +157,10 @@
 {
     NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计消耗", nil),@": "];
     NSString *calorieStr = [NSString stringWithFormat:@"%u",calorie];
-    NSString *unit = NSLocalizedString(@"卡路里", nil);
+    NSString *unit = NSLocalizedString(@"大卡", nil);
     NSString *symbol = @" ≈ ";
-    //1大卡=1000卡，1000毫升(标准)可乐=43大卡
-    //float value = calorie/1000.0/43;
-    NSString *number = [NSString stringWithFormat:@"%d",Rounded((calorie/1000.0/43))];
+    //1大卡=1000卡，100毫升(标准)可乐=43大卡，1瓶(500ml)=215大卡
+    NSString *number = [NSString stringWithFormat:@"%d",Rounded((calorie/215.0))];
     NSString *unit2 = NSLocalizedString(@"瓶", nil);
     NSString *des2 = NSLocalizedString(@"可乐", nil);
     NSString *str = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",describe,calorieStr,unit, symbol,number,unit2,des2];
@@ -660,7 +659,7 @@
         WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
         NSUInteger weight = [model currentWeight];//kg
         NSUInteger stride = [model stride];//cm
-        long calorie = Rounded(Calorie(weight, steps));//cal
+        long calorie = Rounded(Calorie(weight, steps));//kcal
         long distance = steps * stride;//cm
         [self setBottomLabelSteps:steps];
         [self setBottomLabelCalorie:calorie];

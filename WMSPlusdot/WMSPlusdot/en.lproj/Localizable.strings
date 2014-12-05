@@ -227,6 +227,7 @@
 "米" = "m";
 "公里" = "km";
 "卡" = "cal";
+"大卡" = "kcal";
 "瓶" = "bottle ";
 "可乐" = "coke";
 "圈" = "circle ";
@@ -238,6 +239,11 @@
 "正在绑定配件，请按手表上的确认键..." = "Binding accessories,please click on the watch to confirm key...";
 "(剩余%.0f秒)" = "(Remaining %.0f seconds)";
 "提示" = "Tip";
-"解绑后，记得在“设置-蓝牙”中，点击设备右边的图标，然后点击“忽略此设备”，这样下次绑定手表时连接更稳定哦！" = "Unbundling, remember in the “Settings - Bluetooth”, click on the device to the right of the icon, and then click the “Forget this Device”, so that next time binding watch connection more stable!";
+"解绑后，记得在“设置-蓝牙”中，点击设备右边的图标，然后点击“忽略此设备”，这样下次绑定手表时连接更稳定哦！" = "After the unbundling, remember in the “Settings - Bluetooth”, click on the device to the right of the icon, and then click the “Forget this Device”, so that next time binding watch connection more stable!";
+
+"更新提醒" = "Update reminder";
+"发现新的版本，快去更新吧！" = "Discover new version, go to the update!";
+"暂不更新" = "No update";
+"去App Store更新" = "Update";//"to update the App Store";
 
 

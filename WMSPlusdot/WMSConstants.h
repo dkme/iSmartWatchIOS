@@ -9,7 +9,11 @@
 #pragma mark - 提示语句
 #define TIP_NO_BINDING              @"请先在“绑定配件”中绑定您的手表"
 #define TIP_NO_CONNECTION           @"您还没有连接手表或连接已断开"
-
+//更新
+#define ALERTVIEW_TITLE             NSLocalizedString(@"更新提醒",nil)
+#define ALERTVIEW_MESSAGE           NSLocalizedString(@"发现新的版本，快去更新吧！",nil)
+#define ALERTVIEW_CANCEL_TITLE      NSLocalizedString(@"暂不更新",nil)
+#define ALERTVIEW_OK_TITLE          NSLocalizedString(@"去App Store更新",nil)
 
 #pragma mark - 尺寸、坐标
 #define HUD_LOCATED_BOTTOM_SIZE     CGSizeMake(250.0, 60.0)

@@ -18,6 +18,7 @@
 #import "WMSLoginViewController.h"
 #import "WMSMyAccountViewController.h"
 #import "UIViewController+Tip.h"
+#import "UIViewController+Update.h"
 
 #import "WMSSyncDataView.h"
 #import "WMSMySportView.h"
@@ -273,7 +274,7 @@
 - (void)setSportCalorieValue:(NSUInteger)calorie
 {
     NSString *calorieLbl = [NSString stringWithFormat:@"%u",calorie];
-    NSString *unit = NSLocalizedString(@"卡",nil);
+    NSString *unit = NSLocalizedString(@"大卡",nil);
     NSString *str = [NSString stringWithFormat:@"%@%@",calorieLbl,unit];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
@@ -322,6 +323,7 @@
     
     //////////////////
     [self reloadView];
+    [self checkAppUpdate];
     
     //
     [self bleOperation];
@@ -479,6 +481,16 @@
     [self updateView];
     
     self.isHasBeenSyncData = NO;
+}
+
+- (void)checkAppUpdate
+{
+    //841234110/930839162
+    [self checkUpdateWithAPPID:@"930839162" completion:^(BOOL isCanUpdate) {
+        if (isCanUpdate) {
+            [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
+        }
+    }];
 }
 
 //是否显示TipView，0表示显示syncDataView，1表示显示tipView，2表示两者都不显示

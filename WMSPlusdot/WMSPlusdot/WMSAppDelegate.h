@@ -24,5 +24,4 @@
 
 + (WMSAppDelegate *)appDelegate;
 
-
 @end

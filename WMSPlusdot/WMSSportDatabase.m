@@ -322,9 +322,19 @@
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:10];
     //判断数据库是否打开
     if ([self openDB]) {
+        NSUInteger nextYear = year;
+        NSUInteger nextMonth = month+1;
+        if (month == 12) {
+            nextYear += 1;
+            nextMonth = 1;
+        }
+        NSString *strDate1 = [NSString stringWithFormat:@"%04u-%02u-01",(unsigned int)year,(unsigned int)month];
+        NSString *strDate2 = @"";
+        strDate2 = [NSString stringWithFormat:@"%04u-%02u-01",(unsigned int)nextYear,(unsigned int)nextMonth];
+        
         sqlite3_stmt *statement = nil;
         //sql语句
-        NSString *strSQL = [NSString stringWithFormat:@"SELECT * FROM SportDataTable WHERE sportDate BETWEEN DATETIME('%u-%02u-01') AND DATETIME('%u-%02u-01')", year,month,year,month+1];
+        NSString *strSQL = [NSString stringWithFormat:@"SELECT * FROM SportDataTable WHERE sportDate BETWEEN DATETIME('%@') AND DATETIME('%@')", strDate1,strDate2];
         const char *sql = [strSQL UTF8String];
         
         if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
@@ -395,8 +405,18 @@
 {
     float sum = 0;
     if ([self openDB]) {
+        NSUInteger nextYear = year;
+        NSUInteger nextMonth = month+1;
+        if (month == 12) {
+            nextYear += 1;
+            nextMonth = 1;
+        }
+        NSString *strDate1 = [NSString stringWithFormat:@"%04u-%02u-01",(unsigned int)year,(unsigned int)month];
+        NSString *strDate2 = @"";
+        strDate2 = [NSString stringWithFormat:@"%04u-%02u-01",(unsigned int)nextYear,(unsigned int)nextMonth];
+        
         sqlite3_stmt *statement = nil;
-        NSString *strSQL = [NSString stringWithFormat:@"SELECT SUM(sportSteps) FROM SportDataTable WHERE sportDate BETWEEN DATETIME('%04u-%02u-01') AND DATETIME('%04u-%02u-01')", year,month,year,month+1];
+        NSString *strSQL = [NSString stringWithFormat:@"SELECT SUM(sportSteps) FROM SportDataTable WHERE sportDate BETWEEN DATETIME('%@') AND DATETIME('%@')", strDate1,strDate2];
         const char *sql = [strSQL UTF8String];
         if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
             
