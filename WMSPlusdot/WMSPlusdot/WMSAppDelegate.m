@@ -86,11 +86,11 @@
     
     [self setupApp];
     
-    if ([WMSHelper isFirstLaunchApp] && NO) {
-        self.window.rootViewController = [WMSGuideVC guide];
-        [self.window makeKeyAndVisible];
-        return YES;
-    }
+//    if ([WMSHelper isFirstLaunchApp]) {
+//        self.window.rootViewController = [WMSGuideVC guide];
+//        [self.window makeKeyAndVisible];
+//        return YES;
+//    }
     
 
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_LOGIN_INFO)];
@@ -134,6 +134,11 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
+}
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 #pragma mark - Private

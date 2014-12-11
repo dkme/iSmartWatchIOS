@@ -7,12 +7,15 @@
 //
 
 #import "WMSSignupViewController.h"
-#import "WMSHTTPRequest.h"
-#import "WMSRegularExpressions.h"
-#import "MBProgressHUD.h"
-#import "WMSAppDelegate.h"
 #import "WMSMyAccountViewController.h"
-#import "WMSFileMacro.h"
+#import "WMSLoginViewController.h"
+#import "WMSAppDelegate.h"
+
+#import "MBProgressHUD.h"
+
+#import "WMSRegularExpressions.h"
+#import "WMSHTTPRequest.h"
+#import "WMSAppConfig.h"
 
 #define VIEW_ROLL_HEIGHT    100.f
 
@@ -248,15 +251,20 @@
 
 - (void)registerSuccessed
 {
-    NSDictionary *writeData = @{@"userName":self.textUserName.text,@"password":self.textPassword.text};
-    BOOL res = [writeData writeToFile:FilePath(FILE_LOGIN_INFO) atomically:YES];
+    BOOL res = [WMSAppConfig savaLoginUserName:self.textUserName.text password:self.textPassword.text];
     DEBUGLog(@"保存登陆信息%@",res?@"成功":@"失败");
-    
-    WMSMyAccountViewController *vc = [[WMSMyAccountViewController alloc] init];
-    vc.isNewUser = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-//    [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
-//    [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
+
+    WMSLoginViewController *topVC = (WMSLoginViewController *)self.navigationController.viewControllers[0];
+    if (!topVC) {
+        return;
+    }
+    if (topVC.skipMode == SkipModeDissmiss) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        WMSMyAccountViewController *vc = [[WMSMyAccountViewController alloc] init];
+        vc.isNewUser = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 
@@ -267,21 +275,16 @@
     [self.textPassword resignFirstResponder];
     [self.textConfirmPassword resignFirstResponder];
     [self rollView:NO];
-    
+
     if (![self checkout]) {
         return;
     }
     
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    //hud.labelFont = Font_DINCondensed(10.0);
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.minSize = CGSizeMake(250, 120);
     hud.delegate = self;
-    //指定距离中心点的X轴和Y轴的偏移量，如果不指定则在屏幕中间显示
-    //hud.yOffset = ScreenHeight/2.0-60;
-    //hud.xOffset = 0;
     [self.view addSubview:hud];
-    //[hud setLabelText:NSLocalizedString(@"aaaa", nil)];
     [hud show:YES];
     
     NSString *parameter = [NSString stringWithFormat:@"Email=%@&UserName=%@&UserPwd=%@&MobileNo=%@",self.textEmail.text,self.textUserName.text,self.textPassword.text,@""];

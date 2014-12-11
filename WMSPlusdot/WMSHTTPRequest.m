@@ -7,10 +7,13 @@
 //
 
 #import "WMSHTTPRequest.h"
+#import "WMSFileMacro.h"
 
 #define GUOGEE_SERVER_ADDRESS   @"http://regsrv1.guogee.com:86/"
 #define REGISTER_INTERFACE_PATH @"api/user/AddUser"
 #define LOGIN_INTERFACE_PATH    @"api/user/CheckLogin"
+
+#define URL_REQUEST_FIRMWARE_VERSION    @"http://www.youduoyun.com/api/firmwares/version?device_id=80"
 
 #define REQUEST_TIME_INTERVAL   5.0
 
@@ -125,6 +128,111 @@
     urlRequest.HTTPMethod = @"GET";
     DEBUGLog(@"URL:%@",urlRequest.URL);
     return urlRequest;
+}
+
+//请求固件版本
++ (void)detectionFirmwareUpdate:(detectionUpdateCallBack)aCallBack
+{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_async(queue, ^{
+        NSDictionary *info = [self firmwareInfo];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (info) {
+                if (aCallBack) {
+                    double version = [info[@"version"] doubleValue];
+                    NSString *desc = info[@"desc"];
+                    NSString *strURL = info[@"url"];
+                    aCallBack(version,desc,strURL);
+                }
+            } else {
+                if (aCallBack) {
+                    aCallBack(0.0,nil,nil);
+                }
+            }
+        });
+    });
+    
+}
++ (NSDictionary *)firmwareInfo
+{
+    NSString *urlString = URL_REQUEST_FIRMWARE_VERSION;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIME_INTERVAL];
+    if (!request) {
+        return nil;
+    }
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    
+    if (returnData) {
+        NSError *error = nil;
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&error];
+        if (jsonData && error==nil) {
+            if ([jsonData isKindOfClass:[NSDictionary class]]) {
+                return jsonData[@"data"];
+            }
+        } else {
+            DEBUGLog(@"%s error:not data or error",__FILE__);
+        }
+    } else {
+        return nil;
+    }
+    return nil;
+}
+
++ (void)downloadFirmwareUpdateFileStrURL:(NSString *)strURL
+                              completion:(downloadFileCallBack)aCallBack
+{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+    dispatch_async(queue, ^{
+        BOOL success = [self download:strURL];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (aCallBack) {
+                aCallBack(success);
+            }
+        });
+    });
+}
++ (BOOL)download:(NSString *)strURL
+{
+    if ([self isExistFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)]) {
+        return YES;
+    }
+    NSString *urlString = strURL;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIME_INTERVAL];
+    if (!request) {
+        return NO;
+    }
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    
+    if (returnData) {
+        return [self savaData:returnData toFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)];
+    } else {
+        return NO;
+    }
+    return NO;
+}
+
+#pragma mark - --sava data to local
++ (BOOL)savaData:(NSData *)data toFilePath:(NSString *)path
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (!fileManager) {
+        NSLog(@"error: NSFileManager fail...");
+        return NO;
+    }
+    //NSString *tmpDir = NSTemporaryDirectory();//tmp目录
+    //NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) lastObject];//获取Documents目录
+    //NSString *filePath=[tmpDir stringByAppendingPathComponent:name];
+    //return [fileManager createFileAtPath:filePath contents:data 				attributes:nil];
+    return [fileManager createFileAtPath:path contents:data attributes:nil];
+}
+
++ (BOOL)isExistFilePath:(NSString *)path
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path]) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

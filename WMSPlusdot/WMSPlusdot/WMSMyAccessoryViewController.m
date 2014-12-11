@@ -173,21 +173,28 @@
     if (buttonIndex == 0) {//destructive
         //。。。。。。
         
-        if ([self showAlertView:0]) {
-            return;
-        }
+//        if ([self showAlertView:0]) {
+//            return;
+//        }
         WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BOOL success) {
-            if (success) {
-                [self showTip:NSLocalizedString(@"解绑成功", nil)];
-                [WMSMyAccessory unBindAccessory];
-                [self reset];
-                [bleControl disconnect];
-                [self.tableView reloadData];
-            } else {
-                [self showTip:NSLocalizedString(@"解绑失败", nil)];
-            }
-        }];
+//        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BOOL success) {
+//            if (success) {
+//                [self showTip:NSLocalizedString(@"解绑成功", nil)];
+//                [WMSMyAccessory unBindAccessory];
+//                [self reset];
+//                [bleControl disconnect];
+//                [self.tableView reloadData];
+//            } else {
+//                [self showTip:NSLocalizedString(@"解绑失败", nil)];
+//            }
+//        }];
+        if ([bleControl isConnected]) {
+            [bleControl disconnect];
+        }
+        [WMSMyAccessory unBindAccessory];
+        [self reset];
+        [self.tableView reloadData];
+        [self showTip:NSLocalizedString(@"解绑成功", nil)];
     }
 }
 

@@ -11,16 +11,35 @@
 //Block
 typedef void (^registerRequestCallBack)(BOOL result,int errorNO,NSError *error);
 typedef void (^loginRequestCallBack)(BOOL result,NSDictionary *info,NSError *error);
+typedef void (^detectionUpdateCallBack)(double newVersion,NSString *describe,NSString *strURL);
+typedef void (^downloadFileCallBack)(BOOL success);
 
 //Error Code
 const static int ERROR_CODE_REQUEST_TIMEOUT = 1000;
 
 @interface WMSHTTPRequest : NSObject
 
+/*
+ 注册
+ */
 + (void)registerRequestParameter:(NSString *)parameter
                       completion:(registerRequestCallBack)aCallBack;
 
+/*
+ 登陆
+ */
 + (void)loginRequestParameter:(NSString *)parameter
                    completion:(loginRequestCallBack)aCallBack;
+
+/*
+ 请求固件版本
+ */
++ (void)detectionFirmwareUpdate:(detectionUpdateCallBack)aCallBack;
+
+/*
+ 下载固件升级文件
+ */
++ (void)downloadFirmwareUpdateFileStrURL:(NSString *)strURL
+                              completion:(downloadFileCallBack)aCallBack;
 
 @end

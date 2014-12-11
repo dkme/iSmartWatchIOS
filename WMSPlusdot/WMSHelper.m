@@ -10,6 +10,8 @@
 #import "NSDate+Formatter.h"
 #import "WMSFileMacro.h"
 #import "WMSURLMacro.h"
+#import "WMSDeviceModel.h"
+#import "WMSHTTPRequest.h"
 
 #define DEFAULT_TARGET_STEPS    20000
 
@@ -134,6 +136,48 @@
         return nil;
     }
     return nil;
+}
+
++ (BOOL)isUpdateFirmware
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:@"isUpdateFirmware"];
+}
++ (NSString *)firmwareUpdateDesc
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *desc = [userDefaults stringForKey:@"UpdateFirmwareDesc"];
+    if (desc) {
+        return desc;
+    } else {
+        return nil;
+    }
+}
++ (NSString *)firmwareUpdateURL
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *URL = [userDefaults stringForKey:@"UpdateFirmwareRUL"];
+    if (URL) {
+        return URL;
+    } else {
+        return nil;
+    }
+}
++ (void)checkFirmwareUpdate:(void(^)(BOOL isCanUpdate))aCallBack
+{
+    [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
+     {
+         if (aCallBack) {
+             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+             if ([WMSDeviceModel deviceModel].version < newVersion) {
+                 [userDefaults setBool:YES forKey:@"isUpdateFirmware"];
+                 aCallBack(YES);
+             } else {
+                 [userDefaults setBool:NO forKey:@"isUpdateFirmware"];
+                 aCallBack(NO);
+             }
+         }
+     }];
 }
 
 @end

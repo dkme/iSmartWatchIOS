@@ -35,6 +35,7 @@
 #import "WMSConstants.h"
 #import "WMSUserInfoHelper.h"
 #import "WMSHelper.h"
+#import "WMSHTTPRequest.h"
 
 @interface WMSContentViewController ()
 {
@@ -486,8 +487,10 @@
 - (void)checkAppUpdate
 {
     //841234110/930839162
-    [self checkUpdateWithAPPID:@"930839162" completion:^(BOOL isCanUpdate) {
-        if (isCanUpdate) {
+    [self checkUpdateWithAPPID:@"930839162" completion:^(DetectResultValue isCanUpdate)
+    {
+        DEBUGLog(@"^^^^^%@----->%d[%p]",[self class],isCanUpdate,&isCanUpdate);
+        if (isCanUpdate == DetectResultCanUpdate) {
             [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
         }
     }];
@@ -617,6 +620,19 @@
     return targetSteps;
 }
 
+- (void)checkFirmwareUpdate
+{
+    [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
+     {
+         if ([WMSDeviceModel deviceModel].version < newVersion) {
+             [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
+              {
+                  //do something
+                  DEBUGLog(@"下载%d",success);
+              }];
+         }
+     }];
+}
 
 #pragma mark - Data
 - (void)savaSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations perHourData:(UInt16 *)perHourData dataLength:(NSUInteger)dataLength
@@ -708,6 +724,8 @@
          }
          [self.syncDataView setCellElectricQuantity:batteryEnergy];
          [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
+         [WMSDeviceModel deviceModel].version = version;
+         [self checkFirmwareUpdate];
      }];
 }
 

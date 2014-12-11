@@ -11,6 +11,7 @@
 @interface WMSDeviceModel : NSObject
 
 @property (nonatomic, assign) int batteryEnergy;
+@property (nonatomic, assign) double version;
 
 + (WMSDeviceModel *)deviceModel;
 

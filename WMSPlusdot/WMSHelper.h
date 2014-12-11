@@ -38,4 +38,12 @@
  */
 + (void)checkUpdate:(void(^)(BOOL isCanUpdate,NSString *strURL))aCallBack;
 
+/*
+ 检测固件是否可以更新
+ */
++ (BOOL)isUpdateFirmware;
++ (NSString *)firmwareUpdateDesc;
++ (NSString *)firmwareUpdateURL;
++ (void)checkFirmwareUpdate:(void(^)(BOOL isCanUpdate))aCallBack;
+
 @end

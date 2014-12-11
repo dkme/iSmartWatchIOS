@@ -15,6 +15,7 @@
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSMyAccountViewController.h"
 #import "WMSMyAccessoryViewController.h"
+#import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
 
 #import "WMSLeftViewCell.h"
@@ -271,15 +272,10 @@
 }
 - (void)settingBtnClick:(id)sender
 {
-//    NSDictionary *writeData = @{@"userName":@"",@"password":@""};
-//    [writeData writeToFile:FilePath(UserInfoFile) atomically:YES];
-//    
-//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
-//    
-//    [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].loginNavigationCtrl;
-//    [WMSAppDelegate appDelegate].reSideMenu = nil;
-//    [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
+    WMSSettingVC *vc = [[WMSSettingVC alloc] init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.navigationBarHidden = YES;
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 

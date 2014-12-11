@@ -23,7 +23,8 @@
 - (id)init
 {
     if (self = [super init]) {
-        self.batteryEnergy = 0;
+        _batteryEnergy = 0;
+        _version = 0.0;
     }
     return self;
 }

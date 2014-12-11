@@ -9,7 +9,8 @@
 #import "UIViewController+Update.h"
 #import <objc/runtime.h>
 
-static void *UtilityKey;
+static const void *UtilityKey;
+static DetectResultValue global_DetectResult = DetectResultUnknown;
 
 #define URL_APP_INFO     @"http://itunes.apple.com/lookup?id="
 const NSTimeInterval REQUEST_TIMEOUT_INTERVAL = 10.f;
@@ -33,6 +34,11 @@ const NSTimeInterval REQUEST_TIMEOUT_INTERVAL = 10.f;
 }
 
 #pragma mark - Public
+- (DetectResultValue)isDetectedNewVersion
+{
+    return global_DetectResult;
+}
+
 - (void)checkUpdateWithAPPID:(NSString *)appID
                   completion:(isCanUpdate)aCallBack
 {
@@ -51,14 +57,17 @@ const NSTimeInterval REQUEST_TIMEOUT_INTERVAL = 10.f;
                 if (aCallBack) {
                     BOOL res = [self isUpdateWithNewVersion:newVersion currentVersion:currentVersion];
                     if (res) {
-                        aCallBack(YES);
+                        global_DetectResult = DetectResultCanUpdate;
+                        aCallBack(DetectResultCanUpdate);
                     } else {
-                        aCallBack(NO);
+                        global_DetectResult = DetectResultCanNotUpdate;
+                        aCallBack(DetectResultCanNotUpdate);
                     }
                 }
             } else {
                 if (aCallBack) {
-                    aCallBack(NO);
+                    global_DetectResult = DetectResultUnknown;
+                    aCallBack(DetectResultUnknown);
                 }
             }
         });

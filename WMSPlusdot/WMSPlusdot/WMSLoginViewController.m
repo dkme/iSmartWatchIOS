@@ -8,10 +8,13 @@
 
 #import "WMSLoginViewController.h"
 #import "WMSSignupViewController.h"
-#import "WMSHTTPRequest.h"
-#import "MBProgressHUD.h"
+#import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
-#import "WMSFileMacro.h"
+
+#import "MBProgressHUD.h"
+
+#import "WMSHTTPRequest.h"
+#import "WMSAppConfig.h"
 
 @interface WMSLoginViewController ()<MBProgressHUDDelegate>
 
@@ -30,6 +33,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _skipMode = SkipModeDefault;
     }
     return self;
 }
@@ -51,6 +55,13 @@
     [self.viewPassword setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
     
     [self localizableView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -132,17 +143,26 @@
 
 - (void)loginSuccessed
 {
-    NSDictionary *writeData = @{@"userName":self.textEmail.text,@"password":self.textPassword.text};
-    BOOL res = [writeData writeToFile:FilePath(FILE_LOGIN_INFO) atomically:YES];
+    BOOL res = [WMSAppConfig savaLoginUserName:self.textEmail.text password:self.textPassword.text];
     DEBUGLog(@"保存登陆信息%@",res?@"成功":@"失败");
-    [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
-    UIView *view = [WMSAppDelegate appDelegate].reSideMenu.view;
-    view.alpha = 0;
-    [UIView animateWithDuration:1.0 animations:^{
-        view.alpha = 1.0;
-    }];
-    [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
-    [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
+    
+    if (self.skipMode == SkipModeDissmiss) {
+        [self dismissViewControllerAnimated:YES completion:^{
+//            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+//            WMSSettingVC *vc = (WMSSettingVC *)nav.viewControllers[0];
+//            vc.needUpdateView = YES;
+        }];
+    } else {
+        WMSAppDelegate *appDelegate = [WMSAppDelegate appDelegate];
+        appDelegate.window.rootViewController = (UIViewController *)appDelegate.reSideMenu;
+        UIView *view = appDelegate.reSideMenu.view;
+        view.alpha = 0;
+        [UIView animateWithDuration:1.0 animations:^{
+            view.alpha = 1.0;
+        }];
+        appDelegate.loginNavigationCtrl = nil;
+        [appDelegate.window makeKeyAndVisible];
+    }
 }
 
 
@@ -157,9 +177,8 @@
     if (![self checkout]) {
         return;
     }
-    
+
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    //hud.labelFont = Font_DINCondensed(10.0);
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.minSize = CGSizeMake(250, 120);
     hud.delegate = self;
@@ -167,11 +186,8 @@
     //hud.yOffset = ScreenHeight/2.0-60;
     //hud.xOffset = 0;
     [self.view addSubview:hud];
-    //[hud setLabelText:NSLocalizedString(@"aaaa", nil)];
     [hud show:YES];
-    
-    //self.textEmail.text = @"Sir";
-    //self.textPassword.text = @"123456";
+
     NSString *parameter = [NSString stringWithFormat:@"UserName=%@&UserPwd=%@",self.textEmail.text,self.textPassword.text];
     [WMSHTTPRequest loginRequestParameter:parameter completion:^(BOOL result, NSDictionary *info, NSError *error)
     {

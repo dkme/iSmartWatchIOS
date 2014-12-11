@@ -8,9 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^isCanUpdate)(BOOL isCanUpdate);
+typedef NS_ENUM(NSInteger, DetectResultValue) {
+    DetectResultUnknown = 0x00,
+    DetectResultCanUpdate = 0x01,
+    DetectResultCanNotUpdate = 0x02,
+};
+
+typedef void (^isCanUpdate)(DetectResultValue isCanUpdate);
 
 @interface UIViewController(Update)
+
+- (DetectResultValue)isDetectedNewVersion;
 
 - (void)checkUpdateWithAPPID:(NSString *)appID
                   completion:(isCanUpdate)aCallBack;
