@@ -7,6 +7,7 @@
 //
 
 #import "WMSUpdateVC.h"
+#import "WMSAppDelegate.h"
 
 #import "WMSNavBarView.h"
 
@@ -58,7 +59,11 @@
 {
     UIImage *image = [UIImage imageNamed:@"zq_public_green_btn_a.png"];
     CGRect frame = CGRectZero;
-    frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
+    if (iPhone5) {
+        frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
+    } else {
+        frame.size = CGSizeMake(image.size.width, image.size.height);
+    }
     frame.origin.x = (ScreenWidth-frame.size.width)/2.0;
     frame.origin.y = ScreenHeight-frame.size.height-10.0;
     [self.buttonUpdate setFrame:frame];
@@ -75,12 +80,26 @@
 }
 
 - (IBAction)updateAction:(id)sender {
+    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    if ([bleControl isConnected] == NO) {
+        return;
+    }
     NSFileHandle *inFile = [NSFileHandle fileHandleForReadingAtPath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)];
-    if (inFile) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            DEBUGLog(@"file data:{%@}",[inFile readDataToEndOfFile]);
-        });
+    if (!inFile) {
+        //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        //            DEBUGLog(@"file data:{%@}",[inFile readDataToEndOfFile]);
+        //        });
         return ;
     }
+    
+    NSString *peipheralUUID = [bleControl.connectedPeripheral UUIDString];
+    [bleControl switchToUpdateModeCompletion:^(BOOL success, NSString *failReason) {
+        DEBUGLog(@"切换至升级模式%@",success?@"成功":@"失败");
+        //发送通知
+    }];
+    
+    
+    
+    
 }
 @end

@@ -45,8 +45,8 @@ extern NSString * const WMSBleControlBluetoothStateUpdated;
 //
 typedef NS_ENUM(NSUInteger, ControlMode) {
     ControlModeRemote = 0x01,
+    ControlModePlayMusic = 0x02,
     ControlModeNormal = 0xFF,
-    ControlModeOTA = 0x30,
 };
 
 typedef NS_ENUM(NSUInteger, BindSettingCMD) {
@@ -69,12 +69,16 @@ typedef NS_ENUM(Byte, CMDType) {
     CMDGetDeviceTime = 0x0B,
     
     CMDSwitchControlMode = 0xF2,
+    CMDSwitchUpdateMode = 0x30,
 };
 //蓝牙状态
 typedef NS_ENUM(NSInteger, WMSBleState) {
-    BleStateUnsupported = 0,
-    BleStatePoweredOff,
-    BleStatePoweredOn,
+    WMSBleStateUnknown = 0,
+    WMSBleStateResetting,
+    WMSBleStateUnsupported,
+    WMSBleStateUnauthorized,
+    WMSBleStatePoweredOff,
+    WMSBleStatePoweredOn,
 };
 
 #define KEY_TIMEOUT_USERINFO_CHARACT    @"KEY_TIMEOUT_USERINFO_CHARACT"
@@ -94,6 +98,7 @@ static const int DATA_LENGTH = 13;
 typedef void (^WMSBleControlScanedPeripheralCallback)(NSArray *peripherals);
 
 typedef void (^WMSBleSwitchToControlModeCallback)(BOOL success,NSString *failReason);
+typedef void (^WMSBleSwitchToUpdateModeCallback)(BOOL success,NSString *failReason);
 
 typedef void (^WMSBleSendDataCallback)(BOOL success);
 
@@ -144,5 +149,10 @@ typedef void (^WMSBleBindSettingCallBack)(BOOL success);
 - (void)switchToControlMode:(ControlMode)controlMode
                 openOrClose:(BOOL)status
                  completion:(WMSBleSwitchToControlModeCallback)aCallBack;
+
+/**
+ 切换到升级模式
+ */
+- (void)switchToUpdateModeCompletion:(WMSBleSwitchToUpdateModeCallback)aCallBack;
 
 @end

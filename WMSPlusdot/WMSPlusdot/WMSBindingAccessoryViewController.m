@@ -27,8 +27,6 @@
 #define TAG_BOTTOM_VIEW     100
 #define BIND_TIME_INTERVAL  10
 
-typedef void (^BindSettingCallBack)(BOOL success);
-
 @interface WMSBindingAccessoryViewController ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 {
     __weak IBOutlet UILabel *_labelTitle;
@@ -39,7 +37,6 @@ typedef void (^BindSettingCallBack)(BOOL success);
 @property (strong, nonatomic) NSArray *listData;
 @property (strong, nonatomic) WMSBleControl *bleControl;
 @property (strong, nonatomic) MBProgressHUD *hud;
-@property (copy, nonatomic) BindSettingCallBack bindBlock;
 @end
 
 @implementation WMSBindingAccessoryViewController
@@ -253,13 +250,15 @@ typedef void (^BindSettingCallBack)(BOOL success);
     NSString *str = [NSString stringWithFormat:format,timeInterval];
     self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),@""];
     self.hud.detailsLabelText = str;
-    //self.hud.detailsLabelFont = self.hud.labelFont;
 }
 
 - (void)closeVC:(BOOL)successOrFail
 {
     [self.hud hide:YES];
     [self setHud:nil];
+    [self setBleControl:nil];
+    [self.tableView setDataSource:nil];
+    [self.tableView setDelegate:self];
     [self.navigationController popViewControllerAnimated:YES];
     UIViewController *vc = self.navigationController.topViewController;
     if ([vc class] == [WMSMyAccessoryViewController class]) {
@@ -324,6 +323,9 @@ typedef void (^BindSettingCallBack)(BOOL success);
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     if ([self.bleControl isScanning]) {
         [self.bleControl stopScanForPeripherals];//先停止扫描
+    }
+    if ([self.bleControl isConnecting]) {
+        [self.bleControl disconnect];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];

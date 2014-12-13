@@ -329,7 +329,8 @@
     [self bleOperation];
     
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -663,6 +664,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdatedBLEState:) name:WMSBleControlBluetoothStateUpdated object:nil];
     
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     
@@ -696,19 +698,30 @@
     [self.syncDataView stopAnimating];
     [self.hud hide:YES afterDelay:0];
 }
+- (void)handleUpdatedBLEState:(NSNotification *)notification
+{
+    DEBUGLog(@"%@ %s",self.class,__FUNCTION__);
+    switch ([self.bleControl bleState]) {
+        case WMSBleStateResetting:
+        case WMSBleStatePoweredOff:
+            [self handleDidDisConnectPeripheral:nil];
+            break;
+        default:
+            break;
+    }
+}
 
 #pragma mark -  Notification
-- (void)appWillEnterForeground:(NSNotification *)notification
+- (void)appDidBecomeActive:(NSNotification *)notification
 {
     switch (self.bleControl.bleState) {
-        case BleStatePoweredOff:
+        case WMSBleStatePoweredOff:
         {
             [self showTipView:YES];
             [self.hud hide:YES afterDelay:0];
             [self.syncDataView stopAnimating];
             break;
         }
-            
         default:
             break;
     }

@@ -178,6 +178,7 @@
 		2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */; };
 		238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = 238C63161A30698700CC71F1 /* UIViewController+Update.m */; };
 		238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */; };
+		239109321A3A90C900333A2A /* WMSUpdateVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 239109311A3A90C900333A2A /* WMSUpdateVCHelper.m */; };
 		23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */; };
 		239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 239569CE19EFCE2800CABEDC /* Default-568h@2x.png */; };
 		239F51CC1A2D6B410058F6DE /* WMSGuideVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 239F51CB1A2D6B410058F6DE /* WMSGuideVC.m */; };
@@ -472,6 +473,8 @@
 		238C63161A30698700CC71F1 /* UIViewController+Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Update.m"; sourceTree = "<group>"; };
 		238E2F051A0A1E1300FBABD9 /* WMSUserInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSUserInfoHelper.h; sourceTree = "<group>"; };
 		238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSUserInfoHelper.m; sourceTree = "<group>"; };
+		239109301A3A90C900333A2A /* WMSUpdateVCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSUpdateVCHelper.h; sourceTree = "<group>"; };
+		239109311A3A90C900333A2A /* WMSUpdateVCHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSUpdateVCHelper.m; sourceTree = "<group>"; };
 		23911F1C19C290F8006E9CAF /* WMSSyncDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncDataView.h; sourceTree = "<group>"; };
 		23911F1D19C290F8006E9CAF /* WMSSyncDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncDataView.m; sourceTree = "<group>"; };
 		239569CE19EFCE2800CABEDC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -796,6 +799,8 @@
 				23A153261A36EFAA0026D741 /* WMSUpdateVC.h */,
 				23A153271A36EFAA0026D741 /* WMSUpdateVC.m */,
 				23A153281A36EFAA0026D741 /* WMSUpdateVC.xib */,
+				239109301A3A90C900333A2A /* WMSUpdateVCHelper.h */,
+				239109311A3A90C900333A2A /* WMSUpdateVCHelper.m */,
 			);
 			name = "设置视图";
 			sourceTree = "<group>";
@@ -1716,6 +1721,7 @@
 				231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */,
 				23A153241A369F790026D741 /* WMSWebVC.m in Sources */,
 				23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */,
+				239109321A3A90C900333A2A /* WMSUpdateVCHelper.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
 				23CDDD9919AC2DBB00A12820 /* WMSSelectValueViewController.m in Sources */,
@@ -1820,7 +1826,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
@@ -1926,7 +1932,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
@@ -1944,7 +1950,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: an liu (4E8WUK78VW)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";

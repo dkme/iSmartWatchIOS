@@ -25,28 +25,6 @@
 @implementation WMSGuideVC
 
 #pragma mark - Getter/Setter
-- (UIView *)bottomView
-{
-    if (!_bottomView) {
-        CGSize viewSize = iPhone5?CGSizeMake(ScreenWidth, 88):CGSizeZero;
-        CGPoint viewOrigin = iPhone5?CGPointMake(0, ScreenHeight-viewSize.height):CGPointZero;
-        CGRect viewFrame = (CGRect){viewOrigin,viewSize};
-        _bottomView = [[UIView alloc] initWithFrame:viewFrame];
-        
-        CGSize lineSize = CGSizeMake(1, 20);
-        CGPoint lineOrigin = CGPointMake((ScreenWidth-lineSize.width)/2.0, ScreenHeight-10-lineSize.height);
-        CGRect lineFrame = (CGRect){lineOrigin,lineSize};
-        UIView *dividingLine = [[UIView alloc] initWithFrame:lineFrame];
-        
-        CGSize btnSize = CGSizeMake(90, 40);
-        UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        leftBtn.frame = (CGRect){lineOrigin.x-20-btnSize.width,lineOrigin.y,btnSize};
-        //rightBtn.frame = (CGRect){,,btnSize};
-        
-    }
-    return nil;
-}
 
 #pragma mark - Life Cycle
 + (id)guide

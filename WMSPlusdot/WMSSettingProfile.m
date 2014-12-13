@@ -686,9 +686,8 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
     
     int triggerCount = [self.myTimers triggerCountForTimer:timer];
     if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
+        DEBUGLog(@"写入超时[TimerID:%d]，主动断开 %@",[self.myTimers getTimerID:timer],NSStringFromClass([self class]));
         [self.myTimers deleteAllTimers];
-        
-        DEBUGLog(@"写入超时，主动断开 %@",NSStringFromClass([self class]));
         [self.bleControl disconnect];
         return;
     }

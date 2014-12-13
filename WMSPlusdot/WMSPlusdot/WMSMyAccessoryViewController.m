@@ -63,22 +63,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, CELL_HIGHT+HEADER_HEIGHT+10, ScreenWidth-15, 60)];
-    NSString *text = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"解绑后，记得在“设置-蓝牙”中，点击设备右边的图标，然后点击“忽略此设备”，这样下次绑定手表时连接更稳定哦！", nil)];
-    label.text = text;
-    label.textColor = [UIColor grayColor];
-    label.numberOfLines = -1;
-    label.adjustsFontSizeToFitWidth = YES;
-    [self.tableView addSubview:label];
-    [self.view addSubview:self.navBarView];
-    
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    
-    [self setupControl];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [self setupNavBarView];
+    [self setupTableView];
+    [self registerForNotifications];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -94,12 +81,34 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setupControl
+- (void)dealloc
+{
+    DEBUGLog(@"%s",__FUNCTION__);
+    [self unregisterFromNotifications];
+}
+
+#pragma mark - Private
+- (void)setupNavBarView
 {
     [self.navBarView.buttonLeft setTitle:@"" forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"main_menu_icon_a.png"] forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"main_menu_icon_b.png"] forState:UIControlStateHighlighted];
     [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.navBarView];
+}
+- (void)setupTableView
+{
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+}
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+- (void)unregisterFromNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)reset
@@ -128,19 +137,53 @@
     }
 }
 
+- (void)showUnBindTip:(BOOL)showOrHide
+{
+    UILabel *label = nil;
+    for (UIView *view in [self.tableView subviews]) {
+        if ([view class] == [UILabel class] && view.tag == 250) {
+            label = (UILabel *)view;
+            break;
+        }
+    }
+    if (label == nil) {
+        label = [[UILabel alloc] initWithFrame:CGRectMake(15, CELL_HIGHT+HEADER_HEIGHT+10, ScreenWidth-15, 60)];
+        NSString *text = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"请在“设置-蓝牙”中，忽略配对的设备！", nil)];
+        label.text = text;
+        label.textColor = [UIColor orangeColor];
+        label.numberOfLines = -1;
+        label.tag = 250;
+        label.adjustsFontSizeToFitWidth = YES;
+        [self.tableView addSubview:label];
+        CGRect frame = label.frame;
+        frame.origin.x = ScreenWidth;
+        label.frame = frame;
+    }
+    //
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect frame = label.frame;
+        if (showOrHide) {
+            frame.origin.x = 15;
+        } else {
+            frame.origin.x = ScreenWidth;
+        }
+        label.frame = frame;
+    } completion:nil];
+}
+
 //cmd：0表示解绑，1表示绑定
 - (BOOL)showAlertView:(int)cmd
 {
     self.alertView = nil;
     WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
     switch ([bleControl bleState]) {
-        case BleStateUnsupported:
+        case WMSBleStateUnsupported:
         {
             _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
             [_alertView show];
             return YES;
         }
-        case BleStatePoweredOff:
+        case WMSBleStatePoweredOff:
         {
             _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
             [_alertView show];
@@ -166,35 +209,27 @@
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
+#pragma mark - Time out
+- (void)hideUnBindTip
+{
+    [self showUnBindTip:NO];
+}
 
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {//destructive
-        //。。。。。。
-        
-//        if ([self showAlertView:0]) {
-//            return;
-//        }
+        [self reset];
+        [self showUnBindTip:YES];
+        [self showTip:NSLocalizedString(@"解绑成功", nil)];
+        [self.tableView reloadData];
+        [WMSMyAccessory unBindAccessory];
         WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-//        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BOOL success) {
-//            if (success) {
-//                [self showTip:NSLocalizedString(@"解绑成功", nil)];
-//                [WMSMyAccessory unBindAccessory];
-//                [self reset];
-//                [bleControl disconnect];
-//                [self.tableView reloadData];
-//            } else {
-//                [self showTip:NSLocalizedString(@"解绑失败", nil)];
-//            }
-//        }];
         if ([bleControl isConnected]) {
             [bleControl disconnect];
         }
-        [WMSMyAccessory unBindAccessory];
-        [self reset];
-        [self.tableView reloadData];
-        [self showTip:NSLocalizedString(@"解绑成功", nil)];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideUnBindTip) object:nil];
+        [self performSelector:@selector(hideUnBindTip) withObject:nil afterDelay:1.0];
     }
 }
 

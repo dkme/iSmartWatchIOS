@@ -576,7 +576,7 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [self.tableView reloadData];
-    
+    DEBUGLog(@"%@ _isVisible:%d",[self class],_isVisible);
     if (_isVisible) {
         [self firstConnectedConfig];
     }
@@ -718,7 +718,7 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
                 NSString *key = [self keyForIndexpath:indexPath];
                 if (key) {
                     cell.mySwitch.on = [[readData objectForKey:key] boolValue];
-                    DEBUGLog(@"status:%d",cell.mySwitch.on);
+                    //DEBUGLog(@"status:%d",cell.mySwitch.on);
                 }
             } else {
                 cell.mySwitch.on = NO;

@@ -334,7 +334,8 @@
         [self handleScanPeripheralFinish:nil];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -628,7 +629,7 @@
              [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
               {
                   //do something
-                  DEBUGLog(@"下载%d",success);
+                  DEBUGLog(@"下载%@",success?@"成功":@"失败");
               }];
          }
      }];
@@ -798,12 +799,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFailedConnectPeripheral:) name:WMSBleControlPeripheralConnectFailed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScanPeripheralFinish:) name:WMSBleControlScanFinish object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdatedBLEState:) name:WMSBleControlBluetoothStateUpdated object:nil];
     
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
 }
 
 - (void)scanAndConnectPeripheral
 {
+    switch ([self.bleControl bleState]) {
+        case WMSBleStateResetting:
+        case WMSBleStatePoweredOff:
+        return;
+    }
     DEBUGLog(@"》》Scanning %@",NSStringFromClass([self class]));
     [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
                                        completion:^(NSArray *peripherals)
@@ -876,49 +883,47 @@
     }
 }
 
+- (void)handleUpdatedBLEState:(NSNotification *)notification
+{
+    DEBUGLog(@"%@ %s",self.class,__FUNCTION__);
+    switch ([self.bleControl bleState]) {
+        case WMSBleStateResetting:
+        case WMSBleStatePoweredOff:
+        {
+            [self showTipView:YES];
+            [self.hud hide:YES afterDelay:0];
+            [self.syncDataView stopAnimating];
+            break;
+        }
+        case WMSBleStatePoweredOn:
+            [self handleScanPeripheralFinish:nil];
+            break;
+        default:
+            break;
+    }
+}
+
 
 #pragma mark -  Notification
 - (void)appWillEnterForeground:(NSNotification *)notification
 {
-//    switch (self.bleControl.bleState) {
-//        case BleStatePoweredOff:
-//        {
-//            if (self.isShowBindVC) {
-//                return;
-//            }
-//            [self showTipView:YES];
-//            [self.hud hide:YES afterDelay:0];
-//            [self.syncDataView stopAnimating];
-//            break;
-//        }
-//            
-//        default:
-//            break;
-//    }
+}
+- (void)appDidBecomeActive:(NSNotification *)notification
+{
     if ([self.bleControl isConnected] == NO) {
-//        if (self.isShowBindVC) {
-//            return;
-//        }
-//        [self showTipView:YES];
-//        [self.hud hide:YES afterDelay:0];
-//        [self.syncDataView stopAnimating];
-        
         [self handleScanPeripheralFinish:nil];
-    } else {
-        
     }
     
-    
     [self.alertView dismissWithClickedButtonIndex:0 animated:YES];
-    self.alertView = nil;
+    [self setAlertView:nil];
     switch (self.bleControl.bleState) {
-        case BleStateUnsupported:
+        case WMSBleStateUnsupported:
         {
             _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
             [_alertView show];
             break;
         }
-        case BleStatePoweredOff:
+        case WMSBleStatePoweredOff:
         {
             _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
             [_alertView show];

@@ -163,6 +163,12 @@
     NSString *number = [NSString stringWithFormat:@"%d",Rounded((calorie/215.0))];
     NSString *unit2 = NSLocalizedString(@"瓶", nil);
     NSString *des2 = NSLocalizedString(@"可乐", nil);
+    if ([number intValue] < 1) {
+        symbol = @"";
+        unit2 = @"";
+        number = @"";
+        des2 = @"";
+    }
     NSString *str = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",describe,calorieStr,unit, symbol,number,unit2,des2];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
@@ -219,7 +225,14 @@
     NSString *numberStr = [NSString stringWithFormat:@"%d",Rounded(number)];
     NSString *unti2 = NSLocalizedString(@"圈", nil);
     NSString *des2 = NSLocalizedString(@"400米操场", nil);
+    if ([numberStr intValue] < 1) {
+        symbol = @"";
+        numberStr = @"";
+        unti2 = @"";
+        des2 = @"";
+    }
     NSString *str = [NSString stringWithFormat:@"%@%@%@%@%@%@%@",describe,distanceStr,unit, symbol,numberStr,unti2,des2];
+    
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;
     loc = 0;

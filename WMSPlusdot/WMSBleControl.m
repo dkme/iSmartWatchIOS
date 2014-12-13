@@ -22,6 +22,7 @@ enum {
     TimeIDSubscribeNotifyCharact = 100,
     TimeIDBindSetting,
     TimeIDSwitchControlMode,
+    TimeIDSwitchUpdateMode,
 };
 
 NSString * const WMSBleControlPeripheralDidConnect = @"com.guogee.ios.PeripheralDidConnect";
@@ -55,6 +56,7 @@ NSString * const WMSBleControlScanFinish =
 @property (nonatomic, strong) NSMutableArray *sendDataOperationStack;
 @property (nonatomic, strong) NSMutableArray *stackBindSetting;
 @property (nonatomic, strong) NSMutableArray *stackSwitchControlMode;
+@property (nonatomic, strong) NSMutableArray *stackSwitchUpdateMode;
 @end
 
 @implementation WMSBleControl
@@ -84,17 +86,7 @@ NSString * const WMSBleControlScanFinish =
 - (WMSBleState)bleState
 {
     CBCentralManagerState state = self.centralManager.manager.state;
-    switch (state) {
-        case CBCentralManagerStateUnsupported:
-            return BleStateUnsupported;
-        case CBCentralManagerStatePoweredOff:
-            return BleStatePoweredOff;
-        case CBCentralManagerStatePoweredOn:
-            return BleStatePoweredOn;
-        default:
-            break;
-    }
-    return BleStateUnsupported;
+    return (WMSBleState)state;
 }
 
 - (NSMutableArray *)characteristicArray
@@ -128,6 +120,13 @@ NSString * const WMSBleControlScanFinish =
     }
     return _stackSwitchControlMode;
 }
+- (NSMutableArray *)stackSwitchUpdateMode
+{
+    if (!_stackSwitchUpdateMode) {
+        _stackSwitchUpdateMode = [NSMutableArray new];
+    }
+    return _stackSwitchUpdateMode;
+}
 - (NSMutableArray *)stackBindSetting
 {
     if (!_stackBindSetting) {
@@ -157,6 +156,7 @@ NSString * const WMSBleControlScanFinish =
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePeripheralDidDisconnect:) name:kLGPeripheralDidDisconnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagerUpdatedState:) name:LGCentralManagerStateUpdatedNotification object:nil];
 }
 
 - (void)dealloc
@@ -398,6 +398,7 @@ NSString * const WMSBleControlScanFinish =
     self.scanedBlock = nil;
     [self.stackBindSetting removeAllObjects];
     [self.stackSwitchControlMode removeAllObjects];
+    [self.stackSwitchUpdateMode removeAllObjects];
     
     [self.characteristicArray removeAllObjects];
     [self.myTimers deleteAllTimers];
@@ -571,6 +572,33 @@ NSString * const WMSBleControlScanFinish =
                                      timeID:TimeIDSwitchControlMode];
 }
 
+- (void)switchToUpdateModeCompletion:(WMSBleSwitchToUpdateModeCallback)aCallBack
+{
+    if (self.isConnected == NO) {
+        return;
+    }
+    
+    Byte package[DATA_LENGTH] = {0};
+    
+    [self setPacketCMD:CMDSwitchUpdateMode andData:package dataLength:DATA_LENGTH];
+    
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSwitchUpdateMode];
+    }
+    
+    //send
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    
+    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDSwitchUpdateMode];
+}
+
 #pragma mark - Time out
 //超时处理
 - (void)connectPeripheralTimeout:(LGPeripheral *)peripheral
@@ -625,9 +653,8 @@ NSString * const WMSBleControlScanFinish =
     
     int triggerCount = [self.myTimers triggerCountForTimer:timer];
     if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
+        DEBUGLog(@"写入超时[TimerID:%d]，主动断开 %@",[self.myTimers getTimerID:timer],NSStringFromClass([self class]));
         [self.myTimers deleteAllTimers];
-        
-        DEBUGLog(@"写入超时，主动断开 %@",NSStringFromClass([self class]));
         [self disconnect];
         return;
     }
@@ -663,6 +690,26 @@ NSString * const WMSBleControlScanFinish =
     [self disConnectedClearup];
 }
 
+- (void)handleManagerUpdatedState:(NSNotification *)notification
+{
+    /*当蓝牙关闭时，连接会断开，
+     但设备若为连接状态，则状态并不会变为非连接状态，
+     此时该外设则为无效的，将外设置为空*/
+    //CBCentralManagerState state = self.centralManager.manager.state;
+    WMSBleState state = self.bleState;
+    switch (state) {
+        case WMSBleStateUnknown:
+        case WMSBleStateResetting:
+        case WMSBleStateUnsupported:
+        case WMSBleStateUnauthorized:
+        case WMSBleStatePoweredOff:
+            [self disConnectedClearup];
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)handleDidGetNotifyValue:(NSNotification *)notification
 {
     NSError *error = notification.object;
@@ -695,6 +742,17 @@ NSString * const WMSBleControlScanFinish =
                 [self.myTimers deleteTimerForTimeID:TimeIDSwitchControlMode];
             
                 WMSBleSwitchToControlModeCallback callBack = [NSMutableArray popFromArray:self.stackSwitchControlMode];
+                if (callBack) {
+                    callBack(YES,nil);
+                }
+            }
+            return;
+        }
+        if (cmd == CMDSwitchUpdateMode) {
+            if ([self.myTimers isValidForTimeID:TimeIDSwitchUpdateMode]) {//成功
+                [self.myTimers deleteTimerForTimeID:TimeIDSwitchUpdateMode];
+                
+                WMSBleSwitchToUpdateModeCallback callBack = [NSMutableArray popFromArray:self.stackSwitchUpdateMode];
                 if (callBack) {
                     callBack(YES,nil);
                 }
