@@ -303,6 +303,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        [self registerForNotifications];
     }
     return self;
 }
@@ -333,9 +334,6 @@
     } else {
         [self handleScanPeripheralFinish:nil];
     }
-    
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -390,9 +388,10 @@
 {
     DEBUGLog(@"ContentViewController dealloc");
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self unregisterFromNotifications];
 }
 
+#pragma mark - Methods
 - (void)setupControl
 {
     [self.buttonLeft setTitle:@"" forState:UIControlStateNormal];
@@ -718,6 +717,7 @@
     [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
      {
          DEBUGLog(@"电池电量：%d",batteryEnergy);
+         batteryEnergy = 100;
          if (batteryEnergy <= WATCH_LOW_BATTERY) {
              [self.syncDataView setCellColor:[UIColor redColor]];
          } else {
@@ -809,7 +809,9 @@
     switch ([self.bleControl bleState]) {
         case WMSBleStateResetting:
         case WMSBleStatePoweredOff:
-        return;
+            return;
+        default:
+            break;
     }
     DEBUGLog(@"》》Scanning %@",NSStringFromClass([self class]));
     [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
@@ -820,9 +822,10 @@
          }
          LGPeripheral *p = [peripherals lastObject];
          if ([WMSMyAccessory isBindAccessory]) {
-             if  (p &&
-                 [p.cbPeripheral.name isEqualToString:WATCH_NAME] &&
-                 [p.UUIDString isEqualToString:[WMSMyAccessory identifierForbindAccessory]])
+             NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
+             BOOL flag = [p.cbPeripheral.name isEqualToString:WATCH_NAME] ||
+                         [p.cbPeripheral.name isEqualToString:WATCH_NAME2];
+             if (flag && [p.UUIDString isEqualToString:uuid])
              {
                  [self.bleControl connect:p];
              }
@@ -904,9 +907,21 @@
 }
 
 
-#pragma mark -  Notification
-- (void)appWillEnterForeground:(NSNotification *)notification
+#pragma mark -  Notifications
+- (void)registerForNotifications
 {
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+- (void)unregisterFromNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (void)appWillResignActive:(NSNotification *)notification
+{
+    [self.alertView dismissWithClickedButtonIndex:0 animated:YES];
+    [self setAlertView:nil];
 }
 - (void)appDidBecomeActive:(NSNotification *)notification
 {

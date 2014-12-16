@@ -18,6 +18,8 @@
 
 - (void)setLabelElectricQuantityFont:(UIFont *)font;
 
+- (void)setElectricQuantityDesc:(NSString *)desc;
+
 - (void)setCellElectricQuantity:(NSUInteger)quantity;
 
 - (void)setCellColor:(UIColor *)color;

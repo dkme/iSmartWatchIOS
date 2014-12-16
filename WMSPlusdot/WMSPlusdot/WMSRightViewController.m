@@ -17,8 +17,13 @@
 #import "MBProgressHUD.h"
 #import "CRToast.h"
 
+#import "WMSRightVCHelper.h"
+#import "WMSPostNotificationHelper.h"
 #import "WMSMyAccessory.h"
 #import "WMSConstants.h"
+
+#import <CoreTelephony/CTCallCenter.h>
+#import <CoreTelephony/CTCall.h>
 
 #define SECTION_NUMBER  5
 #define SECTION0_HEADER_HEIGHT  50.f
@@ -57,6 +62,8 @@ __weak WMSRightViewController *global_Self = nil;
 @implementation WMSRightViewController
 {
     SystemSoundID soundID;
+    
+    CTCallCenter *_callCenter;
     
     int _configIndex;
     BOOL _isVisible;
@@ -341,19 +348,39 @@ __weak WMSRightViewController *global_Self = nil;
     return eventsType;
 }
 
-- (NSDictionary*)options
+#pragma mark - 监听来电
+- (void)listeningCall
 {
-    NSString *txt = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"记得在手机的“设置-通知中心”中，找到你将要提醒的事件（如：电话，QQ...），点击它进入设置界面，打开“在‘通知中心’中显示”，然后返回即可", nil)];
-    NSMutableDictionary *options = [@{                            kCRToastNotificationTypeKey             :@(CRToastTypeStatusBar),
-        kCRToastNotificationPresentationTypeKey :@(CRToastPresentationTypeCover),
-        kCRToastUnderStatusBarKey               :@(NO),
-        kCRToastTextKey                         :txt,
-        kCRToastTextAlignmentKey                :@(NSTextAlignmentCenter),
-        kCRToastTextShadowColorKey              :[UIColor orangeColor],
-        kCRToastTimeIntervalKey                 :@(100),
-        kCRToastAnimationInDirectionKey         :@(CRToastAnimationDirectionRight),
-        kCRToastAnimationOutDirectionKey        :@(CRToastAnimationDirectionRight)} mutableCopy];
-    return [NSDictionary dictionaryWithDictionary:options];
+    __weak __typeof(&*self) weakSelf = self;
+    _callCenter = [[CTCallCenter alloc] init];
+    _callCenter.callEventHandler = ^(CTCall* call) {
+        if ([call.callState isEqualToString:CTCallStateDisconnected])
+        {
+            NSLog(@"Call has been disconnected");
+        }
+        else if ([call.callState isEqualToString:CTCallStateConnected])
+        {
+            NSLog(@"Call has just been connected");
+            [weakSelf.bleControl.settingProfile finishRemind:OtherRemindTypeCall completion:^(BOOL success) {
+                
+            }];
+        }
+        else if([call.callState isEqualToString:CTCallStateIncoming])
+        {
+            NSLog(@"Call is incoming");
+            [weakSelf.bleControl.settingProfile startRemind:OtherRemindTypeCall completion:^(BOOL success) {
+                
+            }];
+        }
+        else if ([call.callState isEqualToString:CTCallStateDialing])
+        {
+            NSLog(@"call is dialing");
+        }
+        else
+        {
+            NSLog(@"Nothing is done");
+        }
+    };
 }
 
 #pragma mark - 第一次连接成功后，对设置项的配置
@@ -426,35 +453,6 @@ __weak WMSRightViewController *global_Self = nil;
         default:
             break;
     }
-}
-
-#pragma mark - 电量提醒
-- (BOOL)isSendLowBatteryRemind:(float)batteryLevel
-{
-    if (batteryLevel == LOW_BATTERY_LEVEL1 ||
-        batteryLevel == LOW_BATTERY_LEVEL2 ||
-        batteryLevel == LOW_BATTERY_LEVEL3 ||
-        batteryLevel == LOW_BATTERY_LEVEL4)
-    {
-        return YES;
-    }
-    return NO;
-}
-- (void)startLowBatteryRemind
-{
-    if ([self lowBatteryStatus]) {
-        [self.bleControl.settingProfile setStartLowBatteryRemindCompletion:^(BOOL success) {
-            DEBUGLog(@"开启低电量提醒成功");
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopLowBatteryRemind) object:nil];
-            [self performSelector:@selector(stopLowBatteryRemind) withObject:nil afterDelay:LOW_BATTERY_REMIND_TIMEINTERVAL];
-        }];
-    }
-}
-- (void)stopLowBatteryRemind
-{
-    [self.bleControl.settingProfile setStopLowBatteryRemindCompletion:^(BOOL success) {
-        DEBUGLog(@"停止低电量提醒成功");
-    }];
 }
 
 #pragma mark - 声音处理
@@ -530,13 +528,6 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
              
              UIImagePickerController *picker = [self openCamera];
              self.pickerController = picker;
-             //            [self.bleControl.deviceProfile readDeviceRemoteDataWithCompletion:^(RemoteDataType dataType)
-             //            {
-             //                DEBUGLog(@"拍照。。。。。。,dataType:0x%X",(int)dataType);
-             //                if (RemoteDataTypeTakephoto == dataType) {
-             //                    [picker takePicture];
-             //                }
-             //            }];
          } else {
              [self showTip:NSLocalizedString(@"切换至拍照模式失败", nil)];
          }
@@ -562,30 +553,36 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
     return picker;
 }
 
+#pragma mark - 电量
+- (void)batteryOperation:(float)battery
+{
+    if ([WMSRightVCHelper isSendLowBatteryRemind:battery]) {
+        if ([self lowBatteryStatus]) {
+            [WMSRightVCHelper startLowBatteryRemind:self.bleControl.settingProfile completion:^{
+                [WMSPostNotificationHelper postLowBatteryLocalNotification];
+            }];
+        }
+    }
+}
 
 #pragma mark - Notification
 - (void)batteyChanged:(NSNotification *)notification
 {
     UIDevice *device = notification.object;
     DEBUGLog(@">>>battery:%f",device.batteryLevel);
-    if ([self isSendLowBatteryRemind:device.batteryLevel]) {
-        [self startLowBatteryRemind];
-    }
+    [self batteryOperation:device.batteryLevel];
 }
-
+//Ble
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [self.tableView reloadData];
-    DEBUGLog(@"%@ _isVisible:%d",[self class],_isVisible);
     if (_isVisible) {
         [self firstConnectedConfig];
     }
     
     //
     float level = [[UIDevice currentDevice] batteryLevel];
-    if ([self isSendLowBatteryRemind:level]) {
-        [self startLowBatteryRemind];
-    }
+    [self batteryOperation:level];
     
     ///
     [self.bleControl.deviceProfile readDeviceRemoteDataWithCompletion:^(RemoteDataType dataType)
@@ -596,6 +593,7 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
          }
          else if (RemoteDataTypeFindPhone == dataType) {
              [self soundAlarm];
+             [WMSPostNotificationHelper postSeachPhoneLocalNotification];
          }
      }];
     [self.pickerController showTip:NSLocalizedString(@"重新建立了连接", nil)];
@@ -944,11 +942,6 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
     }
     
     if (indexPath.section == 2) {
-        //WMSRemindWayViewController *vc = [[WMSRemindWayViewController alloc] init];
-        //vc.title = self.section5TitleArray[indexPath.row];
-        //UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        //[self presentViewController:nav animated:YES completion:nil];
-        
         if ([self readRemindWay] != indexPath.row+1) {//当提醒方式改变时再去设置
             for (int i=0; i<[self.section3TitleArray count]; i++) {
                 NSIndexPath *path = [NSIndexPath indexPathForRow:i inSection:indexPath.section];

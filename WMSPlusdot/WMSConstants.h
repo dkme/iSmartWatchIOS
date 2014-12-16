@@ -48,3 +48,26 @@
 #pragma mark - 手表低电量
 #define WATCH_LOW_BATTERY           20
 
+#pragma mark - 设置目标
+#define MIN_SPORT_STEPS             6000
+#define MAX_SPORT_STEPS             20000
+#define DEFAULT_TARGET_STEPS        20000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

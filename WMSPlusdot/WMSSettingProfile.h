@@ -42,6 +42,7 @@ typedef NS_ENUM(NSUInteger, RemindEventsType) {
 
 //其他提醒事件类型
 typedef NS_ENUM(NSUInteger, OtherRemindType) {
+    OtherRemindTypeCall = 0x01,
     OtherRemindTypeSearchWatch = 0x10,
     OtherRemindTypeLowBattery = 0x11,
 };
@@ -49,17 +50,19 @@ typedef NS_ENUM(NSUInteger, OtherRemindType) {
 
 //Block
 typedef void (^setCurrentDateCallBack)(BOOL success);
-typedef void(^setPersonInfoCallBack)(BOOL success);
+typedef void (^setPersonInfoCallBack)(BOOL success);
 typedef void (^setAlarmClockCallBack)(BOOL success);
-typedef void(^setTargetCallBack)(BOOL success);
-typedef void(^setRemindModeCallBack)(BOOL success);
-typedef void(^setRemindEventsCallBack)(BOOL success);
-typedef void(^setRemindEventsAndModeCallBack)(BOOL success);
+typedef void (^setTargetCallBack)(BOOL success);
+typedef void (^setRemindModeCallBack)(BOOL success);
+typedef void (^setRemindEventsCallBack)(BOOL success);
+typedef void (^setRemindEventsAndModeCallBack)(BOOL success);
 typedef void (^setOtherRemindCallBack)(BOOL success);
 typedef void (^setStartLowBatteryRemind)(BOOL success);
 typedef void (^setStopLowBatteryRemind)(BOOL success);
 typedef void (^setSportRemindCallBack)(BOOL success);
 typedef void (^setAntiLostCallBack)(BOOL success);
+typedef void (^startRemind)(BOOL success);
+typedef void (^finishRemind)(BOOL success);
 
 @interface WMSSettingProfile : NSObject
 
@@ -95,7 +98,6 @@ typedef void (^setAntiLostCallBack)(BOOL success);
  描述:设置闹钟时间
  参数:no  闹钟编号，取值1-10
      repeat 重复状态
- 
  */
 - (void)setAlarmClockWithId:(Byte)no
                    withHour:(Byte)hour
@@ -108,7 +110,6 @@ typedef void (^setAntiLostCallBack)(BOOL success);
 
 /**
  设置目标
- 
  */
 - (void)setTargetWithStep:(UInt32)step
           withSleepMinute:(UInt16)minute
@@ -137,16 +138,29 @@ typedef void (^setAntiLostCallBack)(BOOL success);
  设置其他提醒
  */
 - (void)setOtherRemind:(OtherRemindType)remindType
-            completion:(setOtherRemindCallBack)aCallBack;
+            completion:(setOtherRemindCallBack)aCallBack;//弃用
 
 /**
  开起低电量提醒
  */
-- (void)setStartLowBatteryRemindCompletion:(setStartLowBatteryRemind)aCallBack;
+- (void)setStartLowBatteryRemindCompletion:(setStartLowBatteryRemind)aCallBack;//弃用
 /**
  停止低电量提醒
  */
-- (void)setStopLowBatteryRemindCompletion:(setStopLowBatteryRemind)aCallBack;
+- (void)setStopLowBatteryRemindCompletion:(setStopLowBatteryRemind)aCallBack;//弃用
+
+/**
+ 开始提醒
+ */
+- (void)startRemind:(OtherRemindType)remindType
+         completion:(startRemind)aCallBack;
+/**
+ 结束提醒
+ */
+- (void)finishRemind:(OtherRemindType)remindType
+         completion:(finishRemind)aCallBack;
+
+
 
 /**
  久坐运动提醒

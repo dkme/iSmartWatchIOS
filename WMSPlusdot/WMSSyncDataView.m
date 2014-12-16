@@ -132,6 +132,11 @@
     self.labelElectricQuantity.font = font;
 }
 
+- (void)setElectricQuantityDesc:(NSString *)desc
+{
+    self.labelElectricQuantity.text = desc;
+}
+
 - (void)setCellElectricQuantity:(NSUInteger)quantity
 {
     if (MAX_ElectricQuantity > quantity) {

@@ -12,7 +12,7 @@
 #import "WMSRemindProfile.h"
 #import "NSMutableArray+Stack.h"
 
-static const NSUInteger CONNECT_PERIPHERAL_INTERVAL = 20;
+static const NSUInteger CONNECT_PERIPHERAL_INTERVAL = 60;
 static const NSUInteger DISCOVER_SERVICES_INTERVAL = 30;
 static const NSUInteger DISCOVER_CHARACTERISTICS_INTERVAL = 10;
 
@@ -523,22 +523,17 @@ NSString * const WMSBleControlScanFinish =
     if (aCallBack) {
         [NSMutableArray push:aCallBack toArray:self.stackBindSetting];
     }
-    //    printf("package: 0x");
-    //    for (int i=0; i<PACKET_LENGTH; i++) {
-    //        printf("%02X",[self packet][i]);
-    //    }
-    //    printf("\n");
     //send
     NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
     
     [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDBindSetting];
+//    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+//                                     target:self
+//                                   selector:@selector(writeValueToCharactTimeout:)
+//                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+//                                    repeats:YES
+//                                     timeID:TimeIDBindSetting];
 }
 
 - (void)switchToControlMode:(ControlMode)controlMode
@@ -727,14 +722,14 @@ NSString * const WMSBleControlScanFinish =
         Byte cmd = package[2];
         
         if (cmd == CMDSetBinding) {
-            if ([self.myTimers isValidForTimeID:TimeIDBindSetting]) {//成功
-                [self.myTimers deleteTimerForTimeID:TimeIDBindSetting];
+            //if ([self.myTimers isValidForTimeID:TimeIDBindSetting]) {//成功
+              //  [self.myTimers deleteTimerForTimeID:TimeIDBindSetting];
                 
                 WMSBleBindSettingCallBack callBack = [NSMutableArray popFromArray:self.stackBindSetting];
                 if (callBack) {
                     callBack(YES);
                 }
-            }
+            //}
             return;
         }
         if (cmd == CMDSwitchControlMode) {

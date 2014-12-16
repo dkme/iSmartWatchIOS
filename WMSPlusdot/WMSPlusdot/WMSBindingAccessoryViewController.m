@@ -17,7 +17,7 @@
 #import "WMSMyAccessory.h"
 
 #define SECTION_NUMBER  1
-#define CELL_HIGHT      60
+#define CELL_HIGHT      44
 #define HEADER_HEIGHT   30
 #define TableFrame ( CGRectMake(0, 80, ScreenWidth, ScreenHeight-80) )
 #define buttonBottomFrame   ( CGRectMake((ScreenWidth-150)/2, ScreenHeight-35-20, 150, 35) )
@@ -25,7 +25,7 @@
 #define ButtonBindTitle     NSLocalizedString(@"绑定配件", nil)
 
 #define TAG_BOTTOM_VIEW     100
-#define BIND_TIME_INTERVAL  10
+#define BIND_TIME_INTERVAL  60
 
 @interface WMSBindingAccessoryViewController ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 {
@@ -288,9 +288,6 @@
 - (void)fireTimer
 {
     _countdown = BIND_TIME_INTERVAL;
-//    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
-//    NSString *str = [NSString stringWithFormat:format,_countdown];
-//    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),str];
     [self updateHUDSchedule:_countdown];
     _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countdown:) userInfo:nil repeats:YES];
 }
@@ -307,13 +304,9 @@
         [self.bleControl disconnect];
         [self invalidateTimer];
         [self closeVC:NO];
+        DEBUGLog(@"倒计时结束了");
         return;
     }
-//    NSString *format = NSLocalizedString(@"(剩余%d秒)",nil);
-//    NSString *str = [NSString stringWithFormat:format,_countdown];
-//    self.hud.labelText = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"正在绑定配件，请按手表上的确认键...",nil),@""];
-//    self.hud.detailsLabelText = str;
-//    self.hud.detailsLabelFont = self.hud.labelFont;
     [self updateHUDSchedule:_countdown];
 }
 
@@ -345,8 +338,6 @@
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
-//    [self updateImage:[UIImage imageNamed:@"link_connect_success_icon.png"]];
-//    [self.buttonBottom setTitle:ButtonBindTitle forState:UIControlStateNormal];
 
     [self fireTimer];
     __weak __typeof(&*self) weakSelf = self;
@@ -371,25 +362,21 @@
             [strongSelf closeVC:NO];
         }
     }];
-    
-    //测试
 //    NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
-//    [WMSMyAccessory bindAccessory:identify];
-//    [self closeVC:YES];
+//    if (identify) {
+//        [WMSMyAccessory bindAccessory:identify];
+//        [self closeVC:YES];
+//    }
 }
 - (void)handleDisConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接断开 %@",NSStringFromClass([self class]));
-//    [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
-//    [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
     [self invalidateTimer];
     [self closeVC:NO];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接失败 %@",NSStringFromClass([self class]));
-//    [self updateImage:[UIImage imageNamed:@"link_connect_failure_icon.png"]];
-//    [self.buttonBottom setTitle:ButtonScanTitle forState:UIControlStateNormal];
     [self invalidateTimer];
     [self closeVC:NO];
 }
@@ -398,15 +385,13 @@
 {
     DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
     
-//    if ([self.bleControl isConnecting] || [self.bleControl isConnected]) {
-//        return ;
-//    }
-    
     if (self.listData && [self.listData count]>0) {
         NSMutableArray *array = [NSMutableArray array];
         for (LGPeripheral *pObject in self.listData) {
             NSString *name = pObject.cbPeripheral.name;
-            if ([name isEqualToString:WATCH_NAME]) {
+            BOOL flag = [name isEqualToString:WATCH_NAME] ||
+                        [name isEqualToString:WATCH_NAME2];
+            if (flag) {
                 [array addObject:pObject];
             }
         }
@@ -438,12 +423,12 @@
     }
     LGPeripheral *peripheral = self.listData[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@                           %@",peripheral.cbPeripheral.name,NSLocalizedString(@"点击绑定", nil)];
-    cell.textLabel.font = Font_System(20.0);//Font_DINCondensed(20.0);
+    cell.textLabel.font = Font_System(25.0);
     cell.textLabel.textColor = [UIColor lightGrayColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",peripheral.UUIDString];
-    cell.detailTextLabel.font = Font_System(12.0);//Font_DINCondensed(12.0);
+    cell.detailTextLabel.font = Font_System(12.0);
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     
     CGRect frame = cell.textLabel.frame;
@@ -456,10 +441,10 @@
 }
 
 #pragma mark - UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return CELL_HIGHT;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return CELL_HIGHT;
+//}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return HEADER_HEIGHT;

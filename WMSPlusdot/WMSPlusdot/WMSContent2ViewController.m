@@ -9,12 +9,15 @@
 #import "WMSContent2ViewController.h"
 #import "UIViewController+RESideMenu.h"
 #import "RESideMenu.h"
-#import "TemperaBar.h"
-#import "WMSBluetooth.h"
 #import "WMSAppDelegate.h"
+
+#import "TemperaBar.h"
+
+#import "WMSConstants.h"
 #import "WMSHelper.h"
 
 #define CRITICAL_SPORT_STEPS    10000
+#define MULTIPLE                100
 
 #define LABEL_MAX_WIDTH     172.f
 #define LABEL_MAX_HEIGHT    100.f
@@ -39,7 +42,7 @@
 {
     if (!_temperaBar) {
         CGRect frame = CGRectMake(0, 0, 0, 0);/* 大小由背景图决定 */
-        _temperaBar = [[TemperaBar alloc] initWithFrame:frame minimumTempera:MIN_SPORT_STEPS maximumTempera:MAX_SPORT_STEPS];
+        _temperaBar = [[TemperaBar alloc] initWithFrame:frame minimumTempera:MIN_SPORT_STEPS/MULTIPLE maximumTempera:MAX_SPORT_STEPS/MULTIPLE];
         [_temperaBar addTarget:self action:@selector(onTemperaBarChange:) forControlEvents:UIControlEventValueChanged];
         [_temperaBar addTarget:self action:@selector(onTmpTouchUp:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -119,16 +122,15 @@
     //self.sideMenuViewController.panGestureEnabled = YES;
 }
 
-- (void)dealloc
-{
-    DEBUGLog(@"Content2ViewController dealloc");
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    
+}
+
+- (void)dealloc
+{
+    DEBUGLog(@"Content2ViewController dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -162,7 +164,7 @@
 {
     self.sportTargetSteps = [WMSHelper readTodayTargetSteps];
     [self setTargetSteps:self.sportTargetSteps];
-    [self.temperaBar setCurrentTempera:self.sportTargetSteps];
+    [self.temperaBar setCurrentTempera:self.sportTargetSteps/MULTIPLE];
 }
 
 - (void)adaptiveIphone4
@@ -217,20 +219,12 @@
 - (void)onTemperaBarChange:(id)sender
 {
     TemperaBar *bar = (TemperaBar *)sender;
-    self.sportTargetSteps = bar.currentTempera;
-    [self setTargetSteps:bar.currentTempera];
+    //DEBUGLog(@"value:%d",bar.currentTempera);
+    self.sportTargetSteps = bar.currentTempera*MULTIPLE;
+    [self setTargetSteps:self.sportTargetSteps];
 }
 - (void)onTmpTouchUp:(id)sender
 {
-//    TemperaBar *bar = (TemperaBar *)sender;
-//    
-//    //设置目标
-//    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-//    [bleControl.settingProfile setTargetWithStep:(UInt32)bar.currentTempera withSleepMinute:0 withCompletion:^(BOOL success)
-//    {
-//        DEBUGLog(@"设置运动目标%@",success?@"成功":@"失败");
-//        self.sportTargetSteps = bar.currentTempera;
-//    }];
 }
 
 #pragma mark - Notification

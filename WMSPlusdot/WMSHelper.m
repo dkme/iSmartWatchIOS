@@ -9,11 +9,10 @@
 #import "WMSHelper.h"
 #import "NSDate+Formatter.h"
 #import "WMSFileMacro.h"
+#import "WMSConstants.h"
 #import "WMSURLMacro.h"
 #import "WMSDeviceModel.h"
 #import "WMSHTTPRequest.h"
-
-#define DEFAULT_TARGET_STEPS    20000
 
 @implementation WMSHelper
 

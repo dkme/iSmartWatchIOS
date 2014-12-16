@@ -153,12 +153,15 @@
 		234DD31519D29DBB00E6A7AE /* Login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 234DD31419D29DBB00E6A7AE /* Login_bg.png */; };
 		2353790219CD5F6000269F67 /* WMSMyActivityRemind.m in Sources */ = {isa = PBXBuildFile; fileRef = 2353790119CD5F6000269F67 /* WMSMyActivityRemind.m */; };
 		2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2353790419CD655000269F67 /* WMSAlarmClockModel.m */; };
+		235427681A3E906E008E5CFD /* WMSPostNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 235427671A3E906E008E5CFD /* WMSPostNotificationHelper.m */; };
 		2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2354A3B619A6E0CD0027C91F /* WMSContent1ViewController.m */; };
 		2354A3B919A6E0CD0027C91F /* WMSContent1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2354A3B719A6E0CD0027C91F /* WMSContent1ViewController.xib */; };
 		2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2354A5F119EE180C00751E92 /* WMSRegularExpressions.m */; };
 		236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 236032FA19FE3AE800A77B22 /* WMSRemindHelper.m */; };
 		2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2360CED119E6855000B10A0B /* WMSDeviceModel.m */; };
 		236D486A19D81C7900EFB5C8 /* WMSActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 236D486919D81C7900EFB5C8 /* WMSActivityModel.m */; };
+		236EAF3C1A400F3D00533FC8 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 236EAF3B1A400F3D00533FC8 /* CoreTelephony.framework */; };
+		236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */; };
 		237545C319AED3D200685CD1 /* account_head.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C219AED3D200685CD1 /* account_head.png */; };
 		237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C419AED3E100685CD1 /* account_edit_icon.png */; };
 		237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C619AED4BE00685CD1 /* exit_btn_a.png */; };
@@ -431,6 +434,8 @@
 		2353790119CD5F6000269F67 /* WMSMyActivityRemind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMyActivityRemind.m; sourceTree = "<group>"; };
 		2353790319CD655000269F67 /* WMSAlarmClockModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAlarmClockModel.h; sourceTree = "<group>"; };
 		2353790419CD655000269F67 /* WMSAlarmClockModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSAlarmClockModel.m; sourceTree = "<group>"; };
+		235427661A3E906E008E5CFD /* WMSPostNotificationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMSPostNotificationHelper.h; path = WMSPlusdot/WMSPostNotificationHelper.h; sourceTree = "<group>"; };
+		235427671A3E906E008E5CFD /* WMSPostNotificationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WMSPostNotificationHelper.m; path = WMSPlusdot/WMSPostNotificationHelper.m; sourceTree = "<group>"; };
 		2354A3B519A6E0CD0027C91F /* WMSContent1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSContent1ViewController.h; sourceTree = "<group>"; };
 		2354A3B619A6E0CD0027C91F /* WMSContent1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSContent1ViewController.m; sourceTree = "<group>"; };
 		2354A3B719A6E0CD0027C91F /* WMSContent1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSContent1ViewController.xib; sourceTree = "<group>"; };
@@ -442,6 +447,9 @@
 		2360CED119E6855000B10A0B /* WMSDeviceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSDeviceModel.m; sourceTree = "<group>"; };
 		236D486819D81C7900EFB5C8 /* WMSActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSActivityModel.h; sourceTree = "<group>"; };
 		236D486919D81C7900EFB5C8 /* WMSActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSActivityModel.m; sourceTree = "<group>"; };
+		236EAF3B1A400F3D00533FC8 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		236EAF3F1A40260F00533FC8 /* WMSRightVCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSRightVCHelper.h; sourceTree = "<group>"; };
+		236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSRightVCHelper.m; sourceTree = "<group>"; };
 		237545C219AED3D200685CD1 /* account_head.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_head.png; sourceTree = "<group>"; };
 		237545C419AED3E100685CD1 /* account_edit_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_edit_icon.png; sourceTree = "<group>"; };
 		237545C619AED4BE00685CD1 /* exit_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_btn_a.png; sourceTree = "<group>"; };
@@ -546,6 +554,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				236EAF3C1A400F3D00533FC8 /* CoreTelephony.framework in Frameworks */,
 				2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */,
 				233A431C19F8F15900BD295B /* AVFoundation.framework in Frameworks */,
 				230FDC6C19D6977B00AE98FF /* CoreText.framework in Frameworks */,
@@ -645,6 +654,8 @@
 				2326A44719A5E9CE0098657B /* WMSRightViewController.h */,
 				2326A44819A5E9CE0098657B /* WMSRightViewController.m */,
 				2326A44919A5E9CE0098657B /* WMSRightViewController.xib */,
+				236EAF3F1A40260F00533FC8 /* WMSRightVCHelper.h */,
+				236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */,
 				2378A3D619FF405500187836 /* WMSRemindWayViewController.h */,
 				2378A3D719FF405500187836 /* WMSRemindWayViewController.m */,
 				2378A3D819FF405500187836 /* WMSRemindWayViewController.xib */,
@@ -949,6 +960,7 @@
 		232846BF19A43668001C148D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				236EAF3B1A400F3D00533FC8 /* CoreTelephony.framework */,
 				2378A3EC1A00F06100187836 /* AudioToolbox.framework */,
 				233A431B19F8F15900BD295B /* AVFoundation.framework */,
 				23305D9F19C83B2500F9EEE6 /* libsqlite3.0.dylib */,
@@ -1137,6 +1149,8 @@
 				231C80F21A15D4D80038BD79 /* WMSHelper.m */,
 				2319723D1A354535002E8A0F /* WMSAppConfig.h */,
 				2319723E1A354535002E8A0F /* WMSAppConfig.m */,
+				235427661A3E906E008E5CFD /* WMSPostNotificationHelper.h */,
+				235427671A3E906E008E5CFD /* WMSPostNotificationHelper.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -1700,6 +1714,7 @@
 				2378A3D919FF405500187836 /* WMSRemindWayViewController.m in Sources */,
 				236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */,
 				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,
+				235427681A3E906E008E5CFD /* WMSPostNotificationHelper.m in Sources */,
 				2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */,
 				23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */,
 				23D7CEFF19B5C49C00DFA678 /* LGCentralManager.m in Sources */,
@@ -1729,6 +1744,7 @@
 				233511A419A4BD5200FBCC81 /* WMSContentViewController.m in Sources */,
 				230298C319A82FDC009D4306 /* WMSContent2ViewController.m in Sources */,
 				237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */,
+				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,
 				23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */,
 				23B0094619D50100008424FA /* PNLineChartView.m in Sources */,
 				232846CD19A43668001C148D /* main.m in Sources */,

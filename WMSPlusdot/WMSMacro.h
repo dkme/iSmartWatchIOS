@@ -7,6 +7,7 @@
 //
 
 #define WATCH_NAME                  @"plusdot-watch"
+#define WATCH_NAME2                 @"plusdout-watch"
 #define SCAN_PERIPHERAL_INTERVAL    5.f
 
 #define HUD_SIZE                    CGSizeMake(250, 120)

@@ -150,7 +150,7 @@
         label = [[UILabel alloc] initWithFrame:CGRectMake(15, CELL_HIGHT+HEADER_HEIGHT+10, ScreenWidth-15, 60)];
         NSString *text = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"请在“设置-蓝牙”中，忽略配对的设备！", nil)];
         label.text = text;
-        label.textColor = [UIColor orangeColor];
+        label.textColor = [UIColor redColor];
         label.numberOfLines = -1;
         label.tag = 250;
         label.adjustsFontSizeToFitWidth = YES;
@@ -229,7 +229,7 @@
             [bleControl disconnect];
         }
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideUnBindTip) object:nil];
-        [self performSelector:@selector(hideUnBindTip) withObject:nil afterDelay:1.0];
+        [self performSelector:@selector(hideUnBindTip) withObject:nil afterDelay:5.0];
     }
 }
 
