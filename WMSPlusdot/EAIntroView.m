@@ -238,8 +238,8 @@
     self.currentPageIndex = scrollView.contentOffset.x/self.scrollView.frame.size.width;
     
     if (self.currentPageIndex == (pageViews.count)) {
-        if ([(id)self.delegate respondsToSelector:@selector(introDidFinish)]) {
-            [self.delegate introDidFinish];
+        if ([(id)self.delegate respondsToSelector:@selector(introDidFinish:)]) {
+            [self.delegate introDidFinish:self];
         }
     } else {
         LastPageIndex = self.pageControl.currentPage;
@@ -373,8 +373,8 @@
 }
 
 - (void)skipIntroduction {
-    if ([(id)self.delegate respondsToSelector:@selector(introDidFinish)]) {
-        [self.delegate introDidFinish];
+    if ([(id)self.delegate respondsToSelector:@selector(introDidFinish:)]) {
+        [self.delegate introDidFinish:self];
     }
     
     [self hideWithFadeOutDuration:0.3];

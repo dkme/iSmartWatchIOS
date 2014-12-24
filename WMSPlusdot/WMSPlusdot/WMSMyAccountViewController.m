@@ -539,7 +539,7 @@
 - (IBAction)imageViewClicked:(id)sender {
     DEBUGLog(@"选取头像");
     //警告
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"拍照", nil),NSLocalizedString(@"选取照片", nil), nil];//没有红色按钮
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Take picture", nil),NSLocalizedString(@"选取照片", nil), nil];//没有红色按钮
     [actionSheet showInView:self.view];
 }
 

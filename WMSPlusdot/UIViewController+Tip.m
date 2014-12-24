@@ -23,6 +23,7 @@
 {
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:self.view.window];
     hud.mode = MBProgressHUDModeText;
+    //hud.animationType = MBProgressHUDAnimationZoomIn;
     if ([self class] == [WMSRightViewController class]) {
         //hud.xOffset = HUD_SHOW_RIGHT_VC_X_OFFSET;
     }
@@ -38,7 +39,7 @@
     if ([hud.labelText isEqualToString:@""] == NO) {
         [self.view.window addSubview:hud];
         [hud showAnimated:YES whileExecutingBlock:^{
-            sleep(1);
+            sleep(1.0);
         } completionBlock:^{
             [hud removeFromSuperview];
         }];
@@ -53,6 +54,7 @@
     //MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:self.view.window];
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:[WMSAppDelegate appDelegate].window];
     hud.mode = MBProgressHUDModeText;
+    //hud.animationType = MBProgressHUDAnimationZoomIn;
     hud.yOffset = HUD_LOCATED_BOTTOM_Y_OFFSET;
     hud.minSize = HUD_LOCATED_BOTTOM_SIZE;
     hud.labelText = tip;
@@ -77,6 +79,19 @@
     hud.yOffset = HUD_LOCATED_CENTER_Y_OFFSET;
     hud.minSize = HUD_LOCATED_CENTER_SIZE;
     hud.labelText = text;
+    hud.tag = HUD_TAG;
+    [[WMSAppDelegate appDelegate].window addSubview:hud];
+    [hud show:YES];
+}
+- (void)showHUDAtViewCenterWithText:(NSString *)text
+                         detailText:(NSString *)detailText
+{
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:[WMSAppDelegate appDelegate].window];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.yOffset = HUD_LOCATED_CENTER_Y_OFFSET;
+    hud.minSize = HUD_LOCATED_CENTER_SIZE;
+    hud.labelText = text;
+    hud.detailsLabelText = detailText;
     hud.tag = HUD_TAG;
     [[WMSAppDelegate appDelegate].window addSubview:hud];
     [hud show:YES];

@@ -163,6 +163,8 @@
     NSString *number = [NSString stringWithFormat:@"%d",Rounded((calorie/215.0))];
     NSString *unit2 = NSLocalizedString(@"瓶", nil);
     NSString *des2 = NSLocalizedString(@"可乐", nil);
+    
+    number = @"0";
     if ([number intValue] < 1) {
         symbol = @"";
         unit2 = @"";
@@ -220,11 +222,13 @@
         number = value*1000/400.0;
     }
     NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计里程", nil),@": "];
-    NSString *distanceStr = [NSString stringWithFormat:@"%u",value];
+    NSString *distanceStr = [NSString stringWithFormat:@"%u",(unsigned int)value];
     NSString *symbol = @" ≈ ";
     NSString *numberStr = [NSString stringWithFormat:@"%d",Rounded(number)];
     NSString *unti2 = NSLocalizedString(@"圈", nil);
     NSString *des2 = NSLocalizedString(@"400米操场", nil);
+    
+    numberStr = @"0";
     if ([numberStr intValue] < 1) {
         symbol = @"";
         numberStr = @"";

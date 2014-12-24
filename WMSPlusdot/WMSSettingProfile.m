@@ -240,6 +240,7 @@ enum {
 - (void)setCurrentDate:(NSDate *)date
             completion:(setCurrentDateCallBack)aCallBack
 {
+    DEBUGLog(@"set current date");
     if (![self.bleControl isConnected]) {
         return ;
     }
@@ -259,7 +260,7 @@ enum {
     Byte second = [[dateFormatter stringFromDate:date] intValue];
     dateFormatter.dateFormat = @"e";
     Byte week_day = [[dateFormatter stringFromDate:date] intValue];
-DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
+DEBUGLog(@"【【%d-%d-%d %d:%d:%d %d】】",year,month,day,hour,minute,second,week_day);
     
     if (week_day == 1) {//系统时间中，1-7表示周日-周六
         week_day = 6;//协议中0-6表示周一到周日
@@ -755,7 +756,7 @@ DEBUGLog(@"%d-%d-%d %d:%d:%d %d",year,month,day,hour,minute,second,week_day);
     
     int triggerCount = [self.myTimers triggerCountForTimer:timer];
     if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
-        DEBUGLog(@"写入超时[TimerID:%d]，主动断开 %@",[self.myTimers getTimerID:timer],NSStringFromClass([self class]));
+        DEBUGLog(@"2写入超时[TimerID:%d]，主动断开 %@",[self.myTimers getTimerID:timer],NSStringFromClass([self class]));
         [self.myTimers deleteAllTimers];
         [self.bleControl disconnect];
         return;

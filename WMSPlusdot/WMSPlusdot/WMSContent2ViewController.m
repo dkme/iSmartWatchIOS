@@ -174,15 +174,15 @@
     }
     
     CGRect frame = self.centerView.frame;
-    frame.origin.y -= 40;
+    frame.origin.y -= 20;
     self.centerView.frame = frame;
     
     frame = self.temperaBar.frame;
-    frame.origin.y -= 40;
+    frame.origin.y -= 20;
     self.temperaBar.frame = frame;
-    
+
     frame = self.bottomView.frame;
-    frame.origin.y -= 40;
+    frame.origin.y -= 20;
     self.bottomView.frame = frame;
 }
 

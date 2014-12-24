@@ -116,9 +116,9 @@
 {
     if (!_titleArray) {
         _titleArray = [[NSArray alloc] initWithObjects:
-                       NSLocalizedString(@"My sports",nil),
+                       NSLocalizedString(@"My sport",nil),
                        NSLocalizedString(@"My sleep",nil),
-                       NSLocalizedString(@"Target settings",nil),
+                       NSLocalizedString(@"Target setting",nil),
                        NSLocalizedString(@"Bound watch",nil),
                        nil];
     }
@@ -260,7 +260,11 @@
     [labelUserNickname setText:nickname];
 }
 
-
+- (void)skipToViewControllerForIndex:(NSUInteger)index
+{
+    NSIndexPath *path = [NSIndexPath indexPathForRow:index inSection:0];
+    [self tableView:nil didSelectRowAtIndexPath:path];
+}
 
 #pragma mark - Events
 - (void)userImgBtnClick:(id)sender

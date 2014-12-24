@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="buttonUpdate" destination="6VO-Tw-K3m" id="0qY-hH-FKv"/>
                 <outlet property="navBarView" destination="5GO-12-vpy" id="HSR-3C-fg6"/>
+                <outlet property="progressView" destination="m5v-vA-hoW" id="mJT-OO-I8M"/>
                 <outlet property="textView" destination="aHB-EL-Tpm" id="Hgy-8F-2AH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -18,24 +19,21 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5GO-12-vpy" customClass="WMSNavBarView">
+                <view contentMode="scaleToFill" id="5GO-12-vpy" customClass="WMSNavBarView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="123" translatesAutoresizingMaskIntoConstraints="NO" id="aHB-EL-Tpm">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="123" id="aHB-EL-Tpm">
                     <rect key="frame" x="0.0" y="86" width="320" height="294"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="294" id="MH4-lp-OIF"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6VO-Tw-K3m">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6VO-Tw-K3m">
                     <rect key="frame" x="67" y="492" width="187" height="37"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="37" id="s66-46-hWA"/>
-                    </constraints>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Button">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -43,22 +41,15 @@
                         <action selector="updateAction:" destination="-1" eventType="touchUpInside" id="82y-nU-zfp"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" id="m5v-vA-hoW" customClass="LDProgressView">
+                    <rect key="frame" x="10" y="456" width="300" height="15"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="aHB-EL-Tpm" firstAttribute="top" secondItem="5GO-12-vpy" secondAttribute="bottom" constant="22" id="2pO-K9-IUZ"/>
-                <constraint firstItem="aHB-EL-Tpm" firstAttribute="trailing" secondItem="5GO-12-vpy" secondAttribute="trailing" id="G6P-w2-yQc"/>
-                <constraint firstAttribute="trailing" secondItem="aHB-EL-Tpm" secondAttribute="trailing" id="MW9-b7-pZM"/>
-                <constraint firstItem="aHB-EL-Tpm" firstAttribute="centerX" secondItem="6VO-Tw-K3m" secondAttribute="centerX" id="Mxv-Vb-zq7"/>
-                <constraint firstAttribute="bottom" secondItem="6VO-Tw-K3m" secondAttribute="bottom" constant="39" id="OWB-37-LCV"/>
-                <constraint firstItem="6VO-Tw-K3m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="67" id="brT-tv-XNs"/>
-                <constraint firstItem="5GO-12-vpy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gSi-Dq-PHQ"/>
-                <constraint firstItem="aHB-EL-Tpm" firstAttribute="leading" secondItem="5GO-12-vpy" secondAttribute="leading" id="gq8-69-Rhq"/>
-                <constraint firstItem="aHB-EL-Tpm" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="86" id="jWM-le-X6G"/>
-                <constraint firstItem="5GO-12-vpy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yij-nP-cA5"/>
-            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="309" y="255"/>
+            <point key="canvasLocation" x="82" y="268"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

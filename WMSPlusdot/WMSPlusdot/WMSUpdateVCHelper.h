@@ -9,13 +9,17 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 
-typedef void (^UpdateVCHelper_scanedPeripheral)(NSArray *peripherals);
+typedef void (^UpdateVCHelper_scanedPeripheral)(CBPeripheral *peripheral);
 
 @interface WMSUpdateVCHelper : NSObject
 
-- (void)scanPeripheralByInterval:(NSTimeInterval)interval
-                     completion:(UpdateVCHelper_scanedPeripheral)aCallBack;
+@property (nonatomic, strong) CBCentralManager *centralManager;
 
-//- (void)connectPeripheral:(CBPeripheral *)peripheral;
++ (id)instance;
+
+- (void)scanPeripheralByInterval:(NSTimeInterval)interval
+                      completion:(UpdateVCHelper_scanedPeripheral)aCallBack;
+
+- (void)stopScan;
 
 @end

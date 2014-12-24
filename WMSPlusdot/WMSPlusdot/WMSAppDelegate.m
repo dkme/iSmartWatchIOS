@@ -22,6 +22,8 @@
 #import "WMSAppConfig.h"
 #import "WMSConstants.h"
 
+#import "GGAudioTool.h"
+
 #import <AVFoundation/AVFoundation.h>
 
 @interface WMSAppDelegate ()<RESideMenuDelegate,UIAlertViewDelegate>
@@ -31,6 +33,9 @@
 @end
 
 @implementation WMSAppDelegate
+{
+    NSTimer *_backgroundTimer;
+}
 
 #pragma mark - 获取appDelegate
 + (WMSAppDelegate *)appDelegate
@@ -91,8 +96,9 @@
     
     [self setupApp];
     
+    //[[GGAudioTool sharedInstance] playSilentSound];
     
-//    if ([WMSHelper isFirstLaunchApp]) {
+//    if ([WMSHelper isFirstLaunchApp]||YES) {
 //        self.window.rootViewController = [WMSGuideVC guide];
 //        [self.window makeKeyAndVisible];
 //        return YES;
@@ -122,12 +128,21 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     DEBUGLog(@"%s",__FUNCTION__);
+    [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+    
+    if (_backgroundTimer && [_backgroundTimer isValid]) {
+        [_backgroundTimer invalidate];
+        _backgroundTimer = nil;
+    }
+    _backgroundTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(tik) userInfo:nil repeats:YES];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     DEBUGLog(@"%s",__FUNCTION__);
+    [_backgroundTimer invalidate];
+    _backgroundTimer = nil;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -171,6 +186,15 @@
                                                           , nil]];//[UIFont fontWithName:@"DIN Condensed" size:35.f],NSFontAttributeName
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
+- (void)tik{
+    DEBUGLog(@"tick .....");
+    if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 61.0) {
+        [[GGAudioTool sharedInstance] playSilentSound];
+        
+        [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+    }
 }
 
 @end

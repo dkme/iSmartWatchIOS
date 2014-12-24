@@ -42,8 +42,11 @@
     if (!_navBarView) {
         _navBarView = [[WMSNavBarView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 64)];
         _navBarView.backgroundColor = UICOLOR_DEFAULT;
-        _navBarView.labelTitle.text = NSLocalizedString(@"绑定配件",nil);
+        _navBarView.labelTitle.text = NSLocalizedString(@"Bound watch",nil);
         _navBarView.labelTitle.font = Font_DINCondensed(20.f);
+        CGRect frame = _navBarView.buttonLeft.frame;
+        frame.origin.x = 15.0;
+        _navBarView.buttonLeft.frame = frame;
     }
     return _navBarView;
 }
@@ -99,16 +102,9 @@
 - (void)setupTableView
 {
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.scrollEnabled = NO;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-}
-- (void)registerForNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:UIApplicationWillEnterForegroundNotification object:nil];
-}
-- (void)unregisterFromNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)reset
@@ -132,6 +128,9 @@
     if (successOrFail) {
         [self showTip:NSLocalizedString(@"绑定成功", nil)];
         [self.tableView reloadData];
+        [self buttonLeftClicked:nil];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(skipSportVC) object:nil];
+        [self performSelector:@selector(skipSportVC) withObject:nil afterDelay:0.8];
     } else {
         [self showTip:NSLocalizedString(@"绑定失败", nil)];
     }
@@ -148,7 +147,7 @@
     }
     if (label == nil) {
         label = [[UILabel alloc] initWithFrame:CGRectMake(15, CELL_HIGHT+HEADER_HEIGHT+10, ScreenWidth-15, 60)];
-        NSString *text = [NSString stringWithFormat:@"%@:%@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"请在“设置-蓝牙”中，忽略配对的设备！", nil)];
+        NSString *text = [NSString stringWithFormat:@"%@: %@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"请在“设置-蓝牙”中，忽略此设备！", nil)];
         label.text = text;
         label.textColor = [UIColor redColor];
         label.numberOfLines = -1;
@@ -215,12 +214,17 @@
     [self showUnBindTip:NO];
 }
 
+- (void)skipSportVC
+{
+    WMSLeftViewController *vc = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
+    [vc skipToViewControllerForIndex:0];
+}
+
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {//destructive
         [self reset];
-        [self showUnBindTip:YES];
         [self showTip:NSLocalizedString(@"解绑成功", nil)];
         [self.tableView reloadData];
         [WMSMyAccessory unBindAccessory];
@@ -228,8 +232,9 @@
         if ([bleControl isConnected]) {
             [bleControl disconnect];
         }
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideUnBindTip) object:nil];
-        [self performSelector:@selector(hideUnBindTip) withObject:nil afterDelay:5.0];
+//        [self showUnBindTip:YES];
+//        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideUnBindTip) object:nil];
+//        [self performSelector:@selector(hideUnBindTip) withObject:nil afterDelay:5.0];
     }
 }
 
@@ -306,7 +311,15 @@
     }
 }
 
-#pragma mark - Notification
+#pragma mark - Notifications
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterBackground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+- (void)unregisterFromNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)appWillEnterBackground:(NSNotification *)notification
 {
     [self.alertView dismissWithClickedButtonIndex:0 animated:NO];

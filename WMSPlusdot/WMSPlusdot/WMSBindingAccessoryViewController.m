@@ -14,10 +14,11 @@
 #import "WMSContentViewController.h"
 #import "WMSMyAccessoryViewController.h"
 
+#import "WMSBindingView.h"
 #import "WMSMyAccessory.h"
 
 #define SECTION_NUMBER  1
-#define CELL_HIGHT      44
+#define CELL_HIGHT      55
 #define HEADER_HEIGHT   30
 #define TableFrame ( CGRectMake(0, 80, ScreenWidth, ScreenHeight-80) )
 #define buttonBottomFrame   ( CGRectMake((ScreenWidth-150)/2, ScreenHeight-35-20, 150, 35) )
@@ -99,21 +100,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIView *centerView = self.labelBLEStatus.superview;
-    [centerView addSubview:self.buttonBottom];
-    [self.view addSubview:self.tableView];
-    [self.tableView setHidden:YES];
-    
-    [self updateUI];
-    [self setupControl];
+    [self setupNavBarView];
+    [self setupTableView];
     [self localizableView];
-    [self adaptiveIphone4];
+    //[self.indicatorView startAnimating];
+    
+    //[self updateUI];
+    //[self adaptiveIphone4];
 
     //
     [self bleOperation];
     
-    [self showScanning:YES];
-    [self scanBle];
+    //[self showScanning:YES];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -136,20 +135,29 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)updateUI
-{
-    self.labelBLEStatus.text = NSLocalizedString(@"Searching Plusdot watches",nil);
-}
-
-- (void)setupControl
+#pragma mark - Methods
+- (void)setupNavBarView
 {
     [self.buttonLeft setTitle:@"" forState:UIControlStateNormal];
     [self.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
     [self.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
     
-    [self.buttonRight setTitle:@"" forState:UIControlStateNormal];
-    [self.buttonRight setBackgroundImage:[UIImage imageNamed:@"main_setting_icon_a.png"] forState:UIControlStateNormal];
-    [self.buttonRight setBackgroundImage:[UIImage imageNamed:@"main_setting_icon_b.png"] forState:UIControlStateHighlighted];
+    [self.buttonRight setTitle:NSLocalizedString(@"停止", nil) forState:UIControlStateNormal];
+    [self.buttonRight setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [self.buttonRight setBackgroundImage:[UIImage imageNamed:@"main_setting_icon_a.png"] forState:UIControlStateNormal];
+//    [self.buttonRight setBackgroundImage:[UIImage imageNamed:@"main_setting_icon_b.png"] forState:UIControlStateHighlighted];
+}
+- (void)setupTableView
+{
+    UIView *centerView = self.labelBLEStatus.superview;
+    [centerView addSubview:self.buttonBottom];
+    [self.view addSubview:self.tableView];
+    [self.tableView setHidden:NO];
+}
+
+- (void)updateUI
+{
+    self.labelBLEStatus.text = NSLocalizedString(@"Searching Plusdot watches",nil);
 }
 
 //本地化
@@ -275,13 +283,31 @@
 }
 
 - (IBAction)showRightViewAction:(id)sender {
-    //[self.sideMenuViewController presentRightMenuViewController];
+    UIButton *button = (UIButton *)sender;
+    NSString *title = [button titleForState:UIControlStateNormal];
+    if ([title isEqualToString:NSLocalizedString(@"停止", nil)]) {
+        [self.bleControl stopScanForPeripherals];
+    } else {
+        [self scanPeripheral];
+    }
 }
 
 - (void)buttonBottomAction:(id)sender
 {
     [self showScanning:YES];
-    [self scanBle];
+    [self scanPeripheral];
+}
+
+- (void)onBindViewForBottomButton:(id)sender
+{
+    WMSBindingView *view = [self bindingView];
+    [UIView animateWithDuration:0.5 animations:^{
+        view.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [self showBindingView:NO];
+    }];
+    
+    [self.bleControl disconnect];
 }
 
 #pragma mark - NSTimer
@@ -303,11 +329,19 @@
     if (_countdown == 0) {
         [self.bleControl disconnect];
         [self invalidateTimer];
-        [self closeVC:NO];
+        
+        WMSBindingView *view = [self bindingView];
+        view.textView.text = NSLocalizedString(@"超时，绑定失败", nil);
+        [UIView animateWithDuration:1.5 animations:^{
+            view.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [self showBindingView:NO];
+        }];
+        //[self closeVC:NO];
         DEBUGLog(@"倒计时结束了");
         return;
     }
-    [self updateHUDSchedule:_countdown];
+    //[self updateHUDSchedule:_countdown];
 }
 
 #pragma mark - 蓝牙操作
@@ -321,17 +355,25 @@
         [self.bleControl disconnect];
     }
     
+    [self scanPeripheral];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFailedConnectPeripheral:) name:WMSBleControlPeripheralConnectFailed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScanPeripheralFinish:) name:WMSBleControlScanFinish object:nil];
 }
-- (void)scanBle
+- (void)scanPeripheral
 {
     [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion:^(NSArray *peripherals)
      {
-         self.listData = peripherals;
+         NSArray *array = [self filtration:peripherals];
+         [self setListData:array];
+         [self.tableView reloadData];
      }];
+    
+    [self.indicatorView startAnimating];
+    [self.indicatorView setHidden:NO];
+    [self.buttonRight setTitle:NSLocalizedString(@"停止", nil) forState:UIControlStateNormal];
 }
 
 //Handle
@@ -356,10 +398,10 @@
                 [WMSMyAccessory bindAccessory:identify];
                 [strongSelf closeVC:YES];
             } else {
-                [strongSelf closeVC:NO];
+                //[strongSelf closeVC:NO];
             }
         } else {
-            [strongSelf closeVC:NO];
+            //[strongSelf closeVC:NO];
         }
     }];
 //    NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
@@ -372,37 +414,83 @@
 {
     DEBUGLog(@"连接断开 %@",NSStringFromClass([self class]));
     [self invalidateTimer];
-    [self closeVC:NO];
+    //[self closeVC:NO];
+    
+    WMSBindingView *view = [self bindingView];
+    if (view.alpha == 0.0) {
+        return ;
+    }
+    view.textView.text = NSLocalizedString(@"绑定失败", nil);
+    view.textView.textAlignment = NSTextAlignmentCenter;
+    [UIView animateWithDuration:1.5 animations:^{
+        view.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [self showBindingView:NO];
+    }];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接失败 %@",NSStringFromClass([self class]));
     [self invalidateTimer];
-    [self closeVC:NO];
+    //[self closeVC:NO];
+    WMSBindingView *view = [self bindingView];
+    if (view.alpha == 0.0) {
+        return ;
+    }
+    view.textView.text = NSLocalizedString(@"绑定失败", nil);
+    [UIView animateWithDuration:1.5 animations:^{
+        view.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [self showBindingView:NO];
+    }];
 }
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
     DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
     
-    if (self.listData && [self.listData count]>0) {
+//    if (self.listData && [self.listData count]>0) {
+//        NSMutableArray *array = [NSMutableArray array];
+//        for (LGPeripheral *pObject in self.listData) {
+//            NSString *name = pObject.cbPeripheral.name;
+//            BOOL flag = [name isEqualToString:WATCH_NAME] ||
+//                        [name isEqualToString:WATCH_NAME2];
+//            if (flag) {
+//                [array addObject:pObject];
+//            }
+//        }
+//        self.listData = array;
+//    }
+//    if (self.listData && [self.listData count] > 0) {
+//        [self.tableView setHidden:NO];
+//        [self.tableView reloadData];
+//    } else {
+//        [self showScanning:NO];
+//    }
+    
+    [self.indicatorView stopAnimating];
+    [self.indicatorView setHidden:YES];
+    [self.buttonRight setTitle:NSLocalizedString(@"扫描", nil) forState:UIControlStateNormal];
+}
+
+- (NSArray *)filtration:(NSArray *)peripherals
+{
+    if ([peripherals count] > 0)
+    {
         NSMutableArray *array = [NSMutableArray array];
-        for (LGPeripheral *pObject in self.listData) {
+        for (LGPeripheral *pObject in peripherals)
+        {
             NSString *name = pObject.cbPeripheral.name;
             BOOL flag = [name isEqualToString:WATCH_NAME] ||
                         [name isEqualToString:WATCH_NAME2];
-            if (flag) {
+            if (flag)
+            {
                 [array addObject:pObject];
             }
         }
-        self.listData = array;
+        return array;
     }
-    if (self.listData && [self.listData count] > 0) {
-        [self.tableView setHidden:NO];
-        [self.tableView reloadData];
-    } else {
-        [self showScanning:NO];
-    }
+    return nil;
 }
 
 #pragma mark - UITableViewDataSource
@@ -441,10 +529,10 @@
 }
 
 #pragma mark - UITableViewDelegate
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return CELL_HIGHT;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CELL_HIGHT;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return HEADER_HEIGHT;
@@ -454,14 +542,61 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    if ([self.bleControl isScanning]) {
+        [self.bleControl stopScanForPeripherals];
+    }
     LGPeripheral *peripheral = self.listData[indexPath.row];
     [self.bleControl connect:peripheral];
     
-    _hud = [[MBProgressHUD alloc] initWithView:self.view];
-    _hud.mode = MBProgressHUDModeIndeterminate;
-    _hud.labelText = NSLocalizedString(@"正在连接手表...", nil);
-    [self.view addSubview:_hud];
-    [_hud show:YES];
+//    _hud = [[MBProgressHUD alloc] initWithView:self.view];
+//    _hud.mode = MBProgressHUDModeIndeterminate;
+//    _hud.labelText = NSLocalizedString(@"正在连接手表...", nil);
+//    [self.view addSubview:_hud];
+//    [_hud show:YES];
+    [self showBindingView:YES];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(timer) object:nil];
+//    [self performSelector:@selector(timer) withObject:nil afterDelay:5.0];
+}
+- (void)timer
+{
+    _countdown = 1;
+    [self countdown:nil];
+}
+
+- (WMSBindingView *)bindingView
+{
+    UIView *view = [self.view viewWithTag:123];
+    if (view && [view class] == [WMSBindingView class]) {
+        return (WMSBindingView *)view;
+    }
+    WMSBindingView *bindView = [WMSBindingView instanceBindingView];
+    bindView.tag = 123;
+    bindView.textView.editable = NO;
+    bindView.textView.userInteractionEnabled = NO;
+    bindView.textView.backgroundColor = [UIColor clearColor];
+    bindView.textView.textColor = [UIColor whiteColor];
+    [bindView.bottomButton setTitle:NSLocalizedString(@"取消", nil) forState:UIControlStateNormal];
+    [bindView.bottomButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [bindView.bottomButton setBackgroundImage:[UIImage imageNamed:@"bind_btn_a.png"] forState:UIControlStateNormal];
+    [bindView.bottomButton setBackgroundImage:[UIImage imageNamed:@"bind_btn_b.png"] forState:UIControlStateSelected];
+    [bindView.bottomButton addTarget:self action:@selector(onBindViewForBottomButton:) forControlEvents:UIControlEventTouchUpInside];
+    return bindView;
+}
+- (void)showBindingView:(BOOL)show
+{
+    if (show) {
+        WMSBindingView *bindView = [self bindingView];
+        bindView.alpha = 0.0;
+        bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
+        bindView.textView.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:bindView];
+        [UIView animateWithDuration:0.5 animations:^{
+            bindView.alpha = 0.9;
+        } completion:nil];
+    } else {
+        [[self bindingView] removeFromSuperview];
+    }
+
 }
 
 @end

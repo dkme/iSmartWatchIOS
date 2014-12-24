@@ -85,7 +85,7 @@
         
         _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
         _syncDataView.labelTip.font = Font_DINCondensed(17.0);
-        [_syncDataView setLabelElectricQuantityFont:Font_DINCondensed(15.0)];
+        [_syncDataView setLabelEnergyFont:Font_DINCondensed(15.0)];
         
         UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
         CGRect frame = _syncDataView.imageView.frame;
@@ -334,6 +334,8 @@
     } else {
         [self handleScanPeripheralFinish:nil];
     }
+    
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -421,7 +423,7 @@
 
 - (void)localizableView
 {
-    _labelTitle.text = NSLocalizedString(@"My sports", nil);
+    _labelTitle.text = NSLocalizedString(@"My sport", nil);
     _labelMySport.text = NSLocalizedString(@"当前步数",nil);
     _labelStep.text = NSLocalizedString(@"Step",nil);
     _labelStep2.text = NSLocalizedString(@"Step",nil);
@@ -486,7 +488,6 @@
 
 - (void)checkAppUpdate
 {
-    //841234110/930839162
     [self checkUpdateWithAPPID:@"930839162" completion:^(DetectResultValue isCanUpdate)
     {
         DEBUGLog(@"^^^^^%@----->%d[%p]",[self class],isCanUpdate,&isCanUpdate);
@@ -622,16 +623,16 @@
 
 - (void)checkFirmwareUpdate
 {
-    [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
-     {
-         if ([WMSDeviceModel deviceModel].version < newVersion) {
-             [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
-              {
-                  //do something
-                  DEBUGLog(@"下载%@",success?@"成功":@"失败");
-              }];
-         }
-     }];
+//    [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
+//     {
+//         if ([WMSDeviceModel deviceModel].version < newVersion) {
+//             [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
+//              {
+//                  //do something
+//                  DEBUGLog(@"下载%@",success?@"成功":@"失败");
+//              }];
+//         }
+//     }];
 }
 
 #pragma mark - Data
@@ -659,7 +660,6 @@
 #pragma mark - Action
 - (IBAction)showLeftViewAction:(id)sender {
     [self.sideMenuViewController presentLeftMenuViewController];
-
 }
 - (IBAction)showRightViewAction:(id)sender {
     [self.sideMenuViewController presentRightMenuViewController];
@@ -717,13 +717,8 @@
     [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
      {
          DEBUGLog(@"电池电量：%d",batteryEnergy);
-         batteryEnergy = 100;
-         if (batteryEnergy <= WATCH_LOW_BATTERY) {
-             [self.syncDataView setCellColor:[UIColor redColor]];
-         } else {
-             [self.syncDataView setCellColor:[UIColor whiteColor]];
-         }
-         [self.syncDataView setCellElectricQuantity:batteryEnergy];
+         //batteryEnergy = 100;
+         [self.syncDataView setEnergy:batteryEnergy];
          [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
          [WMSDeviceModel deviceModel].version = version;
          [self checkFirmwareUpdate];
@@ -893,7 +888,11 @@
         case WMSBleStateResetting:
         case WMSBleStatePoweredOff:
         {
-            [self showTipView:YES];
+            if ([WMSMyAccessory isBindAccessory]) {
+                [self showTipView:YES];
+            } else {
+                [self showTipView:2];
+            }
             [self.hud hide:YES afterDelay:0];
             [self.syncDataView stopAnimating];
             break;

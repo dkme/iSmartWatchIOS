@@ -78,6 +78,7 @@
                                   CGRectMake(Cell_Left_Point.x+Cell_Width+10, (self.frame.size.height-labelSize.height)/2, labelSize.width, labelSize.height)];
         _labelElectricQuantity.textColor = [UIColor whiteColor];
         _labelElectricQuantity.font = [UIFont systemFontOfSize:12.0];
+        _labelElectricQuantity.adjustsFontSizeToFitWidth = YES;
     }
     return _labelElectricQuantity;
 }
@@ -123,43 +124,41 @@
     [self.layer addSublayer:self.headLayer];
     [self.layer addSublayer:self.cellLayer];
     
-    [self setCellElectricQuantity:100];
+    [self setEnergy:100];
 }
 
 #pragma mark - Public
-- (void)setLabelElectricQuantityFont:(UIFont *)font
+- (void)setEnergy:(NSUInteger)energy
+{
+    NSUInteger percent = 100;
+    UIColor *color = [UIColor whiteColor];
+    NSString *desc = @"";
+    if(energy>=60 && energy<=100){
+        percent = 100;
+        //desc = NSLocalizedString(@"充足", nil);
+    }else if(40<energy && energy<60){
+        percent = 50;
+        //desc = NSLocalizedString(@"较足", nil);
+    }else if(10<energy && energy<=40){
+        percent = 25;
+        //desc = NSLocalizedString(@"不足", nil);
+    }else if(10<=energy){
+        percent = 12;
+        //desc = NSLocalizedString(@"过低", nil);
+        color = [UIColor whiteColor];
+    }
+    self.labelElectricQuantity.text = desc;
+    [self setCellColor:color];
+    [self setCellElectricQuantity:percent];
+}
+
+- (void)setLabelEnergyFont:(UIFont *)font
 {
     self.labelElectricQuantity.font = font;
 }
 
-- (void)setElectricQuantityDesc:(NSString *)desc
-{
-    self.labelElectricQuantity.text = desc;
-}
-
-- (void)setCellElectricQuantity:(NSUInteger)quantity
-{
-    if (MAX_ElectricQuantity > quantity) {
-        self.electricQuantity = quantity;
-    } else {
-        self.electricQuantity = MAX_ElectricQuantity;
-    }
-    
-    self.labelElectricQuantity.text = [NSString stringWithFormat:@"%d%%",self.electricQuantity];
-    
-    [self setNeedsDisplay];
-}
-
-- (void)setCellColor:(UIColor *)color
-{
-    self.cellLayer.fillColor = [color CGColor];
-    self.cellLayer.strokeColor = [color CGColor];
-}
-
 - (void)startAnimating
 {
-    //DEBUGLog(@"[self.imageView.layer animationKeys]:%@",[self.imageView.layer animationKeys]) ;
-    //[self.imageView.layer removeAnimationForKey:@"rotationAnimation"];
     CABasicAnimation *rotationAnimation;
     rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 ];
@@ -176,10 +175,26 @@
     [self.imageView.layer removeAnimationForKey:@"rotationAnimation"];
 }
 
+#pragma mark - Private
+- (void)setCellElectricQuantity:(NSUInteger)quantity
+{
+    if (MAX_ElectricQuantity > quantity) {
+        self.electricQuantity = quantity;
+    } else {
+        self.electricQuantity = MAX_ElectricQuantity;
+    }
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setCellColor:(UIColor *)color
+{
+    self.cellLayer.fillColor = [color CGColor];
+    self.cellLayer.strokeColor = [color CGColor];
+}
+
 
 #pragma mark - Draw
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code

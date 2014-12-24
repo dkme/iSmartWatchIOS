@@ -46,6 +46,15 @@
 
 + (void)postSeachPhoneLocalNotification
 {
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationType type = UIUserNotificationTypeAlert |
+                    UIUserNotificationTypeBadge |
+                    UIUserNotificationTypeSound ;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
+    
     UILocalNotification *notification=[[UILocalNotification alloc] init];
     if (notification) {
         NSDate *now = [NSDate date];
@@ -58,7 +67,9 @@
         notification.soundName= UILocalNotificationDefaultSoundName;
         notification.alertAction=NSLocalizedString(@"你的手机在这里~", nil);
         //这个通知到时间时，你的应用程序右上角显示的数字. 获取当前的数字+1
-        notification.applicationIconBadgeNumber=[[[UIApplication sharedApplication] scheduledLocalNotifications] count]+1;
+        //notification.applicationIconBadgeNumber=[[[UIApplication sharedApplication] scheduledLocalNotifications] count]+1;
+        notification.applicationIconBadgeNumber=[UIApplication sharedApplication].applicationIconBadgeNumber+1;
+        
         //add key  给这个通知增加key 便于半路取消。nfkey这个key是我自己随便起的。
         // 假如你的通知不会在还没到时间的时候手动取消 那下面的两行代码你可以不用写了。
         NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:@"SeachPhone",@"nfkey",nil];
@@ -73,6 +84,15 @@
 
 + (void)postLowBatteryLocalNotification
 {
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationType type = UIUserNotificationTypeAlert |
+                UIUserNotificationTypeBadge |
+                UIUserNotificationTypeSound ;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
+    
     UILocalNotification *notification=[[UILocalNotification alloc] init];
     if (notification) {
         NSDate *now = [NSDate date];
@@ -81,7 +101,7 @@
         notification.alertBody=NSLocalizedString(@"你的手机没电了，快去充电吧！", nil);
         notification.soundName= UILocalNotificationDefaultSoundName;
         notification.alertAction=NSLocalizedString(@"你的手机没电了，快去充电吧！", nil);
-        notification.applicationIconBadgeNumber=[[[UIApplication sharedApplication] scheduledLocalNotifications] count]+1;
+        notification.applicationIconBadgeNumber=[UIApplication sharedApplication].applicationIconBadgeNumber+1;
         NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:@"LowBattery",@"nfkey",nil];
         [notification setUserInfo:dict];
         [[UIApplication sharedApplication] scheduleLocalNotification:notification];

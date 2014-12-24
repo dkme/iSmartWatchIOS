@@ -12,7 +12,7 @@
 @protocol EAIntroDelegate
 @optional
 - (void)intro:(EAIntroView *)introView didScrollToPageIndex:(NSInteger)currentPageIndex;
-- (void)introDidFinish;
+- (void)introDidFinish:(EAIntroView *)introView;
 @end
 
 @interface EAIntroView : UIView <UIScrollViewDelegate>

@@ -16,4 +16,6 @@
 
 - (void)setUserNickname:(NSString *)nickname;
 
+- (void)skipToViewControllerForIndex:(NSUInteger)index;
+
 @end

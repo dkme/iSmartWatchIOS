@@ -16,13 +16,9 @@
 
 @property (strong, nonatomic, readonly) UIButton *buttonSync;
 
-- (void)setLabelElectricQuantityFont:(UIFont *)font;
+- (void)setLabelEnergyFont:(UIFont *)font;
 
-- (void)setElectricQuantityDesc:(NSString *)desc;
-
-- (void)setCellElectricQuantity:(NSUInteger)quantity;
-
-- (void)setCellColor:(UIColor *)color;
+- (void)setEnergy:(NSUInteger)energy;
 
 - (void)startAnimating;
 

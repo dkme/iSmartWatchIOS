@@ -102,7 +102,7 @@
     [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
     [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
     [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.buttonSync.titleLabel setFont:Font_System(18.0)];
+    [self.buttonSync.titleLabel setFont:Font_System(15.0)];
     
     self.labelTitle.text = NSLocalizedString(@"Smart alarm clock",nil);
     self.view.backgroundColor = [UIColor whiteColor];

@@ -19,6 +19,8 @@
 
 
 - (void)showHUDAtViewCenter:(NSString *)text;
+- (void)showHUDAtViewCenterWithText:(NSString *)text
+                         detailText:(NSString *)detailText;
 
 - (void)hideHUDAtViewCenter;
 

@@ -219,10 +219,6 @@
         NSLog(@"error: NSFileManager fail...");
         return NO;
     }
-    //NSString *tmpDir = NSTemporaryDirectory();//tmp目录
-    //NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) lastObject];//获取Documents目录
-    //NSString *filePath=[tmpDir stringByAppendingPathComponent:name];
-    //return [fileManager createFileAtPath:filePath contents:data 				attributes:nil];
     return [fileManager createFileAtPath:path contents:data attributes:nil];
 }
 

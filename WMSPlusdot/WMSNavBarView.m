@@ -8,8 +8,8 @@
 
 #import "WMSNavBarView.h"
 
-#define LEFT_BUTTON_RECT CGRectMake(20, 20, 35, 35)
-#define TITLE_LABEL_RECT CGRectMake(75, 17, 170, 44)
+#define LEFT_BUTTON_RECT CGRectMake(8, 24, 35, 35)
+#define TITLE_LABEL_RECT CGRectMake(75, 26, 170, 35)
 
 @interface WMSNavBarView ()
 

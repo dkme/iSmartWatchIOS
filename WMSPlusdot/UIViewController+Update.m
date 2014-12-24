@@ -44,7 +44,6 @@ const NSTimeInterval REQUEST_TIMEOUT_INTERVAL = 10.f;
 {
     NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
     NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
-    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     dispatch_async(queue, ^{
         NSDictionary *appInfo = [self appInfo:appID];

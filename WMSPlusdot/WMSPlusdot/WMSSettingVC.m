@@ -26,7 +26,7 @@
 #import "WMSHelper.h"
 
 #define SECTION_NUMBER                  2
-#define SECTION0_HEADER_HEIGHT          50.f
+#define SECTION0_HEADER_HEIGHT          30.f
 #define SECTION_HEADER_HEIGHT           20.f
 
 @interface WMSSettingVC ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate,UIActionSheetDelegate>
@@ -133,6 +133,9 @@
     buttonFrame.size = CGSizeMake(315, 45);
     buttonFrame.origin.x = (self.tableView.frame.size.width-buttonFrame.size.width)/2.0;
     buttonFrame.origin.y = self.tableView.frame.size.height-buttonFrame.size.height-30;
+    if (!iPhone5) {
+        buttonFrame.origin.y -= (568-480);
+    }
     _buttonExitLogin.frame = buttonFrame;
     [_buttonExitLogin setTitle:NSLocalizedString(@"退出登录", nil) forState:UIControlStateNormal];
     [_buttonExitLogin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -171,14 +174,29 @@
 }
 - (void)checkFirmwareUpdate
 {
+    BOOL res = [[WMSAppDelegate appDelegate].wmsBleControl isConnected];
+    if (res == NO) {
+        return ;
+    }
     [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
      {
          DEBUGLog(@"firmware curVersion:%f, newVersion:%f",[WMSDeviceModel deviceModel].version,newVersion);
          if ([WMSDeviceModel deviceModel].version < newVersion) {
-             _isUpdateFirmware = YES;
-             _firmwareUpdateDesc = describe;
-             _firmwareUpdateURL = strURL;
-             [self.tableView reloadData];
+             [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
+              {
+                  //do something
+                  DEBUGLog(@"下载%@",success?@"成功":@"失败");
+                  if (success) {
+                      _isUpdateFirmware = YES;
+                      _firmwareUpdateDesc = describe;
+                      _firmwareUpdateURL = strURL;
+                      [self.tableView reloadData];
+                  } else {
+                      _isUpdateFirmware = NO;
+                      _firmwareUpdateDesc = @"";
+                      _firmwareUpdateURL = @"";
+                  }
+              }];
          } else {
              _isUpdateFirmware = NO;
              _firmwareUpdateDesc = @"";
@@ -326,9 +344,9 @@
         case 0:
         {
             cell.leftLabel.text = [self.section0TitleArray objectAtIndex:row];
-            cell.leftLabel.font = Font_System(18.0);
+            cell.leftLabel.font = Font_System(15.0);
             cell.rightLabel.text = @"";
-            cell.rightLabel.font = Font_System(15.0);
+            cell.rightLabel.font = Font_System(12.0);
             if (row == 0) {
                 if ([WMSAppConfig isHaveLogin]) {
                     cell.rightLabel.text = [WMSAppConfig loginUserName];
@@ -341,9 +359,9 @@
         case 1:
         {
             cell.leftLabel.text = [self.section1TitleArray objectAtIndex:row];
-            cell.leftLabel.font = Font_System(18.0);
+            cell.leftLabel.font = Font_System(15.0);
             cell.rightLabel.text = @"";
-            cell.rightLabel.font = Font_System(15.0);
+            cell.rightLabel.font = Font_System(12.0);
             if (row == 3) {
                 if ([self isDetectedNewVersion]==DetectResultCanUpdate/* ||
                     YES*/) {
@@ -418,7 +436,7 @@
                     WMSWebVC *vc = [[WMSWebVC alloc] init];
                     vc.navBarTitle = self.section1TitleArray[row];
                     vc.strRequestURL = @"http://www.lepao.com/faq-mobile.html";
-                    [self.navigationController pushViewController:vc animated:YES];
+                    //[self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
                 case 3:
@@ -431,7 +449,7 @@
                 case 4:
                 {
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    if ([self isExistBadgeOfView:cell]) {
+                    if ([self isExistBadgeOfView:cell] /*||YES*/) {
                         //........
                         WMSUpdateVC *vc = [[WMSUpdateVC alloc] init];
                         vc.navBarTitle = self.section1TitleArray[row];

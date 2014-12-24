@@ -83,12 +83,12 @@
 - (WMSSyncDataView *)syncDataView
 {
     if (!_syncDataView) {
-        _syncDataView = [[WMSSyncDataView alloc] initWithFrame:(CGRect){0,125,ScreenWidth,35}];
+        _syncDataView = [[WMSSyncDataView alloc] initWithFrame:TipViewFrame];
         _syncDataView.backgroundColor = [UIColor clearColor];
         
         _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
         _syncDataView.labelTip.font = Font_DINCondensed(17.0);
-        [_syncDataView setLabelElectricQuantityFont:Font_DINCondensed(15.0)];
+        [_syncDataView setLabelEnergyFont:Font_DINCondensed(15.0)];
         
         UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
         CGRect frame = _syncDataView.imageView.frame;
@@ -352,12 +352,7 @@
         if ([self.bleControl isConnected]) {
             [self showTipView:NO];
             int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
-            if (batteryEnergy <= WATCH_LOW_BATTERY) {
-                [self.syncDataView setCellColor:[UIColor redColor]];
-            } else {
-                [self.syncDataView setCellColor:[UIColor whiteColor]];
-            }
-            [self.syncDataView setCellElectricQuantity:batteryEnergy];
+            [self.syncDataView setEnergy:batteryEnergy];
         } else {
             [self showTipView:YES];
         }
@@ -528,7 +523,7 @@
     [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
      {
          [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
-         [self.syncDataView setCellElectricQuantity:batteryEnergy];
+         //[self.syncDataView setCellElectricQuantity:batteryEnergy];
      }];
 }
 

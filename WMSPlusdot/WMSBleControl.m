@@ -42,8 +42,9 @@ NSString * const WMSBleControlScanFinish =
 @interface WMSBleControl ()
 
 @property (nonatomic, strong) LGCentralManager *centralManager;
-@property (nonatomic, strong) NSArray *specificServiceArray;
+@property (nonatomic, strong) LGPeripheral *connectingPeripheral;//用于在连接过程中去断开连接
 
+@property (nonatomic, strong) NSArray *specificServiceArray;
 @property (nonatomic, strong) NSMutableArray *characteristicArray;
 @property (nonatomic, strong) WMSMyTimers *myTimers;
 
@@ -162,22 +163,23 @@ NSString * const WMSBleControlScanFinish =
 - (void)dealloc
 {
     [self.myTimers deleteAllTimers];
-    self.myTimers = nil;
+    [self setMyTimers:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - Public Methods
 - (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
                           completion:(WMSBleControlScanedPeripheralCallback)aCallback
 {
     if ([self.centralManager isScanning]) {
         return;
     }
-    
     NSMutableArray *scannedPeripheral = [NSMutableArray new];
     
-    [self.centralManager scanForPeripheralsByInterval:aScanInterval completion:^(NSArray *peripherals)
-    {
+    NSArray *svUUIDs = @[[CBUUID UUIDWithString:CUSTOM_SERVICE_UUID]];
+    NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
+    [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options completion:^(NSArray *peripherals) {
         //排除重复的设备
         LGPeripheral *oldObj = nil;
         LGPeripheral *newObj = [peripherals lastObject];
@@ -198,8 +200,30 @@ NSString * const WMSBleControlScanFinish =
         }
     }];
     
-    NSArray *serviceUUIDs = @[[CBUUID UUIDWithString:@"0A60"]];
-    [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];
+//    [self.centralManager scanForPeripheralsByInterval:aScanInterval completion:^(NSArray *peripherals)
+//    {
+//        //排除重复的设备
+//        LGPeripheral *oldObj = nil;
+//        LGPeripheral *newObj = [peripherals lastObject];
+//        NSString *identifier = newObj.UUIDString;
+//        for (LGPeripheral *p in scannedPeripheral) {
+//            if ([p.UUIDString isEqualToString:identifier]) {
+//                oldObj = p;
+//                break ;
+//            }
+//        }
+//        if (oldObj) {
+//            [scannedPeripheral removeObject:oldObj];
+//        }
+//        [scannedPeripheral addObject:newObj];
+//        //[scannedPeripheral addObjectsFromArray:peripherals];
+//        if (aCallback) {
+//            aCallback(scannedPeripheral);
+//        }
+//    }];
+    
+//    NSArray *serviceUUIDs = @[[CBUUID UUIDWithString:@"0A60"]];
+    [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
 //    NSArray *array = [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];//获取系统已连接的外设
 //    for (LGPeripheral *p in array) {
 //        [scannedPeripheral addObject:p];
@@ -222,8 +246,6 @@ NSString * const WMSBleControlScanFinish =
     
     if (self.isScanning) {
         [self stopScanForPeripherals];
-        //[self.centralManager.manager stopScan];
-        //DEBUGLog(@"stopScan");
     }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self
@@ -231,6 +253,7 @@ NSString * const WMSBleControlScanFinish =
                                                object:peripheral];
     [self performSelector:@selector(connectPeripheralTimeout:) withObject:peripheral afterDelay:CONNECT_PERIPHERAL_INTERVAL];
 
+    [self setConnectingPeripheral:peripheral];
     [peripheral connectWithCompletion:^(NSError *error) {
         //DEBUGLog(@"connect Completions");
         [NSObject cancelPreviousPerformRequestsWithTarget:self
@@ -239,6 +262,7 @@ NSString * const WMSBleControlScanFinish =
         DEBUGLog(@"关闭连接定时器");
         
         if (error) {
+            DEBUGLog(@"[line:%d] connect peripheral error",__LINE__);
             [self postNotificationConnectFailedForPeripheral:peripheral];
         } else {
             [self performSelector:@selector(discoverServicesTimeout:) withObject:peripheral afterDelay:DISCOVER_SERVICES_INTERVAL];
@@ -251,11 +275,13 @@ NSString * const WMSBleControlScanFinish =
                                                             object:peripheral];
                  
                  if (error) {
+                     DEBUGLog(@"[line:%d] DiscoverServices error",__LINE__);
                      [self postNotificationConnectFailedForPeripheral:peripheral];
                      return ;
                  }
                  
                  if ([self checkDiscoverServices:services] == NO) {
+                     DEBUGLog(@"[line:%d] checkDiscoverServices failed",__LINE__);
                      [self postNotificationConnectFailedForPeripheral:peripheral];
                      return ;
                  }
@@ -268,14 +294,21 @@ NSString * const WMSBleControlScanFinish =
 
 - (void)disconnect
 {
-    if (self.isConnected == NO) {
-        return;
+    if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
+        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
+            [self disConnectedClearup];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:self userInfo:nil];
+        }];
     }
-    [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
+    if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
+        //应使用下面的方式“终止”连接
+        [self.centralManager.manager cancelPeripheralConnection:self.connectingPeripheral.cbPeripheral];
+//        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
+//            [self disConnectedClearup];
+//        }];
         [self disConnectedClearup];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:self userInfo:nil];
-    }];
+    }
 }
 
 #pragma mark - 对包的处理
@@ -320,6 +353,7 @@ NSString * const WMSBleControlScanFinish =
         [sv discoverCharacteristicsWithCompletion:^(NSArray *characteristics, NSError *error) {
             if (error) {
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(discoverCharacteristicsTimeout:) object:peripheral];//取消定时器
+                DEBUGLog(@"[line:%d] DiscoverCharacteristics error",__LINE__);
                 [self postNotificationConnectFailedForPeripheral:peripheral];
                 return ;
             }
@@ -334,6 +368,7 @@ NSString * const WMSBleControlScanFinish =
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(discoverCharacteristicsTimeout:) object:peripheral];//取消定时器
                 
                 if ([self checkDiscoverCharacteristics:characteristics] == NO) {
+                    DEBUGLog(@"[line:%d] checkDiscoverCharacteristics failed",__LINE__);
                     [self postNotificationConnectFailedForPeripheral:peripheral];
                     return ;
                 }
@@ -375,6 +410,8 @@ NSString * const WMSBleControlScanFinish =
         return ;
     }
     
+    [self setConnectingPeripheral:nil];
+    
     [self subscribeNotifyCharacteristic];
     
     
@@ -395,7 +432,9 @@ NSString * const WMSBleControlScanFinish =
     _isConnecting = NO;
     findCharacteristicCount = 0;
     
-    self.scanedBlock = nil;
+    [self setScanedBlock:nil];
+    [self setConnectingPeripheral:nil];
+    
     [self.stackBindSetting removeAllObjects];
     [self.stackSwitchControlMode removeAllObjects];
     [self.stackSwitchUpdateMode removeAllObjects];
@@ -648,7 +687,7 @@ NSString * const WMSBleControlScanFinish =
     
     int triggerCount = [self.myTimers triggerCountForTimer:timer];
     if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
-        DEBUGLog(@"写入超时[TimerID:%d]，主动断开 %@",[self.myTimers getTimerID:timer],NSStringFromClass([self class]));
+        DEBUGLog(@"1写入超时[TimerID:%d]，主动断开 %@",[self.myTimers getTimerID:timer],NSStringFromClass([self class]));
         [self.myTimers deleteAllTimers];
         [self disconnect];
         return;

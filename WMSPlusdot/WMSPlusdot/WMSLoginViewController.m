@@ -157,7 +157,7 @@
         appDelegate.window.rootViewController = (UIViewController *)appDelegate.reSideMenu;
         UIView *view = appDelegate.reSideMenu.view;
         view.alpha = 0;
-        [UIView animateWithDuration:1.0 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             view.alpha = 1.0;
         }];
         appDelegate.loginNavigationCtrl = nil;
