@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 @class WMSNavBarView;
 
+/*
+ *切换升级模式成功时的通知
+ */
+extern NSString *const WMSUpdateVCStartDFU;
+/*
+ *结束升级模式时的通知
+ */
+extern NSString *const WMSUpdateVCEndDFU;
+
 @interface WMSUpdateVC : UIViewController
 
 @property (weak, nonatomic) IBOutlet WMSNavBarView *navBarView;

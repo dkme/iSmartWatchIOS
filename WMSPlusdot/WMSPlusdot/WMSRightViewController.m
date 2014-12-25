@@ -12,6 +12,7 @@
 #import "WMSRemindWayViewController.h"
 #import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
+#import "WMSAntiLostVC.h"
 
 #import "WMSSwitchCell.h"
 #import "MBProgressHUD.h"
@@ -898,6 +899,16 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    if (indexPath.section == 3-1 && indexPath.row == 0) {
+        WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        //UIBarButtonItem *item = [UIBarButtonItem ]
+        //nav.navigationItem.leftBarButtonItem = ;
+        vc.title = self.section4TitleArray[indexPath.row];
+        [self presentViewController:nav animated:YES completion:nil];
+        return;
+    }
+    
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
         return;
@@ -928,6 +939,8 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
         }
         return;
     }
+    
+    
 }
 
 

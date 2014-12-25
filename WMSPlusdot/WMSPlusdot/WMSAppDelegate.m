@@ -175,16 +175,16 @@
 {
     //设置导航栏的颜色，标题字体和颜色
     [[UINavigationBar appearance] setBarTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
-    //[[UINavigationBar appearance] setTranslucent:YES];
+    //[[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = UIColorFromRGBAlpha(0x000000, 0.8);
-    shadow.shadowOffset = CGSizeMake(0, 1);
-    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIColor whiteColor],NSForegroundColorAttributeName,
-                                                          shadow, NSShadowAttributeName
-                                                          , nil]];//[UIFont fontWithName:@"DIN Condensed" size:35.f],NSFontAttributeName
-    
+//    NSShadow *shadow = [[NSShadow alloc] init];
+//    shadow.shadowColor = UIColorFromRGBAlpha(0x000000, 0.8);
+//    shadow.shadowOffset = CGSizeMake(0, 0);
+    NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor whiteColor],
+                                 /*NSShadowAttributeName:shadow*/
+                                  };
+    [[UINavigationBar appearance] setTitleTextAttributes:attributes];
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 

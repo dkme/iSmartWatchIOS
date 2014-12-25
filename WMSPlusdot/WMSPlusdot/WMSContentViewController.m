@@ -19,6 +19,7 @@
 #import "WMSMyAccountViewController.h"
 #import "UIViewController+Tip.h"
 #import "UIViewController+Update.h"
+#import "WMSUpdateVC.h"
 
 #import "WMSSyncDataView.h"
 #import "WMSMySportView.h"
@@ -74,6 +75,8 @@
 @implementation WMSContentViewController
 {
     NSUInteger _targetSteps;
+    
+    BOOL _isStartDFU;//是否准备升级了
 }
 
 #pragma mark - Getter
@@ -808,6 +811,15 @@
         default:
             break;
     }
+    if ([self.bleControl isConnecting] ||
+        [self.bleControl isConnected])
+    {
+        return ;
+    }
+    if (_isStartDFU==YES) {
+        return ;
+    }
+    
     DEBUGLog(@"》》Scanning %@",NSStringFromClass([self class]));
     [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
                                        completion:^(NSArray *peripherals)
@@ -851,7 +863,8 @@
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
     //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
-    if ([self isBindingVC] == NO) {
+    if ([self isBindingVC] == NO)
+    {
         [self scanAndConnectPeripheral];
     }
 }
@@ -863,18 +876,14 @@
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
     //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
-    if ([self isBindingVC] == NO) {
+    if ([self isBindingVC] == NO)
+    {
         [self scanAndConnectPeripheral];
     }
 }
-
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
     DEBUGLog(@"扫描结束 %@, isConnecting:%d, isConnected:%d",NSStringFromClass([self class]),self.bleControl.isConnecting, self.bleControl.isConnected);
-    if ([self.bleControl isConnecting] || [self.bleControl isConnected]) {
-        DEBUGLog(@"handleScanPeripheralFinish return");
-        return ;
-    }
     
     if ([self isBindingVC] == NO) {
         [self scanAndConnectPeripheral];
@@ -912,6 +921,9 @@
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidStartDFU:) name:WMSUpdateVCStartDFU object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidEndDFU:) name:WMSUpdateVCEndDFU object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -946,6 +958,18 @@
         default:
             break;
     }
+}
+
+- (void)peripheralDidStartDFU:(NSNotification *)notification
+{
+    _isStartDFU = YES;
+}
+- (void)peripheralDidEndDFU:(NSNotification *)notification
+{
+    _isStartDFU = NO;
+    
+    //唤醒扫描
+    [self scanAndConnectPeripheral];
 }
 
 @end

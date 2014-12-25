@@ -232,6 +232,9 @@
 		23D7CF0319B5C49C00DFA678 /* LGUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D7CEFD19B5C49C00DFA678 /* LGUtils.m */; };
 		23D7CF0719B5C57D00DFA678 /* WMSBleControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D7CF0619B5C57D00DFA678 /* WMSBleControl.m */; };
 		23D7CF0919B5D5D100DFA678 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7CF0819B5D5D100DFA678 /* CoreBluetooth.framework */; };
+		23E35B8A1A4BB13B00FDA20D /* WMSAntiLostVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E35B881A4BB13B00FDA20D /* WMSAntiLostVC.m */; };
+		23E35B8B1A4BB13B00FDA20D /* WMSAntiLostVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */; };
+		23E35B921A4BE84000FDA20D /* UINavigationController+Config.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E35B911A4BE83F00FDA20D /* UINavigationController+Config.m */; };
 		23E84B921A4814CA0061AD36 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84B911A4814CA0061AD36 /* Utility.m */; };
 		23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84B991A4815050061AD36 /* IntelHex2BinConverter.m */; };
 		23E84BA41A48152B0061AD36 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84B9D1A48152B0061AD36 /* DFUOperations.m */; };
@@ -580,6 +583,11 @@
 		23D7CF0519B5C57D00DFA678 /* WMSBleControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBleControl.h; sourceTree = "<group>"; };
 		23D7CF0619B5C57D00DFA678 /* WMSBleControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSBleControl.m; sourceTree = "<group>"; };
 		23D7CF0819B5D5D100DFA678 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		23E35B871A4BB13B00FDA20D /* WMSAntiLostVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAntiLostVC.h; sourceTree = "<group>"; };
+		23E35B881A4BB13B00FDA20D /* WMSAntiLostVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSAntiLostVC.m; sourceTree = "<group>"; };
+		23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSAntiLostVC.xib; sourceTree = "<group>"; };
+		23E35B901A4BE83F00FDA20D /* UINavigationController+Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Config.h"; sourceTree = "<group>"; };
+		23E35B911A4BE83F00FDA20D /* UINavigationController+Config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Config.m"; sourceTree = "<group>"; };
 		23E84B901A4814CA0061AD36 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		23E84B911A4814CA0061AD36 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
 		23E84B981A4815050061AD36 /* IntelHex2BinConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelHex2BinConverter.h; sourceTree = "<group>"; };
@@ -766,6 +774,8 @@
 				2378A3E119FFB0A000187836 /* UIViewController+Tip */,
 				23244D7D1A314640006C925C /* UIViewController+Update */,
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
+				23E35B901A4BE83F00FDA20D /* UINavigationController+Config.h */,
+				23E35B911A4BE83F00FDA20D /* UINavigationController+Config.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1059,6 +1069,7 @@
 				230298CC19A87D65009D4306 /* 绑定配件视图 */,
 				2316508919AB47310066C301 /* 个人信息视图 */,
 				231972301A3533AF002E8A0F /* 设置视图 */,
+				23E35B861A4BB10B00FDA20D /* 防丢视图 */,
 				232846C719A43668001C148D /* Supporting Files */,
 				232846D219A43668001C148D /* Images.xcassets */,
 			);
@@ -1536,6 +1547,16 @@
 			name = BleProfile;
 			sourceTree = "<group>";
 		};
+		23E35B861A4BB10B00FDA20D /* 防丢视图 */ = {
+			isa = PBXGroup;
+			children = (
+				23E35B871A4BB13B00FDA20D /* WMSAntiLostVC.h */,
+				23E35B881A4BB13B00FDA20D /* WMSAntiLostVC.m */,
+				23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */,
+			);
+			name = "防丢视图";
+			sourceTree = "<group>";
+		};
 		23E84B8E1A4814A10061AD36 /* DFU */ = {
 			isa = PBXGroup;
 			children = (
@@ -1796,6 +1817,7 @@
 				2319723C1A3540DE002E8A0F /* WMSDetailCell.xib in Resources */,
 				2326A43F19A5D71B0098657B /* main_menu_bg_b.png in Resources */,
 				233511AD19A4C00600FBCC81 /* main_setting_icon_a.png in Resources */,
+				23E35B8B1A4BB13B00FDA20D /* WMSAntiLostVC.xib in Resources */,
 				2326A43319A5C6970098657B /* main_menu_binding_icon_b.png in Resources */,
 				2326A40819A591460098657B /* main_ico_time.png in Resources */,
 				233511B819A4C45500FBCC81 /* main_progress_bg.png in Resources */,
@@ -1848,6 +1870,7 @@
 				234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */,
 				23D7CF0219B5C49C00DFA678 /* LGService.m in Sources */,
 				237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */,
+				23E35B921A4BE84000FDA20D /* UINavigationController+Config.m in Sources */,
 				2335119E19A4B85700FBCC81 /* RECommonFunctions.m in Sources */,
 				23D7CEFE19B5C49C00DFA678 /* CBUUID+StringExtraction.m in Sources */,
 				234BF1EE19B0305C005D71A0 /* WMSNavBarView.m in Sources */,
@@ -1907,6 +1930,7 @@
 				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,
 				23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */,
 				23B0094619D50100008424FA /* PNLineChartView.m in Sources */,
+				23E35B8A1A4BB13B00FDA20D /* WMSAntiLostVC.m in Sources */,
 				23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */,
 				23E84BA41A48152B0061AD36 /* DFUOperations.m in Sources */,
 				232846CD19A43668001C148D /* main.m in Sources */,

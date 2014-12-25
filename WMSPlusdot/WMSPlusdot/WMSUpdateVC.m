@@ -8,6 +8,7 @@
 
 #import "WMSUpdateVC.h"
 #import "WMSAppDelegate.h"
+#import "UIViewController+Tip.h"
 
 #import "WMSNavBarView.h"
 #import "LDProgressView.h"
@@ -18,10 +19,17 @@
 #import "DFUOperations.h"
 #import "Utility.h"
 
-@interface WMSUpdateVC ()<DFUOperationsDelegate>
+NSString * const WMSUpdateVCStartDFU =
+                    @"com.guogee.ios.WMSUpdateVCStartDFU";
+NSString *const WMSUpdateVCEndDFU =
+                    @"com.guogee.ios.WMSUpdateVCEndDFU";
+
+@interface WMSUpdateVC ()<DFUOperationsDelegate,UIAlertViewDelegate>
 {
     WMSUpdateVCHelper *_updateHelper;
     DFUOperations *_dfuOperations;
+    
+    BOOL _isUpdating;//是否正在更新
 }
 @property (weak, nonatomic) IBOutlet LDProgressView *progressView;
 
@@ -93,30 +101,48 @@
     _updateHelper = [WMSUpdateVCHelper instance];
 }
 
+#pragma mark - Post Notification
+- (void)postNotificationForName:(NSString *)name
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:name object:nil userInfo:nil];
+}
+
 #pragma mark - Action
 - (void)buttonLeftClicked:(id)sender
 {
+    if (_isUpdating) {
+        NSString *title = NSLocalizedString(@"提示", nil);
+        NSString *message = NSLocalizedString(@"正在更新固件，退出会停止更新，是否继续退出？", nil);
+        NSString *cancel = NSLocalizedString(@"NO", nil);
+        NSString *confirm = NSLocalizedString(@"YES", nil);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:confirm, nil];
+        [alert show];
+        return ;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)updateAction:(id)sender {
     WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
     if ([bleControl isConnected] == NO) {
+        [self showTip:NSLocalizedString(@"连接已断开", nil)];
         return;
     }
     
     NSString *peipheralUUID = [bleControl.connectedPeripheral UUIDString];
     [bleControl switchToUpdateModeCompletion:^(BOOL success, NSString *failReason) {
         DEBUGLog(@"切换至升级模式%@",success?@"成功":@"失败");
-        //此时会断开连接，发送通知
-        [self scanPeipheral:peipheralUUID];
+        //发送通知
+        [self postNotificationForName:WMSUpdateVCStartDFU];
+        //[self scanPeipheral:peipheralUUID];
+        //4s后，会断开连接，此时再去扫描
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:peipheralUUID];
+        [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:7.0];
     }];
     
     //peipheralUUID = @"C3817558-B47C-8E51-D801-78921502CB04";
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:peipheralUUID];
-    [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:5.0];
-    //[self scanPeipheral:peipheralUUID];
+    
 }
 
 #pragma mark - DFU
@@ -126,7 +152,7 @@
     __weak WMSUpdateVCHelper *weakHelper = _updateHelper;
     [weakHelper scanPeripheralByInterval:20.0 completion:^(CBPeripheral *peripheral) {
         NSString *uuid = [peripheral.identifier UUIDString];
-        DEBUGLog(@"uuid:%@",uuid);
+        //DEBUGLog(@"uuid:%@",uuid);
         if ([specifiedUUID isEqualToString:uuid]) {
             [weakHelper stopScan];
             DEBUGLog(@"stop scan ");
@@ -145,6 +171,21 @@
     [_dfuOperations connectDevice:peripheral];    
 }
 
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    DEBUGLog(@"index:%d",buttonIndex);
+    
+    if (buttonIndex == 0) {
+        ;
+    } else if (buttonIndex == 1) {
+        [_dfuOperations cancelDFU];
+        [self onDFUCancelled];
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        
+    }
+}
 
 #pragma mark - DFUOperationsDelegate
 
@@ -158,13 +199,20 @@
 {
     NSLog(@"onDeviceConnected %@",peripheral.name);
     
-    NSString *filePath = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
-    [_dfuOperations performDFUOnFile:filePath firmwareType:APPLICATION];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *filePath = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
+        [_dfuOperations performDFUOnFile:filePath firmwareType:APPLICATION];
+    });
 }
 
 -(void)onDeviceDisconnected:(CBPeripheral *)peripheral
 {
     NSLog(@"device disconnected %@",peripheral.name);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.progressView.hidden = YES;
+        _isUpdating = NO;
+        [self postNotificationForName:WMSUpdateVCEndDFU];
+    });
 }
 
 -(void)onDFUStarted
@@ -177,6 +225,8 @@
 //        NSString *uploadStatusMessage = [self getUploadStatusMessage];
 //        uploadStatus.text = uploadStatusMessage;
         self.progressView.hidden = NO;
+        self.buttonUpdate.enabled = NO;
+        _isUpdating = YES;
     });
 }
 
@@ -188,6 +238,9 @@
     dispatch_async(dispatch_get_main_queue(), ^{
 //        [self enableOtherButtons];
         self.progressView.hidden = YES;
+        _isUpdating = NO;
+        
+        [self postNotificationForName:WMSUpdateVCEndDFU];
     });
 }
 
@@ -203,7 +256,9 @@
 {
     NSLog(@"OnSuccessfulFileTransferred");
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+        self.progressView.hidden = YES;
+        _isUpdating = NO;
+        [self postNotificationForName:WMSUpdateVCEndDFU];
     });
 }
 
@@ -211,7 +266,9 @@
 {
     NSLog(@"OnError %@",errorMessage);
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+        self.progressView.hidden = YES;
+        _isUpdating = NO;
+        [self postNotificationForName:WMSUpdateVCEndDFU];
     });
 }
 

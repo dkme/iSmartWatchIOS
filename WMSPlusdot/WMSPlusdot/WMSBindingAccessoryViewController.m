@@ -19,7 +19,7 @@
 
 #define SECTION_NUMBER  1
 #define CELL_HIGHT      55
-#define HEADER_HEIGHT   30
+#define HEADER_HEIGHT   0.1
 #define TableFrame ( CGRectMake(0, 80, ScreenWidth, ScreenHeight-80) )
 #define buttonBottomFrame   ( CGRectMake((ScreenWidth-150)/2, ScreenHeight-35-20, 150, 35) )
 #define ButtonScanTitle     NSLocalizedString(@"重新扫描", nil)
@@ -504,13 +504,13 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
+    NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     LGPeripheral *peripheral = self.listData[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@                           %@",peripheral.cbPeripheral.name,NSLocalizedString(@"点击绑定", nil)];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@                           %@",peripheral.cbPeripheral.name,/*NSLocalizedString(@"点击绑定", nil)*/@""];
     cell.textLabel.font = Font_System(25.0);
     cell.textLabel.textColor = [UIColor lightGrayColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
