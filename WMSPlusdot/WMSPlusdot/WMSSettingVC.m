@@ -176,7 +176,7 @@
 {
     BOOL res = [[WMSAppDelegate appDelegate].wmsBleControl isConnected];
     if (res == NO) {
-        return ;
+        //return ;
     }
     [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
      {

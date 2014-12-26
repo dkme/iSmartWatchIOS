@@ -22,6 +22,7 @@ extern NSString *const WMSUpdateVCEndDFU;
 
 @property (weak, nonatomic) IBOutlet WMSNavBarView *navBarView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet UITextView *textViewState;
 @property (weak, nonatomic) IBOutlet UIButton *buttonUpdate;
 
 @property (strong, nonatomic) NSString *navBarTitle;

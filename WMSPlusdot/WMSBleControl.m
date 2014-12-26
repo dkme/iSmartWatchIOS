@@ -786,9 +786,10 @@ NSString * const WMSBleControlScanFinish =
             if ([self.myTimers isValidForTimeID:TimeIDSwitchUpdateMode]) {//成功
                 [self.myTimers deleteTimerForTimeID:TimeIDSwitchUpdateMode];
                 
+                Byte result = package[3];
                 WMSBleSwitchToUpdateModeCallback callBack = [NSMutableArray popFromArray:self.stackSwitchUpdateMode];
                 if (callBack) {
-                    callBack(YES,nil);
+                    callBack(result,nil);
                 }
             }
             return;

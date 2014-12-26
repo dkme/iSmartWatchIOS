@@ -156,6 +156,8 @@
 		234BF1FB19B05991005D71A0 /* select_man.png in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1F819B05991005D71A0 /* select_man.png */; };
 		234BF1FC19B05991005D71A0 /* select_woman.png in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1F919B05991005D71A0 /* select_woman.png */; };
 		234DD31519D29DBB00E6A7AE /* Login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 234DD31419D29DBB00E6A7AE /* Login_bg.png */; };
+		234F81F71A4D42D100332C03 /* WMSSoundOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 234F81F61A4D42D100332C03 /* WMSSoundOperation.m */; };
+		234F81F91A4D565600332C03 /* sound_alarm.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 234F81F81A4D565500332C03 /* sound_alarm.m4r */; };
 		2353790219CD5F6000269F67 /* WMSMyActivityRemind.m in Sources */ = {isa = PBXBuildFile; fileRef = 2353790119CD5F6000269F67 /* WMSMyActivityRemind.m */; };
 		2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2353790419CD655000269F67 /* WMSAlarmClockModel.m */; };
 		235427681A3E906E008E5CFD /* WMSPostNotificationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 235427671A3E906E008E5CFD /* WMSPostNotificationHelper.m */; };
@@ -460,6 +462,9 @@
 		234BF1F819B05991005D71A0 /* select_man.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_man.png; sourceTree = "<group>"; };
 		234BF1F919B05991005D71A0 /* select_woman.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_woman.png; sourceTree = "<group>"; };
 		234DD31419D29DBB00E6A7AE /* Login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login_bg.png; sourceTree = "<group>"; };
+		234F81F51A4D42D100332C03 /* WMSSoundOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSoundOperation.h; sourceTree = "<group>"; };
+		234F81F61A4D42D100332C03 /* WMSSoundOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSoundOperation.m; sourceTree = "<group>"; };
+		234F81F81A4D565500332C03 /* sound_alarm.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound_alarm.m4r; sourceTree = "<group>"; };
 		2353790019CD5F6000269F67 /* WMSMyActivityRemind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMyActivityRemind.h; sourceTree = "<group>"; };
 		2353790119CD5F6000269F67 /* WMSMyActivityRemind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMyActivityRemind.m; sourceTree = "<group>"; };
 		2353790319CD655000269F67 /* WMSAlarmClockModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAlarmClockModel.h; sourceTree = "<group>"; };
@@ -716,6 +721,8 @@
 				2326A44919A5E9CE0098657B /* WMSRightViewController.xib */,
 				236EAF3F1A40260F00533FC8 /* WMSRightVCHelper.h */,
 				236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */,
+				234F81F51A4D42D100332C03 /* WMSSoundOperation.h */,
+				234F81F61A4D42D100332C03 /* WMSSoundOperation.m */,
 				2378A3D619FF405500187836 /* WMSRemindWayViewController.h */,
 				2378A3D719FF405500187836 /* WMSRemindWayViewController.m */,
 				2378A3D819FF405500187836 /* WMSRemindWayViewController.xib */,
@@ -1309,6 +1316,7 @@
 		2378A3EE1A00F28D00187836 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				234F81F81A4D565500332C03 /* sound_alarm.m4r */,
 				2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */,
 			);
 			name = Sounds;
@@ -1813,6 +1821,7 @@
 				F41930CE19F16B1400E7B0B5 /* check.png in Resources */,
 				232846F619A43DC1001C148D /* main_bg.png in Resources */,
 				2316509419AB4A180066C301 /* WMSSmartClockViewController.xib in Resources */,
+				234F81F91A4D565600332C03 /* sound_alarm.m4r in Resources */,
 				23ABD59F1A1DC0010062FC99 /* bind_success.png in Resources */,
 				2319723C1A3540DE002E8A0F /* WMSDetailCell.xib in Resources */,
 				2326A43F19A5D71B0098657B /* main_menu_bg_b.png in Resources */,
@@ -1888,6 +1897,7 @@
 				231972481A358DDA002E8A0F /* JSCustomBadge.m in Sources */,
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
 				2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */,
+				234F81F71A4D42D100332C03 /* WMSSoundOperation.m in Sources */,
 				2319723F1A354535002E8A0F /* WMSAppConfig.m in Sources */,
 				232846F219A43825001C148D /* WMSLoginViewController.m in Sources */,
 				238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */,

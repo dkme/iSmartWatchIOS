@@ -19,9 +19,14 @@
 
 #define Array_Length    7
 
-@interface WMSInputViewController ()<UITableViewDataSource,UITableViewDelegate>
+#define PICKER_VIEW_COMPONENT_NUMBER        1
+#define PICKER_VIEW_COMPONENT_WIDTH         ScreenWidth
+#define PICKER_VIEW_ROW_NUMBER              24
+
+@interface WMSInputViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) UIDatePicker *datePicker;
+@property (strong, nonatomic) UIPickerView *pickerView;
 
 @property (nonatomic,strong) NSArray *smartSleepValueArray;
 @property (nonatomic,strong) NSArray *weekArray;
@@ -49,6 +54,16 @@
         _datePicker.locale = [NSLocale systemLocale];
     }
     return _datePicker;
+}
+- (UIPickerView *)pickerView
+{
+    if (!_pickerView) {
+        _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, (ScreenHeight-216.0)/2.0, ScreenWidth, 216.0)];
+        _pickerView.backgroundColor = [UIColor whiteColor];
+        _pickerView.dataSource = self;
+        _pickerView.delegate = self;
+    }
+    return _pickerView;
 }
 - (NSArray *)smartSleepValueArray
 {
@@ -109,18 +124,23 @@
     switch (self.selectIndex) {
         case StartTimeCell:
         {
-            NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_startTimeHour,_startTimeMinute];
-            NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
-            [self.datePicker setPickerDate:date];
-            [self.view addSubview:self.datePicker];
+//            NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_startTimeHour,_startTimeMinute];
+//            NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
+//            [self.datePicker setPickerDate:date];
+//            [self.view addSubview:self.datePicker];
+        
+            [self.pickerView selectRow:_startTimeHour inComponent:0 animated:NO];
+            [self.view addSubview:self.pickerView];
             break;
         }
         case FinishTimeCell:
         {
-            NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_finishTimeHour,_finishTimeMinute];
-            NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
-            [self.datePicker setPickerDate:date];
-            [self.view addSubview:self.datePicker];
+//            NSString *strDate = [NSString stringWithFormat:@"%02d:%02d",_finishTimeHour,_finishTimeMinute];
+//            NSDate *date = [NSDate dateFromString:strDate format:@"HH:mm"];
+//            [self.datePicker setPickerDate:date];
+//            [self.view addSubview:self.datePicker];
+            [self.pickerView selectRow:_finishTimeHour inComponent:0 animated:NO];
+            [self.view addSubview:self.pickerView];
             break;
         }
         case IntervalTimeCell:
@@ -179,18 +199,29 @@
         case StartTimeCell:
         case FinishTimeCell:
         {
-            NSDate *date = self.datePicker.date;
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            dateFormatter.dateFormat = @"HH";
-            NSString *strHour = [dateFormatter stringFromDate:date];
-            dateFormatter.dateFormat = @"mm";
-            NSString *strMinute = [dateFormatter stringFromDate:date];
+//            NSDate *date = self.datePicker.date;
+//            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//            dateFormatter.dateFormat = @"HH";
+//            NSString *strHour = [dateFormatter stringFromDate:date];
+//            dateFormatter.dateFormat = @"mm";
+//            NSString *strMinute = [dateFormatter stringFromDate:date];
+//            if (self.selectIndex == StartTimeCell) {
+//                _startTimeHour = [strHour intValue];
+//                _startTimeMinute = [strMinute intValue];
+//            } else if (self.selectIndex == FinishTimeCell) {
+//                _finishTimeHour = [strHour intValue];
+//                _finishTimeMinute = [strMinute intValue];
+//            }
+            
+            NSInteger row = [self.pickerView selectedRowInComponent:0];
             if (self.selectIndex == StartTimeCell) {
-                _startTimeHour = [strHour intValue];
-                _startTimeMinute = [strMinute intValue];
+                _startTimeHour = row;
+                _startTimeMinute = 0;
             } else if (self.selectIndex == FinishTimeCell) {
-                _finishTimeHour = [strHour intValue];
-                _finishTimeMinute = [strMinute intValue];
+                _finishTimeHour = row;
+                _finishTimeMinute = 0;
+            } else {
+                
             }
             break;
         }
@@ -288,6 +319,39 @@
         return;
     }
     
+}
+
+#pragma mark - UIPickerViewDataSource
+//返回有几个部分
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return PICKER_VIEW_COMPONENT_NUMBER;
+}
+//返回pickerView的行数
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return PICKER_VIEW_ROW_NUMBER;
+    }
+    return 0;
+}
+
+#pragma mark - UIPickerViewDelegate
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return PICKER_VIEW_COMPONENT_WIDTH;
+    }
+    return 0;
+}
+
+//返回值写入pickerView中
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return [NSString stringWithFormat:@"%d",(int)row];
+    }
+    return nil;
 }
 
 @end

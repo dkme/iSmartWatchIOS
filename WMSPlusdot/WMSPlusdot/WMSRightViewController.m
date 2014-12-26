@@ -22,6 +22,7 @@
 #import "WMSPostNotificationHelper.h"
 #import "WMSMyAccessory.h"
 #import "WMSConstants.h"
+#import "WMSSoundOperation.h"
 
 #import "GGDeviceTool.h"
 
@@ -42,7 +43,8 @@
 #define LOW_BATTERY_REMIND_TIMEINTERVAL 20
 #define ANTI_LOST_DISTANCE       60
 
-__weak WMSRightViewController *global_Self = nil;
+#define PLAY_ALERT_DURATION         8.0
+#define PLAY_VIBRATE_TIMEINTERVAL   1.0
 
 @interface WMSRightViewController ()<WMSSwitchCellDelegage,RESideMenuDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
@@ -58,13 +60,11 @@ __weak WMSRightViewController *global_Self = nil;
 
 @property (strong, nonatomic) NSArray *settingItemArray;
 @property (strong, nonatomic) NSArray *cellIndexPathArray;//与上面的值一一对应
-
-@property (nonatomic,strong) AVAudioPlayer *player;
 @end
 
 @implementation WMSRightViewController
 {
-    SystemSoundID soundID;
+    WMSSoundOperation *_soundOperation;
     
     CTCallCenter *_callCenter;
     
@@ -193,9 +193,7 @@ __weak WMSRightViewController *global_Self = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
     
-    global_Self = self;
-    [self loadSoundFile];
-    //[self soundAlarm];
+    _soundOperation = [[WMSSoundOperation alloc] init];
     [self listeningCall];
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -215,9 +213,6 @@ __weak WMSRightViewController *global_Self = nil;
 - (void)dealloc
 {
     DEBUGLog(@"RightViewController dealloc");
-    global_Self = nil;
-    self.player = nil;
-    AudioServicesDisposeSystemSoundID(soundID);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -432,7 +427,8 @@ __weak WMSRightViewController *global_Self = nil;
              [self.pickerController takePicture];
          }
          else if (RemoteDataTypeFindPhone == dataType) {
-             [self soundAlarm];
+             [_soundOperation playAlarmWithDuration:PLAY_ALERT_DURATION andVibrateWithTimeInterval:PLAY_VIBRATE_TIMEINTERVAL completion:nil];
+             
              [WMSPostNotificationHelper postSeachPhoneLocalNotification];
              //开启闪烁
              //[[GGDeviceTool sharedInstance] startWebcamFlicker];
@@ -485,65 +481,6 @@ __weak WMSRightViewController *global_Self = nil;
             DEBUGLog(@"Nothing is done");
         }
     };
-}
-
-#pragma mark - 声音处理
-- (void)loadSoundFile
-{
-    
-    
-    NSURL *tapSound   = [[NSBundle mainBundle] URLForResource: @"嘀嘀报警声"
-                                                withExtension: @"m4a"];
-    // Store the URL as a CFURLRef instance
-    CFURLRef soundFileURLRef = (__bridge CFURLRef)tapSound;
-    // Create a system sound object representing the sound file.
-    AudioServicesCreateSystemSoundID (
-                                      soundFileURLRef,
-                                      &soundID
-                                      );
-    _player = [[AVAudioPlayer alloc] initWithContentsOfURL:tapSound error:nil];
-    //DEBUGLog(@"duration:%f",self.player.duration);
-}
-
-void systemAudioCallback(SystemSoundID ssID,void* clientData)
-{
-    //AudioServicesPlaySystemSound(ssID);
-    DEBUGLog(@"play vibrate");
-    [NSObject cancelPreviousPerformRequestsWithTarget:global_Self selector:@selector(triggerShake) object:nil];
-    [global_Self performSelector:@selector(triggerShake) withObject:nil afterDelay:1];
-}
-
-- (void)soundAlarm
-{
-    // 创建播放器
-    //    self.player.volume = 1;
-    //    self.player.numberOfLoops = 1; //设置音乐播放次数  -1为一直循环
-    //    [self.player prepareToPlay];
-    //    [self.player play];
-    //    DEBUGLog(@"soundAlarm");
-    
-    AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-    AudioServicesAddSystemSoundCompletion(kSystemSoundID_Vibrate, NULL, NULL, systemAudioCallback, NULL);
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    
-    AudioServicesPlaySystemSound(soundID);
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopShare) object:nil];
-    [self performSelector:@selector(stopShare) withObject:nil afterDelay:self.player.duration];
-    DEBUGLog(@"stop timeInterval:%f",self.player.duration);
-}
-
-- (void)triggerShake
-{
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-}
-- (void)stopShare
-{
-    AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate);
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(triggerShake) object:nil];
-    
-    //停止闪烁
-    //[[GGDeviceTool sharedInstance] stopWebcamFlicker];
 }
 
 #pragma mark - 遥控拍照
@@ -902,9 +839,8 @@ void systemAudioCallback(SystemSoundID ssID,void* clientData)
     if (indexPath.section == 3-1 && indexPath.row == 0) {
         WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        //UIBarButtonItem *item = [UIBarButtonItem ]
-        //nav.navigationItem.leftBarButtonItem = ;
-        vc.title = self.section4TitleArray[indexPath.row];
+        nav.navigationBarHidden = YES;
+        vc.navBarTitle = self.section4TitleArray[indexPath.row];
         [self presentViewController:nav animated:YES completion:nil];
         return;
     }

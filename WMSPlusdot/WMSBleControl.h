@@ -80,6 +80,12 @@ typedef NS_ENUM(NSInteger, WMSBleState) {
     WMSBleStatePoweredOff,
     WMSBleStatePoweredOn,
 };
+//切换升级模式的返回结果
+typedef NS_ENUM(NSInteger, SwitchToUpdateResult) {
+    SwitchToUpdateResultSuccess = 0x00,
+    SwitchToUpdateResultLowBattery = 0x01,
+    SwitchToUpdateResultUnsupported = 0x02,
+};
 
 #define KEY_TIMEOUT_USERINFO_CHARACT    @"KEY_TIMEOUT_USERINFO_CHARACT"
 #define KEY_TIMEOUT_USERINFO_VALUE      @"KEY_TIMEOUT_USERINFO_VALUE"
@@ -98,7 +104,7 @@ static const int DATA_LENGTH = 13;
 typedef void (^WMSBleControlScanedPeripheralCallback)(NSArray *peripherals);
 
 typedef void (^WMSBleSwitchToControlModeCallback)(BOOL success,NSString *failReason);
-typedef void (^WMSBleSwitchToUpdateModeCallback)(BOOL success,NSString *failReason);
+typedef void (^WMSBleSwitchToUpdateModeCallback)(SwitchToUpdateResult result,NSString *failReason);
 
 typedef void (^WMSBleSendDataCallback)(BOOL success);
 

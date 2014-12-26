@@ -73,6 +73,7 @@ NSString *const WMSUpdateVCEndDFU =
     self.textView.backgroundColor = [UIColor whiteColor];
     self.textView.text = txt;
     self.textView.editable = NO;
+    self.textView.userInteractionEnabled = NO;
 }
 - (void)setupUI
 {
@@ -92,13 +93,27 @@ NSString *const WMSUpdateVCEndDFU =
     self.progressView.type = LDProgressStripes;
     self.progressView.color = UICOLOR_DEFAULT;
     self.progressView.progress = 0.0;
-    self.progressView.hidden = YES;
+    self.progressView.hidden = NO;
+    
+    //textViewState
+    self.textViewState.backgroundColor = [UIColor whiteColor];
+    self.textViewState.text = @"aaaa";
+    self.textViewState.editable = NO;
+    self.textViewState.userInteractionEnabled = NO;
     
 }
 
 - (void)initProperty
 {
     _updateHelper = [WMSUpdateVCHelper instance];
+}
+
+#pragma mark - Private
+- (void)updateState:(NSString *)state
+{
+    NSString *oldState = self.textViewState.text;
+    NSString *str = [NSString stringWithFormat:@"%@\n%@",oldState,state];
+    [self.textViewState setText:str];
 }
 
 #pragma mark - Post Notification
@@ -130,19 +145,38 @@ NSString *const WMSUpdateVCEndDFU =
     }
     
     NSString *peipheralUUID = [bleControl.connectedPeripheral UUIDString];
-    [bleControl switchToUpdateModeCompletion:^(BOOL success, NSString *failReason) {
-        DEBUGLog(@"切换至升级模式%@",success?@"成功":@"失败");
+    
+    [self updateState:NSLocalizedString(@"正在切换至升级模式...", nil)];
+    [bleControl switchToUpdateModeCompletion:^(SwitchToUpdateResult result, NSString *failReason)
+    {
+        //NSString *state = @"";
+        switch (result)
+        {
+            case SwitchToUpdateResultSuccess:
+            {
+                [self updateState:NSLocalizedString(@"切换模式成功...", nil)];
+                break;
+            }
+            case SwitchToUpdateResultLowBattery:
+            {
+                [self showTip:NSLocalizedString(@"您的手表电量过低，不能升级", nil)];
+                break;
+            }
+            case SwitchToUpdateResultUnsupported:
+            {
+                [self showTip:NSLocalizedString(@"您的手表不支持升级", nil)];
+                break;
+            }
+            default:
+                break;
+        }
+        [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
         //发送通知
         [self postNotificationForName:WMSUpdateVCStartDFU];
-        //[self scanPeipheral:peipheralUUID];
         //4s后，会断开连接，此时再去扫描
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:peipheralUUID];
-        [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:7.0];
+        [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:5.0];
     }];
-    
-    //peipheralUUID = @"C3817558-B47C-8E51-D801-78921502CB04";
-    
-    
 }
 
 #pragma mark - DFU
@@ -227,6 +261,7 @@ NSString *const WMSUpdateVCEndDFU =
         self.progressView.hidden = NO;
         self.buttonUpdate.enabled = NO;
         _isUpdating = YES;
+        [self updateState:NSLocalizedString(@"正在进行升级...", nil)];
     });
 }
 
@@ -239,6 +274,7 @@ NSString *const WMSUpdateVCEndDFU =
 //        [self enableOtherButtons];
         self.progressView.hidden = YES;
         _isUpdating = NO;
+        [self updateState:NSLocalizedString(@"升级已取消...", nil)];
         
         [self postNotificationForName:WMSUpdateVCEndDFU];
     });
@@ -258,6 +294,7 @@ NSString *const WMSUpdateVCEndDFU =
     dispatch_async(dispatch_get_main_queue(), ^{
         self.progressView.hidden = YES;
         _isUpdating = NO;
+        [self updateState:NSLocalizedString(@"升级成功...", nil)];
         [self postNotificationForName:WMSUpdateVCEndDFU];
     });
 }
@@ -268,6 +305,7 @@ NSString *const WMSUpdateVCEndDFU =
     dispatch_async(dispatch_get_main_queue(), ^{
         self.progressView.hidden = YES;
         _isUpdating = NO;
+        [self updateState:NSLocalizedString(@"升级失败...", nil)];
         [self postNotificationForName:WMSUpdateVCEndDFU];
     });
 }

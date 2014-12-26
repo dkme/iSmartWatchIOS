@@ -13,7 +13,7 @@
 #define REGISTER_INTERFACE_PATH @"api/user/AddUser"
 #define LOGIN_INTERFACE_PATH    @"api/user/CheckLogin"
 
-#define URL_REQUEST_FIRMWARE_VERSION    @"http://www.youduoyun.com/api/firmwares/version?device_id=80"
+#define URL_REQUEST_FIRMWARE_VERSION    @"http://www.youduoyun.com/api/firmwares/version?device_id=180"
 
 #define REQUEST_TIME_INTERVAL   5.0
 

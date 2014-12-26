@@ -18,7 +18,7 @@ const float BOTTOM_VIEW_UP_MOVE_HEIGHT                      = 40.0;
 
 #define OneDayTimeInterval      (24*60*60)
 #define DateFormat              @"yyyy/MM/dd"
-#define TipViewFrame            ( (CGRect){0,125,ScreenWidth,35} )
+#define TipViewFrame            ( (CGRect){0,125-5,ScreenWidth,35} )
 
 
 
