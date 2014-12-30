@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class WMSNavBarView;
+@class LDProgressView;
 
 /*
  *切换升级模式成功时的通知
@@ -24,10 +25,13 @@ extern NSString *const WMSUpdateVCEndDFU;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UITextView *textViewState;
 @property (weak, nonatomic) IBOutlet UIButton *buttonUpdate;
+@property (weak, nonatomic) IBOutlet LDProgressView *progressView;
 
 @property (strong, nonatomic) NSString *navBarTitle;
 @property (strong, nonatomic) NSString *updateDescribe;
 @property (strong, nonatomic) NSString *updateStrURL;
+
+@property (assign, nonatomic, readonly, getter=isUpdateSuccess) BOOL updateSuccess;
 
 - (IBAction)updateAction:(id)sender;
 

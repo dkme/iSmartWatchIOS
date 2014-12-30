@@ -112,7 +112,6 @@
     [self bleOperation];
     
     //[self showScanning:YES];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -164,6 +163,7 @@
 - (void)localizableView
 {
     _labelTitle.text = NSLocalizedString(@"智能手表搜索",nil);
+    _labelTitle.font = Font_DINCondensed(20.0);
     _labelTip.text = NSLocalizedString(@"Please make sure the watch power is on and near the phone",nil);
     
 }
@@ -515,7 +515,7 @@
     cell.textLabel.textColor = [UIColor lightGrayColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",peripheral.UUIDString];
+    //cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",peripheral.UUIDString];
     cell.detailTextLabel.font = Font_System(12.0);
     cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     
@@ -580,6 +580,10 @@
     [bindView.bottomButton setBackgroundImage:[UIImage imageNamed:@"bind_btn_a.png"] forState:UIControlStateNormal];
     [bindView.bottomButton setBackgroundImage:[UIImage imageNamed:@"bind_btn_b.png"] forState:UIControlStateSelected];
     [bindView.bottomButton addTarget:self action:@selector(onBindViewForBottomButton:) forControlEvents:UIControlEventTouchUpInside];
+    if (iPhone5) {
+        return bindView;
+    }
+    [bindView adaptiveIphone4];
     return bindView;
 }
 - (void)showBindingView:(BOOL)show

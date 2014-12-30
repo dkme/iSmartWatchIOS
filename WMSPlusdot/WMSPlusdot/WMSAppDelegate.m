@@ -96,21 +96,18 @@
     
     [self setupApp];
     
-    //[[GGAudioTool sharedInstance] playSilentSound];
-    
-//    if ([WMSHelper isFirstLaunchApp]||YES) {
-//        self.window.rootViewController = [WMSGuideVC guide];
-//        [self.window makeKeyAndVisible];
-//        return YES;
-//    }
-    
-
-
-    if ([WMSAppConfig isHaveLogin]) {//已经登陆过
-        self.window.rootViewController = [self reSideMenu];
-    } else {
-        self.window.rootViewController = [self loginNavigationCtrl];
+    if ([WMSHelper isFirstLaunchApp]) {
+        self.window.rootViewController = [WMSGuideVC guide];
+        [self.window makeKeyAndVisible];
+        return YES;
     }
+
+//    if ([WMSAppConfig isHaveLogin]) {//已经登陆过
+//        self.window.rootViewController = [self reSideMenu];
+//    } else {
+//        self.window.rootViewController = [self loginNavigationCtrl];
+//    }
+    self.window.rootViewController = [self reSideMenu];
 
     [self.window makeKeyAndVisible];
     return YES;

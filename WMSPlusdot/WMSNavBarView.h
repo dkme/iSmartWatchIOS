@@ -11,6 +11,7 @@
 @interface WMSNavBarView : UIView
 
 @property (nonatomic, strong) UIButton *buttonLeft;
+@property (nonatomic, strong) UIButton *buttonRight;
 @property (nonatomic, strong) UILabel *labelTitle;
 
 @end

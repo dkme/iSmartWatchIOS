@@ -31,7 +31,6 @@ NSString *const WMSUpdateVCEndDFU =
     
     BOOL _isUpdating;//是否正在更新
 }
-@property (weak, nonatomic) IBOutlet LDProgressView *progressView;
 
 @end
 
@@ -44,6 +43,7 @@ NSString *const WMSUpdateVCEndDFU =
     [self setupTextView];
     [self setupUI];
     [self initProperty];
+    [self adaptiveIphone4];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,11 +93,11 @@ NSString *const WMSUpdateVCEndDFU =
     self.progressView.type = LDProgressStripes;
     self.progressView.color = UICOLOR_DEFAULT;
     self.progressView.progress = 0.0;
-    self.progressView.hidden = NO;
+    self.progressView.hidden = YES;
     
     //textViewState
     self.textViewState.backgroundColor = [UIColor whiteColor];
-    self.textViewState.text = @"aaaa";
+    self.textViewState.text = @"";
     self.textViewState.editable = NO;
     self.textViewState.userInteractionEnabled = NO;
     
@@ -106,14 +106,36 @@ NSString *const WMSUpdateVCEndDFU =
 - (void)initProperty
 {
     _updateHelper = [WMSUpdateVCHelper instance];
+    
+    _updateSuccess = NO;
+}
+
+- (void)adaptiveIphone4
+{
+    if (iPhone5) {
+        return;
+    }
+    CGRect frame = self.textView.frame;
+    frame.origin.y -= 20.0;
+    self.textView.frame = frame;
+    
+    frame = self.progressView.frame;
+    frame.origin.y -= (568.0-480.0-20);
+    self.progressView.frame = frame;
+    
+    frame = self.textViewState.frame;
+    frame.origin.y -= (568.0-480.0-20);
+    self.textViewState.frame = frame;
+    
 }
 
 #pragma mark - Private
 - (void)updateState:(NSString *)state
 {
-    NSString *oldState = self.textViewState.text;
-    NSString *str = [NSString stringWithFormat:@"%@\n%@",oldState,state];
-    [self.textViewState setText:str];
+//    NSString *oldState = self.textViewState.text;
+//    NSString *str = [NSString stringWithFormat:@"%@\n%@",oldState,state];
+//    [self.textViewState setText:str];
+    [self.textViewState setText:state];
 }
 
 #pragma mark - Post Notification
@@ -140,7 +162,7 @@ NSString *const WMSUpdateVCEndDFU =
 - (IBAction)updateAction:(id)sender {
     WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
     if ([bleControl isConnected] == NO) {
-        [self showTip:NSLocalizedString(@"连接已断开", nil)];
+        [self showTip:NSLocalizedString(@"您的连接已断开", nil)];
         return;
     }
     
@@ -149,26 +171,28 @@ NSString *const WMSUpdateVCEndDFU =
     [self updateState:NSLocalizedString(@"正在切换至升级模式...", nil)];
     [bleControl switchToUpdateModeCompletion:^(SwitchToUpdateResult result, NSString *failReason)
     {
-        //NSString *state = @"";
         switch (result)
         {
             case SwitchToUpdateResultSuccess:
             {
                 [self updateState:NSLocalizedString(@"切换模式成功...", nil)];
+                DEBUGLog(@"success");
                 break;
             }
             case SwitchToUpdateResultLowBattery:
             {
                 [self showTip:NSLocalizedString(@"您的手表电量过低，不能升级", nil)];
-                break;
+                DEBUGLog(@"low battery");
+                return ;
             }
             case SwitchToUpdateResultUnsupported:
             {
                 [self showTip:NSLocalizedString(@"您的手表不支持升级", nil)];
-                break;
+                DEBUGLog(@"Unsupported");
+                return ;
             }
             default:
-                break;
+                return ;
         }
         [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
         //发送通知
@@ -208,8 +232,7 @@ NSString *const WMSUpdateVCEndDFU =
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    DEBUGLog(@"index:%d",buttonIndex);
-    
+    //DEBUGLog(@"index:%d",buttonIndex);
     if (buttonIndex == 0) {
         ;
     } else if (buttonIndex == 1) {
@@ -294,6 +317,7 @@ NSString *const WMSUpdateVCEndDFU =
     dispatch_async(dispatch_get_main_queue(), ^{
         self.progressView.hidden = YES;
         _isUpdating = NO;
+        _updateSuccess = YES;
         [self updateState:NSLocalizedString(@"升级成功...", nil)];
         [self postNotificationForName:WMSUpdateVCEndDFU];
     });

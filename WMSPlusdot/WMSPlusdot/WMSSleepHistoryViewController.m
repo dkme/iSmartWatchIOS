@@ -385,6 +385,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
 #pragma mark - PNBarChartViewDelegate
 - (void)barChartView:(PNBarChartView *)chartView didSelectBarTag:(NSInteger)barTag atPNBar:(PNBar *)pnBar
 {

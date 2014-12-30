@@ -190,15 +190,16 @@
 "重新建立了连接" = "To establish the connection";
 "您的连接已断开" = "Your Connection disconnected";
 "结束时间必须晚于开始时间" = "The end of time must be later than the start time";
-"设置活动提醒成功" = "Set the active remind success";
-"设置闹钟成功" = "Set the alarm success";
-"提醒设置成功" = "Set remind success";
-"提醒方式设置成功" = "Set remind way success";
-"防丢设置成功" = "Set lost success";
+"设置活动提醒成功" = "Set the active remind successfully";
+"设置闹钟成功" = "Set the alarm successfully";
+"提醒设置成功" = "Set remind successfully";
+"提醒方式设置成功" = "Set remind way successfully";
+"防丢设置成功" = "Set lost successfully";
+"设置防丢成功" = "Set lost successfully";
 "正在切换至遥控模式..." = " You will be able to take photos from smart-watch by pressing the upper right conier of the key";//"Is switch to the remote control mode...";
 "正在绑定配件..." = "Is binding accessories...";
 "正在配置设置项，请稍等..." = "Is config settings, please wait...";
-"设置项配置成功" = "Config settings success";
+"设置项配置成功" = "Config settings successfully";
 "当前步数" = "Current step";
 "个人信息" = "User Information";
 "睡眠时长" = "Sleep time";
@@ -270,7 +271,22 @@
 "你的手机没电了，快去充电吧！" = "Your phone battery is low, please charge!";
 "你的手机在这里~" = "Your phone to here~";
 
+"开启防丢后，手表将会在连接断开后，到达指定时间时报警" = "After open the lost watch will be after the connection is broken, arrived at specified time report to the police";
 
+"更新说明" = "Update description";
+"立即更新" = "Update now";
+"正在切换至升级模式..." = "Is switch to upgrade mode...";
+"切换模式成功..." = "Switching mode successfully...";
+"您的手表电量过低，不能升级" = "You watch battery is too low, can't upgrade";
+"您的手表不支持升级" = "You watch does not support the upgrade";
+"正在准备升级..." = "Are preparing to update...";
+"正在进行升级..." = "Ongoing update...";
+"升级已取消..." = "The upgrade has already cancelled...";
+"升级成功..." = "Upgrade successfully...";
+"升级失败..." = "Upgrade failed...";
+"正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, exit will stop update, whether to quit?";
 
+"正在检测新版本..." = "Is testing a new version...";
+"网络不给力，稍后再试试吧" = "Network not to force, try again later";
 
 

@@ -17,6 +17,6 @@
 
 + (id)instanceBindingView;
 
-
+- (void)adaptiveIphone4;
 
 @end

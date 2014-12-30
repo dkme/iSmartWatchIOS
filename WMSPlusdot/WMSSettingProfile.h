@@ -179,6 +179,10 @@ typedef void (^finishRemind)(BOOL success);
  */
 - (void)setAntiLostStatus:(BOOL)openOrClose
                  distance:(NSUInteger)distance
+               completion:(setAntiLostCallBack)aCallBack;//弃用
+- (void)setAntiLostStatus:(BOOL)openOrClose
+                 distance:(NSUInteger)distance
+             timeInterval:(NSUInteger)interval
                completion:(setAntiLostCallBack)aCallBack;
 
 

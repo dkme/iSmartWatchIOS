@@ -13,6 +13,7 @@
 #define FILE_ACTIVITY                    @"activity.archiver"
 #define FILE_ALRAM_CLOCK                 @"alarmClock.archiver"
 #define FILE_ACCESSORY                   @"accessory.plist"
+#define FILE_ANTILOST                    @"antiLost.plist"
 #define FILE_SPORT_DATABASE              @"sportData.db"
 #define FILE_SLEEP_DATABASE              @"sleepData.db"
 

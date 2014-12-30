@@ -7,20 +7,60 @@
 //
 
 #import "WMSAntiLostVC.h"
+#import "WMSAppDelegate.h"
+#import "UIViewController+Tip.h"
 
 #import "WMSNavBarView.h"
 #import "WMSSwitchCell.h"
+#import "WMSInputView.h"
+#import "WMSFileMacro.h"
+#import "WMSMyAccessory.h"
+
+#define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
 #define SECTION_NUMBER              1
 #define SECTION0_HEADER_HEIGHT      40
 
-@interface WMSAntiLostVC ()<UITableViewDataSource,UITableViewDelegate>
+#define PICKER_VIEW_COMPONENT_NUMBER        1
+#define PICKER_VIEW_COMPONENT_WIDTH         ScreenWidth
+#define PICKER_VIEW_ROW_NUMBER              24
+
+#define ANTI_LOST_DISTANCE          60
+
+@interface WMSAntiLostVC ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate>
+{
+    NSInteger _timeInterval;
+}
+@property (nonatomic, strong) WMSInputView *inputView;
+@property (strong, nonatomic) UISwitch *cellSwitch;
 @property (nonatomic, strong) NSArray *textArray;
+@property (nonatomic, strong) NSArray *pickerViewDataSource;
 @end
 
 @implementation WMSAntiLostVC
 
 #pragma mark - Getter/Setter
+- (WMSInputView *)inputView
+{
+    if (!_inputView) {
+        _inputView = [[WMSInputView alloc] initWithLeftItemTitle:NSLocalizedString(@"Cancel", nil) RightItemTitle:NSLocalizedString(@"Confirm",nil)];
+        _inputView.pickerView.delegate = self;
+        _inputView.pickerView.dataSource = self;
+        _inputView.delegate = self;
+        [_inputView hidden:NO];
+    }
+    return _inputView;
+}
+- (UISwitch *)cellSwitch
+{
+    if (!_cellSwitch) {
+        _cellSwitch = [[UISwitch alloc] initWithFrame:UISwitch_Frame];
+        [_cellSwitch setOn:YES animated:NO];
+        [_cellSwitch addTarget:self action:@selector(switchBtnValueChanged:) forControlEvents:UIControlEventValueChanged];
+        [_cellSwitch setOnTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
+    }
+    return _cellSwitch;
+}
 - (NSArray *)textArray
 {
     if (!_textArray) {
@@ -29,19 +69,34 @@
     }
     return _textArray;
 }
+- (NSArray *)pickerViewDataSource
+{
+    if (!_pickerViewDataSource) {
+        _pickerViewDataSource = @[@"1",@"5",@"10",@"20",@"35"];
+    }
+    return _pickerViewDataSource;
+}
 
 #pragma mark - Life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self.view addSubview:self.inputView];
     [self setupNavBarView];
     [self setupTableView];
+    
+    [self loadData];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    DEBUGLog(@"%s",__FUNCTION__);
 }
 
 #pragma mark - setup UI
@@ -54,23 +109,65 @@
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
     [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBarView.buttonRight setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
+    [self.navBarView.buttonRight.titleLabel setFont:Font_System(15.0)];
+    [self.navBarView.buttonRight addTarget:self action:@selector(buttonRightClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)setupTableView
 {
-    CGRect frame = self.tableView.frame;
-    frame.size.width = 305;
-    frame.origin.x = (ScreenWidth-frame.size.width)/2.0;
-    self.tableView.frame = frame;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.scrollEnabled = NO;
+}
+
+#pragma mark - Data
+- (void)loadData
+{
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FileDocumentPath(FILE_ANTILOST)];
+    _timeInterval = [readData[@"interval"] integerValue];
+    self.cellSwitch.on = [readData[@"on"] integerValue];
+    if (readData==nil || _timeInterval==0) {
+        _timeInterval = 5;
+        self.cellSwitch.on = YES;
+    }
+}
+- (void)savaData
+{
+    BOOL on = self.cellSwitch.on;
+    NSDictionary *writeData = @{@"interval":@(_timeInterval),@"on":@(on)};
+    [writeData writeToFile:FileDocumentPath(FILE_ANTILOST) atomically:YES];
 }
 
 #pragma mark - Action
 - (void)buttonLeftClicked:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self savaData];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)buttonRightClicked:(id)sender
+{
+    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    BOOL isBind = [WMSMyAccessory isBindAccessory];
+    BOOL isConnected = [bleControl isConnected];
+    BOOL result = [self checkoutWithIsBind:isBind isConnected:isConnected];
+    if (result == NO) {
+        return;
+    }
+    BOOL on = self.cellSwitch.on;
+    NSUInteger interval = _timeInterval;
+    [bleControl.settingProfile setAntiLostStatus:on distance:ANTI_LOST_DISTANCE timeInterval:interval completion:^(BOOL success)
+     {
+         DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
+         [self showOperationSuccessTip:NSLocalizedString(@"设置防丢成功", nil)];
+     }];
+}
+
+- (void)switchBtnValueChanged:(id)sender
+{
+    //UISwitch *sw = (UISwitch *)sender;
 }
 
 #pragma mark - UITableViewDataSource
@@ -92,50 +189,28 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    switch (section) {
-        case 0:
-        {
-            if (row == 0) {
-                NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)section,(int)row];
-                UINib *cellNib = [UINib nibWithNibName:@"WMSSwitchCell" bundle:nil];
-                [self.tableView registerNib:cellNib forCellReuseIdentifier:cellIdentifier];
-                
-                WMSSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                CGRect frame = cell.myLabelText.frame;
-                frame.origin.x = 0.0;
-                cell.myLabelText.frame = frame;
-                cell.myLabelText.backgroundColor = [UIColor redColor];
-                cell.myLabelText.text = [self.textArray objectAtIndex:row];
-                //cell.myLabelText.textColor = [UIColor blackColor];
-                cell.myLabelText.font = Font_DINCondensed(18);
-                
-                return cell;
-            } else {
-                NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)section,(int)row];
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-                
-                if (cell == nil) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
-                }
-                cell.textLabel.text = [self.textArray objectAtIndex:row];
-                cell.textLabel.font = Font_DINCondensed(18.0);
-                //cell.detailTextLabel.text = [self.detailTextArray objectAtIndex:indexPath.row];
-                cell.detailTextLabel.font = Font_DINCondensed(12.0);
-                
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                return cell;
-            }
-            
-            break;
-        }
-            
-        default:
-            break;
+    NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)section,(int)row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
     
+    if (row == 0) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = [self.textArray objectAtIndex:row];
+        [cell.contentView addSubview:self.cellSwitch];
+        return cell;
+    }
     
-    return nil;
+    cell.textLabel.text = [self.textArray objectAtIndex:row];
+    //cell.textLabel.font = Font_System(18.0);
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%ds",(int)_timeInterval];
+    cell.detailTextLabel.font = Font_System(15.0);
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -151,17 +226,17 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     CGFloat height = [tableView rectForHeaderInSection:section].size.height;
-    CGRect frame = CGRectMake(80, height-30, 200, 30);
+    CGRect frame = CGRectMake(0, height-30, ScreenWidth, 30);
     UIView *myView = [[UIView alloc] init];
-    //myView.backgroundColor = [UIColor whiteColor];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
     titleLabel.textColor=[UIColor blackColor];
-    titleLabel.font = Font_DINCondensed(18);
-    //titleLabel.backgroundColor = [UIColor blackColor];
+    titleLabel.font = Font_System(12.0);
+    titleLabel.numberOfLines = -1;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     
-    NSString *title = NSLocalizedString(@"........", nil);
+    NSString *title = NSLocalizedString(@"开启防丢后，手表将会在连接断开后，到达指定时间时报警", nil);
     
     [titleLabel setText:title];
     [myView addSubview:titleLabel];
@@ -171,7 +246,52 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
+        return;
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [self.inputView show:YES];
+    NSUInteger row = [self.pickerViewDataSource indexOfObject:[NSString stringWithFormat:@"%d",(int)_timeInterval]];
+    if (row < [self.pickerViewDataSource count]) {
+        [self.inputView.pickerView selectRow:row inComponent:0 animated:NO];
+    }
+}
+
+#pragma mark - UIPickerViewDataSource
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return PICKER_VIEW_COMPONENT_NUMBER;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [self.pickerViewDataSource count];
+}
+
+#pragma mark - UIPickerViewDelegate
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+{
+    return PICKER_VIEW_COMPONENT_WIDTH;
+}
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return self.pickerViewDataSource[row];
+}
+
+#pragma mark - WMSInputViewDelegate
+- (void)inputView:(WMSInputView *)inputView didClickLeftItem:(UIBarButtonItem *)item
+{
+    [inputView hidden:YES];
+}
+- (void)inputView:(WMSInputView *)inputView didClickRightItem:(UIBarButtonItem *)item
+{
+    [inputView hidden:YES];
+    
+    NSInteger row = [inputView.pickerView selectedRowInComponent:0];
+    _timeInterval = [self.pickerViewDataSource[row] integerValue];
+    [self.tableView reloadData];
 }
 
 @end

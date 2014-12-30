@@ -9,7 +9,7 @@
             <connections>
                 <outlet property="buttonUpdate" destination="6VO-Tw-K3m" id="0qY-hH-FKv"/>
                 <outlet property="navBarView" destination="5GO-12-vpy" id="HSR-3C-fg6"/>
-                <outlet property="progressView" destination="m5v-vA-hoW" id="mJT-OO-I8M"/>
+                <outlet property="progressView" destination="WnL-Fn-OD3" id="2We-Zm-lem"/>
                 <outlet property="textView" destination="aHB-EL-Tpm" id="Hgy-8F-2AH"/>
                 <outlet property="textViewState" destination="IfU-0W-u5x" id="dNt-oi-xkl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -26,7 +26,7 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="123" id="aHB-EL-Tpm">
-                    <rect key="frame" x="0.0" y="86" width="320" height="294"/>
+                    <rect key="frame" x="0.0" y="86" width="320" height="250"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -43,14 +43,14 @@
                     </connections>
                 </button>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="IfU-0W-u5x">
-                    <rect key="frame" x="34" y="415" width="240" height="70"/>
+                    <rect key="frame" x="38" y="416" width="240" height="70"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <view contentMode="scaleToFill" id="m5v-vA-hoW" customClass="LDProgressView">
-                    <rect key="frame" x="8" y="399" width="300" height="15"/>
+                <view contentMode="scaleToFill" id="WnL-Fn-OD3" customClass="LDProgressView">
+                    <rect key="frame" x="10" y="393" width="300" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>

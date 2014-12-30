@@ -706,11 +706,12 @@
         [WMSAppDelegate appDelegate].window.rootViewController = (UIViewController *)[WMSAppDelegate appDelegate].reSideMenu;
         UIView *view = [WMSAppDelegate appDelegate].reSideMenu.view;
         view.alpha = 0;
-        [UIView animateWithDuration:1.0 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             view.alpha = 1.0;
+        } completion:^(BOOL finished) {
+            [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
+            [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
         }];
-        [WMSAppDelegate appDelegate].loginNavigationCtrl = nil;
-        [[WMSAppDelegate appDelegate].window makeKeyAndVisible];
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }

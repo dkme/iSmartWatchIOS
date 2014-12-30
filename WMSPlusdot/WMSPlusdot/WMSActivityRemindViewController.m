@@ -317,7 +317,7 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    WMSInputViewController *vc = [[WMSInputViewController alloc] init];
+    WMSInputViewController *vc = [[WMSInputViewController alloc] initWithNibName:@"WMSInputViewController" bundle:nil];
     vc.selectIndex = (int)indexPath.row;
     vc.VCTitle = self.textArray[indexPath.row];
     _inputVC = vc;

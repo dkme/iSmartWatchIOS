@@ -15,7 +15,7 @@
 
 #import "WMSHelper.h"
 
-#define INTRO_CONTENT_OFFSET    (iPhone5?30.f:30.f+568-480)
+#define INTRO_CONTENT_OFFSET    (iPhone5?30.f:30.f+568-480-40)
 #define INTRO_BUTTON_TAG        100
 
 @interface WMSGuideVC ()<EAIntroDelegate>
@@ -70,7 +70,7 @@
     EAIntroPage *page1 = [EAIntroPage page];
     //page1.title = @"Hello world";
     //page1.desc = @"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-    page1.bgImage = [UIImage imageNamed:@"intro_page1.jpg"];
+    page1.bgImage = [UIImage imageNamed:@"intro_page1.png"];
     //page1.titleImage = [UIImage imageNamed:@"original"];
     page1.titlePositionY += INTRO_CONTENT_OFFSET;
     page1.descPositionY += INTRO_CONTENT_OFFSET;
@@ -78,7 +78,7 @@
     EAIntroPage *page2 = [EAIntroPage page];
     //page2.title = @"This is page 2";
     //page2.desc = @"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.";
-    page2.bgImage = [UIImage imageNamed:@"intro_page2.jpg"];
+    page2.bgImage = [UIImage imageNamed:@"intro_page2.png"];
     //page2.titleImage = [UIImage imageNamed:@"supportcat"];
     page2.titlePositionY += INTRO_CONTENT_OFFSET;
     page2.descPositionY += INTRO_CONTENT_OFFSET;
@@ -86,24 +86,24 @@
     EAIntroPage *page3 = [EAIntroPage page];
     //page3.title = @"This is page 3";
     //page3.desc = @"Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.";
-    page3.bgImage = [UIImage imageNamed:@"intro_page3.jpg"];
+    page3.bgImage = [UIImage imageNamed:@"intro_page3.png"];
     //page3.titleImage = [UIImage imageNamed:@"femalecodertocat"];
     page3.titlePositionY += INTRO_CONTENT_OFFSET;
     page3.descPositionY += INTRO_CONTENT_OFFSET;
     
-//    EAIntroPage *page4 = [EAIntroPage page];
-//    page4.title = @"This is page 4";
-//    page4.desc = @"Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.";
-//    page4.bgImage = [UIImage imageNamed:@"4"];
-//    page4.titleImage = [UIImage imageNamed:@"femalecodertocat"];
-//    page4.titlePositionY += INTRO_CONTENT_OFFSET;
-//    page4.descPositionY += INTRO_CONTENT_OFFSET;
+    EAIntroPage *page4 = [EAIntroPage page];
+    //page4.title = @"This is page 4";
+    //page4.desc = @"Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.";
+    page4.bgImage = [UIImage imageNamed:@"intro_page4.png"];
+    //page4.titleImage = [UIImage imageNamed:@"femalecodertocat"];
+    page4.titlePositionY += INTRO_CONTENT_OFFSET;
+    page4.descPositionY += INTRO_CONTENT_OFFSET;
     
-    NSArray *pages = @[page1,page2,page3];
+    NSArray *pages = @[page1,page2,page3,page4];
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:pages];
     intro.swipeToExit = NO;
     intro.skipButton.hidden = YES;
-    intro.pageControlY += INTRO_CONTENT_OFFSET;
+    //intro.pageControlY += INTRO_CONTENT_OFFSET;
     intro.delegate = self;
     DEBUGLog(@"page1 image:(%f,%f)",page1.bgImage.size.width,page1.bgImage.size.height);
     DEBUGLog(@"intro frame:(%f,%f)",intro.frame.size.width,intro.frame.size.height);
@@ -112,9 +112,11 @@
     CGPoint btnOrigin = CGPointMake((intro.frame.size.width-btnSize.width)/2.0, intro.frame.size.height-btnSize.height-10);
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = (CGRect){btnOrigin,btnSize};
-    button.backgroundColor = [UIColor redColor];
+    button.backgroundColor = [UIColor clearColor];
     button.tag = INTRO_BUTTON_TAG;
     button.alpha = 0;
+    [button setTitle:@"Go" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(enterMainView:) forControlEvents:UIControlEventTouchUpInside];
     [intro addSubview:button];
     
@@ -133,7 +135,7 @@
         view.alpha = 1.0;
     }];
 
-    //[WMSHelper finishFirstLaunchApp];
+    [WMSHelper finishFirstLaunchApp];
 }
 
 - (IBAction)centerBtnAction:(id)sender {
@@ -166,6 +168,11 @@
             btn.alpha = 0;
         }];
     }
+    DEBUGLog(@"didScrollToPageIndex，index:%d",currentPageIndex);
+}
+- (void)introDidFinish:(EAIntroView *)introView
+{
+    DEBUGLog(@"introDidFinish");
 }
 
 @end

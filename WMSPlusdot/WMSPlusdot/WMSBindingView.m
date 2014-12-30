@@ -41,4 +41,22 @@
     return [nibView objectAtIndex:0];
 }
 
+- (void)adaptiveIphone4
+{
+    if (iPhone5) {
+        return;
+    }
+    CGRect frame = self.imageView2.frame;
+    frame.origin.y -= (568.0-480.0-40);
+    self.imageView2.frame = frame;
+    
+    frame = self.textView.frame;
+    frame.origin.y -= (568.0-480.0);
+    self.textView.frame = frame;
+    
+    frame = self.bottomButton.frame;
+    frame.origin.y -= (568.0-480.0);
+    self.bottomButton.frame = frame;
+}
+
 @end

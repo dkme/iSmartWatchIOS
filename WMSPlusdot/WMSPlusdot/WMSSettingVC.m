@@ -29,13 +29,15 @@
 #define SECTION0_HEADER_HEIGHT          30.f
 #define SECTION_HEADER_HEIGHT           20.f
 
-@interface WMSSettingVC ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate,UIActionSheetDelegate>
+@interface WMSSettingVC ()<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 {
     BOOL _isDetectedNewVersion;
     
     BOOL _isUpdateFirmware;
     NSString *_firmwareUpdateDesc;
     NSString *_firmwareUpdateURL;
+    
+    WMSUpdateVC *_updateVC;
 }
 @property (nonatomic, strong) NSArray *section0TitleArray;
 @property (nonatomic, strong) NSArray *section1TitleArray;
@@ -88,6 +90,7 @@
     
     if (self.isNeedUpdateView) {
         [self.tableView reloadData];
+        [self updateExitButton];
         self.needUpdateView = NO;
     }
 }
@@ -143,6 +146,18 @@
     [_buttonExitLogin setBackgroundImage:[UIImage imageNamed:@"zq_public_red_btn_b.png"] forState:UIControlStateSelected];
     [_buttonExitLogin addTarget:self action:@selector(exitLoginAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:self.buttonExitLogin];
+    [self updateExitButton];
+}
+- (void)updateExitButton
+{
+    BOOL res = [WMSAppConfig isHaveLogin];
+    if (res) {
+        self.buttonExitLogin.enabled = YES;
+        self.buttonExitLogin.alpha = 1.0;
+    } else {
+        self.buttonExitLogin.enabled = NO;
+        self.buttonExitLogin.alpha = 0.7;
+    }
 }
 
 #pragma mark - Private
@@ -176,7 +191,7 @@
 {
     BOOL res = [[WMSAppDelegate appDelegate].wmsBleControl isConnected];
     if (res == NO) {
-        //return ;
+        return ;
     }
     [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
      {
@@ -232,7 +247,7 @@
 - (void)removeBadgeFromView:(UITableViewCell *)cell
 {
     if ([cell class] == [WMSDetailCell class]) {
-        for (UIView *view in [cell subviews]) {
+        for (UIView *view in [cell.contentView subviews]) {
             if ([view class] == [JSCustomBadge class]) {
                 [view removeFromSuperview];
             }
@@ -303,6 +318,7 @@
     if (buttonIndex == 0) {//destructive
         if ([WMSAppConfig clearLoginInfo]) {
             [self.tableView reloadData];
+            [self updateExitButton];
         }
     }
 }
@@ -451,10 +467,11 @@
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                     if ([self isExistBadgeOfView:cell] /*||YES*/) {
                         //........
-                        WMSUpdateVC *vc = [[WMSUpdateVC alloc] init];
-                        vc.navBarTitle = self.section1TitleArray[row];
-                        vc.updateDescribe = _firmwareUpdateDesc;
-                        [self.navigationController pushViewController:vc animated:YES];
+                        _updateVC = [[WMSUpdateVC alloc] init];
+                        _updateVC.navBarTitle = self.section1TitleArray[row];
+                        _updateVC.updateDescribe = _firmwareUpdateDesc;
+                        self.navigationController.delegate = self;
+                        [self.navigationController pushViewController:_updateVC animated:YES];
                     }
                     break;
                 }
@@ -467,6 +484,19 @@
             
         default:
             break;
+    }
+}
+
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (viewController == self && _updateVC) {
+        if (_updateVC.isUpdateSuccess) {
+            _isUpdateFirmware = NO;
+            [self.tableView reloadData];
+        }
+        _updateVC = nil;
+        self.navigationController.delegate = nil;
     }
 }
 

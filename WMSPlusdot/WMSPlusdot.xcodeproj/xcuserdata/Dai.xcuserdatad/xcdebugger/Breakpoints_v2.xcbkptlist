@@ -90,7 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
-            timestampString = "440666311.580683"
+            timestampString = "441597802.751251"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "176"
@@ -112,22 +112,6 @@
             startingLineNumber = "40"
             endingLineNumber = "40"
             landmarkName = "+registerRequestParameter:completion:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSSettingProfile.m"
-            timestampString = "440673583.833736"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "726"
-            endingLineNumber = "726"
-            landmarkName = "-setAntiLostStatus:distance:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -192,6 +176,22 @@
             startingLineNumber = "297"
             endingLineNumber = "297"
             landmarkName = "-disconnect"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UIPickerView+Display.m"
+            timestampString = "441530381.789165"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "-hidden:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

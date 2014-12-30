@@ -9,6 +9,7 @@
 #import "WMSNavBarView.h"
 
 #define LEFT_BUTTON_RECT CGRectMake(8, 24, 35, 35)
+#define RIGHT_BUTTON_RECT CGRectMake((ScreenWidth-8-45),24,45,35)
 #define TITLE_LABEL_RECT CGRectMake(75, 26, 170, 35)
 
 @interface WMSNavBarView ()
@@ -26,6 +27,14 @@
         //[_buttonLeft addTarget:self action:@selector(clickedButtonLeft:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _buttonLeft;
+}
+- (UIButton *)buttonRight
+{
+    if (!_buttonRight) {
+        _buttonRight = [UIButton buttonWithType:UIButtonTypeCustom];
+        _buttonRight.frame = RIGHT_BUTTON_RECT;
+    }
+    return _buttonRight;
 }
 - (UILabel *)labelTitle
 {
@@ -60,6 +69,7 @@
 - (void)initialize {
     //self.backgroundColor = [UIColor clearColor];
     [self addSubview:self.buttonLeft];
+    [self addSubview:self.buttonRight];
     [self addSubview:self.labelTitle];
 }
 

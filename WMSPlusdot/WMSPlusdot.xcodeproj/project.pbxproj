@@ -68,6 +68,9 @@
 		23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23204AA01A42FA0F005874CE /* WMSBindingView.xib */; };
 		2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2321B78019B9500900278677 /* NSMutableArray+Stack.m */; };
 		2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323686019C1A30200E666D3 /* WMSPersonModel.m */; };
+		232471BA1A50FD6D00F70565 /* UIPickerView+Display.m in Sources */ = {isa = PBXBuildFile; fileRef = 232471B91A50FD6D00F70565 /* UIPickerView+Display.m */; };
+		232471BD1A51065D00F70565 /* WMSInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 232471BC1A51065D00F70565 /* WMSInputView.m */; };
+		232471BF1A51067F00F70565 /* WMSInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 232471BE1A51067F00F70565 /* WMSInputView.xib */; };
 		2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40119A58CCF0098657B /* main_circle_orange.png */; };
 		2326A40419A58CCF0098657B /* main_circle_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40219A58CCF0098657B /* main_circle_white.png */; };
 		2326A40619A591320098657B /* main_ico_distance.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40519A591320098657B /* main_ico_distance.png */; };
@@ -167,12 +170,6 @@
 		236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 236032FA19FE3AE800A77B22 /* WMSRemindHelper.m */; };
 		2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2360CED119E6855000B10A0B /* WMSDeviceModel.m */; };
 		236D486A19D81C7900EFB5C8 /* WMSActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 236D486919D81C7900EFB5C8 /* WMSActivityModel.m */; };
-		236E799B1A41277C0038E4DE /* intro_page1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 236E79981A41277C0038E4DE /* intro_page1.jpg */; };
-		236E799C1A41277C0038E4DE /* intro_page2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 236E79991A41277C0038E4DE /* intro_page2.jpg */; };
-		236E799D1A41277C0038E4DE /* intro_page3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 236E799A1A41277C0038E4DE /* intro_page3.jpg */; };
-		236E79A11A412F3C0038E4DE /* intro_page1@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 236E799E1A412F3C0038E4DE /* intro_page1@2x.jpg */; };
-		236E79A21A412F3C0038E4DE /* intro_page2@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 236E799F1A412F3C0038E4DE /* intro_page2@2x.jpg */; };
-		236E79A31A412F3C0038E4DE /* intro_page3@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 236E79A01A412F3C0038E4DE /* intro_page3@2x.jpg */; };
 		236EAF3C1A400F3D00533FC8 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 236EAF3B1A400F3D00533FC8 /* CoreTelephony.framework */; };
 		236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */; };
 		237545C319AED3D200685CD1 /* account_head.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C219AED3D200685CD1 /* account_head.png */; };
@@ -191,6 +188,14 @@
 		2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */ = {isa = PBXBuildFile; fileRef = 2378A3DF19FFA96900187836 /* UIViewController+Tip.m */; };
 		2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2378A3EC1A00F06100187836 /* AudioToolbox.framework */; };
 		2378A3F01A00F29F00187836 /* 嘀嘀报警声.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */; };
+		23876EA51A52479800F1F15C /* intro_page1.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876E9D1A52479800F1F15C /* intro_page1.png */; };
+		23876EA61A52479800F1F15C /* intro_page1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876E9E1A52479800F1F15C /* intro_page1@2x.png */; };
+		23876EA71A52479800F1F15C /* intro_page2.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876E9F1A52479800F1F15C /* intro_page2.png */; };
+		23876EA81A52479800F1F15C /* intro_page2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA01A52479800F1F15C /* intro_page2@2x.png */; };
+		23876EA91A52479800F1F15C /* intro_page3.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA11A52479800F1F15C /* intro_page3.png */; };
+		23876EAA1A52479800F1F15C /* intro_page3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA21A52479800F1F15C /* intro_page3@2x.png */; };
+		23876EAB1A52479800F1F15C /* intro_page4.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA31A52479800F1F15C /* intro_page4.png */; };
+		23876EAC1A52479800F1F15C /* intro_page4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA41A52479800F1F15C /* intro_page4@2x.png */; };
 		2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */; };
 		238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = 238C63161A30698700CC71F1 /* UIViewController+Update.m */; };
 		238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 238E2F061A0A1E1300FBABD9 /* WMSUserInfoHelper.m */; };
@@ -344,6 +349,11 @@
 		2321B78319B95E8E00278677 /* WMSBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBluetooth.h; sourceTree = "<group>"; };
 		2323685F19C1A30200E666D3 /* WMSPersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSPersonModel.h; sourceTree = "<group>"; };
 		2323686019C1A30200E666D3 /* WMSPersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSPersonModel.m; sourceTree = "<group>"; };
+		232471B81A50FD6D00F70565 /* UIPickerView+Display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+Display.h"; sourceTree = "<group>"; };
+		232471B91A50FD6D00F70565 /* UIPickerView+Display.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPickerView+Display.m"; sourceTree = "<group>"; };
+		232471BB1A51065D00F70565 /* WMSInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSInputView.h; sourceTree = "<group>"; };
+		232471BC1A51065D00F70565 /* WMSInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSInputView.m; sourceTree = "<group>"; };
+		232471BE1A51067F00F70565 /* WMSInputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSInputView.xib; sourceTree = "<group>"; };
 		2326A40119A58CCF0098657B /* main_circle_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_circle_orange.png; sourceTree = "<group>"; };
 		2326A40219A58CCF0098657B /* main_circle_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_circle_white.png; sourceTree = "<group>"; };
 		2326A40519A591320098657B /* main_ico_distance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_ico_distance.png; sourceTree = "<group>"; };
@@ -482,12 +492,6 @@
 		2360CED119E6855000B10A0B /* WMSDeviceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSDeviceModel.m; sourceTree = "<group>"; };
 		236D486819D81C7900EFB5C8 /* WMSActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSActivityModel.h; sourceTree = "<group>"; };
 		236D486919D81C7900EFB5C8 /* WMSActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSActivityModel.m; sourceTree = "<group>"; };
-		236E79981A41277C0038E4DE /* intro_page1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = intro_page1.jpg; sourceTree = "<group>"; };
-		236E79991A41277C0038E4DE /* intro_page2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = intro_page2.jpg; sourceTree = "<group>"; };
-		236E799A1A41277C0038E4DE /* intro_page3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = intro_page3.jpg; sourceTree = "<group>"; };
-		236E799E1A412F3C0038E4DE /* intro_page1@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "intro_page1@2x.jpg"; sourceTree = "<group>"; };
-		236E799F1A412F3C0038E4DE /* intro_page2@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "intro_page2@2x.jpg"; sourceTree = "<group>"; };
-		236E79A01A412F3C0038E4DE /* intro_page3@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "intro_page3@2x.jpg"; sourceTree = "<group>"; };
 		236EAF3B1A400F3D00533FC8 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		236EAF3F1A40260F00533FC8 /* WMSRightVCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSRightVCHelper.h; sourceTree = "<group>"; };
 		236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSRightVCHelper.m; sourceTree = "<group>"; };
@@ -515,6 +519,14 @@
 		2378A3DF19FFA96900187836 /* UIViewController+Tip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Tip.m"; sourceTree = "<group>"; };
 		2378A3EC1A00F06100187836 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "嘀嘀报警声.m4a"; sourceTree = "<group>"; };
+		23876E9D1A52479800F1F15C /* intro_page1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page1.png; sourceTree = "<group>"; };
+		23876E9E1A52479800F1F15C /* intro_page1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro_page1@2x.png"; sourceTree = "<group>"; };
+		23876E9F1A52479800F1F15C /* intro_page2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page2.png; sourceTree = "<group>"; };
+		23876EA01A52479800F1F15C /* intro_page2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro_page2@2x.png"; sourceTree = "<group>"; };
+		23876EA11A52479800F1F15C /* intro_page3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page3.png; sourceTree = "<group>"; };
+		23876EA21A52479800F1F15C /* intro_page3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro_page3@2x.png"; sourceTree = "<group>"; };
+		23876EA31A52479800F1F15C /* intro_page4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page4.png; sourceTree = "<group>"; };
+		23876EA41A52479800F1F15C /* intro_page4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro_page4@2x.png"; sourceTree = "<group>"; };
 		2388E5C019ED25A8005864D4 /* WMSHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSHTTPRequest.h; sourceTree = "<group>"; };
 		2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSHTTPRequest.m; sourceTree = "<group>"; };
 		238C630F1A304EFB00CC71F1 /* WMSURLMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSURLMacro.h; sourceTree = "<group>"; };
@@ -781,6 +793,7 @@
 				2378A3E119FFB0A000187836 /* UIViewController+Tip */,
 				23244D7D1A314640006C925C /* UIViewController+Update */,
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
+				232471B71A50FD0300F70565 /* UIPickerView+Display */,
 				23E35B901A4BE83F00FDA20D /* UINavigationController+Config.h */,
 				23E35B911A4BE83F00FDA20D /* UINavigationController+Config.m */,
 			);
@@ -970,6 +983,15 @@
 				238C63161A30698700CC71F1 /* UIViewController+Update.m */,
 			);
 			name = "UIViewController+Update";
+			sourceTree = "<group>";
+		};
+		232471B71A50FD0300F70565 /* UIPickerView+Display */ = {
+			isa = PBXGroup;
+			children = (
+				232471B81A50FD6D00F70565 /* UIPickerView+Display.h */,
+				232471B91A50FD6D00F70565 /* UIPickerView+Display.m */,
+			);
+			name = "UIPickerView+Display";
 			sourceTree = "<group>";
 		};
 		2326A41D19A5A25D0098657B /* 左右菜单视图 Icon */ = {
@@ -1242,12 +1264,14 @@
 		236E79971A4126CE0038E4DE /* 引导页视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
-				236E79981A41277C0038E4DE /* intro_page1.jpg */,
-				236E79991A41277C0038E4DE /* intro_page2.jpg */,
-				236E799A1A41277C0038E4DE /* intro_page3.jpg */,
-				236E799E1A412F3C0038E4DE /* intro_page1@2x.jpg */,
-				236E799F1A412F3C0038E4DE /* intro_page2@2x.jpg */,
-				236E79A01A412F3C0038E4DE /* intro_page3@2x.jpg */,
+				23876E9D1A52479800F1F15C /* intro_page1.png */,
+				23876E9E1A52479800F1F15C /* intro_page1@2x.png */,
+				23876E9F1A52479800F1F15C /* intro_page2.png */,
+				23876EA01A52479800F1F15C /* intro_page2@2x.png */,
+				23876EA11A52479800F1F15C /* intro_page3.png */,
+				23876EA21A52479800F1F15C /* intro_page3@2x.png */,
+				23876EA31A52479800F1F15C /* intro_page4.png */,
+				23876EA41A52479800F1F15C /* intro_page4@2x.png */,
 			);
 			name = "引导页视图 Icon";
 			sourceTree = "<group>";
@@ -1561,6 +1585,9 @@
 				23E35B871A4BB13B00FDA20D /* WMSAntiLostVC.h */,
 				23E35B881A4BB13B00FDA20D /* WMSAntiLostVC.m */,
 				23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */,
+				232471BB1A51065D00F70565 /* WMSInputView.h */,
+				232471BC1A51065D00F70565 /* WMSInputView.m */,
+				232471BE1A51067F00F70565 /* WMSInputView.xib */,
 			);
 			name = "防丢视图";
 			sourceTree = "<group>";
@@ -1708,11 +1735,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				236E799B1A41277C0038E4DE /* intro_page1.jpg in Resources */,
 				2354A3B919A6E0CD0027C91F /* WMSContent1ViewController.xib in Resources */,
 				232846FE19A442F3001C148D /* login_arrow_b.png in Resources */,
 				234BF1FA19B05991005D71A0 /* car_bg.png in Resources */,
-				236E799C1A41277C0038E4DE /* intro_page2.jpg in Resources */,
 				232846CB19A43668001C148D /* InfoPlist.strings in Resources */,
 				232846D319A43668001C148D /* Images.xcassets in Resources */,
 				23114A4D19D152F100FA594C /* sava_info_btn_b.png in Resources */,
@@ -1723,12 +1748,13 @@
 				23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */,
 				2378A3DA19FF405500187836 /* WMSRemindWayViewController.xib in Resources */,
 				2326A40A19A5916A0098657B /* main_ico_burn.png in Resources */,
-				236E79A31A412F3C0038E4DE /* intro_page3@2x.jpg in Resources */,
 				23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */,
 				231972581A35B942002E8A0F /* zq_light_list_bottom_b.png in Resources */,
 				230298D119A87DBF009D4306 /* WMSBindingAccessoryViewController.xib in Resources */,
+				23876EAB1A52479800F1F15C /* intro_page4.png in Resources */,
 				234BF1F619B05914005D71A0 /* WMSMyAccountViewController.xib in Resources */,
 				23CD58531A27104900C8D96C /* sportData.plist in Resources */,
+				23876EA71A52479800F1F15C /* intro_page2.png in Resources */,
 				2335119619A479DA00FBCC81 /* signup_arrow_b.png in Resources */,
 				230298CB19A83281009D4306 /* target_progress_btn.png in Resources */,
 				23A1532A1A36EFAA0026D741 /* WMSUpdateVC.xib in Resources */,
@@ -1743,6 +1769,7 @@
 				2326A43719A5C6970098657B /* main_menu_sleep_icon_b.png in Resources */,
 				239F51D61A2D963E0058F6DE /* WMSGuideVC.xib in Resources */,
 				2335119519A479DA00FBCC81 /* signup_arrow_a.png in Resources */,
+				23876EA91A52479800F1F15C /* intro_page3.png in Resources */,
 				2326A40F19A593E20098657B /* main_history_btn_a.png in Resources */,
 				23CDDD9A19AC2DBB00A12820 /* WMSSelectValueViewController.xib in Resources */,
 				237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */,
@@ -1762,6 +1789,7 @@
 				2326A40619A591320098657B /* main_ico_distance.png in Resources */,
 				230298C419A82FDC009D4306 /* WMSContent2ViewController.xib in Resources */,
 				231972431A3588EA002E8A0F /* setting_vc_bg_a.png in Resources */,
+				23876EAC1A52479800F1F15C /* intro_page4@2x.png in Resources */,
 				230298C919A83281009D4306 /* target_info_icon.png in Resources */,
 				23114A4419D11FAE00FA594C /* bind_btn_a.png in Resources */,
 				2326A44B19A5E9CE0098657B /* WMSRightViewController.xib in Resources */,
@@ -1774,6 +1802,7 @@
 				2326A43619A5C6970098657B /* main_menu_sleep_icon_a.png in Resources */,
 				2326A43819A5C6970098657B /* main_menu_sport_icon_a.png in Resources */,
 				23114A4F19D1640800FA594C /* zq_sync_btn.png in Resources */,
+				232471BF1A51067F00F70565 /* WMSInputView.xib in Resources */,
 				2335119219A476EF00FBCC81 /* WMSSignupViewController.xib in Resources */,
 				23A1532D1A36F4630026D741 /* zq_public_green_btn_a.png in Resources */,
 				233511A519A4BD5200FBCC81 /* WMSContentViewController.xib in Resources */,
@@ -1785,9 +1814,9 @@
 				2316508319AB15510066C301 /* WMSLeftViewCell.xib in Resources */,
 				2326A42419A5C4010098657B /* Localizable.strings in Resources */,
 				233511B519A4C3E500FBCC81 /* main_date_next_a.png in Resources */,
+				23876EA81A52479800F1F15C /* intro_page2@2x.png in Resources */,
 				234DD31519D29DBB00E6A7AE /* Login_bg.png in Resources */,
 				2326A43419A5C6970098657B /* main_menu_setting_icon_a.png in Resources */,
-				236E79A11A412F3C0038E4DE /* intro_page1@2x.jpg in Resources */,
 				232846F319A43825001C148D /* WMSLoginViewController.xib in Resources */,
 				23A153251A369F790026D741 /* WMSWebVC.xib in Resources */,
 				233511A819A4BFC900FBCC81 /* main_menu_icon_a.png in Resources */,
@@ -1797,6 +1826,7 @@
 				2316509919AB4E650066C301 /* back_btn_b.png in Resources */,
 				232846FA19A441FC001C148D /* login_btn_b.png in Resources */,
 				231972501A35B8F0002E8A0F /* zq_light_list_bottom_a.png in Resources */,
+				23876EAA1A52479800F1F15C /* intro_page3@2x.png in Resources */,
 				2316509819AB4E650066C301 /* back_btn_a.png in Resources */,
 				23197F051A10BB8A00DDC3B3 /* model.plist in Resources */,
 				23C74B0219A72EFA00C589A1 /* main_lightsleep_icon.png in Resources */,
@@ -1807,10 +1837,8 @@
 				2326A43E19A5D71B0098657B /* main_menu_bg_a.png in Resources */,
 				2326A43A19A5C6970098657B /* main_menu_target_icon_a.png in Resources */,
 				2326A41F19A5A2FC0098657B /* main_avatar_default.png in Resources */,
-				236E79A21A412F3C0038E4DE /* intro_page2@2x.jpg in Resources */,
 				23A1532E1A36F4630026D741 /* zq_public_green_btn_b.png in Resources */,
 				2326A45119A605660098657B /* WMSSwitchCell.xib in Resources */,
-				236E799D1A41277C0038E4DE /* intro_page3.jpg in Resources */,
 				231972541A35B92F002E8A0F /* zq_light_list_middle_b.png in Resources */,
 				230298D719A87F0A009D4306 /* link_bg.png in Resources */,
 				233511B619A4C3E500FBCC81 /* main_date_next_b.png in Resources */,
@@ -1828,6 +1856,8 @@
 				233511AD19A4C00600FBCC81 /* main_setting_icon_a.png in Resources */,
 				23E35B8B1A4BB13B00FDA20D /* WMSAntiLostVC.xib in Resources */,
 				2326A43319A5C6970098657B /* main_menu_binding_icon_b.png in Resources */,
+				23876EA51A52479800F1F15C /* intro_page1.png in Resources */,
+				23876EA61A52479800F1F15C /* intro_page1@2x.png in Resources */,
 				2326A40819A591460098657B /* main_ico_time.png in Resources */,
 				233511B819A4C45500FBCC81 /* main_progress_bg.png in Resources */,
 				23B0094019D4FFEF008424FA /* WMSSportHistoryViewController.xib in Resources */,
@@ -1875,6 +1905,7 @@
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
 				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
 				23D7CF0119B5C49C00DFA678 /* LGPeripheral.m in Sources */,
+				232471BD1A51065D00F70565 /* WMSInputView.m in Sources */,
 				2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */,
 				234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */,
 				23D7CF0219B5C49C00DFA678 /* LGService.m in Sources */,
@@ -1947,6 +1978,7 @@
 				230FDC6219D6548F00AE98FF /* WMSSleepHistoryViewController.m in Sources */,
 				2316961519C7062500E3CA24 /* WMSMyAccessoryViewController.m in Sources */,
 				236D486A19D81C7900EFB5C8 /* WMSActivityModel.m in Sources */,
+				232471BA1A50FD6D00F70565 /* UIPickerView+Display.m in Sources */,
 				23D7CF0019B5C49C00DFA678 /* LGCharacteristic.m in Sources */,
 				239F51D41A2D94F90058F6DE /* EAIntroView.m in Sources */,
 			);

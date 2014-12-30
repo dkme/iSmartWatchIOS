@@ -740,19 +740,23 @@
         case 3-1:
         {
             NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
-            UINib *cellNib = [UINib nibWithNibName:@"WMSSwitchCell" bundle:nil];
-            [self.tableView registerNib:cellNib forCellReuseIdentifier:CellIdentifier];
-            WMSSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.backgroundColor = [UIColor clearColor];
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
+            cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_b.png"]];
             
-            cell.myLabelText.text = [self.section4TitleArray objectAtIndex:indexPath.row];
-            cell.myLabelText.textColor = [UIColor whiteColor];
-            cell.myLabelText.font = Font_DINCondensed(18);
-            cell.mySwitch.on = [self.bleControl isConnected]?[self antiLostStatus]:NO;
+            NSString *txt = self.section4TitleArray[indexPath.row];
+            cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
+            cell.textLabel.textColor = [UIColor whiteColor];
+            cell.textLabel.font = Font_DINCondensed(18);
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            //cell.mySwitch.on = [self.bleControl isConnected]?[self antiLostStatus]:NO;
             
-            cell.delegate = self;
+            //cell.delegate = self;
             
             return cell;
         }
@@ -836,14 +840,14 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 3-1 && indexPath.row == 0) {
-        WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        nav.navigationBarHidden = YES;
-        vc.navBarTitle = self.section4TitleArray[indexPath.row];
-        [self presentViewController:nav animated:YES completion:nil];
-        return;
-    }
+//    if (indexPath.section == 3-1 && indexPath.row == 0) {
+//        WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+//        nav.navigationBarHidden = YES;
+//        vc.navBarTitle = self.section4TitleArray[indexPath.row];
+//        [self presentViewController:nav animated:YES completion:nil];
+//        return;
+//    }
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
@@ -852,11 +856,6 @@
     
     BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:self.bleControl.isConnected];
     if (result == NO) {
-        return;
-    }
-    
-    if (indexPath.section == 4-1 && indexPath.row == 0) {
-        [self switchToRemoteMode];
         return;
     }
     
@@ -876,7 +875,19 @@
         return;
     }
     
+    if (indexPath.section == 3-1 && indexPath.row == 0) {
+        WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        nav.navigationBarHidden = YES;
+        vc.navBarTitle = self.section4TitleArray[indexPath.row];
+        [self presentViewController:nav animated:YES completion:nil];
+        return;
+    }
     
+    if (indexPath.section == 4-1 && indexPath.row == 0) {
+        [self switchToRemoteMode];
+        return;
+    }
 }
 
 

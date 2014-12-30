@@ -215,10 +215,10 @@
             
             NSInteger row = [self.pickerView selectedRowInComponent:0];
             if (self.selectIndex == StartTimeCell) {
-                _startTimeHour = row;
+                _startTimeHour = (int)row;
                 _startTimeMinute = 0;
             } else if (self.selectIndex == FinishTimeCell) {
-                _finishTimeHour = row;
+                _finishTimeHour = (int)row;
                 _finishTimeMinute = 0;
             } else {
                 

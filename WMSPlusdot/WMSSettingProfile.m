@@ -726,12 +726,41 @@ DEBUGLog(@"【【%d-%d-%d %d:%d:%d %d】】",year,month,day,hour,minute,second,w
     Byte package[DATA_LENGTH] = {0};
     package[0] = openOrClose;
     package[1] = distance;
+    package[2] = 0;
     [self setPacketCMD:CMDSetAntiLost andData:package dataLength:DATA_LENGTH];
-    printf("packet: 0x");
-    for (int i=0; i<16; i++) {
-        printf("%02X ",packet[i]);
+//    printf("packet: 0x");
+//    for (int i=0; i<16; i++) {
+//        printf("%02X ",packet[i]);
+//    }
+//    printf("\n");
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSetAntiLost];
     }
-    printf("\n");
+    
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    
+    [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDSetAntiLost];
+}
+- (void)setAntiLostStatus:(BOOL)openOrClose
+                 distance:(NSUInteger)distance
+             timeInterval:(NSUInteger)interval
+               completion:(setAntiLostCallBack)aCallBack
+{
+    if (![self.bleControl isConnected]) {
+        return ;
+    }
+    Byte package[DATA_LENGTH] = {0};
+    package[0] = openOrClose;
+    package[1] = distance;
+    package[2] = interval;
+    [self setPacketCMD:CMDSetAntiLost andData:package dataLength:DATA_LENGTH];
     if (aCallBack) {
         [NSMutableArray push:aCallBack toArray:self.stackSetAntiLost];
     }
