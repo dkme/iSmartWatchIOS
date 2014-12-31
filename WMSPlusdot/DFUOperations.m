@@ -77,16 +77,16 @@ NSDate *startTime, *finishTime;
 
 -(void)performDFUOnFiles:(NSURL *)softdeviceURL bootloaderURL:(NSURL *)bootloaderURL firmwareType:(DfuFirmwareTypes)firmwareType
 {
-    isPerformedOldDFU = NO;
-    [self initFirstFileOperations];
-    [self initSecondFileOperations];
-    [self initParameters];
-    self.dfuFirmwareType = firmwareType;
-    [fileRequests openFile:softdeviceURL];
-    [fileRequests2 openFile:bootloaderURL];
-    [dfuRequests enableNotification];
-    [dfuRequests startDFU:firmwareType];
-    [dfuRequests writeFilesSizes:(uint32_t)fileRequests.binFileSize bootloaderSize:(uint32_t)fileRequests2.binFileSize];
+//    isPerformedOldDFU = NO;
+//    [self initFirstFileOperations];
+//    [self initSecondFileOperations];
+//    [self initParameters];
+//    self.dfuFirmwareType = firmwareType;
+//    [fileRequests openFile:softdeviceURL];
+//    [fileRequests2 openFile:bootloaderURL];
+//    [dfuRequests enableNotification];
+//    [dfuRequests startDFU:firmwareType];
+//    [dfuRequests writeFilesSizes:(uint32_t)fileRequests.binFileSize bootloaderSize:(uint32_t)fileRequests2.binFileSize];
 }
 
 //-(void)performDFUOnFile:(NSURL *)firmwareURL firmwareType:(DfuFirmwareTypes)firmwareType

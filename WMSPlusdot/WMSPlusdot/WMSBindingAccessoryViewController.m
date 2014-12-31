@@ -44,6 +44,7 @@
 {
     int _countdown;
     NSTimer *_timer;
+    NSTimer *_refreshTimer;
 }
 
 #pragma mark - Getter
@@ -287,6 +288,8 @@
     NSString *title = [button titleForState:UIControlStateNormal];
     if ([title isEqualToString:NSLocalizedString(@"停止", nil)]) {
         [self.bleControl stopScanForPeripherals];
+        [_refreshTimer invalidate];
+        _refreshTimer = nil;
     } else {
         [self scanPeripheral];
     }
@@ -294,8 +297,8 @@
 
 - (void)buttonBottomAction:(id)sender
 {
-    [self showScanning:YES];
-    [self scanPeripheral];
+//    [self showScanning:YES];
+//    [self scanPeripheral];
 }
 
 - (void)onBindViewForBottomButton:(id)sender
@@ -344,6 +347,11 @@
     //[self updateHUDSchedule:_countdown];
 }
 
+- (void)refreshPeripheralSignal:(NSTimer *)timer
+{
+    [self.tableView reloadData];
+}
+
 #pragma mark - 蓝牙操作
 - (void)bleOperation
 {
@@ -370,6 +378,12 @@
          [self setListData:array];
          [self.tableView reloadData];
      }];
+    //开一个1s的定时器，去更新外设的信号量
+//    if (_refreshTimer) {
+//        [_refreshTimer invalidate];
+//        _refreshTimer = nil;
+//    }
+//    _refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(refreshPeripheralSignal:) userInfo:nil repeats:YES];
     
     [self.indicatorView startAnimating];
     [self.indicatorView setHidden:NO];
@@ -448,26 +462,8 @@
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
     DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
-    
-//    if (self.listData && [self.listData count]>0) {
-//        NSMutableArray *array = [NSMutableArray array];
-//        for (LGPeripheral *pObject in self.listData) {
-//            NSString *name = pObject.cbPeripheral.name;
-//            BOOL flag = [name isEqualToString:WATCH_NAME] ||
-//                        [name isEqualToString:WATCH_NAME2];
-//            if (flag) {
-//                [array addObject:pObject];
-//            }
-//        }
-//        self.listData = array;
-//    }
-//    if (self.listData && [self.listData count] > 0) {
-//        [self.tableView setHidden:NO];
-//        [self.tableView reloadData];
-//    } else {
-//        [self showScanning:NO];
-//    }
-    
+    [_refreshTimer invalidate];
+    _refreshTimer = nil;
     [self.indicatorView stopAnimating];
     [self.indicatorView setHidden:YES];
     [self.buttonRight setTitle:NSLocalizedString(@"扫描", nil) forState:UIControlStateNormal];
@@ -524,6 +520,24 @@
     cell.textLabel.frame = frame;
     
     //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
+//    NSInteger RSSI = peripheral.RSSI;
+//    UIImage *image;
+//    if (RSSI < -90) {
+//        image = [UIImage imageNamed:@"Signal_0.png"];
+//    }
+//    else if (RSSI < -70)
+//    {
+//        image = [UIImage imageNamed:@"Signal_1.png"];
+//    }
+//    else if (RSSI < -50)
+//    {
+//        image = [UIImage imageNamed:@"Signal_2.png"];
+//    }
+//    else
+//    {
+//        image = [UIImage imageNamed:@"Signal_3.png"];
+//    }
+//    cell.imageView.image = image;
     
     return cell;
 }

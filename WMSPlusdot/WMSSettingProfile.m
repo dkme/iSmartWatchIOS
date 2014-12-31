@@ -695,11 +695,11 @@ DEBUGLog(@"【【%d-%d-%d %d:%d:%d %d】】",year,month,day,hour,minute,second,w
     package[6] = endMinute;
     
     [self setPacketCMD:CMDSetSportRemind andData:package dataLength:DATA_LENGTH];
-    printf("package: 0x");
-    for (int i=0; i<PACKET_LENGTH; i++) {
-        printf("%02X",[self packet][i]);
-    }
-    printf("\n");
+//    printf("package: 0x");
+//    for (int i=0; i<PACKET_LENGTH; i++) {
+//        printf("%02X",[self packet][i]);
+//    }
+//    printf("\n");
     if (aCallBack) {
         [NSMutableArray push:aCallBack toArray:self.stackSetSportRemind];
     }

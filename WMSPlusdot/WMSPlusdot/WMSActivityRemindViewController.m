@@ -21,6 +21,7 @@
 
 #define SECTION_NUMBER  1
 #define SECTION_FOOTER_HEIGHT   1
+#define SECTION_HEADER_HEIGHT   40
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
@@ -177,50 +178,16 @@
     [data writeToFile:fileName atomically:YES];
 }
 
-- (int)isExistForBleIdentifier:(NSString *)identifier
-{
-    if (identifier == nil) {
-        return -1;
-    }
-    
-    int index = -1;
-    NSArray *savedData = [self loadActivityRemind];
-    for (int i=0; i<[savedData count]; i++) {
-        NSDictionary *dicObj = savedData[i];
-        NSArray *keys = [dicObj allKeys];
-        NSString *key = @"";
-        if (keys.count > 0) {
-            key = [keys objectAtIndex:0];
-        }
-        
-        if ([identifier isEqualToString:key]) {
-            index = i;
-            break;
-        }
-    }
-    return index;
-}
-
 - (void)setActivityRemind
 {
     WMSActivityModel *model = [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
+    NSArray *repeats = [WMSRemindHelper repeatsWithArray:model.repeats];
     
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     //设置提醒成功
-    [bleControl.settingProfile setSportRemindWithStatus:YES startHour:model.startHour startMinute:model.startMinute endHour:model.endHour endMinute:model.endMinute intervalMinute:model.intervalMinute repeats:model.repeats completion:^(BOOL success)
+    [bleControl.settingProfile setSportRemindWithStatus:model.status startHour:model.startHour startMinute:model.startMinute endHour:model.endHour endMinute:model.endMinute intervalMinute:model.intervalMinute repeats:repeats completion:^(BOOL success)
     {
         DEBUGLog(@"设置提醒%@",success?@"成功":@"失败");
-//        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-//        hud.mode = MBProgressHUDModeText;
-//        hud.yOffset = ScreenHeight/2.0-60;
-//        hud.minSize = CGSizeMake(250.0, 60.0);
-//        hud.labelText = NSLocalizedString(@"设置活动提醒成功", nil);
-//        [self.view addSubview:hud];
-//        [hud showAnimated:YES whileExecutingBlock:^{
-//            sleep(1);
-//        } completionBlock:^{
-//            [hud removeFromSuperview];
-//        }];
         [self showTip:NSLocalizedString(@"设置活动提醒成功", nil)];
         [self savaActivityModel:model];
     }];
@@ -308,7 +275,30 @@
 {
     return SECTION_FOOTER_HEIGHT;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return SECTION_HEADER_HEIGHT;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    CGFloat height = [tableView rectForHeaderInSection:section].size.height;
+    CGRect frame = CGRectMake(0, height-30, ScreenWidth, 30);
+    UIView *myView = [[UIView alloc] init];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
+    titleLabel.textColor=[UIColor blackColor];
+    titleLabel.font = Font_System(12.0);
+    titleLabel.numberOfLines = -1;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    
+    NSString *title = NSLocalizedString(@"如果您坐的时间过长，手表会轻微震动，提醒您活动一下", nil);
+    
+    [titleLabel setText:title];
+    [myView addSubview:titleLabel];
+    
+    return myView;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {

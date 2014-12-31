@@ -15,4 +15,9 @@
  */
 + (NSString *)descriptionOfRepeats:(NSArray *)repeats;
 
+/*
+ 配置重复情况（当永不重复时，设为当天重复）
+ */
++ (NSArray *)repeatsWithArray:(NSArray *)array;
+
 @end

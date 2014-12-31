@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+/*
+ 系统语言类型 kLanguageType
+ */
+extern NSString *const kLanguageEnglish;
+extern NSString *const kLanguageChinese;
+
 @interface WMSAppConfig : NSObject
 
 /*
@@ -30,5 +36,10 @@
  清除用户登陆信息
  */
 + (BOOL)clearLoginInfo;
+
+/*
+ 获取当前系统语言，参考kLanguageType
+ */
++ (NSString *)systemLanguage;
 
 @end

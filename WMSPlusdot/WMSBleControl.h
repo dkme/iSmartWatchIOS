@@ -140,8 +140,8 @@ typedef void (^WMSBleBindSettingCallBack)(BOOL success);
 /**
  发送数据
  */
-- (void)sendDataToPeripheral:(NSData *)data
-                  completion:(WMSBleSendDataCallback)aCallBack;//废弃的
+//- (void)sendDataToPeripheral:(NSData *)data
+//                  completion:(WMSBleSendDataCallback)aCallBack;//废弃的
 
 /*
  绑定配件

@@ -9,6 +9,9 @@
 #import "WMSAppConfig.h"
 #import "WMSFileMacro.h"
 
+NSString *const kLanguageEnglish = @"kLanguageEnglish";
+NSString *const kLanguageChinese = @"kLanguageChinese";
+
 @implementation WMSAppConfig
 
 + (BOOL)isHaveLogin
@@ -45,6 +48,23 @@
     NSDictionary *writeData = @{@"userName":@"",@"password":@""};
     BOOL res = [writeData writeToFile:FilePath(FILE_LOGIN_INFO) atomically:YES];
     return res;
+}
+
++ (NSString *)systemLanguage
+{
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    NSArray *languages = [defs objectForKey:@"AppleLanguages"];
+    NSString *preferredLang = [languages objectAtIndex:0];
+    if ([preferredLang isEqualToString:@"en"])
+    {
+        return kLanguageEnglish;
+    }
+    else if ([preferredLang isEqualToString:@"zh-Hans"] ||
+             [preferredLang isEqualToString:@"zh-Hant"])
+    {
+        return kLanguageChinese;
+    }
+    return kLanguageEnglish;
 }
 
 @end

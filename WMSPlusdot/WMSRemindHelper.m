@@ -38,4 +38,28 @@
     }
 }
 
++ (NSArray *)repeatsWithArray:(NSArray *)array
+{
+    NSArray *repeats = array;
+    NSUInteger index = [repeats indexOfObject:@(1)];
+    if (index >= repeats.count) {//表明没有重复的天，此时设为当天重复
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *comps = [[NSDateComponents alloc] init];
+        NSInteger unitFlags = NSWeekdayCalendarUnit;
+        NSDate *now=[NSDate date];
+        comps = [calendar components:unitFlags fromDate:now];
+        NSInteger weekDay = [comps weekday];
+        NSMutableArray *mutiArray = [NSMutableArray arrayWithArray:@[@0,@0,@0,@0,@0,@0,@0]];
+        int i = 0;
+        if (weekDay == 1) {//周日
+            i = (int)[mutiArray count]-1;
+        } else {
+            i = weekDay - 2;
+        }
+        mutiArray[i] = @(1);
+        repeats = mutiArray;
+    }
+    return repeats;
+}
+
 @end

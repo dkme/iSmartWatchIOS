@@ -296,11 +296,11 @@
         [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"select_woman.png"] forState:UIControlStateNormal];
         [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"unselect_man.png"] forState:UIControlStateNormal];
     }
-    self.labelHeightValue.text = [NSString stringWithFormat:@"%ld%@",myHeight,NSLocalizedString(@"cm",nil)];
-    self.labelCurrentWeight.text = [NSString stringWithFormat:@"%ld%@",myCurrentWeight,NSLocalizedString(@"kg",nil)];
-    self.labelTargetWeight.text = [NSString stringWithFormat:@"%ld%@",myTargetWeight,NSLocalizedString(@"kg",nil)];
-    self.labelBirthdayYear.text = [NSString stringWithFormat:@"%ld%@",myBirthdayYear,NSLocalizedString(@"Year",nil)];
-    self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%ld%@%ld%@",myBirthdayMonth,NSLocalizedString(@"Month",nil),myBirthdayDay,NSLocalizedString(@"Day",nil)];
+    self.labelHeightValue.text = [NSString stringWithFormat:@"%ld%@",(unsigned long)myHeight,NSLocalizedString(@"cm",nil)];
+    self.labelCurrentWeight.text = [NSString stringWithFormat:@"%ld%@",(unsigned long)myCurrentWeight,NSLocalizedString(@"kg",nil)];
+    self.labelTargetWeight.text = [NSString stringWithFormat:@"%ld%@",(unsigned long)myTargetWeight,NSLocalizedString(@"kg",nil)];
+    self.labelBirthdayYear.text = [NSString stringWithFormat:@"%ld%@",(unsigned long)myBirthdayYear,NSLocalizedString(@"Year",nil)];
+    self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%ld%@%ld%@",(unsigned long)myBirthdayMonth,NSLocalizedString(@"Month",nil),(unsigned long)myBirthdayDay,NSLocalizedString(@"Day",nil)];
 }
 
 #pragma mark - Data

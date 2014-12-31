@@ -165,7 +165,7 @@
 #pragma mark - Setter
 - (void)setSportStepsValue:(NSUInteger)steps
 {
-    NSString *unit = NSLocalizedString(@"Step",nil);
+    //NSString *unit = NSLocalizedString(@"Step",nil);
     NSString *str = [NSString stringWithFormat:@"%u",steps];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
     NSUInteger loc,len;

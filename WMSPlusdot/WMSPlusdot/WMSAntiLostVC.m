@@ -72,7 +72,7 @@
 - (NSArray *)pickerViewDataSource
 {
     if (!_pickerViewDataSource) {
-        _pickerViewDataSource = @[@"1",@"5",@"10",@"20",@"35"];
+        _pickerViewDataSource = @[@"5",@"10",@"20",@"35"];
     }
     return _pickerViewDataSource;
 }
@@ -115,8 +115,6 @@
 }
 - (void)setupTableView
 {
-    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.scrollEnabled = NO;
@@ -236,7 +234,7 @@
     titleLabel.adjustsFontSizeToFitWidth = YES;
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     
-    NSString *title = NSLocalizedString(@"开启防丢后，手表将会在连接断开后，到达指定时间时报警", nil);
+    NSString *title = NSLocalizedString(@"添加时间，手表会在蓝牙断开后的这个时间提醒您", nil);
     
     [titleLabel setText:title];
     [myView addSubview:titleLabel];

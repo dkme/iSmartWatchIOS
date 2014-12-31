@@ -289,4 +289,10 @@
 "正在检测新版本..." = "Is testing a new version...";
 "网络不给力，稍后再试试吧" = "Network not to force, try again later";
 
+"如果您坐的时间过长，手表会轻微震动，提醒您活动一下" = "The watch will remind to do sports with vibration if you sit too long";
+"添加闹钟，手表会在指定的时间将您唤醒" = "Add alarm,watch will wake you up at the specified time.";
+"添加时间，手表会在蓝牙断开后的这个时间提醒您" = "Add time,watch will remind you after bluetooth disconnecting at this time.";
+
+
+
 

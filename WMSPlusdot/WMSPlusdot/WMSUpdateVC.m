@@ -194,12 +194,14 @@ NSString *const WMSUpdateVCEndDFU =
             default:
                 return ;
         }
+        self.buttonUpdate.enabled = NO;
+        self.buttonUpdate.alpha = 0.7;
         [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
         //发送通知
         [self postNotificationForName:WMSUpdateVCStartDFU];
         //4s后，会断开连接，此时再去扫描
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:peipheralUUID];
-        [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:5.0];
+        [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:6.0];
     }];
 }
 
@@ -275,14 +277,8 @@ NSString *const WMSUpdateVCEndDFU =
 -(void)onDFUStarted
 {
     NSLog(@"onDFUStarted");
-//    self.isTransferring = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
-//        uploadButton.enabled = YES;
-//        [uploadButton setTitle:@"Cancel" forState:UIControlStateNormal];
-//        NSString *uploadStatusMessage = [self getUploadStatusMessage];
-//        uploadStatus.text = uploadStatusMessage;
         self.progressView.hidden = NO;
-        self.buttonUpdate.enabled = NO;
         _isUpdating = YES;
         [self updateState:NSLocalizedString(@"正在进行升级...", nil)];
     });

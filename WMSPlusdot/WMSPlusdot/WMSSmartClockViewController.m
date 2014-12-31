@@ -19,11 +19,12 @@
 #import "WMSRemindHelper.h"
 #import "WMSFileMacro.h"
 
-#define SECTION_NUMBER  1
+#define SECTION_NUMBER          1
 #define SECTION_FOOTER_HEIGHT   1
+#define SECTION_HEADER_HEIGHT   40
 
-#define DefaultAlarmClockID 1
-#define ArchiverKey            @"alarmClockModels"
+#define DefaultAlarmClockID     1
+#define ArchiverKey             @"alarmClockModels"
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
@@ -173,55 +174,14 @@
     [data writeToFile:fileName atomically:YES];
 }
 
-- (int)isExistForBleIdentifier:(NSString *)identifier
-{
-    if (identifier == nil) {
-        //return NO;
-        return -1;
-    }
-    
-    //BOOL isExist = NO;//是否已存在这个identifier
-    int index = -1;//下标
-    NSArray *savedData = [self loadAlarmClock];
-//    for (NSDictionary *dicObj in savedData) {
-//        NSArray *keys = [dicObj allKeys];
-//        NSString *key = @"";
-//        if (keys.count > 0) {
-//            key = [keys objectAtIndex:0];
-//        }
-//        
-//        if ([identifier isEqualToString:key]) {
-//            isExist = YES;
-//            break;
-//        }
-//    }
-    
-    for (int i=0; i<[savedData count]; i++) {
-        NSDictionary *dicObj = savedData[i];
-        NSArray *keys = [dicObj allKeys];
-        NSString *key = @"";
-        if (keys.count > 0) {
-            key = [keys objectAtIndex:0];
-        }
-        
-        if ([identifier isEqualToString:key]) {
-            index = i;
-            break;
-        }
-    }
-    
-    return index;
-    //return isExist;
-}
-
-
 - (void)setAlarmClock
 {
     WMSAlarmClockModel *model = [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
+    NSArray *array = [WMSRemindHelper repeatsWithArray:model.repeats];
     Byte repeats[7] = {0};
     NSUInteger length = 7;
-    for (int i=0; i<[model.repeats count]; i++) {
-        Byte b = (Byte)model.repeats[i];
+    for (int i=0; i<[array count]; i++) {
+        Byte b = (Byte)array[i];
         if (i < length) {
             repeats[i] = b;
         }
@@ -231,17 +191,6 @@
     [bleControl.settingProfile setAlarmClockWithId:DefaultAlarmClockID withHour:model.startHour withMinute:model.startMinute withStatus:model.status withRepeat:repeats withLength:length withSnoozeMinute:model.snoozeMinute withCompletion:^(BOOL success)
      {
          DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
-//         MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-//         hud.mode = MBProgressHUDModeText;
-//         hud.yOffset = ScreenHeight/2.0-60;
-//         hud.minSize = CGSizeMake(250.0, 60.0);
-//         hud.labelText = NSLocalizedString(@"设置闹钟成功", nil);
-//         [self.view addSubview:hud];
-//         [hud showAnimated:YES whileExecutingBlock:^{
-//             sleep(1);
-//         } completionBlock:^{
-//             [hud removeFromSuperview];
-//         }];
          [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
          [self savaAlarmClock:model];
      }];
@@ -318,7 +267,30 @@
 {
     return SECTION_FOOTER_HEIGHT;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return SECTION_HEADER_HEIGHT;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    CGFloat height = [tableView rectForHeaderInSection:section].size.height;
+    CGRect frame = CGRectMake(0, height-30, ScreenWidth, 30);
+    UIView *myView = [[UIView alloc] init];
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
+    titleLabel.textColor=[UIColor blackColor];
+    titleLabel.font = Font_System(12.0);
+    titleLabel.numberOfLines = -1;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    
+    NSString *title = NSLocalizedString(@"添加闹钟，手表会在指定的时间将您唤醒", nil);
+    
+    [titleLabel setText:title];
+    [myView addSubview:titleLabel];
+    
+    return myView;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {

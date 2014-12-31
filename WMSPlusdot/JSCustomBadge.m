@@ -193,11 +193,15 @@
 		//CGSize textSize = [self.badgeText sizeWithFont:textFont];
         CGSize textSize = [self.badgeText sizeWithAttributes:@{NSFontAttributeName:textFont}];
 		
-        [self.badgeText drawAtPoint:CGPointMake((rect.size.width/2.0f - textSize.width/2.0f),
-                                                (rect.size.height/2.0f - textSize.height/2.0f))
-                           withFont:textFont];
-//        [self.badgeText drawAtPoint:CGPointMake((rect.size.width/2.0f - textSize.width/2.0f),(rect.size.height/2.0f - textSize.height/2.0f))
-//                     withAttributes:@{NSFontAttributeName:textFont,NSStrokeColorAttributeName:[UIColor whiteColor]}];
+//        [self.badgeText drawAtPoint:CGPointMake((rect.size.width/2.0f - textSize.width/2.0f),
+//                                                (rect.size.height/2.0f - textSize.height/2.0f))
+//                           withFont:textFont];
+        CGPoint point = CGPointMake((rect.size.width/2.0f - textSize.width/2.0f),(rect.size.height/2.0f - textSize.height/2.0f));
+        NSDictionary *attr = @{NSFontAttributeName:textFont,
+                               NSForegroundColorAttributeName:[UIColor whiteColor],
+        /*NSStrokeColorAttributeName:[UIColor whiteColor]*/};
+        [self.badgeText drawAtPoint:point
+                     withAttributes:attr];
 	}
 }
 
