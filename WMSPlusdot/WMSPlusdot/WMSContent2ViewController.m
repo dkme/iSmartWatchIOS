@@ -9,10 +9,11 @@
 #import "WMSContent2ViewController.h"
 #import "UIViewController+RESideMenu.h"
 #import "RESideMenu.h"
+#import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
 
 #import "TemperaBar.h"
-
+#import "WMSMyAccessory.h"
 #import "WMSConstants.h"
 #import "WMSHelper.h"
 
@@ -58,7 +59,7 @@
     } else {
         mode = NSLocalizedString(@"砖家", nil);
     }
-    NSString *steps = [NSString stringWithFormat:@"%u",targetSteps];
+    NSString *steps = [NSString stringWithFormat:@"%lu",(unsigned long)targetSteps];
     NSString *unit = NSLocalizedString(@"步",nil);
     NSString *str = [NSString stringWithFormat:@"%@%@",steps,unit];
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
@@ -69,9 +70,7 @@
     loc += len;
     len = unit.length;
     [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    
-    //self.labelMySteps.text = [NSString stringWithFormat:@"%d",targetSteps];
-    //self.labelModeType.text = [NSString stringWithFormat:NSLocalizedString(@"%@ mode", nil), mode];
+
     self.labelMySteps.attributedText = text;
     self.labelMySteps.adjustsFontSizeToFitWidth = YES;
 }
@@ -112,6 +111,8 @@
     [super viewDidAppear:animated];
     DEBUGLog(@"Content2ViewController viewDidAppear");
     
+    [self setTargetSteps:self.sportTargetSteps];
+    [self.temperaBar setCurrentTempera:self.sportTargetSteps/MULTIPLE];
     //self.sideMenuViewController.panGestureEnabled = NO;
     self.navigationController.navigationBarHidden = YES;
 }
@@ -220,11 +221,25 @@
 {
     TemperaBar *bar = (TemperaBar *)sender;
     //DEBUGLog(@"value:%d",bar.currentTempera);
-    self.sportTargetSteps = bar.currentTempera*MULTIPLE;
-    [self setTargetSteps:self.sportTargetSteps];
+    //self.sportTargetSteps = bar.currentTempera*MULTIPLE;
+    [self setTargetSteps:bar.currentTempera*MULTIPLE];
 }
 - (void)onTmpTouchUp:(id)sender
 {
+    TemperaBar *bar = (TemperaBar *)sender;
+    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    DEBUGLog(@"value:%d",bar.currentTempera);
+    BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:bleControl.isConnected];
+    if (result == NO) {
+        return ;
+    }
+    UInt32 target = bar.currentTempera*MULTIPLE;
+    [bleControl.settingProfile setTargetWithStep:target withSleepMinute:0xFF withCompletion:^(BOOL success)
+    {
+        DEBUGLog(@"设置目标成功");
+        [self showTip:NSLocalizedString(@"目标设置成功", nil)];
+        self.sportTargetSteps = bar.currentTempera*MULTIPLE;
+    }];
 }
 
 #pragma mark - Notification

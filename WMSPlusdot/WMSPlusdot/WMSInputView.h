@@ -16,9 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
 
 @property (weak, nonatomic) id<WMSInputViewDelegate>delegate;
-
-//+ (id)inputViewWithLeftItemTitle:(NSString *)leftTitle
-//                  RightItemTitle:(NSString *)rightTitle;
+@property (strong, nonatomic, readonly) UIResponder *responder;
 
 - (id)initWithLeftItemTitle:(NSString *)leftTitle
              RightItemTitle:(NSString *)rightTitle;
@@ -27,13 +25,18 @@
 
 - (void)hidden:(BOOL)animated;
 
+- (void)show:(BOOL)animated forView:(UIView *)responseView;
+
 @end
 
 @protocol WMSInputViewDelegate <NSObject>
 
 @optional
-- (void)inputView:(WMSInputView *)inputView didClickLeftItem:(UIBarButtonItem *)item;
+- (void)inputView:(WMSInputView *)inputView didClickLeftItem:(UIBarButtonItem *)item;//被弃用
 
-- (void)inputView:(WMSInputView *)inputView didClickRightItem:(UIBarButtonItem *)item;
+- (void)inputView:(WMSInputView *)inputView didClickRightItem:(UIBarButtonItem *)item;//被弃用
+
+- (void)inputView:(WMSInputView *)inputView forView:(UIView *)responseView didClickLeftItem:(UIBarButtonItem *)item;
+- (void)inputView:(WMSInputView *)inputView forView:(UIView *)responseView didClickRightItem:(UIBarButtonItem *)item;
 
 @end

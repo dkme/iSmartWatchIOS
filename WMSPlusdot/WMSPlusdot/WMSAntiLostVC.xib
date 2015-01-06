@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -17,25 +17,30 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="F1o-5o-JTQ" customClass="WMSNavBarView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F1o-5o-JTQ" customClass="WMSNavBarView">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="6V3-mC-kkE">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="6V3-mC-kkE">
                     <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="504" id="4RS-ii-MBM"/>
+                    </constraints>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="6V3-mC-kkE" firstAttribute="leading" secondItem="F1o-5o-JTQ" secondAttribute="leading" id="WhK-KU-Szw"/>
+                <constraint firstItem="6V3-mC-kkE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WiM-c9-EYe"/>
+                <constraint firstItem="6V3-mC-kkE" firstAttribute="top" secondItem="F1o-5o-JTQ" secondAttribute="bottom" id="dhS-mC-PdB"/>
+                <constraint firstAttribute="bottom" secondItem="6V3-mC-kkE" secondAttribute="bottom" id="fLu-vL-O1g"/>
+                <constraint firstItem="F1o-5o-JTQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="oVd-2M-jQH"/>
+                <constraint firstItem="F1o-5o-JTQ" firstAttribute="trailing" secondItem="6V3-mC-kkE" secondAttribute="trailing" id="r7O-RP-yUz"/>
+                <constraint firstAttribute="trailing" secondItem="6V3-mC-kkE" secondAttribute="trailing" id="v24-Qm-BFC"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="140" y="155"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

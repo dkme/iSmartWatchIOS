@@ -156,6 +156,8 @@ NSString *const WMSUpdateVCEndDFU =
         [alert show];
         return ;
     }
+    _updateHelper = nil;
+    _dfuOperations = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -209,11 +211,16 @@ NSString *const WMSUpdateVCEndDFU =
 - (void)scanPeipheral:(NSString *)specifiedUUID
 {
     DEBUGLog(@"start scan DFU peipheral");
+    [self showHUDAtViewCenter:NSLocalizedString(@"正在重新建立连接...", nil)];
     __weak WMSUpdateVCHelper *weakHelper = _updateHelper;
-    [weakHelper scanPeripheralByInterval:20.0 completion:^(CBPeripheral *peripheral) {
+    [weakHelper scanPeripheralByInterval:20.0 completion:^(CBPeripheral *peripheral)
+    {
         NSString *uuid = [peripheral.identifier UUIDString];
         //DEBUGLog(@"uuid:%@",uuid);
         if ([specifiedUUID isEqualToString:uuid]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideHUDAtViewCenter];
+            });
             [weakHelper stopScan];
             DEBUGLog(@"stop scan ");
             [self doDFUOperationsWithManager:weakHelper.centralManager peripheral:peripheral];
@@ -257,8 +264,10 @@ NSString *const WMSUpdateVCEndDFU =
 -(void)onDeviceConnected:(CBPeripheral *)peripheral
 {
     NSLog(@"onDeviceConnected %@",peripheral.name);
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self hideHUDAtViewCenter];
+        [self showTip:NSLocalizedString(@"连接成功", nil)];
         NSString *filePath = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
         [_dfuOperations performDFUOnFile:filePath firmwareType:APPLICATION];
     });
@@ -268,6 +277,8 @@ NSString *const WMSUpdateVCEndDFU =
 {
     NSLog(@"device disconnected %@",peripheral.name);
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self hideHUDAtViewCenter];
+        [self showTip:NSLocalizedString(@"连接断开", nil)];
         self.progressView.hidden = YES;
         _isUpdating = NO;
         [self postNotificationForName:WMSUpdateVCEndDFU];

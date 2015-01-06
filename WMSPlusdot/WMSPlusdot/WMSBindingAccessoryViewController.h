@@ -19,6 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewBLEStatus;
 
+@property (assign, nonatomic) int generation;//第一款为1，第二款为2
 
 - (IBAction)showLeftViewAction:(id)sender;
 - (IBAction)showRightViewAction:(id)sender;

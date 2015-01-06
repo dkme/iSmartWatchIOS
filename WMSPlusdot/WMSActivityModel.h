@@ -29,4 +29,6 @@
       intervalMinute:(NSUInteger)intervalMinute
              repeats:(NSArray *)repeats;
 
+- (BOOL)isEqual:(id)object;
+
 @end

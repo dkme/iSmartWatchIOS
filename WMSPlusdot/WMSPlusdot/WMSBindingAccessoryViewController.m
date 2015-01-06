@@ -17,6 +17,7 @@
 #import "WMSBindingView.h"
 #import "WMSMyAccessory.h"
 
+#define SCAN_TIME_INTERVAL      60.f
 #define SECTION_NUMBER  1
 #define CELL_HIGHT      55
 #define HEADER_HEIGHT   0.1
@@ -279,7 +280,10 @@
 
 #pragma mark - Action
 - (IBAction)showLeftViewAction:(id)sender {
-    [self.bleControl stopScanForPeripherals];
+    if ([self.bleControl isScanning]) {
+        [self.bleControl stopScanForPeripherals];
+        [self stopRefresh];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -288,8 +292,7 @@
     NSString *title = [button titleForState:UIControlStateNormal];
     if ([title isEqualToString:NSLocalizedString(@"停止", nil)]) {
         [self.bleControl stopScanForPeripherals];
-        [_refreshTimer invalidate];
-        _refreshTimer = nil;
+        [self stopRefresh];
     } else {
         [self scanPeripheral];
     }
@@ -308,6 +311,7 @@
         view.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self showBindingView:NO];
+        [self scanPeripheral];
     }];
     
     [self.bleControl disconnect];
@@ -339,6 +343,8 @@
             view.alpha = 0.0;
         } completion:^(BOOL finished) {
             [self showBindingView:NO];
+            [self scanPeripheral];
+            
         }];
         //[self closeVC:NO];
         DEBUGLog(@"倒计时结束了");
@@ -347,8 +353,23 @@
     //[self updateHUDSchedule:_countdown];
 }
 
+- (void)startRefresh
+{
+    //开一个1s的定时器，去更新外设的信号量
+    [self stopRefresh];
+    _refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(refreshPeripheralSignal:) userInfo:nil repeats:YES];
+}
+- (void)stopRefresh
+{
+    [_refreshTimer invalidate];
+    _refreshTimer = nil;
+}
 - (void)refreshPeripheralSignal:(NSTimer *)timer
 {
+    DEBUGLog(@"refresh signal");
+    NSArray *array = nil;
+    array = [self sortingWithSignal:self.listData];
+    [self setListData:array];
     [self.tableView reloadData];
 }
 
@@ -372,18 +393,12 @@
 }
 - (void)scanPeripheral
 {
-    [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion:^(NSArray *peripherals)
+    [self.bleControl scanForPeripheralsByInterval:SCAN_TIME_INTERVAL completion:^(NSArray *peripherals)
      {
-         NSArray *array = [self filtration:peripherals];
+         NSArray *array = [self filtrationForPeripherals:peripherals withGeneration:_generation];
          [self setListData:array];
-         [self.tableView reloadData];
      }];
-    //开一个1s的定时器，去更新外设的信号量
-//    if (_refreshTimer) {
-//        [_refreshTimer invalidate];
-//        _refreshTimer = nil;
-//    }
-//    _refreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(refreshPeripheralSignal:) userInfo:nil repeats:YES];
+    [self startRefresh];
     
     [self.indicatorView startAnimating];
     [self.indicatorView setHidden:NO];
@@ -409,7 +424,8 @@
         if (success) {
             NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
             if (identify) {
-                [WMSMyAccessory bindAccessory:identify];
+                //[WMSMyAccessory bindAccessory:identify];
+                [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
                 [strongSelf closeVC:YES];
             } else {
                 //[strongSelf closeVC:NO];
@@ -440,6 +456,7 @@
         view.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self showBindingView:NO];
+        [self scanPeripheral];
     }];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
@@ -456,20 +473,20 @@
         view.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self showBindingView:NO];
+        [self scanPeripheral];
     }];
 }
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
     DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
-    [_refreshTimer invalidate];
-    _refreshTimer = nil;
+    [self stopRefresh];
     [self.indicatorView stopAnimating];
     [self.indicatorView setHidden:YES];
     [self.buttonRight setTitle:NSLocalizedString(@"扫描", nil) forState:UIControlStateNormal];
 }
 
-- (NSArray *)filtration:(NSArray *)peripherals
+- (NSArray *)filtrationForPeripherals:(NSArray *)peripherals withGeneration:(int)generation
 {
     if ([peripherals count] > 0)
     {
@@ -477,11 +494,38 @@
         for (LGPeripheral *pObject in peripherals)
         {
             NSString *name = pObject.cbPeripheral.name;
-            BOOL flag = [name isEqualToString:WATCH_NAME] ||
-                        [name isEqualToString:WATCH_NAME2];
+            BOOL flag = NO;
+            if (generation == AccessoryGenerationONE) {
+                flag = [name isEqualToString:WATCH_NAME] ||
+                            [name isEqualToString:WATCH_NAME2];
+            } else if (generation == AccessoryGenerationTWO) {
+                flag = [name isEqualToString:WATCH_NAME_G2];
+            } else {
+                flag = NO;
+            }
             if (flag)
             {
                 [array addObject:pObject];
+            }
+        }
+        return array;
+    }
+    return nil;
+}
+- (NSArray *)sortingWithSignal:(NSArray *)peripherals
+{
+    if ([peripherals count] > 0) {
+        NSMutableArray *array = [NSMutableArray arrayWithArray:peripherals];
+        LGPeripheral *tempObj = nil;
+        for (int i=0; i<[array count]; i++) {
+            for (int j=0; j<[array count]-i-1; j++) {
+                LGPeripheral *pObj1 = array[j];
+                LGPeripheral *pObj2 = array[j+1];
+                if (pObj2.RSSI > pObj1.RSSI) {
+                    tempObj = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = tempObj;
+                }
             }
         }
         return array;
@@ -511,33 +555,31 @@
     cell.textLabel.textColor = [UIColor lightGrayColor];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     
-    //cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",peripheral.UUIDString];
-    cell.detailTextLabel.font = Font_System(12.0);
-    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",peripheral.UUIDString];
+//    cell.detailTextLabel.font = Font_System(12.0);
+//    cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+//    CGRect frame = cell.textLabel.frame;
+//    frame.size.height += 10;
+//    cell.textLabel.frame = frame;
     
-    CGRect frame = cell.textLabel.frame;
-    frame.size.height += 10;
-    cell.textLabel.frame = frame;
-    
-    //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
-//    NSInteger RSSI = peripheral.RSSI;
-//    UIImage *image;
-//    if (RSSI < -90) {
-//        image = [UIImage imageNamed:@"Signal_0.png"];
-//    }
-//    else if (RSSI < -70)
-//    {
-//        image = [UIImage imageNamed:@"Signal_1.png"];
-//    }
-//    else if (RSSI < -50)
-//    {
-//        image = [UIImage imageNamed:@"Signal_2.png"];
-//    }
-//    else
-//    {
-//        image = [UIImage imageNamed:@"Signal_3.png"];
-//    }
-//    cell.imageView.image = image;
+    NSInteger RSSI = peripheral.RSSI;
+    UIImage *image;
+    if (RSSI < -90) {
+        image = [UIImage imageNamed:@"Signal_0.png"];
+    }
+    else if (RSSI < -70)
+    {
+        image = [UIImage imageNamed:@"Signal_1.png"];
+    }
+    else if (RSSI < -50)
+    {
+        image = [UIImage imageNamed:@"Signal_2.png"];
+    }
+    else
+    {
+        image = [UIImage imageNamed:@"Signal_3.png"];
+    }
+    cell.imageView.image = image;
     
     return cell;
 }

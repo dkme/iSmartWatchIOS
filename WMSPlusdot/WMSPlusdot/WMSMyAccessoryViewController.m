@@ -14,24 +14,25 @@
 #import "WMSContentViewController.h"
 #import "WMSRightViewController.h"
 #import "UIViewController+Tip.h"
-
 #import "WMSAppDelegate.h"
+
+#import "WMSBoundCell.h"
 #import "MBProgressHUD.h"
 #import "WMSNavBarView.h"
 
 #import "WMSMyAccessory.h"
 #import "WMSHelper.h"
 
-#define SECTION_NUMBER  1
-#define CELL_HIGHT      60
-#define HEADER_HEIGHT   10
+#define SECTION_NUMBER      1
+#define CELL_HIGHT          207
+#define HEADER_HEIGHT       10
+#define FOOTER_HEIGHT       1
 
 @interface WMSMyAccessoryViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
-
 @property (nonatomic, strong) WMSNavBarView *navBarView;
-
 @property (nonatomic, strong) UIAlertView *alertView;
-
+@property (nonatomic, strong) NSArray *imageNameArray;
+@property (nonatomic, strong) NSArray *textArray;
 @end
 
 @implementation WMSMyAccessoryViewController
@@ -49,6 +50,26 @@
         _navBarView.buttonLeft.frame = frame;
     }
     return _navBarView;
+}
+- (NSArray *)imageNameArray
+{
+    if (!_imageNameArray) {
+        _imageNameArray = @[@"plusdot_one.png",
+                            @"plusdot_one.png",
+                            //@"plusdot_one.png",
+                            ];
+    }
+    return _imageNameArray;
+}
+- (NSArray *)textArray
+{
+    if (!_textArray) {
+        _textArray = @[NSLocalizedString(@"SMART WATCH P1", nil),
+                       NSLocalizedString(@"SMART WATCH P2", nil),
+                       //NSLocalizedString(@"SMART WATCH P2", nil),
+                       ];
+    }
+    return _textArray;
 }
 
 #pragma mark - Life Cycle
@@ -102,7 +123,9 @@
 - (void)setupTableView
 {
     self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.scrollEnabled = NO;
+    self.tableView.scrollEnabled = YES;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 }
@@ -115,7 +138,7 @@
     [WMSHelper clearCache];//清除缓存
 }
 
-#pragma mark - Other
+#pragma mark - Show view
 - (void)showActionSheet
 {
     //警告
@@ -245,44 +268,39 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return [self.imageNameArray count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
+    static NSString *cellIdentifier = @"WMSBoundCell";
+    UINib *cellNib = [UINib nibWithNibName:@"WMSBoundCell" bundle:nil];
+    [self.tableView registerNib:cellNib forCellReuseIdentifier:cellIdentifier];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
+    WMSBoundCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[WMSBoundCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",@"Plusdot",NSLocalizedString(@"手表", nil)];
-    cell.textLabel.font = Font_System(23.0);
-    cell.textLabel.textColor = [UIColor grayColor];
-    cell.textLabel.adjustsFontSizeToFitWidth = YES;
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",NSLocalizedString(@"追踪活动/睡眠，蓝牙4.0无线连接", nil)];
-    cell.detailTextLabel.font = Font_System(15.0);
-    cell.detailTextLabel.textColor = [UIColor grayColor];
-    cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-    
-    CGRect frame = cell.textLabel.frame;
-    frame.size.height += 10;
-    cell.textLabel.frame = frame;
-    
+    NSString *state = self.textArray[indexPath.row];
+    UIColor *color = nil;
     if ([WMSMyAccessory isBindAccessory]) {
-        UIImageView *imageView = [[UIImageView alloc] init];
-        CGRect frame = imageView.frame;
-        frame.size = CGSizeMake(25, 25);
-        imageView.frame = frame;
-        UIImage *image = [UIImage imageNamed:@"bind_success.png"];
-        imageView.image = image;
-        cell.accessoryView = imageView;
+        AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+        if (indexPath.row+1 == g) {
+            state = [NSString stringWithFormat:@"%@(%@)",state,NSLocalizedString(@"已绑定", nil)];
+            color = [UIColor redColor];
+        } else {
+            state = [NSString stringWithFormat:@"%@%@",state,NSLocalizedString(@"", nil)];
+            color = UICOLOR_DEFAULT;
+        }
     } else {
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"aa"]];
+        state = [NSString stringWithFormat:@"%@%@",state,NSLocalizedString(@"", nil)];
+        color = UICOLOR_DEFAULT;
     }
-    
+    cell.bottomLabel.text = state;
+    cell.bottomLabel.textColor = color;
+    cell.bottomLabel.font = Font_System(15.0);
+    NSString *imageName = self.imageNameArray[indexPath.row];
+    cell.topImageView.image = [UIImage imageNamed:imageName];
+
     return cell;
 }
 
@@ -295,18 +313,27 @@
 {
     return HEADER_HEIGHT;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return FOOTER_HEIGHT;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([WMSMyAccessory isBindAccessory]) {
-        [self showActionSheet];
+        AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+        if (indexPath.row+1 == g) {
+            [self showActionSheet];
+        } else {
+            [self showTip:NSLocalizedString(@"您已经绑定了手表，请先解绑", nil)];
+        }
     } else {
         if ([self showAlertView:1]) {
             return;
         }
         WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];
+        vc.generation = indexPath.row+1;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

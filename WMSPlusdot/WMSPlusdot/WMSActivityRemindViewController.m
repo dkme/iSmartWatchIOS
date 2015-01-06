@@ -7,11 +7,13 @@
 //
 
 #import "WMSActivityRemindViewController.h"
-#import "WMSInputViewController.h"
+//#import "WMSInputViewController.h"
 #import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
 
 #import "MBProgressHUD.h"
+#import "WMSInputView.h"
+#import "WMSWeekPicker.h"
 
 #import "WMSActivityModel.h"
 #import "WMSMyAccessory.h"
@@ -19,24 +21,29 @@
 #import "WMSRemindHelper.h"
 #import "WMSFileMacro.h"
 
-#define SECTION_NUMBER  1
-#define SECTION_FOOTER_HEIGHT   1
-#define SECTION_HEADER_HEIGHT   40
+#define SECTION_NUMBER                      1
+#define SECTION_FOOTER_HEIGHT               1
+#define SECTION_HEADER_HEIGHT               40
+
+#define PICKER_VIEW_COMPONENT_NUMBER        1
+#define PICKER_VIEW_COMPONENT_WIDTH         ScreenWidth
+#define PICKER_VIEW_ROW_NUMBER              24
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
 #define ArchiverKey             @"ActivityModels"
 
-@interface WMSActivityRemindViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate>
+@interface WMSActivityRemindViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,UIAlertViewDelegate>
 @property (strong,nonatomic) UISwitch *cellSwitch;
+@property (strong,nonatomic) WMSInputView *myInputView;
+@property (strong,nonatomic) WMSWeekPicker *weekPicker;
 @property (strong,nonatomic) NSArray *textArray;
 @property (strong,nonatomic) NSArray *detailTextArray;
+@property (strong,nonatomic) NSArray *intervalValueArray;
 @end
 
 @implementation WMSActivityRemindViewController
 {
-    WMSInputViewController *_inputVC;
-    
     BOOL activityStatus;
     int activityStartHour;
     int activityStartMinute;
@@ -44,6 +51,8 @@
     int activityEndMinute;
     int activityInterval;
     NSArray *activityRepeats;
+    
+    WMSActivityModel *_oldActivityModel;
 }
 
 #pragma mark - Getter
@@ -56,6 +65,30 @@
         [_cellSwitch setOnTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
     }
     return _cellSwitch;
+}
+- (WMSInputView *)myInputView
+{
+    if (!_myInputView) {
+        _myInputView= [[WMSInputView alloc] initWithLeftItemTitle:NSLocalizedString(@"Cancel", nil) RightItemTitle:NSLocalizedString(@"Confirm",nil)];
+        _myInputView.pickerView.backgroundColor = [UIColor whiteColor];
+        _myInputView.pickerView.delegate = self;
+        _myInputView.pickerView.dataSource = self;
+        _myInputView.delegate = self;
+        [_myInputView hidden:NO];
+    }
+    return _myInputView;
+}
+- (WMSWeekPicker *)weekPicker
+{
+    if (!_weekPicker) {
+        CGSize size = CGSizeMake(ScreenWidth, 50.f);
+        CGRect tableViewFrame = self.tableView.frame;
+        CGPoint or = CGPointMake(0, tableViewFrame.size.height+tableViewFrame.origin.y+10);
+        CGRect frame = (CGRect){or,size};
+        _weekPicker = [[WMSWeekPicker alloc] initWithFrame:frame];
+        _weekPicker.delegate = self;
+    }
+    return _weekPicker;
 }
 - (NSArray *)textArray
 {
@@ -72,6 +105,7 @@
 }
 - (NSArray *)detailTextArray
 {
+    _detailTextArray = nil;
     if (!_detailTextArray) {
         NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityStartHour,(int)activityStartMinute];
         NSString *strEndTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityEndHour,(int)activityEndMinute];
@@ -81,6 +115,21 @@
         _detailTextArray = @[@"",strStartTime,strEndTime,strInterval,strRepeats];
     }
     return _detailTextArray;
+}
+- (NSArray *)intervalValueArray
+{
+    if (!_intervalValueArray) {
+        _intervalValueArray = @[@(DEFAULT_ACTIVITY_INTERVAL),
+                                @(30),
+                                @(45),
+                                @(60),
+                                @(75),
+                                @(90),
+                                @(105),
+                                @(120),
+                                ];
+    }
+    return _intervalValueArray;
 }
 
 #pragma mark - Life Cycle
@@ -98,22 +147,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.buttonBack setTitle:@"" forState:UIControlStateNormal];
-    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
-    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
-    [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.buttonSync.titleLabel setFont:Font_System(15.0)];
-    //[self.buttonSync.titleLabel setAdjustsFontSizeToFitWidth:YES];
+    [self.view addSubview:self.weekPicker];
+    [self.view addSubview:self.myInputView];
+    [self setupNavBarView];
+    [self setupTableView];
+    _oldActivityModel = [self loadData];
+    [self setupWeekPicker];
     
-    self.labelTitle.text = NSLocalizedString(@"Activities remind",nil);
-    
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.tableView.scrollEnabled = NO;
-    self.navigationController.delegate = self;
-    
-    [self initView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,7 +170,31 @@
     self.navigationController.delegate = nil;
 }
 
-- (void)initView
+#pragma mark - Setup
+- (void)setupNavBarView
+{
+    [self.buttonBack setTitle:@"" forState:UIControlStateNormal];
+    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
+    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
+    [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
+    [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.buttonSync.titleLabel setFont:Font_System(15.0)];
+    
+    self.labelTitle.text = NSLocalizedString(@"Activities remind",nil);
+}
+- (void)setupTableView
+{
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.scrollEnabled = NO;
+}
+- (void)setupWeekPicker
+{
+    self.weekPicker.componentStates = activityRepeats;
+    [self.weekPicker reloadView];
+}
+- (WMSActivityModel *)loadData
 {
     WMSActivityModel *model = [self loadActivityRemind];
     if (model == nil) {
@@ -140,7 +204,7 @@
         activityEndHour = DEFAULT_HOUR;
         activityEndMinute = DEFAULT_MINUTE;
         activityInterval = DEFAULT_ACTIVITY_INTERVAL;
-        activityRepeats = 0;
+        activityRepeats = @[@(YES),@(YES),@(YES),@(YES),@(YES),@(YES),@(YES)];
     } else {
         activityStatus = model.status;
         activityStartHour = (int)model.startHour;
@@ -151,6 +215,7 @@
         activityRepeats = model.repeats;
     }
     self.cellSwitch.on = activityStatus;
+    return model;
 }
 
 - (WMSActivityModel *)loadActivityRemind
@@ -190,6 +255,7 @@
         DEBUGLog(@"设置提醒%@",success?@"成功":@"失败");
         [self showTip:NSLocalizedString(@"设置活动提醒成功", nil)];
         [self savaActivityModel:model];
+        _oldActivityModel = model;
     }];
 }
 
@@ -201,14 +267,17 @@
     return (endSeconds>startSeconds?YES:NO);
 }
 
-
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
     WMSActivityModel *model = [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
-    [self savaActivityModel:model];
-    
-    self.navigationController.delegate = nil;//一定要加入这条语句
-    [self.navigationController popViewControllerAnimated:YES];
+    BOOL res = [model isEqual:_oldActivityModel];
+    if (res == NO) {
+        NSString *message = NSLocalizedString(@"您的活动提醒已修改，尚未同步到手表，是否同步?", nil);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:message delegate:self cancelButtonTitle:NSLocalizedString(@"NO", nil) otherButtonTitles:NSLocalizedString(@"YES", nil), nil];
+        [alert show];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 - (IBAction)syncSettingAction:(id)sender {
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
@@ -224,13 +293,21 @@
         [self setActivityRemind];
     }
 }
-
 - (void)switchBtnValueChanged:(id)sender
 {
     UISwitch *sw = (UISwitch *)sender;
     activityStatus = sw.on;
 }
 
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {//NO
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self syncSettingAction:nil];
+    }
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -243,30 +320,27 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
-    
+    NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
-    
     if (indexPath.row == 0) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.text = [self.textArray objectAtIndex:indexPath.row];
-    
         [cell.contentView addSubview:self.cellSwitch];
-        
         return cell;
     }
-    
     cell.textLabel.text = [self.textArray objectAtIndex:indexPath.row];
     cell.detailTextLabel.text = [self.detailTextArray objectAtIndex:indexPath.row];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"System" size:12.f];
-    
+    cell.detailTextLabel.font = Font_System(12.0);
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
+    if (indexPath.row == RepeatCell) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    } else {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
     return cell;
 }
 
@@ -283,95 +357,144 @@
 {
     CGFloat height = [tableView rectForHeaderInSection:section].size.height;
     CGRect frame = CGRectMake(0, height-30, ScreenWidth, 30);
-    UIView *myView = [[UIView alloc] init];
-    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
     titleLabel.textColor=[UIColor blackColor];
     titleLabel.font = Font_System(12.0);
     titleLabel.numberOfLines = -1;
     titleLabel.adjustsFontSizeToFitWidth = YES;
-    [titleLabel setTextAlignment:NSTextAlignmentCenter];
-    
-    NSString *title = NSLocalizedString(@"如果您坐的时间过长，手表会轻微震动，提醒您活动一下", nil);
-    
-    [titleLabel setText:title];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.text = NSLocalizedString(@"如果您坐的时间过长，手表会轻微震动，提醒您活动一下", nil);
+    UIView *myView = [[UIView alloc] init];
     [myView addSubview:titleLabel];
-    
     return myView;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
         return;
     }
-    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    WMSInputViewController *vc = [[WMSInputViewController alloc] initWithNibName:@"WMSInputViewController" bundle:nil];
-    vc.selectIndex = (int)indexPath.row;
-    vc.VCTitle = self.textArray[indexPath.row];
-    _inputVC = vc;
-    
+    NSUInteger selectRow = 0;
     switch (indexPath.row) {
-        case 1:
-            _inputVC.startTimeHour = activityStartHour;
-            _inputVC.startTimeMinute = activityStartMinute;
-            break;
-        case 2:
-            _inputVC.finishTimeHour = activityEndHour;
-            _inputVC.finishTimeMinute = activityEndMinute;
-            break;
-        case 3:
-            _inputVC.intervalMinute = activityInterval;
-            break;
-        case 4:
-            if (activityRepeats) {
-               _inputVC.selectedWeekArray = [NSMutableArray arrayWithArray:activityRepeats]; 
+        case StartTimeCell:
+        {
+            if (activityStartHour < PICKER_VIEW_ROW_NUMBER) {
+                selectRow = activityStartHour;
             }
             break;
-            
+        }
+        case FinishTimeCell:
+        {
+            if (activityEndHour < PICKER_VIEW_ROW_NUMBER) {
+                selectRow = activityEndHour;
+            }
+            break;
+        }
+        case IntervalTimeCell:
+        {
+            NSUInteger i = [self.intervalValueArray indexOfObject:@(activityInterval)];
+            if (i < [self.intervalValueArray count]) {
+                selectRow = i;
+            }
+            break;
+        }
+        default:
+            return;
+    }
+    [self.myInputView show:YES forView:cell];
+    [self.myInputView.pickerView selectRow:selectRow inComponent:0 animated:NO];
+}
+
+#pragma mark - UIPickerViewDataSource
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return PICKER_VIEW_COMPONENT_NUMBER;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    UIResponder *responder = [self.myInputView responder];
+    if (![responder isKindOfClass:[UITableViewCell class]]) {
+        return 0;
+    }
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)responder];
+    switch (indexPath.row) {
+        case StartTimeCell:
+        case FinishTimeCell:
+            return PICKER_VIEW_ROW_NUMBER;
+        case IntervalTimeCell:
+            return [self.intervalValueArray count];
         default:
             break;
     }
-    
-    
-    [self.navigationController pushViewController:vc animated:YES];
+    return 0;
 }
 
-
-#pragma mark - --UINavigationControllerDelegate
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+#pragma mark - UIPickerViewDelegate
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
-    if (self == viewController && _inputVC) {
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_inputVC.selectIndex inSection:0]];
-        
-        if (_inputVC.selectIndex == StartTimeCell) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%02d:%02d",_inputVC.startTimeHour,_inputVC.startTimeMinute];
-            
-            activityStartHour = _inputVC.startTimeHour;
-            activityStartMinute = _inputVC.startTimeMinute;
-            
-        } else if (_inputVC.selectIndex == FinishTimeCell) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%02d:%02d",_inputVC.finishTimeHour,_inputVC.finishTimeMinute];
-            
-            activityEndHour = _inputVC.finishTimeHour;
-            activityEndMinute = _inputVC.finishTimeMinute;
-            
-        } else if (_inputVC.selectIndex == IntervalTimeCell) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%d %@",_inputVC.intervalMinute,NSLocalizedString(@"Minutes clock",nil)];
-            
-            activityInterval = _inputVC.intervalMinute;
-            
-        } else if (_inputVC.selectIndex == RepeatCell) {
-            NSString *str = [WMSRemindHelper descriptionOfRepeats:_inputVC.selectedWeekArray];
-            cell.detailTextLabel.text = str;
-            
-            activityRepeats = _inputVC.selectedWeekArray;
-    
-        }
-        
-        _inputVC = nil;
+    return PICKER_VIEW_COMPONENT_WIDTH;
+}
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    UIResponder *responder = [self.myInputView responder];
+    if (![responder isKindOfClass:[UITableViewCell class]]) {
+        return nil;
     }
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)responder];
+    switch (indexPath.row) {
+        case StartTimeCell:
+        case FinishTimeCell:
+            return [NSString stringWithFormat:@"%d",(int)row];
+        case IntervalTimeCell:
+        {
+            int value = [self.intervalValueArray[row] intValue];
+            return [NSString stringWithFormat:@"%d",value];
+        }
+        default:
+            break;
+    }
+    return nil;
+}
+
+#pragma mark - WMSInputViewDelegate
+- (void)inputView:(WMSInputView *)inputView forView:(UIView *)responseView didClickRightItem:(UIBarButtonItem *)item
+{
+    if (![responseView isKindOfClass:[UITableViewCell class]]) {
+        return ;
+    }
+    NSInteger row = [inputView.pickerView selectedRowInComponent:0];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)responseView];
+    switch (indexPath.row) {
+        case StartTimeCell:
+        {
+            activityStartHour = (int)row;
+            activityStartMinute = 0;
+            break;
+        }
+        case FinishTimeCell:
+        {
+            activityEndHour = (int)row;
+            activityEndMinute = 0;
+            break;
+        }
+        case IntervalTimeCell:
+        {
+            activityInterval = [self.intervalValueArray[row] intValue];
+            break;
+        }
+        default:
+            break;
+    }
+    [self.tableView reloadData];
+}
+
+#pragma mark - WMSWeekPickerDelegate
+- (void)weekPicker:(WMSWeekPicker *)weekPicker didClickComponent:(NSUInteger)index
+{
+    activityRepeats = weekPicker.componentStates;
+    [self.tableView reloadData];
 }
 
 @end

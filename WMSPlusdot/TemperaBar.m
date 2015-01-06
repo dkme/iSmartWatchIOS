@@ -149,10 +149,10 @@
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    /*if (_delegate && [_delegate respondsToSelector:@selector(finishSlide)])
+    if (_delegate && [_delegate respondsToSelector:@selector(finishSlide)])
     {
         [_delegate finishSlide];
-    }*/
+    }
 }
 
 @end
@@ -249,7 +249,7 @@
     OBShapedButton *bt = [[OBShapedButton alloc]init];
     CGPoint ptCurr=[[touches anyObject] locationInView:self];
     if ([bt isAlphaVisibleAtPoint:ptCurr forImage:_backgroundView.image]) {
-        [_circleSlide touchesMoved:touches withEvent:event];
+        //[_circleSlide touchesMoved:touches withEvent:event];
         _isInside = YES;
     }
 }
@@ -258,7 +258,7 @@
     OBShapedButton *bt = [[OBShapedButton alloc]init];
     CGPoint ptCurr=[[touches anyObject] locationInView:self];
     if ([bt isAlphaVisibleAtPoint:ptCurr forImage:_backgroundView.image]) {
-        [_circleSlide touchesMoved:touches withEvent:event];
+        //[_circleSlide touchesMoved:touches withEvent:event];
     }
 }
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -266,7 +266,7 @@
     OBShapedButton *bt = [[OBShapedButton alloc]init];
     CGPoint ptCurr=[[touches anyObject] locationInView:self];
     if ([bt isAlphaVisibleAtPoint:ptCurr forImage:_backgroundView.image]||_isInside) {
-        [self finishSlide];
+        //[self finishSlide];
     }
     _isInside = NO;
 }

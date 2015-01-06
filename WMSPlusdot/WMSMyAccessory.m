@@ -10,34 +10,53 @@
 #import "WMSFileMacro.h"
 
 #define KEY_IDENTIFIER          @"identifier"
+#define KEY_GENERATION          @"generation"
 
 @implementation WMSMyAccessory
 
 + (void)bindAccessory:(NSString *)identifier
 {
-    //NSArray *data = @[@(1)];
     NSDictionary *data = @{KEY_IDENTIFIER:identifier};
+    
+    [data writeToFile:[self filePath:FILE_ACCESSORY] atomically:YES];
+}
+
++ (void)bindAccessoryWith:(NSString *)identifier generation:(AccessoryGeneration)generation
+{
+    NSDictionary *data = @{KEY_IDENTIFIER:identifier,KEY_GENERATION:@(generation)};
     
     [data writeToFile:[self filePath:FILE_ACCESSORY] atomically:YES];
 }
 
 + (void)unBindAccessory
 {
-    //NSArray *data = @[@(0)];
-    NSDictionary *data = @{KEY_IDENTIFIER:@""};
+    NSDictionary *data = @{KEY_IDENTIFIER:@"",KEY_GENERATION:@(AccessoryGenerationUnknown)};
     
     [data writeToFile:[self filePath:FILE_ACCESSORY] atomically:YES];
 }
 
 + (BOOL)isBindAccessory
 {
-    //NSArray *data = [NSArray arrayWithContentsOfFile:[self filePath:AccessoryFileName]];
     NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_ACCESSORY]];
     if (data && [[data objectForKey:KEY_IDENTIFIER] isEqualToString:@""] == NO) {
         return YES;
     }
     
     return NO;
+}
+
++ (AccessoryGeneration)generationForBindAccessory
+{
+    if ([self isBindAccessory]) {
+        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_ACCESSORY]];
+        NSNumber *number = [data objectForKey:KEY_GENERATION];
+        if (!number) {
+            return AccessoryGenerationUnknown;
+        }
+        NSInteger gene = [number integerValue];
+        return gene;
+    }
+    return AccessoryGenerationUnknown;
 }
 
 + (NSString *)identifierForbindAccessory

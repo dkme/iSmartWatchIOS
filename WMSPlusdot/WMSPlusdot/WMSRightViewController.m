@@ -182,9 +182,9 @@
     [self.view setBackgroundColor:[UIColor clearColor]];
     
     self.tableView.scrollEnabled = NO;
-    self.sideMenuViewController.delegate = self;
+    //self.tableView.tintColor = UICOLOR_DEFAULT;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    self.sideMenuViewController.delegate = self;
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     
     //监测电量
@@ -586,6 +586,17 @@
         if ([self.bleControl isConnected]) {
             [self firstConnectedConfig];
         }
+        AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+        if ([WMSMyAccessory isBindAccessory]) {
+            switch (g) {
+                case AccessoryGenerationONE:
+                    
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
     }
 }
 - (void)sideMenu:(RESideMenu *)sideMenu didHideMenuViewController:(UIViewController *)menuViewController
@@ -794,6 +805,21 @@
 }
 
 #pragma mark - Table view delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+    if ([WMSMyAccessory isBindAccessory]) {
+        switch (g) {
+            case AccessoryGenerationONE:
+                return 44.f;
+            case AccessoryGenerationTWO:
+                return (indexPath.section==1?0.1f:44.f);
+            default:
+                break;
+        }
+    }
+    return 44.f;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     switch (section) {
@@ -801,6 +827,20 @@
             return SECTION0_HEADER_HEIGHT;
         //case 1:
         case 2-1:
+        {
+            AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+            if ([WMSMyAccessory isBindAccessory]) {
+                switch (g) {
+                    case AccessoryGenerationONE:
+                        return SECTION_HEADER_HEIGHT;
+                    case AccessoryGenerationTWO:
+                        return 0.1;
+                    default:
+                        break;
+                }
+            }
+            return SECTION_HEADER_HEIGHT;
+        }
         case 3-1:
             return SECTION_HEADER_HEIGHT;
         case 4-1:
@@ -819,19 +859,30 @@
 {
     CGFloat height = [tableView rectForHeaderInSection:section].size.height;
     CGRect frame = CGRectMake(80, height-30, 200, 30);
-    UIView *myView = [[UIView alloc] init];
-    myView.backgroundColor = [UIColor clearColor];
-    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
     titleLabel.textColor=[UIColor whiteColor];
     titleLabel.font = Font_DINCondensed(18);
     titleLabel.backgroundColor = [UIColor clearColor];
-    [titleLabel setTextAlignment:NSTextAlignmentCenter];
-    
-    NSString *title = [self.headerTitleArray objectAtIndex:section];
-    
-    [titleLabel setText:title];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.text = [self.headerTitleArray objectAtIndex:section];
+    UIView *myView = [[UIView alloc] init];
+    myView.backgroundColor = [UIColor clearColor];
     [myView addSubview:titleLabel];
+    
+    if (section == 1) {
+        AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+        if ([WMSMyAccessory isBindAccessory]) {
+            switch (g) {
+                case AccessoryGenerationONE:
+                    break;
+                case AccessoryGenerationTWO:
+                    titleLabel.text = @"";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     
     return myView;
 }

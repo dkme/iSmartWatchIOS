@@ -114,13 +114,13 @@
 "五" = "Fri";
 "六" = "Sat";
 "七" = "Sun";
-"周一" = "Monday";
-"周二" = "Tuesday";
-"周三" = "Wednesday";
-"周四" = "Thursday";
-"周五" = "Friday";
-"周六" = "Saturday";
-"周日" = "Sunday";
+"周一" = "Mon";//"Monday";
+"周二" = "Tue";//"Tuesday";
+"周三" = "Wed";//"Wednesday";
+"周四" = "Thu";//"Thursday";
+"周五" = "Fri";//"Friday";
+"周六" = "Sat";//"Saturday";
+"周日" = "Sun";//"Sunday";
 "每天" = "Everyday";
 
 "努力同步数据中..." = "Strive syncing data...";
@@ -264,6 +264,7 @@
 "扫描" = "Scan";
 "停止" = "Stop";
 "超时，绑定失败" = "Timeout，Binding failure";
+"已绑定" = "Have paired";
 
 
 "按下手表右上角按键进行拍照" = "You will be able to take photos from smart-watch \nby pressing the upper right conier of the key";
@@ -293,6 +294,9 @@
 "添加闹钟，手表会在指定的时间将您唤醒" = "Add alarm,watch will wake you up at the specified time.";
 "添加时间，手表会在蓝牙断开后的这个时间提醒您" = "Add time,watch will remind you after bluetooth disconnecting at this time.";
 
+"您的活动提醒已修改，尚未同步到手表，是否同步?" = "your activity remind the modified, has not yet been synchronized to watch, synchronous?";
+"您的防丢提醒已修改，尚未同步到手表，是否同步?" = "You lost to remind the modified, has not yet been synchronized to watch, synchronous?";
+"您已经绑定了手表，请先解绑" = "You have paired the watch, please remove paired";
 
 
 

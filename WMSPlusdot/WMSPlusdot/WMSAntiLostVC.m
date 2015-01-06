@@ -23,15 +23,16 @@
 
 #define PICKER_VIEW_COMPONENT_NUMBER        1
 #define PICKER_VIEW_COMPONENT_WIDTH         ScreenWidth
-#define PICKER_VIEW_ROW_NUMBER              24
 
 #define ANTI_LOST_DISTANCE          60
 
-@interface WMSAntiLostVC ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate>
+@interface WMSAntiLostVC ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,UIAlertViewDelegate>
 {
+    NSInteger _oldStatus;
+    NSInteger _oldTimeInterval;
     NSInteger _timeInterval;
 }
-@property (nonatomic, strong) WMSInputView *inputView;
+@property (nonatomic, strong) WMSInputView *myInputView;
 @property (strong, nonatomic) UISwitch *cellSwitch;
 @property (nonatomic, strong) NSArray *textArray;
 @property (nonatomic, strong) NSArray *pickerViewDataSource;
@@ -40,16 +41,16 @@
 @implementation WMSAntiLostVC
 
 #pragma mark - Getter/Setter
-- (WMSInputView *)inputView
+- (WMSInputView *)myInputView
 {
-    if (!_inputView) {
-        _inputView = [[WMSInputView alloc] initWithLeftItemTitle:NSLocalizedString(@"Cancel", nil) RightItemTitle:NSLocalizedString(@"Confirm",nil)];
-        _inputView.pickerView.delegate = self;
-        _inputView.pickerView.dataSource = self;
-        _inputView.delegate = self;
-        [_inputView hidden:NO];
+    if (!_myInputView) {
+        _myInputView= [[WMSInputView alloc] initWithLeftItemTitle:NSLocalizedString(@"Cancel", nil) RightItemTitle:NSLocalizedString(@"Confirm",nil)];
+        _myInputView.pickerView.delegate = self;
+        _myInputView.pickerView.dataSource = self;
+        _myInputView.delegate = self;
+        [_myInputView hidden:NO];
     }
-    return _inputView;
+    return _myInputView;
 }
 - (UISwitch *)cellSwitch
 {
@@ -65,7 +66,8 @@
 {
     if (!_textArray) {
         _textArray = @[NSLocalizedString(@"防丢", nil),
-                       NSLocalizedString(@"Interval", nil)];
+                       NSLocalizedString(@"Interval", nil),
+                       ];
     }
     return _textArray;
 }
@@ -82,7 +84,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.view addSubview:self.inputView];
+    [self.view addSubview:self.myInputView];
     [self setupNavBarView];
     [self setupTableView];
     
@@ -111,13 +113,13 @@
     [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBarView.buttonRight setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
     [self.navBarView.buttonRight.titleLabel setFont:Font_System(15.0)];
-    [self.navBarView.buttonRight addTarget:self action:@selector(buttonRightClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBarView.buttonRight addTarget:self action:@selector(syncSettingAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)setupTableView
 {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.scrollEnabled = NO;
+    self.tableView.scrollEnabled = YES;
 }
 
 #pragma mark - Data
@@ -130,6 +132,8 @@
         _timeInterval = 5;
         self.cellSwitch.on = YES;
     }
+    _oldStatus = self.cellSwitch.on;
+    _oldTimeInterval = _timeInterval;
 }
 - (void)savaData
 {
@@ -141,11 +145,18 @@
 #pragma mark - Action
 - (void)buttonLeftClicked:(id)sender
 {
-    [self savaData];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if (self.cellSwitch.on          == _oldStatus &&
+        _timeInterval               == _oldTimeInterval)
+    {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        NSString *message = NSLocalizedString(@"您的防丢提醒已修改，尚未同步到手表，是否同步?", nil);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:message delegate:self cancelButtonTitle:NSLocalizedString(@"NO", nil) otherButtonTitles:NSLocalizedString(@"YES", nil), nil];
+        [alert show];
+    }
 }
 
-- (void)buttonRightClicked:(id)sender
+- (void)syncSettingAction:(id)sender
 {
     WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
     BOOL isBind = [WMSMyAccessory isBindAccessory];
@@ -159,6 +170,9 @@
     [bleControl.settingProfile setAntiLostStatus:on distance:ANTI_LOST_DISTANCE timeInterval:interval completion:^(BOOL success)
      {
          DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
+         _oldStatus = on;
+         _oldTimeInterval = interval;
+         [self savaData];
          [self showOperationSuccessTip:NSLocalizedString(@"设置防丢成功", nil)];
      }];
 }
@@ -166,6 +180,16 @@
 - (void)switchBtnValueChanged:(id)sender
 {
     //UISwitch *sw = (UISwitch *)sender;
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {//NO
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self syncSettingAction:nil];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -251,10 +275,10 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self.inputView show:YES];
+    [self.myInputView show:YES];
     NSUInteger row = [self.pickerViewDataSource indexOfObject:[NSString stringWithFormat:@"%d",(int)_timeInterval]];
     if (row < [self.pickerViewDataSource count]) {
-        [self.inputView.pickerView selectRow:row inComponent:0 animated:NO];
+        [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
     }
 }
 

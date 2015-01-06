@@ -159,6 +159,9 @@
 		2339D81B1A53DFB20097E905 /* Signal_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339D8131A53DFB20097E905 /* Signal_3.png */; };
 		2339D81C1A53DFB20097E905 /* Signal_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339D8141A53DFB20097E905 /* Signal_3@2x.png */; };
 		233A431C19F8F15900BD295B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233A431B19F8F15900BD295B /* AVFoundation.framework */; };
+		23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23491D271A58E90400C821E8 /* WMSBoundCell.m */; };
+		23491D2A1A58E90400C821E8 /* WMSBoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23491D281A58E90400C821E8 /* WMSBoundCell.xib */; };
+		23491D2C1A58EA0C00C821E8 /* plusdot_one.png in Resources */ = {isa = PBXBuildFile; fileRef = 23491D2B1A58EA0C00C821E8 /* plusdot_one.png */; };
 		234BF1EE19B0305C005D71A0 /* WMSNavBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */; };
 		234BF1F019B0308F005D71A0 /* WMSNavBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */; };
 		234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 234BF1F319B05914005D71A0 /* WMSMyAccountViewController.m */; };
@@ -196,6 +199,7 @@
 		2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */ = {isa = PBXBuildFile; fileRef = 2378A3DF19FFA96900187836 /* UIViewController+Tip.m */; };
 		2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2378A3EC1A00F06100187836 /* AudioToolbox.framework */; };
 		2378A3F01A00F29F00187836 /* 嘀嘀报警声.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */; };
+		237D2EFF1A5A35AD0002AB4F /* WMSWeekPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 237D2EFE1A5A35AD0002AB4F /* WMSWeekPicker.m */; };
 		23876EA71A52479800F1F15C /* intro_page2.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876E9F1A52479800F1F15C /* intro_page2.png */; };
 		23876EA91A52479800F1F15C /* intro_page3.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA11A52479800F1F15C /* intro_page3.png */; };
 		23876EAB1A52479800F1F15C /* intro_page4.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA31A52479800F1F15C /* intro_page4.png */; };
@@ -487,6 +491,10 @@
 		233A431B19F8F15900BD295B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAdaptiveMacro.h; sourceTree = "<group>"; };
 		2345B01D1A25D75F00DF3175 /* WMSFileMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSFileMacro.h; sourceTree = "<group>"; };
+		23491D261A58E90400C821E8 /* WMSBoundCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBoundCell.h; sourceTree = "<group>"; };
+		23491D271A58E90400C821E8 /* WMSBoundCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSBoundCell.m; sourceTree = "<group>"; };
+		23491D281A58E90400C821E8 /* WMSBoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSBoundCell.xib; sourceTree = "<group>"; };
+		23491D2B1A58EA0C00C821E8 /* plusdot_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plusdot_one.png; sourceTree = "<group>"; };
 		234BF1EC19B0305C005D71A0 /* WMSNavBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSNavBarView.h; sourceTree = "<group>"; };
 		234BF1ED19B0305C005D71A0 /* WMSNavBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSNavBarView.m; sourceTree = "<group>"; };
 		234BF1EF19B0308F005D71A0 /* WMSNavBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSNavBarView.xib; sourceTree = "<group>"; };
@@ -544,6 +552,8 @@
 		2378A3DF19FFA96900187836 /* UIViewController+Tip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Tip.m"; sourceTree = "<group>"; };
 		2378A3EC1A00F06100187836 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "嘀嘀报警声.m4a"; sourceTree = "<group>"; };
+		237D2EFD1A5A35AD0002AB4F /* WMSWeekPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSWeekPicker.h; sourceTree = "<group>"; };
+		237D2EFE1A5A35AD0002AB4F /* WMSWeekPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSWeekPicker.m; sourceTree = "<group>"; };
 		23876E9F1A52479800F1F15C /* intro_page2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page2.png; sourceTree = "<group>"; };
 		23876EA11A52479800F1F15C /* intro_page3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page3.png; sourceTree = "<group>"; };
 		23876EA31A52479800F1F15C /* intro_page4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page4.png; sourceTree = "<group>"; };
@@ -910,6 +920,10 @@
 				2316961219C7062500E3CA24 /* WMSMyAccessoryViewController.h */,
 				2316961319C7062500E3CA24 /* WMSMyAccessoryViewController.m */,
 				2316961419C7062500E3CA24 /* WMSMyAccessoryViewController.xib */,
+				23491D261A58E90400C821E8 /* WMSBoundCell.h */,
+				23491D271A58E90400C821E8 /* WMSBoundCell.m */,
+				23491D281A58E90400C821E8 /* WMSBoundCell.xib */,
+				23491D2B1A58EA0C00C821E8 /* plusdot_one.png */,
 			);
 			name = "我的配件视图";
 			sourceTree = "<group>";
@@ -1053,14 +1067,15 @@
 			isa = PBXGroup;
 			children = (
 				231972361A35404F002E8A0F /* cells */,
-				231972451A358DCB002E8A0F /* JSCustomBadge */,
+				23B0094119D500E1008424FA /* PNLineChart */,
+				230FDC6419D6589400AE98FF /* PNBarChart */,
 				231C80EA1A15A0C30038BD79 /* GGIAnnulusView */,
 				2316507E19AB14D50066C301 /* MySportView */,
 				2316508519AB30AD0066C301 /* MySleepView */,
 				234BF1F119B055AE005D71A0 /* WMSNavBarView */,
 				23911F1B19C29053006E9CAF /* WMSSyncDataView */,
-				23B0094119D500E1008424FA /* PNLineChart */,
-				230FDC6419D6589400AE98FF /* PNBarChart */,
+				23491D2D1A59451C00C821E8 /* WMSInputView */,
+				237D2F001A5A9BA30002AB4F /* WMSWeekPicker */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1280,6 +1295,17 @@
 			name = "扫描界面 Icon";
 			sourceTree = "<group>";
 		};
+		23491D2D1A59451C00C821E8 /* WMSInputView */ = {
+			isa = PBXGroup;
+			children = (
+				232471BB1A51065D00F70565 /* WMSInputView.h */,
+				232471BC1A51065D00F70565 /* WMSInputView.m */,
+				232471BE1A51067F00F70565 /* WMSInputView.xib */,
+			);
+			name = WMSInputView;
+			path = WMSPlusdot;
+			sourceTree = "<group>";
+		};
 		234BF1F119B055AE005D71A0 /* WMSNavBarView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1389,6 +1415,16 @@
 				2378A3EF1A00F29F00187836 /* 嘀嘀报警声.m4a */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		237D2F001A5A9BA30002AB4F /* WMSWeekPicker */ = {
+			isa = PBXGroup;
+			children = (
+				237D2EFD1A5A35AD0002AB4F /* WMSWeekPicker.h */,
+				237D2EFE1A5A35AD0002AB4F /* WMSWeekPicker.m */,
+			);
+			name = WMSWeekPicker;
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		23876EAD1A5295BC00F1F15C /* 中文 */ = {
@@ -1592,11 +1628,12 @@
 		23D7CEC319B571B400DFA678 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				237545CA19AF00AB00685CD1 /* TemperaBar */,
 				2335119719A4B82700FBCC81 /* ResideMenu */,
+				237545CA19AF00AB00685CD1 /* TemperaBar */,
 				239682231A4AB79100AA4D9F /* LDProgress */,
 				23CB9F0A19C92C7500DC915A /* MBProgressHUD */,
 				239F51CE1A2D94E20058F6DE /* EAIntroView */,
+				231972451A358DCB002E8A0F /* JSCustomBadge */,
 				232AC5951A2EB67200186FFD /* CRToast */,
 			);
 			name = External;
@@ -1660,9 +1697,6 @@
 				23E35B871A4BB13B00FDA20D /* WMSAntiLostVC.h */,
 				23E35B881A4BB13B00FDA20D /* WMSAntiLostVC.m */,
 				23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */,
-				232471BB1A51065D00F70565 /* WMSInputView.h */,
-				232471BC1A51065D00F70565 /* WMSInputView.m */,
-				232471BE1A51067F00F70565 /* WMSInputView.xib */,
 			);
 			name = "防丢视图";
 			sourceTree = "<group>";
@@ -1779,7 +1813,7 @@
 				ORGANIZATIONNAME = GUOGEE;
 				TargetAttributes = {
 					232846BC19A43668001C148D = {
-						DevelopmentTeam = R39529C8UT;
+						DevelopmentTeam = 4E8WUK78VW;
 					};
 					232846D719A43668001C148D = {
 						TestTargetID = 232846BC19A43668001C148D;
@@ -1857,10 +1891,12 @@
 				2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */,
 				2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */,
 				F4F037C219F23B110083DEE1 /* procotol.txt in Resources */,
+				23491D2A1A58E90400C821E8 /* WMSBoundCell.xib in Resources */,
 				239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */,
 				237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */,
 				237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */,
 				233511AE19A4C00600FBCC81 /* main_setting_icon_b.png in Resources */,
+				23491D2C1A58EA0C00C821E8 /* plusdot_one.png in Resources */,
 				233511B119A4C3D300FBCC81 /* main_date_prev_a.png in Resources */,
 				230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */,
 				2378A3F01A00F29F00187836 /* 嘀嘀报警声.m4a in Resources */,
@@ -2060,9 +2096,11 @@
 				233511A419A4BD5200FBCC81 /* WMSContentViewController.m in Sources */,
 				230298C319A82FDC009D4306 /* WMSContent2ViewController.m in Sources */,
 				237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */,
+				23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */,
 				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,
 				23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */,
 				23B0094619D50100008424FA /* PNLineChartView.m in Sources */,
+				237D2EFF1A5A35AD0002AB4F /* WMSWeekPicker.m in Sources */,
 				23E35B8A1A4BB13B00FDA20D /* WMSAntiLostVC.m in Sources */,
 				23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */,
 				23E84BA41A48152B0061AD36 /* DFUOperations.m in Sources */,
@@ -2169,7 +2207,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "896C643D-34BA-44DA-BC1A-2776F94557A4";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2275,7 +2313,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "896C643D-34BA-44DA-BC1A-2776F94557A4";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2293,7 +2331,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "896C643D-34BA-44DA-BC1A-2776F94557A4";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

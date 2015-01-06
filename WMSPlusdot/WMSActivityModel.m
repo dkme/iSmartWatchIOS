@@ -30,6 +30,22 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    WMSActivityModel *model = (WMSActivityModel *)object;
+    if (self.status             ==model.status                  &&
+        self.startHour          ==model.startHour               &&
+        self.startMinute        ==model.startMinute             &&
+        self.endHour            ==model.endHour                 &&
+        self.endMinute          ==model.endMinute               &&
+        self.intervalMinute     ==model.intervalMinute          &&
+        [self.repeats isEqualToArray:model.repeats]             )
+    {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - NSCoding
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:@(_status) forKey:@"WMSActivityModel.status"];

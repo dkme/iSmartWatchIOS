@@ -9,9 +9,11 @@
 #import "WMSInputView.h"
 
 @interface WMSInputView ()
+{
+    UIView *_responseView;
+}
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *leftItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightItem;
-
 @end
 
 @implementation WMSInputView
@@ -38,6 +40,14 @@
 {
     [self.leftItem setTitle:@"leftItem"];
     [self.rightItem setTitle:@"rightItem"];
+}
+
+- (void)show:(BOOL)animated forView:(UIView *)view
+{
+    _responseView = view;
+    _responder = view;
+    [self.pickerView reloadAllComponents];
+    [self show:animated];
 }
 
 - (void)show:(BOOL)animated;
@@ -98,12 +108,24 @@
     {
         [self.delegate inputView:self didClickLeftItem:sender];
     }
+    
+    [self hidden:YES];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(inputView:forView:didClickLeftItem:)])
+    {
+        [self.delegate inputView:self forView:_responseView didClickLeftItem:sender];
+    }
 }
 - (IBAction)RightItemAction:(id)sender
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(inputView:didClickRightItem:)])
     {
         [self.delegate inputView:self didClickRightItem:sender];
+    }
+    
+    [self hidden:YES];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(inputView:forView:didClickRightItem:)])
+    {
+        [self.delegate inputView:self forView:_responseView didClickRightItem:sender];
     }
 }
 

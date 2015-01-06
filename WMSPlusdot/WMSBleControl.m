@@ -200,28 +200,6 @@ NSString * const WMSBleControlScanFinish =
         }
     }];
     
-//    [self.centralManager scanForPeripheralsByInterval:aScanInterval completion:^(NSArray *peripherals)
-//    {
-//        //排除重复的设备
-//        LGPeripheral *oldObj = nil;
-//        LGPeripheral *newObj = [peripherals lastObject];
-//        NSString *identifier = newObj.UUIDString;
-//        for (LGPeripheral *p in scannedPeripheral) {
-//            if ([p.UUIDString isEqualToString:identifier]) {
-//                oldObj = p;
-//                break ;
-//            }
-//        }
-//        if (oldObj) {
-//            [scannedPeripheral removeObject:oldObj];
-//        }
-//        [scannedPeripheral addObject:newObj];
-//        //[scannedPeripheral addObjectsFromArray:peripherals];
-//        if (aCallback) {
-//            aCallback(scannedPeripheral);
-//        }
-//    }];
-    
 //    NSArray *serviceUUIDs = @[[CBUUID UUIDWithString:@"0A60"]];
     [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
 //    NSArray *array = [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];//获取系统已连接的外设

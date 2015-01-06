@@ -428,8 +428,12 @@ DEBUGLog(@"【【%d-%d-%d %d:%d:%d %d】】",year,month,day,hour,minute,second,w
     package[1] = (step & 0xFF00) >> 8;
     package[2] = (step & 0xFF0000) >> 16;
     package[3] = (step & 0xFF000000) >> 24;
-    package[4] = minute & 0xFF;
-    package[5] = (minute & 0xFF00) >> 8;
+    //package[4] = minute & 0xFF;
+    //package[5] = (minute & 0xFF00) >> 8;
+    package[4] = 0xFF;
+    package[5] = 0xFF;
+    package[6] = 0xFF;
+    package[7] = 0xFF;
     
     [self setPacketCMD:CMDSetTarger andData:package dataLength:DATA_LENGTH];
     
