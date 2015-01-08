@@ -338,7 +338,7 @@
         [self handleScanPeripheralFinish:nil];
     }
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timeDidChange:) name:NSSystemClockDidChangeNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -491,7 +491,7 @@
 
 - (void)checkAppUpdate
 {
-    [self checkUpdateWithAPPID:@"930839162" completion:^(DetectResultValue isCanUpdate)
+    [self checkUpdateWithAPPID:APP_ID completion:^(DetectResultValue isCanUpdate)
     {
         DEBUGLog(@"^^^^^%@----->%d[%p]",[self class],isCanUpdate,&isCanUpdate);
         if (isCanUpdate == DetectResultCanUpdate) {
@@ -674,7 +674,6 @@
     
     [self updateView];
 }
-
 - (IBAction)nextDateAction:(id)sender {
     if (NSDateModeToday == [NSDate compareDate:self.showDate]) {
         return;
@@ -708,7 +707,7 @@
 - (void)connectedOperation
 {
     //设置时间，读取设备信息，同步运动数据
-    [self.bleControl.settingProfile setCurrentDate:[NSDate date] completion:^(BOOL success)
+    [self.bleControl.settingProfile setCurrentDate:[NSDate systemDate] completion:^(BOOL success)
      {
          DEBUGLog(@"设置系统时间%@",success?@"成功":@"失败");
          [self readDeviceInfo];
@@ -970,6 +969,11 @@
     
     //唤醒扫描
     [self scanAndConnectPeripheral];
+}
+
+- (void)timeDidChange:(NSNotification *)notification
+{
+    DEBUGLog(@"%s",__FUNCTION__);
 }
 
 @end

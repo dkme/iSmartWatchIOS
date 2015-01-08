@@ -11,6 +11,7 @@
 
 static const void *UtilityKey;
 static DetectResultValue global_DetectResult = DetectResultUnknown;
+static NSString * app_url = nil;
 
 #define URL_APP_INFO     @"http://itunes.apple.com/lookup?id="
 const NSTimeInterval REQUEST_TIMEOUT_INTERVAL = 10.f;
@@ -26,11 +27,13 @@ const NSTimeInterval REQUEST_TIMEOUT_INTERVAL = 10.f;
 #pragma mark - Getter/Setter
 - (NSString *)strAPPURL
 {
-    return objc_getAssociatedObject(self, UtilityKey);
+    return app_url;
+    //return objc_getAssociatedObject(self, UtilityKey);
 }
 - (void)setStrAPPURL:(NSString *)str
 {
-    objc_setAssociatedObject(self, UtilityKey, str, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    app_url = str;
+    //objc_setAssociatedObject(self, UtilityKey, str, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark - Public

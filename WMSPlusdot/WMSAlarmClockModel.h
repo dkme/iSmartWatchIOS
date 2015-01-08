@@ -26,4 +26,6 @@
         snoozeMinute:(NSUInteger)snoozeMinute
              repeats:(NSArray *)repeats;
 
+- (BOOL)isEqual:(id)object;
+
 @end

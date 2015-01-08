@@ -55,7 +55,7 @@
 {
     if (!_imageNameArray) {
         _imageNameArray = @[@"plusdot_one.png",
-                            @"plusdot_one.png",
+                            @"plusdot_two.png",
                             //@"plusdot_one.png",
                             ];
     }

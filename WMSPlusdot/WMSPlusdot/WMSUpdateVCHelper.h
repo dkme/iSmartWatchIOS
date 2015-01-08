@@ -10,6 +10,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 
 typedef void (^UpdateVCHelper_scanedPeripheral)(CBPeripheral *peripheral);
+typedef void (^UpdateVCHelper_scanedTimeout)(void);
 
 @interface WMSUpdateVCHelper : NSObject
 
@@ -18,7 +19,11 @@ typedef void (^UpdateVCHelper_scanedPeripheral)(CBPeripheral *peripheral);
 + (id)instance;
 
 - (void)scanPeripheralByInterval:(NSTimeInterval)interval
-                      completion:(UpdateVCHelper_scanedPeripheral)aCallBack;
+                      completion:(UpdateVCHelper_scanedPeripheral)aCallBack;//被弃用
+
+- (void)scanPeripheralByInterval:(NSTimeInterval)interval
+                         results:(UpdateVCHelper_scanedPeripheral)aCallBack
+                         timeout:(UpdateVCHelper_scanedTimeout)bCallBack;
 
 - (void)stopScan;
 

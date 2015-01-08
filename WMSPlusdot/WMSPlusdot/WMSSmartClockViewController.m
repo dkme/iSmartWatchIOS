@@ -37,7 +37,7 @@
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
-@interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate>
+@interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,UIAlertViewDelegate>
 @property (strong,nonatomic) UISwitch *cellSwitch;
 @property (strong,nonatomic) WMSInputView *myInputView;
 @property (strong,nonatomic) WMSWeekPicker *weekPicker;
@@ -53,6 +53,8 @@
     int alarmClockMimute;
     int alarmClockSnooze;
     NSArray *alarmClockRepeats;
+    
+    WMSAlarmClockModel *_oldAlarmClockModel;
 }
 
 #pragma mark - Property Getter Method
@@ -143,7 +145,7 @@
     [self.view addSubview:self.myInputView];
     [self setupNavBarView];
     [self setupTableView];
-    [self loadData];
+    _oldAlarmClockModel = [self loadData];
     [self setupWeekPicker];
 }
 
@@ -182,7 +184,7 @@
     self.weekPicker.componentStates = alarmClockRepeats;
     [self.weekPicker reloadView];
 }
-- (void)loadData
+- (WMSAlarmClockModel *)loadData
 {
     WMSAlarmClockModel *model = [self loadAlarmClock];
     if (model == nil) {
@@ -199,6 +201,10 @@
         alarmClockRepeats = model.repeats;
     }
     self.cellSwitch.on = alarmClockStatus;
+    if (model == nil) {
+        return [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
+    }
+    return model;
 }
 
 - (WMSAlarmClockModel *)loadAlarmClock
@@ -245,6 +251,7 @@
          DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
          [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
          [self savaAlarmClock:model];
+         _oldAlarmClockModel = model;
      }];
 }
 
@@ -252,9 +259,14 @@
 #pragma mark - Action
 - (IBAction)backAction:(id)sender {
     WMSAlarmClockModel *model = [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
-    [self savaAlarmClock:model];
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    BOOL res = [model isEqual:_oldAlarmClockModel];
+    if (res == NO) {
+        NSString *message = NSLocalizedString(@"您的闹钟已修改，尚未同步到手表，是否同步?", nil);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:message delegate:self cancelButtonTitle:NSLocalizedString(@"NO", nil) otherButtonTitles:NSLocalizedString(@"YES", nil), nil];
+        [alert show];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (IBAction)syncSettingAction:(id)sender {
@@ -271,6 +283,16 @@
 {
     UISwitch *sw = (UISwitch *)sender;
     alarmClockStatus = sw.on;
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {//NO
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self syncSettingAction:nil];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -304,9 +326,13 @@
 
     cell.textLabel.text = [self.textArray objectAtIndex:indexPath.row];
     cell.detailTextLabel.text = [self.detailTextArray objectAtIndex:indexPath.row];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"System" size:12.f];
-    
+    cell.detailTextLabel.font = Font_System(12.0);
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (indexPath.row == SmartClockRepeatCell) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    } else {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
     
     return cell;
 }
@@ -337,12 +363,12 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
         return;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     switch (indexPath.row) {
         case SmartClockTimeCell:
         {
@@ -429,9 +455,9 @@
         case SmartClockTimeCell:
         {
             if (component == 0) {
-                return PICKER_VIEW_COMPONENT_WIDTH/2.0;
+                return 100.f;
             } else {
-                return PICKER_VIEW_COMPONENT_WIDTH/2.0;
+                return 100.f;
             }
         }
         case SmartClockSleepTimeCell:

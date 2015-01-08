@@ -43,17 +43,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Login_bg.png"]];
-    
-    self.textPassword.secureTextEntry = YES;
-    self.textPassword.delegate = self;
-    self.textEmail.delegate = self;
-    
-    [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_a.png"] forState:UIControlStateNormal];
-    [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_b.png"] forState:UIControlStateSelected];
-    [self.viewEmail setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
-    [self.viewPassword setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
-    
+    [self setupUI];
     [self localizableView];
 }
 
@@ -73,6 +63,24 @@
 - (void)dealloc
 {
     DEBUGLog(@"%@ dealloc",[self class]);
+}
+
+#pragma mark - Setup
+- (void)setupUI
+{
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Login_bg.png"]];
+    //self.view.backgroundColor = UICOLOR_DEFAULT;
+    self.textPassword.secureTextEntry = YES;
+    self.textPassword.delegate = self;
+    self.textEmail.delegate = self;
+    
+    [self.viewEmail setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
+    [self.viewPassword setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
+    
+    [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_a.png"] forState:UIControlStateNormal];
+    [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_b.png"] forState:UIControlStateSelected];
+    [self.buttonCancel setBackgroundImage:[UIImage imageNamed:@"zq_sound_no_a.png"] forState:UIControlStateNormal];
+    [self.buttonCancel setBackgroundImage:[UIImage imageNamed:@"zq_sound_no_b.png"] forState:UIControlStateSelected];
 }
 
 - (void)localizableView
@@ -215,6 +223,11 @@
 - (IBAction)resignResponse:(id)sender {
     [self.textEmail resignFirstResponder];
     [self.textPassword resignFirstResponder];
+}
+
+- (IBAction)cancelAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 
 

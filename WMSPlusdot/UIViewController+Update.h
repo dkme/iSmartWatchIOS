@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define APP_ID          @"930839162"
+
 typedef NS_ENUM(NSInteger, DetectResultValue) {
     DetectResultUnknown = 0x00,
     DetectResultCanUpdate = 0x01,

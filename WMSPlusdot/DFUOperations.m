@@ -339,7 +339,7 @@ NSDate *startTime, *finishTime;
 {
     finishTime = [NSDate date];
     self.uploadTimeInSeconds = [finishTime timeIntervalSinceDate:startTime];
-    NSLog(@"upload time in sec: %u",self.uploadTimeInSeconds);
+    NSLog(@"upload time in sec: %lu",(unsigned long)self.uploadTimeInSeconds);
 }
 
 #pragma mark - BLEOperations delegates
@@ -388,7 +388,7 @@ NSDate *startTime, *finishTime;
 
 -(void)onFileOpened:(NSUInteger)fileSizeOfBin
 {
-    NSLog(@"onFileOpened file size: %d",fileSizeOfBin);
+    NSLog(@"onFileOpened file size: %lu",(unsigned long)fileSizeOfBin);
     binFileSize += fileSizeOfBin;
 }
 

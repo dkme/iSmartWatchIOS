@@ -18,11 +18,13 @@ typedef NS_ENUM(NSInteger, WMSSkipMode) {
 @property (weak, nonatomic) IBOutlet UITextField *textEmail;
 @property (weak, nonatomic) IBOutlet UITextField *textPassword;
 @property (weak, nonatomic) IBOutlet UIButton *buttonLogin;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
 
 - (IBAction)fogetPasswordAction:(id)sender;
 - (IBAction)loginAction:(id)sender;
 - (IBAction)signupAction:(id)sender;
 - (IBAction)resignResponse:(id)sender;
+- (IBAction)cancelAction:(id)sender;
 
 @property (nonatomic, assign) WMSSkipMode skipMode;
 

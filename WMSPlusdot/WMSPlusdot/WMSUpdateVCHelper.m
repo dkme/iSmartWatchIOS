@@ -10,6 +10,7 @@
 
 @interface WMSUpdateVCHelper()<CBCentralManagerDelegate>
 @property (nonatomic,copy) UpdateVCHelper_scanedPeripheral scanedBlock;
+@property (nonatomic,copy) UpdateVCHelper_scanedTimeout timeoutBlock;
 @end
 
 @implementation WMSUpdateVCHelper
@@ -45,6 +46,17 @@
     
     NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
     [_centralManager scanForPeripheralsWithServices:nil options:options];
+    if (_centralManager.delegate != self) {
+        _centralManager.delegate = self;
+    }
+}
+
+- (void)scanPeripheralByInterval:(NSTimeInterval)interval
+                         results:(UpdateVCHelper_scanedPeripheral)aCallBack
+                         timeout:(UpdateVCHelper_scanedTimeout)bCallBack
+{
+    [self setTimeoutBlock:bCallBack];
+    [self scanPeripheralByInterval:interval completion:aCallBack];
 }
 
 - (void)stopScan
@@ -56,6 +68,10 @@
 {
     [_centralManager stopScan];
     [self setScanedBlock:nil];
+    if (self.timeoutBlock) {
+        self.timeoutBlock();
+        [self setTimeoutBlock:nil];
+    }
 }
 
 #pragma mark - CBCentralManagerDelegate
@@ -68,6 +84,7 @@
 }
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
+    DEBUGLog(@"discover peripheral");
     if (self.scanedBlock) {
         self.scanedBlock(peripheral);
     }

@@ -163,8 +163,6 @@
 #pragma mark - Private
 - (void)checkAppUpdate
 {
-    //NSInteger a=[self isDetectedNewVersion];
-    //DEBUGLog(@"^^^^^%@----->%d[%p]",[self class],[self isDetectedNewVersion],&(a));
     UIWindow *window = [WMSAppDelegate appDelegate].window;
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:window];
     hud.mode = MBProgressHUDModeIndeterminate;
@@ -173,7 +171,7 @@
     hud.labelText = NSLocalizedString(@"正在检测新版本...", nil);
     [window addSubview:hud];
     [hud show:YES];
-    [self checkUpdateWithAPPID:@"930839162" completion:^(DetectResultValue isCanUpdate)
+    [self checkUpdateWithAPPID:APP_ID completion:^(DetectResultValue isCanUpdate)
     {
         if (isCanUpdate == DetectResultUnknown) {
             hud.labelText = NSLocalizedString(@"网络不给力，稍后再试试吧", nil);
@@ -458,7 +456,9 @@
                 }
                 case 3:
                 {
-                    if ([self isDetectedNewVersion]==DetectResultUnknown) {
+                    if ([self isDetectedNewVersion]==DetectResultCanUpdate) {
+                        [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
+                    } else {
                         [self checkAppUpdate];
                     }
                     break;

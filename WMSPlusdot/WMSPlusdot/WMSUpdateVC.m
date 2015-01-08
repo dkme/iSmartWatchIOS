@@ -23,6 +23,7 @@ NSString * const WMSUpdateVCStartDFU =
                     @"com.guogee.ios.WMSUpdateVCStartDFU";
 NSString *const WMSUpdateVCEndDFU =
                     @"com.guogee.ios.WMSUpdateVCEndDFU";
+static const NSTimeInterval scanTimeInterval = 120.f;
 
 @interface WMSUpdateVC ()<DFUOperationsDelegate,UIAlertViewDelegate>
 {
@@ -30,6 +31,8 @@ NSString *const WMSUpdateVCEndDFU =
     DFUOperations *_dfuOperations;
     
     BOOL _isUpdating;//是否正在更新
+    int  _connectSuccessCount;
+    NSString *_peripheralIdentify;
 }
 
 @end
@@ -108,6 +111,7 @@ NSString *const WMSUpdateVCEndDFU =
     _updateHelper = [WMSUpdateVCHelper instance];
     
     _updateSuccess = NO;
+    _connectSuccessCount = 0;
 }
 
 - (void)adaptiveIphone4
@@ -169,6 +173,7 @@ NSString *const WMSUpdateVCEndDFU =
     }
     
     NSString *peipheralUUID = [bleControl.connectedPeripheral UUIDString];
+    _peripheralIdentify = peipheralUUID;
     
     [self updateState:NSLocalizedString(@"正在切换至升级模式...", nil)];
     [bleControl switchToUpdateModeCompletion:^(SwitchToUpdateResult result, NSString *failReason)
@@ -213,19 +218,24 @@ NSString *const WMSUpdateVCEndDFU =
     DEBUGLog(@"start scan DFU peipheral");
     [self showHUDAtViewCenter:NSLocalizedString(@"正在重新建立连接...", nil)];
     __weak WMSUpdateVCHelper *weakHelper = _updateHelper;
-    [weakHelper scanPeripheralByInterval:20.0 completion:^(CBPeripheral *peripheral)
+    [weakHelper scanPeripheralByInterval:scanTimeInterval results:^(CBPeripheral *peripheral)
     {
+        DEBUGLog(@"scanning");
         NSString *uuid = [peripheral.identifier UUIDString];
-        //DEBUGLog(@"uuid:%@",uuid);
         if ([specifiedUUID isEqualToString:uuid]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideHUDAtViewCenter];
             });
             [weakHelper stopScan];
-            DEBUGLog(@"stop scan ");
+            DEBUGLog(@"stop scan");
             [self doDFUOperationsWithManager:weakHelper.centralManager peripheral:peripheral];
             return ;
         }
+    } timeout:^{
+        DEBUGLog(@"scan timeout");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHUDAtViewCenter];
+        });
     }];
 }
 
@@ -267,7 +277,16 @@ NSString *const WMSUpdateVCEndDFU =
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self hideHUDAtViewCenter];
-        [self showTip:NSLocalizedString(@"连接成功", nil)];
+        [self updateState:NSLocalizedString(@"连接成功...", nil)];
+        //[self showTip:NSLocalizedString(@"连接成功", nil)];
+        
+        _connectSuccessCount ++;
+        if (_connectSuccessCount >= 2) {
+            [_dfuOperations cancelDFU];
+            //[self postNotificationForName:WMSUpdateVCEndDFU];
+            return ;
+        }
+        
         NSString *filePath = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
         [_dfuOperations performDFUOnFile:filePath firmwareType:APPLICATION];
     });
@@ -277,11 +296,18 @@ NSString *const WMSUpdateVCEndDFU =
 {
     NSLog(@"device disconnected %@",peripheral.name);
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self hideHUDAtViewCenter];
-        [self showTip:NSLocalizedString(@"连接断开", nil)];
-        self.progressView.hidden = YES;
+        //[self showTip:NSLocalizedString(@"连接断开", nil)];
         _isUpdating = NO;
-        [self postNotificationForName:WMSUpdateVCEndDFU];
+        self.progressView.hidden = YES;
+        [self hideHUDAtViewCenter];
+        
+        if (!_updateSuccess && _connectSuccessCount <= 1) {
+            [self scanPeipheral:_peripheralIdentify];
+            [self updateState:NSLocalizedString(@"连接断开，升级中断...", nil)];
+        } else {
+            [self postNotificationForName:WMSUpdateVCEndDFU];
+            [self updateState:NSLocalizedString(@"升级已取消...", nil)];
+        }
     });
 }
 
@@ -298,14 +324,10 @@ NSString *const WMSUpdateVCEndDFU =
 -(void)onDFUCancelled
 {
     NSLog(@"onDFUCancelled");
-//    self.isTransferring = NO;
-//    self.isTransferCancelled = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [self enableOtherButtons];
         self.progressView.hidden = YES;
         _isUpdating = NO;
         [self updateState:NSLocalizedString(@"升级已取消...", nil)];
-        
         [self postNotificationForName:WMSUpdateVCEndDFU];
     });
 }
@@ -314,7 +336,7 @@ NSString *const WMSUpdateVCEndDFU =
 {
     NSLog(@"onTransferPercentage %d",percentage);
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.progressView.progress = percentage/100.0;
+        self.progressView.progress = percentage/100.0+0.01;
     });
 }
 

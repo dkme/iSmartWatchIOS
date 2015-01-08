@@ -215,6 +215,9 @@
         activityRepeats = model.repeats;
     }
     self.cellSwitch.on = activityStatus;
+    if (model == nil) {
+        return [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
+    }
     return model;
 }
 

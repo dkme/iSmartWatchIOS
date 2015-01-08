@@ -33,6 +33,7 @@
 //MySport ViewController String
 "Today" = "Today";
 "Yesterday" = "Yesterday";
+"Tomorrow" = "Tomorrow";
 "Target" = "Target";
 "Burn" = "Burn";
 "Distance" = "Distance";
@@ -286,6 +287,9 @@
 "升级成功..." = "Upgrade successfully...";
 "升级失败..." = "Upgrade failed...";
 "正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, exit will stop update, whether to quit?";
+"连接成功..." = "connection successfully...";
+"正在重新建立连接..." = "Is to establish a connection...";
+"连接断开，升级中断..." = "Disconnects, upgrade the interrupt...";
 
 "正在检测新版本..." = "Is testing a new version...";
 "网络不给力，稍后再试试吧" = "Network not to force, try again later";
@@ -295,8 +299,9 @@
 "添加时间，手表会在蓝牙断开后的这个时间提醒您" = "Add time,watch will remind you after bluetooth disconnecting at this time.";
 
 "您的活动提醒已修改，尚未同步到手表，是否同步?" = "your activity remind the modified, has not yet been synchronized to watch, synchronous?";
-"您的防丢提醒已修改，尚未同步到手表，是否同步?" = "You lost to remind the modified, has not yet been synchronized to watch, synchronous?";
+"您的防丢提醒已修改，尚未同步到手表，是否同步?" = "Your lost to remind the modified, has not yet been synchronized to watch, synchronous?";
+"您的闹钟已修改，尚未同步到手表，是否同步?" = "Your alarm clock has been modified, has not yet been synchronized to watch, synchronous?";
 "您已经绑定了手表，请先解绑" = "You have paired the watch, please remove paired";
 
-
+"目标设置成功" = "Target setting successfully";
 

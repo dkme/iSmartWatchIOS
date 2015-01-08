@@ -240,6 +240,9 @@
 		23B0094019D4FFEF008424FA /* WMSSportHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */; };
 		23B0094619D50100008424FA /* PNLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0094319D50100008424FA /* PNLineChartView.m */; };
 		23B0094719D50100008424FA /* PNPlot.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0094519D50100008424FA /* PNPlot.m */; };
+		23BD87571A5D1A24007A4F2C /* plusdot_two.png in Resources */ = {isa = PBXBuildFile; fileRef = 23BD87561A5D1A24007A4F2C /* plusdot_two.png */; };
+		23BD875A1A5D3B6C007A4F2C /* zq_sound_no_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 23BD87581A5D3B6C007A4F2C /* zq_sound_no_a.png */; };
+		23BD875B1A5D3B6C007A4F2C /* zq_sound_no_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 23BD87591A5D3B6C007A4F2C /* zq_sound_no_b.png */; };
 		23C74AFE19A72E9E00C589A1 /* main_deepsleep_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74AFD19A72E9E00C589A1 /* main_deepsleep_icon.png */; };
 		23C74B0219A72EFA00C589A1 /* main_lightsleep_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0119A72EFA00C589A1 /* main_lightsleep_icon.png */; };
 		23C74B0419A72F0B00C589A1 /* main_wakeup_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */; };
@@ -611,6 +614,9 @@
 		23B0094419D50100008424FA /* PNPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNPlot.h; sourceTree = "<group>"; };
 		23B0094519D50100008424FA /* PNPlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNPlot.m; sourceTree = "<group>"; };
 		23B0094919D5458D008424FA /* WMSMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMacro.h; sourceTree = "<group>"; };
+		23BD87561A5D1A24007A4F2C /* plusdot_two.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plusdot_two.png; sourceTree = "<group>"; };
+		23BD87581A5D3B6C007A4F2C /* zq_sound_no_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zq_sound_no_a.png; sourceTree = "<group>"; };
+		23BD87591A5D3B6C007A4F2C /* zq_sound_no_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zq_sound_no_b.png; sourceTree = "<group>"; };
 		23C74AFD19A72E9E00C589A1 /* main_deepsleep_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_deepsleep_icon.png; sourceTree = "<group>"; };
 		23C74B0119A72EFA00C589A1 /* main_lightsleep_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_lightsleep_icon.png; sourceTree = "<group>"; };
 		23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_wakeup_icon.png; sourceTree = "<group>"; };
@@ -810,6 +816,8 @@
 		2311611519B180EC0012B066 /* 登陆注册视图 */ = {
 			isa = PBXGroup;
 			children = (
+				23BD87581A5D3B6C007A4F2C /* zq_sound_no_a.png */,
+				23BD87591A5D3B6C007A4F2C /* zq_sound_no_b.png */,
 				232846EF19A43825001C148D /* WMSLoginViewController.h */,
 				232846F019A43825001C148D /* WMSLoginViewController.m */,
 				232846F119A43825001C148D /* WMSLoginViewController.xib */,
@@ -924,6 +932,7 @@
 				23491D271A58E90400C821E8 /* WMSBoundCell.m */,
 				23491D281A58E90400C821E8 /* WMSBoundCell.xib */,
 				23491D2B1A58EA0C00C821E8 /* plusdot_one.png */,
+				23BD87561A5D1A24007A4F2C /* plusdot_two.png */,
 			);
 			name = "我的配件视图";
 			sourceTree = "<group>";
@@ -1871,6 +1880,7 @@
 				2339D8191A53DFB20097E905 /* Signal_2.png in Resources */,
 				23A1532A1A36EFAA0026D741 /* WMSUpdateVC.xib in Resources */,
 				231972351A3533FD002E8A0F /* WMSSettingVC.xib in Resources */,
+				23BD875A1A5D3B6C007A4F2C /* zq_sound_no_a.png in Resources */,
 				234BF1F019B0308F005D71A0 /* WMSNavBarView.xib in Resources */,
 				230298D819A87F0A009D4306 /* link_connect_failure_icon.png in Resources */,
 				2319724E1A35B8CA002E8A0F /* zq_light_list_middle_a.png in Resources */,
@@ -1895,6 +1905,7 @@
 				239569CF19EFCE2800CABEDC /* Default-568h@2x.png in Resources */,
 				237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */,
 				237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */,
+				23BD875B1A5D3B6C007A4F2C /* zq_sound_no_b.png in Resources */,
 				233511AE19A4C00600FBCC81 /* main_setting_icon_b.png in Resources */,
 				23491D2C1A58EA0C00C821E8 /* plusdot_one.png in Resources */,
 				233511B119A4C3D300FBCC81 /* main_date_prev_a.png in Resources */,
@@ -1944,6 +1955,7 @@
 				237545C919AED4BE00685CD1 /* exit_btn_b.png in Resources */,
 				234BF1FC19B05991005D71A0 /* select_woman.png in Resources */,
 				2316509919AB4E650066C301 /* back_btn_b.png in Resources */,
+				23BD87571A5D1A24007A4F2C /* plusdot_two.png in Resources */,
 				2339D81B1A53DFB20097E905 /* Signal_3.png in Resources */,
 				232846FA19A441FC001C148D /* login_btn_b.png in Resources */,
 				231972501A35B8F0002E8A0F /* zq_light_list_bottom_a.png in Resources */,
@@ -2207,7 +2219,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
+				PROVISIONING_PROFILE = "3832c465-57ab-416a-b342-b6af4d0015af";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2313,7 +2325,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
+				PROVISIONING_PROFILE = "3832c465-57ab-416a-b342-b6af4d0015af";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2331,7 +2343,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
+				PROVISIONING_PROFILE = "3832c465-57ab-416a-b342-b6af4d0015af";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

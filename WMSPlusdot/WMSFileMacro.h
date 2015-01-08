@@ -25,7 +25,7 @@
 #define FILE_REMIND_WAY                  @"remindWay.plist"
 
 #pragma mark - 存放在tmp目录中的文件
-#define FILE_TMP_FIRMWARE_UPDATE             @"firmwareUpdate.hex"
+#define FILE_TMP_FIRMWARE_UPDATE             @"plusdot.hex"
 
 
 

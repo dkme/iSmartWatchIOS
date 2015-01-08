@@ -26,6 +26,20 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    WMSAlarmClockModel *model = (WMSAlarmClockModel *)object;
+    if (self.status             ==model.status                  &&
+        self.startHour          ==model.startHour               &&
+        self.startMinute        ==model.startMinute             &&
+        self.snoozeMinute       ==model.snoozeMinute            &&
+        [self.repeats isEqualToArray:model.repeats]             )
+    {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - NSCoding
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:@(_status) forKey:@"WMSAlarmClockModel.status"];

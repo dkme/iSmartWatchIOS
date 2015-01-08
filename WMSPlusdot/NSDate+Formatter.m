@@ -8,8 +8,8 @@
 
 #import "NSDate+Formatter.h"
 
-const NSTimeInterval oneDayTimeInterval = 24*60*60;
-const NSTimeInterval hour8TimeInterval = 8*60*60;
+static const NSTimeInterval oneDayTimeInterval = 24*60*60;
+static const NSTimeInterval hour8TimeInterval = 8*60*60;
 
 @implementation NSDate (Formatter)
 
@@ -61,9 +61,14 @@ const NSTimeInterval hour8TimeInterval = 8*60*60;
 
 + (NSDateMode)compareDate:(NSDate *)date
 {
-    NSDate *today = [NSDate date];
-    NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:oneDayTimeInterval*-1.f];
-    NSDate *tomorrow = [NSDate dateWithTimeIntervalSinceNow:oneDayTimeInterval];
+//    NSDate *today = [NSDate date];
+//    NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow:oneDayTimeInterval*-1.f];
+//    NSDate *tomorrow = [NSDate dateWithTimeIntervalSinceNow:oneDayTimeInterval];
+//    NSDate *refDate = date;
+    
+    NSDate *today = [NSDate systemDate];
+    NSDate *yesterday = [NSDate dateWithTimeInterval:oneDayTimeInterval*-1.f sinceDate:today];
+    NSDate *tomorrow = [NSDate dateWithTimeInterval:oneDayTimeInterval sinceDate:today];
     NSDate *refDate = date;
     
     //10 first characters of description is the calendar date:

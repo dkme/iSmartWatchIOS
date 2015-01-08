@@ -24,7 +24,7 @@
         case NSDateModeYesterday:
             return NSLocalizedString(@"Yesterday",nil);
         case NSDateModeTomorrow:
-            return NSLocalizedString(@"Today",nil);
+            return NSLocalizedString(@"Tomorrow",nil);
         case NSDateModeUnknown:
             return [NSDate stringFromDate:date format:formart];
         default:
