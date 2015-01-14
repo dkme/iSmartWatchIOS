@@ -25,6 +25,17 @@
     }
     return self;
 }
+- (id)initWithClock:(WMSAlarmClockModel *)clock
+{
+    if (self = [super init]) {
+        _status = clock.status;
+        _startHour = clock.startHour;
+        _startMinute = clock.startMinute;
+        _snoozeMinute = clock.snoozeMinute;
+        _repeats = clock.repeats;
+    }
+    return self;
+}
 
 - (BOOL)isEqual:(id)object
 {

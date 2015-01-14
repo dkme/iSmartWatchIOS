@@ -7,13 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@class WMSNavBarView;
 
 @interface WMSAntiLostVC : UIViewController
 
-@property (weak, nonatomic) IBOutlet WMSNavBarView *navBarView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-@property (strong, nonatomic) NSString *navBarTitle;
 
 @end

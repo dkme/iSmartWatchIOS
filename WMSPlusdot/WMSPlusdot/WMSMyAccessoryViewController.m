@@ -25,7 +25,7 @@
 
 #define SECTION_NUMBER      1
 #define CELL_HIGHT          207
-#define HEADER_HEIGHT       10
+#define HEADER_HEIGHT       50
 #define FOOTER_HEIGHT       1
 
 @interface WMSMyAccessoryViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
@@ -55,7 +55,7 @@
 {
     if (!_imageNameArray) {
         _imageNameArray = @[@"plusdot_one.png",
-                            @"plusdot_two.png",
+                            //@"plusdot_two.png",
                             //@"plusdot_one.png",
                             ];
     }
@@ -65,7 +65,7 @@
 {
     if (!_textArray) {
         _textArray = @[NSLocalizedString(@"SMART WATCH P1", nil),
-                       NSLocalizedString(@"SMART WATCH P2", nil),
+                       //NSLocalizedString(@"SMART WATCH P2", nil),
                        //NSLocalizedString(@"SMART WATCH P2", nil),
                        ];
     }

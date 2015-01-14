@@ -14,6 +14,7 @@
  描述重复情况
  */
 + (NSString *)descriptionOfRepeats:(NSArray *)repeats;
++ (NSString *)description2OfRepeats:(NSArray *)repeats;
 
 /*
  配置重复情况（当永不重复时，设为当天重复）

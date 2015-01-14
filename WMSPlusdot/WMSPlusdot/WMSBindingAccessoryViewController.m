@@ -424,7 +424,6 @@
         if (success) {
             NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
             if (identify) {
-                //[WMSMyAccessory bindAccessory:identify];
                 [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
                 [strongSelf closeVC:YES];
             } else {
@@ -601,15 +600,19 @@
     if ([self.bleControl isScanning]) {
         [self.bleControl stopScanForPeripherals];
     }
-    LGPeripheral *peripheral = self.listData[indexPath.row];
-    [self.bleControl connect:peripheral];
+    if ([self.listData count] > indexPath.row) {
+        LGPeripheral *peripheral = self.listData[indexPath.row];
+        [self.bleControl connect:peripheral];
+        [self showBindingView:YES];
+    }
+    
     
 //    _hud = [[MBProgressHUD alloc] initWithView:self.view];
 //    _hud.mode = MBProgressHUDModeIndeterminate;
 //    _hud.labelText = NSLocalizedString(@"正在连接手表...", nil);
 //    [self.view addSubview:_hud];
 //    [_hud show:YES];
-    [self showBindingView:YES];
+    
 //    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(timer) object:nil];
 //    [self performSelector:@selector(timer) withObject:nil afterDelay:5.0];
 }

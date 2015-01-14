@@ -21,9 +21,8 @@
 #import "WMSRemindHelper.h"
 #import "WMSFileMacro.h"
 
-#define SECTION_NUMBER                  1
-#define SECTION_FOOTER_HEIGHT           1
-#define SECTION_HEADER_HEIGHT           40
+#define SECTION_FOOTER_HEIGHT               60.f
+#define SECTION_HEADER_HEIGHT               0.1//40
 
 #define PICKER_VIEW_COMPONENT_NUMBER        1
 #define PICKER_VIEW_COMPONENT_WIDTH         ScreenWidth
@@ -32,13 +31,7 @@
 #define DAY_HOURS                           24
 #define DAY_MINUTES                         60
 
-#define DefaultAlarmClockID     1
-#define ArchiverKey             @"alarmClockModels"
-
-#define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
-
-@interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,UIAlertViewDelegate>
-@property (strong,nonatomic) UISwitch *cellSwitch;
+@interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate>
 @property (strong,nonatomic) WMSInputView *myInputView;
 @property (strong,nonatomic) WMSWeekPicker *weekPicker;
 @property (strong,nonatomic) NSArray *textArray;
@@ -48,26 +41,10 @@
 
 @implementation WMSSmartClockViewController
 {
-    BOOL alarmClockStatus;
-    int alarmClockHour;
-    int alarmClockMimute;
-    int alarmClockSnooze;
-    NSArray *alarmClockRepeats;
-    
-    WMSAlarmClockModel *_oldAlarmClockModel;
+    WMSAlarmClockModel *_clock;
 }
 
-#pragma mark - Property Getter Method
-- (UISwitch *)cellSwitch
-{
-    if (!_cellSwitch) {
-        _cellSwitch = [[UISwitch alloc] initWithFrame:UISwitch_Frame];
-        [_cellSwitch setOn:YES animated:NO];
-        [_cellSwitch addTarget:self action:@selector(switchBtnValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [_cellSwitch setOnTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
-    }
-    return _cellSwitch;
-}
+#pragma mark - Getter
 - (WMSInputView *)myInputView
 {
     if (!_myInputView) {
@@ -84,8 +61,7 @@
 {
     if (!_weekPicker) {
         CGSize size = CGSizeMake(ScreenWidth, 50.f);
-        CGRect tableViewFrame = self.tableView.frame;
-        CGPoint or = CGPointMake(0, tableViewFrame.size.height+tableViewFrame.origin.y+10);
+        CGPoint or = CGPointMake(0, 5.f);
         CGRect frame = (CGRect){or,size};
         _weekPicker = [[WMSWeekPicker alloc] initWithFrame:frame];
         _weekPicker.delegate = self;
@@ -96,7 +72,6 @@
 {
     if (!_textArray) {
         _textArray = [[NSArray alloc] initWithObjects:
-                                NSLocalizedString(@"Alarm clock",nil),
                                 NSLocalizedString(@"Start",nil),
                                 NSLocalizedString(@"唤醒时段",nil),
                                 NSLocalizedString(@"Repeat",nil),
@@ -108,10 +83,10 @@
 {
     _detailTextArray = nil;
     if (!_detailTextArray) {
-        NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",alarmClockHour,alarmClockMimute];
-        NSString *strSnooze = [NSString stringWithFormat:@"%d %@",alarmClockSnooze,NSLocalizedString(@"Minutes clock",nil)];
-        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:alarmClockRepeats];
-        _detailTextArray = @[@"",strStartTime,strSnooze,strRepeats];
+        NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",self.clockModel.startHour, self.clockModel.startMinute];
+        NSString *strSnooze = [NSString stringWithFormat:@"%d %@",self.clockModel.snoozeMinute,NSLocalizedString(@"Minutes clock",nil)];
+        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:self.clockModel.repeats];
+        _detailTextArray = @[strStartTime,strSnooze,strRepeats];
     }
     return _detailTextArray;
 }
@@ -140,37 +115,30 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    [self.view addSubview:self.weekPicker];
-    [self.view addSubview:self.myInputView];
-    [self setupNavBarView];
+
+    [self setupValue];
+    [self setupView];
     [self setupTableView];
-    _oldAlarmClockModel = [self loadData];
     [self setupWeekPicker];
 }
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 - (void)dealloc
 {
-    DEBUGLog(@"WMSSmartClockViewController dealloc");
+    DEBUGLog(@"%s",__FUNCTION__);
 }
 
-- (void)setupNavBarView
+#pragma mark - Setup
+- (void)setupView
 {
-    [self.buttonBack setTitle:@"" forState:UIControlStateNormal];
-    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
-    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
-    [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.buttonSync.titleLabel setFont:Font_System(15.0)];
-    
-    self.labelTitle.text = NSLocalizedString(@"Smart alarm clock",nil);
-    self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.myInputView];
 }
 - (void)setupTableView
 {
@@ -181,124 +149,24 @@
 }
 - (void)setupWeekPicker
 {
-    self.weekPicker.componentStates = alarmClockRepeats;
+    self.weekPicker.componentStates = self.clockModel.repeats;
     [self.weekPicker reloadView];
 }
-- (WMSAlarmClockModel *)loadData
+- (void)setupValue
 {
-    WMSAlarmClockModel *model = [self loadAlarmClock];
-    if (model == nil) {
-        alarmClockStatus = YES;
-        alarmClockHour = DEFAULT_START_HOUR;
-        alarmClockMimute = DEFAULT_START_MINUTE;
-        alarmClockSnooze = DEFAULT_SNOOZE_MINUTE;
-        alarmClockRepeats = @[@(YES),@(YES),@(YES),@(YES),@(YES),@(YES),@(YES)];
-    } else {
-        alarmClockStatus = model.status;
-        alarmClockHour = model.startHour;
-        alarmClockMimute = model.startMinute;
-        alarmClockSnooze = model.snoozeMinute;
-        alarmClockRepeats = model.repeats;
+    if (!_clockModel) {
+        NSDate *date = [NSDate systemDate];
+        NSArray *repeats = @[@(YES),@(YES),@(YES),@(YES),@(YES),@(YES),@(YES)];
+        _clockModel = [[WMSAlarmClockModel alloc] initWithStatus:YES startHour:[NSDate hourOfDate:date] startMinute:[NSDate minuteOfDate:date] snoozeMinute:DEFAULT_SNOOZE_MINUTE repeats:repeats];
     }
-    self.cellSwitch.on = alarmClockStatus;
-    if (model == nil) {
-        return [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
-    }
-    return model;
-}
-
-- (WMSAlarmClockModel *)loadAlarmClock
-{
-    NSString *fileName = FilePath(FILE_ALRAM_CLOCK);
-    NSData *data = [NSData dataWithContentsOfFile:fileName];
-    if ([data length] > 0) {
-        NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-        WMSAlarmClockModel *model= [unArchiver decodeObjectForKey:ArchiverKey];
-        [unArchiver finishDecoding];
-        
-        return model;
-    }
-    return nil;
-}
-
-- (void)savaAlarmClock:(WMSAlarmClockModel *)model
-{
-    //coding
-    NSString *fileName = FilePath(FILE_ALRAM_CLOCK);
-    NSMutableData *data = [NSMutableData data];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:model forKey:ArchiverKey];
-    [archiver finishEncoding];
-    [data writeToFile:fileName atomically:YES];
-}
-
-- (void)setAlarmClock
-{
-    WMSAlarmClockModel *model = [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
-    NSArray *array = [WMSRemindHelper repeatsWithArray:model.repeats];
-    Byte repeats[7] = {0};
-    NSUInteger length = 7;
-    for (int i=0; i<[array count]; i++) {
-        Byte b = (Byte)array[i];
-        if (i < length) {
-            repeats[i] = b;
-        }
-    }
-    
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    [bleControl.settingProfile setAlarmClockWithId:DefaultAlarmClockID withHour:model.startHour withMinute:model.startMinute withStatus:model.status withRepeat:repeats withLength:length withSnoozeMinute:model.snoozeMinute withCompletion:^(BOOL success)
-     {
-         DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
-         [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
-         [self savaAlarmClock:model];
-         _oldAlarmClockModel = model;
-     }];
-}
-
-
-#pragma mark - Action
-- (IBAction)backAction:(id)sender {
-    WMSAlarmClockModel *model = [[WMSAlarmClockModel alloc] initWithStatus:alarmClockStatus startHour:alarmClockHour startMinute:alarmClockMimute snoozeMinute:alarmClockSnooze repeats:alarmClockRepeats];
-    BOOL res = [model isEqual:_oldAlarmClockModel];
-    if (res == NO) {
-        NSString *message = NSLocalizedString(@"您的闹钟已修改，尚未同步到手表，是否同步?", nil);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:message delegate:self cancelButtonTitle:NSLocalizedString(@"NO", nil) otherButtonTitles:NSLocalizedString(@"YES", nil), nil];
-        [alert show];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
-
-- (IBAction)syncSettingAction:(id)sender {
-    WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    BOOL isBind = [WMSMyAccessory isBindAccessory];
-    BOOL isConnected = [bleControl isConnected];
-    BOOL result = [self checkoutWithIsBind:isBind isConnected:isConnected];
-    if (result == NO) {
-        return;
-    }
-    [self setAlarmClock];
-}
-- (void)switchBtnValueChanged:(id)sender
-{
-    UISwitch *sw = (UISwitch *)sender;
-    alarmClockStatus = sw.on;
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {//NO
-        [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        [self syncSettingAction:nil];
-    }
+    _clock = [[WMSAlarmClockModel alloc] initWithClock:self.clockModel];
+    [self setClockModel:_clock];
 }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return SECTION_NUMBER;
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -307,23 +175,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
-    
-    if (indexPath.row == 0) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.text = [self.textArray objectAtIndex:indexPath.row];
-        
-        [cell.contentView addSubview:self.cellSwitch];
-        
-        return cell;
-    }
-
     cell.textLabel.text = [self.textArray objectAtIndex:indexPath.row];
     cell.detailTextLabel.text = [self.detailTextArray objectAtIndex:indexPath.row];
     cell.detailTextLabel.font = Font_System(12.0);
@@ -333,7 +188,6 @@
     } else {
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
-    
     return cell;
 }
 
@@ -346,21 +200,25 @@
 {
     return SECTION_HEADER_HEIGHT;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    CGFloat height = [tableView rectForHeaderInSection:section].size.height;
-    CGRect frame = CGRectMake(0, height-30, ScreenWidth, 30);
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
-    titleLabel.textColor=[UIColor blackColor];
-    titleLabel.font = Font_System(12.0);
-    titleLabel.numberOfLines = -1;
-    titleLabel.adjustsFontSizeToFitWidth = YES;
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.text = NSLocalizedString(@"添加闹钟，手表会在指定的时间将您唤醒", nil);
-    UIView *myView = [[UIView alloc] init];
-    [myView addSubview:titleLabel];
-    return myView;
+    return self.weekPicker;
 }
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    CGFloat height = [tableView rectForHeaderInSection:section].size.height;
+//    CGRect frame = CGRectMake(0, height-30, ScreenWidth, 30);
+//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:frame];
+//    titleLabel.textColor=[UIColor blackColor];
+//    titleLabel.font = Font_System(12.0);
+//    titleLabel.numberOfLines = -1;
+//    titleLabel.adjustsFontSizeToFitWidth = YES;
+//    titleLabel.textAlignment = NSTextAlignmentCenter;
+//    titleLabel.text = NSLocalizedString(@"添加闹钟，手表会在指定的时间将您唤醒", nil);
+//    UIView *myView = [[UIView alloc] init];
+//    [myView addSubview:titleLabel];
+//    return myView;
+//}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -374,11 +232,11 @@
         {
             NSUInteger hour = 0;
             NSUInteger minute = 0;
-            if (alarmClockHour < DAY_HOURS) {
-                hour = alarmClockHour;
+            if (self.clockModel.startHour < DAY_HOURS) {
+                hour = self.clockModel.startHour;
             }
-            if (alarmClockMimute < DAY_MINUTES) {
-                minute = alarmClockMimute;
+            if (self.clockModel.startMinute < DAY_MINUTES) {
+                minute = self.clockModel.startMinute;
             }
             [self.myInputView show:YES forView:cell];
             [self.myInputView.pickerView selectRow:hour inComponent:0 animated:NO];
@@ -388,7 +246,7 @@
         case SmartClockSleepTimeCell:
         {
             NSUInteger row = 0;
-            NSUInteger i = [self.intervalValueArray indexOfObject:@(alarmClockSnooze)];
+            NSUInteger i = [self.intervalValueArray indexOfObject:@(self.clockModel.snoozeMinute)];
             if (i < [self.intervalValueArray count]) {
                 row = i;
             }
@@ -500,14 +358,17 @@
         {
             NSInteger hour = [inputView.pickerView selectedRowInComponent:0];
             NSInteger minute = [inputView.pickerView selectedRowInComponent:1];
-            alarmClockHour = (int)hour;
-            alarmClockMimute = (int)minute;
+//            alarmClockHour = (int)hour;
+//            alarmClockMimute = (int)minute;
+            self.clockModel.startHour = hour;
+            self.clockModel.startMinute = minute;
             break;
         }
         case SmartClockSleepTimeCell:
         {
             NSInteger row = [inputView.pickerView selectedRowInComponent:0];
-            alarmClockSnooze = [self.intervalValueArray[row] intValue];
+            NSInteger snooze = [self.intervalValueArray[row] integerValue];
+            self.clockModel.snoozeMinute = (NSUInteger)snooze;
             break;
         }
         default:
@@ -519,7 +380,7 @@
 #pragma mark - WMSWeekPickerDelegate
 - (void)weekPicker:(WMSWeekPicker *)weekPicker didClickComponent:(NSUInteger)index
 {
-    alarmClockRepeats = weekPicker.componentStates;
+    self.clockModel.repeats = weekPicker.componentStates;
     [self.tableView reloadData];
 }
 

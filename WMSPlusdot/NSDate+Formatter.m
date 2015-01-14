@@ -40,23 +40,31 @@ static const NSTimeInterval hour8TimeInterval = 8*60*60;
 
 + (NSUInteger)yearOfDate:(NSDate *)date
 {
-    NSString *strYear = [NSDate stringFromDate:date format:@"yyyy"];
-    
-    return [strYear integerValue];
+    return [[NSDate stringFromDate:date format:@"yyyy"] integerValue];
 }
-
 + (NSUInteger)monthOfDate:(NSDate *)date
 {
-    NSString *strMonth = [NSDate stringFromDate:date format:@"MM"];
-    
-    return [strMonth integerValue];
+    return [[NSDate stringFromDate:date format:@"MM"] integerValue];
 }
-
 + (NSUInteger)dayOfDate:(NSDate *)date
 {
-    NSString *strDay = [NSDate stringFromDate:date format:@"dd"];
-    
-    return [strDay integerValue];
+    return [[NSDate stringFromDate:date format:@"dd"] integerValue];
+}
++ (NSUInteger)hourOfDate:(NSDate *)date
+{
+    return [[NSDate stringFromDate:date format:@"HH"] integerValue];
+}
++ (NSUInteger)minuteOfDate:(NSDate *)date
+{
+    return [[NSDate stringFromDate:date format:@"mm"] integerValue];
+}
++ (NSUInteger)secondOfDate:(NSDate *)date
+{
+    return [[NSDate stringFromDate:date format:@"ss"] integerValue];
+}
++ (NSUInteger)weekdayOfDate:(NSDate *)date
+{
+    return [[NSDate stringFromDate:date format:@"e"] integerValue];
 }
 
 + (NSDateMode)compareDate:(NSDate *)date

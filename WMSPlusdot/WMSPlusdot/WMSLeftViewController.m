@@ -165,10 +165,10 @@
 - (NSMutableArray *)contentVCArray
 {
     if (!_contentVCArray) {
-        if ([UINavigationController class] != [self.sideMenuViewController.contentViewController class]) {
+        if ([MyNavigationController class] != [self.sideMenuViewController.contentViewController class]) {
             return nil;
         }
-        UIViewController *vc = ((UINavigationController *)self.sideMenuViewController.contentViewController).topViewController;
+        UIViewController *vc = ((MyNavigationController *)self.sideMenuViewController.contentViewController).topViewController;
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
                            Null_Object,
@@ -341,7 +341,7 @@
         return;
     }
     
-    UINavigationController *nav = nil;
+    MyNavigationController *nav = nil;
     UIViewController *VC = nil;
     if ([Null_Object isEqualToString:[self.contentVCArray objectAtIndex:indexPath.row]]) {
         Class VCClass=[self.specifyContentVCClassArray objectAtIndex:indexPath.row];
@@ -351,7 +351,7 @@
         VC = [self.contentVCArray objectAtIndex:indexPath.row];
     }
     
-    nav = [[UINavigationController alloc] initWithRootViewController:VC];
+    nav = [[MyNavigationController alloc] initWithRootViewController:VC];
     [self.sideMenuViewController setContentViewController:nav
                                                  animated:YES];
     [self.sideMenuViewController hideMenuViewController];

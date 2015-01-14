@@ -244,22 +244,14 @@ enum {
     if (![self.bleControl isConnected]) {
         return ;
     }
-
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy";
-    UInt16 year = [[dateFormatter stringFromDate:date] intValue];
-    dateFormatter.dateFormat = @"MM";
-    Byte month = [[dateFormatter stringFromDate:date] intValue];
-    dateFormatter.dateFormat = @"dd";
-    Byte day = [[dateFormatter stringFromDate:date] intValue];
-    dateFormatter.dateFormat = @"HH";
-    Byte hour = [[dateFormatter stringFromDate:date] intValue];
-    dateFormatter.dateFormat = @"mm";
-    Byte minute = [[dateFormatter stringFromDate:date] intValue];
-    dateFormatter.dateFormat = @"ss";
-    Byte second = [[dateFormatter stringFromDate:date] intValue];
-    dateFormatter.dateFormat = @"e";
-    Byte week_day = [[dateFormatter stringFromDate:date] intValue];
+    
+    UInt16 year = [NSDate yearOfDate:date];
+    Byte month = [NSDate monthOfDate:date];
+    Byte day = [NSDate dayOfDate:date];
+    Byte hour = [NSDate hourOfDate:date];
+    Byte minute = [NSDate minuteOfDate:date];
+    Byte second = [NSDate secondOfDate:date];
+    Byte week_day = [NSDate weekdayOfDate:date];
 DEBUGLog(@"【【%d-%d-%d %d:%d:%d %d】】",year,month,day,hour,minute,second,week_day);
     
     if (week_day == 1) {//系统时间中，1-7表示周日-周六
@@ -397,7 +389,6 @@ DEBUGLog(@"【【%d-%d-%d %d:%d:%d %d】】",year,month,day,hour,minute,second,w
     package[4] = snoozeMinute;
     
     [self setPacketCMD:CMDSetAlarmClock andData:package dataLength:DATA_LENGTH];
-    
     if (aCallBack) {
         [NSMutableArray push:aCallBack toArray:self.stackSetAlarmClock];
     }

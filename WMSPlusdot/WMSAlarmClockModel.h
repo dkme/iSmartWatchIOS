@@ -25,6 +25,7 @@
          startMinute:(NSUInteger)startMinute
         snoozeMinute:(NSUInteger)snoozeMinute
              repeats:(NSArray *)repeats;
+- (id)initWithClock:(WMSAlarmClockModel *)clock;
 
 - (BOOL)isEqual:(id)object;
 

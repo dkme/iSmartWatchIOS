@@ -21,6 +21,7 @@
 #import "WMSPostNotificationHelper.h"
 #import "WMSAppConfig.h"
 #import "WMSConstants.h"
+#import "UIImage+Color.h"
 
 #import "GGAudioTool.h"
 
@@ -68,7 +69,8 @@
         WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
         WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
         
-        sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
+        //sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
+        sideMenu.contentViewController = [[MyNavigationController alloc] initWithRootViewController:contentVC];
         sideMenu.leftMenuViewController = leftVC;
         sideMenu.rightMenuViewController = rightVC;
         sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
@@ -92,7 +94,7 @@
     
     _wmsBleControl  = [[WMSBleControl alloc] init];
     
-    [self setupApp];
+    [self setupAppAppearance];
     
     if ([WMSHelper isFirstLaunchApp]) {
         self.window.rootViewController = [WMSGuideVC guide];
@@ -101,7 +103,7 @@
     }
 
     self.window.rootViewController = [self reSideMenu];
-
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -154,21 +156,27 @@
 }
 
 #pragma mark - Private
-- (void)setupApp
+- (void)setupAppAppearance
 {
     //设置导航栏的颜色，标题字体和颜色
-    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
-    //[[UINavigationBar appearance] setTranslucent:NO];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    //阴影
-    //NSShadow *shadow = [[NSShadow alloc] init];
-    //shadow.shadowColor = UIColorFromRGBAlpha(0x000000, 0.8);
-    //shadow.shadowOffset = CGSizeMake(0, 0);
+    UINavigationBar *navBar = [UINavigationBar appearance];
+    //[navBar setBarTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
+    [navBar setTintColor:[UIColor whiteColor]];
+    [navBar setBackgroundImage:[UIImage imageFromColor:UICOLOR_DEFAULT] forBarMetrics:UIBarMetricsDefault];
+    [navBar setShadowImage:[[UIImage alloc] init]];
+    if (IS_IOS8) {
+        navBar.barStyle = UIBarStyleBlack;
+        navBar.translucent = YES;
+    } else {
+//        navBar.barStyle = UIBarStyleBlackTranslucent;
+//        navBar.translucent = YES;
+    }
+    
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName:[UIColor whiteColor],
-                                 /*NSShadowAttributeName:shadow*/
+                                 NSFontAttributeName:Font_DINCondensed(20.f),
                                   };
-    [[UINavigationBar appearance] setTitleTextAttributes:attributes];
+    [navBar setTitleTextAttributes:attributes];
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }

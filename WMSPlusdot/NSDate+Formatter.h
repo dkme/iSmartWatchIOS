@@ -24,10 +24,12 @@ typedef NS_ENUM(NSInteger, NSDateMode) {
 + (NSDate *)dateFromString:(NSString *)dateString format:(NSString *)formatter;
 
 + (NSUInteger)yearOfDate:(NSDate *)date;
-
 + (NSUInteger)monthOfDate:(NSDate *)date;
-
 + (NSUInteger)dayOfDate:(NSDate *)date;
++ (NSUInteger)hourOfDate:(NSDate *)date;
++ (NSUInteger)minuteOfDate:(NSDate *)date;
++ (NSUInteger)secondOfDate:(NSDate *)date;
++ (NSUInteger)weekdayOfDate:(NSDate *)date;
 
 + (NSDateMode)compareDate:(NSDate *)date;
 

@@ -9,9 +9,10 @@
 #import "WMSContent1ViewController.h"
 #import "UIViewController+RESideMenu.h"
 #import "RESideMenu.h"
+#import "WMSAppDelegate.h"
 #import "WMSSmartClockViewController.h"
 #import "WMSSleepHistoryViewController.h"
-#import "WMSAppDelegate.h"
+#import "WMSClockListVC.h"
 
 #import "WMSSyncDataView.h"
 #import "MBProgressHUD.h"
@@ -566,7 +567,8 @@
 }
 
 - (IBAction)gotoMyClockViewAction:(id)sender {
-    WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
+    //WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
+    WMSClockListVC *VC = [[WMSClockListVC alloc] init];
     [self.navigationController pushViewController:VC animated:YES];
 }
 

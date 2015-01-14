@@ -19,13 +19,28 @@
                      NSLocalizedString(@"五",nil),
                      NSLocalizedString(@"六",nil),
                      NSLocalizedString(@"七",nil)];
+    return [self descriptionOfRepeats:repeats withStrings:arr];
+}
++ (NSString *)description2OfRepeats:(NSArray *)repeats
+{
+    NSArray *arr = @[NSLocalizedString(@"周一",nil),
+                     NSLocalizedString(@"周二",nil),
+                     NSLocalizedString(@"周三",nil),
+                     NSLocalizedString(@"周四",nil),
+                     NSLocalizedString(@"周五",nil),
+                     NSLocalizedString(@"周六",nil),
+                     NSLocalizedString(@"周日",nil)];
+    return [self descriptionOfRepeats:repeats withStrings:arr];
+}
++ (NSString *)descriptionOfRepeats:(NSArray *)repeats withStrings:(NSArray *)strings
+{
     NSString *str = @"";
     BOOL flag = YES;//标识是否每天都重复
     for (int i=0; i<[repeats count]; i++) {
         BOOL var = [repeats[i] boolValue];
         if (YES == var) {
             str = [str stringByAppendingString:@" "];
-            str = [str stringByAppendingString:arr[i]];
+            str = [str stringByAppendingString:strings[i]];
         } else {
             flag = NO;
         }

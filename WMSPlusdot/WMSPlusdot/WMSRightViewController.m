@@ -9,7 +9,6 @@
 #import "WMSRightViewController.h"
 #import "UIViewController+RESideMenu.h"
 #import "RESideMenu.h"
-#import "WMSRemindWayViewController.h"
 #import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
 #import "WMSAntiLostVC.h"
@@ -893,9 +892,8 @@
     
 //    if (indexPath.section == 3-1 && indexPath.row == 0) {
 //        WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-//        nav.navigationBarHidden = YES;
-//        vc.navBarTitle = self.section4TitleArray[indexPath.row];
+//        vc.title = self.section4TitleArray[indexPath.row];
+//        MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
 //        [self presentViewController:nav animated:YES completion:nil];
 //        return;
 //    }
@@ -928,9 +926,8 @@
     
     if (indexPath.section == 3-1 && indexPath.row == 0) {
         WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        nav.navigationBarHidden = YES;
-        vc.navBarTitle = self.section4TitleArray[indexPath.row];
+        vc.title = self.section4TitleArray[indexPath.row];
+        MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
         [self presentViewController:nav animated:YES completion:nil];
         return;
     }

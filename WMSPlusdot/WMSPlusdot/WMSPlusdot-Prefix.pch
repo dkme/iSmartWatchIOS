@@ -21,6 +21,7 @@
     #import "MBProgressHUD.h"
     #import "NSDate+Formatter.h"
     #import "UIImage+QuartzProc.h"
+    #import "MyNavigationController.h"
 #endif
 
 #ifdef DEBUG
@@ -50,6 +51,8 @@
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
 #define iPhone4s ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 #define iOS6 ( [[[UIDevice currentDevice] systemVersion] floatValue] < 7.0 )
+#define IS_IOS7      ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+#define IS_IOS8      ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #define ScreenWidth  ( [[UIScreen mainScreen] bounds].size.width )
 #define ScreenHeight ( [[UIScreen mainScreen] bounds].size.height )
 

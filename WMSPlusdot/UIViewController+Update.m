@@ -9,7 +9,7 @@
 #import "UIViewController+Update.h"
 #import <objc/runtime.h>
 
-static const void *UtilityKey;
+//static const void *UtilityKey;
 static DetectResultValue global_DetectResult = DetectResultUnknown;
 static NSString * app_url = nil;
 

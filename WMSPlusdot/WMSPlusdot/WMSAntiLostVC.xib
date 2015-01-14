@@ -7,40 +7,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WMSAntiLostVC">
             <connections>
-                <outlet property="navBarView" destination="F1o-5o-JTQ" id="FAx-ST-atw"/>
                 <outlet property="tableView" destination="6V3-mC-kkE" id="PRv-pq-lcX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F1o-5o-JTQ" customClass="WMSNavBarView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="6V3-mC-kkE">
-                    <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="504" id="4RS-ii-MBM"/>
-                    </constraints>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="6V3-mC-kkE" firstAttribute="leading" secondItem="F1o-5o-JTQ" secondAttribute="leading" id="WhK-KU-Szw"/>
-                <constraint firstItem="6V3-mC-kkE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WiM-c9-EYe"/>
-                <constraint firstItem="6V3-mC-kkE" firstAttribute="top" secondItem="F1o-5o-JTQ" secondAttribute="bottom" id="dhS-mC-PdB"/>
-                <constraint firstAttribute="bottom" secondItem="6V3-mC-kkE" secondAttribute="bottom" id="fLu-vL-O1g"/>
-                <constraint firstItem="F1o-5o-JTQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="oVd-2M-jQH"/>
-                <constraint firstItem="F1o-5o-JTQ" firstAttribute="trailing" secondItem="6V3-mC-kkE" secondAttribute="trailing" id="r7O-RP-yUz"/>
-                <constraint firstAttribute="trailing" secondItem="6V3-mC-kkE" secondAttribute="trailing" id="v24-Qm-BFC"/>
+                <constraint firstAttribute="trailing" secondItem="6V3-mC-kkE" secondAttribute="trailing" id="Eg4-JQ-aoF"/>
+                <constraint firstAttribute="bottom" secondItem="6V3-mC-kkE" secondAttribute="bottom" id="Hxq-N2-rng"/>
+                <constraint firstItem="6V3-mC-kkE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ost-s3-Bf6"/>
+                <constraint firstItem="6V3-mC-kkE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="akY-9d-bud"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="140" y="155"/>
+            <point key="canvasLocation" x="160" y="36"/>
         </view>
     </objects>
 </document>

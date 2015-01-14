@@ -9,12 +9,12 @@
 #import "WMSAntiLostVC.h"
 #import "WMSAppDelegate.h"
 #import "UIViewController+Tip.h"
-
 #import "WMSNavBarView.h"
 #import "WMSSwitchCell.h"
 #import "WMSInputView.h"
-#import "WMSFileMacro.h"
 #import "WMSMyAccessory.h"
+#import "WMSFileMacro.h"
+#import "WMSConstants.h"
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
 
@@ -84,42 +84,37 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.view addSubview:self.myInputView];
-    [self setupNavBarView];
-    [self setupTableView];
-    
     [self loadData];
+    [self setupView];
+    [self setupNavigationBar];
+    [self setupTableView];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 - (void)dealloc
 {
     DEBUGLog(@"%s",__FUNCTION__);
 }
 
 #pragma mark - setup UI
-- (void)setupNavBarView
+- (void)setupView
 {
-    self.navBarView.backgroundColor = UICOLOR_DEFAULT;
-    self.navBarView.labelTitle.text = self.navBarTitle;
-    self.navBarView.labelTitle.font = Font_DINCondensed(20.0);
-    [self.navBarView.buttonLeft setTitle:@"" forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.navBarView.buttonRight setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
-    [self.navBarView.buttonRight.titleLabel setFont:Font_System(15.0)];
-    [self.navBarView.buttonRight addTarget:self action:@selector(syncSettingAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.myInputView];
+}
+- (void)setupNavigationBar
+{    
+    UIBarButtonItem *leftItem = [UIBarButtonItem itemWithImageName:@"back_btn_a.png" highImageName:@"back_btn_b.png" target:self action:@selector(backAction:)];
+    UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) size:SYNC_BUTTON_SIZE target:self action:@selector(syncSettingAction:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    self.navigationItem.rightBarButtonItem = item1;
 }
 - (void)setupTableView
 {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.scrollEnabled = YES;
+    self.tableView.scrollEnabled = NO;
 }
 
 #pragma mark - Data
@@ -143,7 +138,7 @@
 }
 
 #pragma mark - Action
-- (void)buttonLeftClicked:(id)sender
+- (void)backAction:(id)sender
 {
     if (self.cellSwitch.on          == _oldStatus &&
         _timeInterval               == _oldTimeInterval)
