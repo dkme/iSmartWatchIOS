@@ -193,9 +193,9 @@
 }
 + (BOOL)download:(NSString *)strURL
 {
-    if ([self isExistFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)]) {
-        return YES;
-    }
+//    if ([self isExistFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)]) {
+//        return YES;
+//    }
     NSString *urlString = strURL;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIME_INTERVAL];
     if (!request) {

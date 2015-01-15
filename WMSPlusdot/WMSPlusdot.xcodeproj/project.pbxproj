@@ -188,6 +188,7 @@
 		236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 236032FA19FE3AE800A77B22 /* WMSRemindHelper.m */; };
 		2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2360CED119E6855000B10A0B /* WMSDeviceModel.m */; };
 		236D486A19D81C7900EFB5C8 /* WMSActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 236D486919D81C7900EFB5C8 /* WMSActivityModel.m */; };
+		236D95BB1A67ACFC00037DD8 /* WMSFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 236D95BA1A67ACFC00037DD8 /* WMSFilter.m */; };
 		236EAF3C1A400F3D00533FC8 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 236EAF3B1A400F3D00533FC8 /* CoreTelephony.framework */; };
 		236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */; };
 		237545C319AED3D200685CD1 /* account_head.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C219AED3D200685CD1 /* account_head.png */; };
@@ -540,6 +541,8 @@
 		2360CED119E6855000B10A0B /* WMSDeviceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSDeviceModel.m; sourceTree = "<group>"; };
 		236D486819D81C7900EFB5C8 /* WMSActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSActivityModel.h; sourceTree = "<group>"; };
 		236D486919D81C7900EFB5C8 /* WMSActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSActivityModel.m; sourceTree = "<group>"; };
+		236D95B91A67ACFC00037DD8 /* WMSFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSFilter.h; sourceTree = "<group>"; };
+		236D95BA1A67ACFC00037DD8 /* WMSFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSFilter.m; sourceTree = "<group>"; };
 		236EAF3B1A400F3D00533FC8 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		236EAF3F1A40260F00533FC8 /* WMSRightVCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSRightVCHelper.h; sourceTree = "<group>"; };
 		236EAF401A40260F00533FC8 /* WMSRightVCHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSRightVCHelper.m; sourceTree = "<group>"; };
@@ -725,6 +728,8 @@
 				23204A9D1A42F9E2005874CE /* WMSBindingView.h */,
 				23204A9E1A42F9E2005874CE /* WMSBindingView.m */,
 				23204AA01A42FA0F005874CE /* WMSBindingView.xib */,
+				236D95B91A67ACFC00037DD8 /* WMSFilter.h */,
+				236D95BA1A67ACFC00037DD8 /* WMSFilter.m */,
 			);
 			name = "绑定配件视图";
 			sourceTree = "<group>";
@@ -2063,6 +2068,7 @@
 				234BF1EE19B0305C005D71A0 /* WMSNavBarView.m in Sources */,
 				239F51D31A2D94F90058F6DE /* EAIntroPage.m in Sources */,
 				231972341A3533FD002E8A0F /* WMSSettingVC.m in Sources */,
+				236D95BB1A67ACFC00037DD8 /* WMSFilter.m in Sources */,
 				2331838F19B72318005B2BA0 /* WMSAlarmClock.m in Sources */,
 				2331838C19B70D9D005B2BA0 /* WMSRemindProfile.m in Sources */,
 				2326A44A19A5E9CE0098657B /* WMSRightViewController.m in Sources */,

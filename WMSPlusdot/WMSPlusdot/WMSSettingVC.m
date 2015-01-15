@@ -26,6 +26,7 @@
 #import "WMSHelper.h"
 
 #define SECTION_NUMBER                  2
+#define CELL_HEIGHT                     41.f
 #define SECTION0_HEADER_HEIGHT          30.f
 #define SECTION_HEADER_HEIGHT           20.f
 
@@ -122,6 +123,7 @@
     frame.size.width = 305;
     frame.origin.x = (ScreenWidth-frame.size.width)/2.0;
     self.tableView.frame = frame;
+    self.tableView.rowHeight = CELL_HEIGHT;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.delegate = self;
@@ -408,6 +410,10 @@
 }
 
 #pragma mark - UITableViewDelegate
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return CELL_HEIGHT;
+//}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     switch (section) {

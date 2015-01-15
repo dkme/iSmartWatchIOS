@@ -36,6 +36,7 @@
 #import "WMSConstants.h"
 #import "WMSUserInfoHelper.h"
 #import "WMSHelper.h"
+#import "WMSPostNotificationHelper.h"
 #import "WMSHTTPRequest.h"
 
 @interface WMSContentViewController ()
@@ -853,6 +854,10 @@
     } else {
         self.isNeedUpdate = YES;
     }
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    NSArray *notifys = [application scheduledLocalNotifications];
+    DEBUGLog(@"notifys:%@",notifys);
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
@@ -866,6 +871,8 @@
     {
         [self scanAndConnectPeripheral];
     }
+    
+    [WMSPostNotificationHelper postNotifyWithAlartBody:NSLocalizedString(@"蓝牙连接已断开", nil)];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {

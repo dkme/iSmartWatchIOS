@@ -108,4 +108,34 @@
     }
 }
 
++ (void)postNotifyWithAlartBody:(NSString *)body
+{
+    static BOOL flag = YES;
+    if (flag) {
+        if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+        {
+            UIUserNotificationType type = UIUserNotificationTypeAlert |
+            UIUserNotificationTypeBadge |
+            UIUserNotificationTypeSound ;
+            UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        }
+        flag = NO;
+    }
+    
+    UILocalNotification *notification=[[UILocalNotification alloc] init];
+    if (notification) {
+        NSDate *now = [NSDate date];
+        notification.fireDate=[now dateByAddingTimeInterval:0];
+        notification.timeZone=[NSTimeZone defaultTimeZone];
+        notification.alertBody=body;
+        notification.soundName= UILocalNotificationDefaultSoundName;
+        notification.alertAction=body;
+        notification.applicationIconBadgeNumber=[UIApplication sharedApplication].applicationIconBadgeNumber+1;
+//        NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:@"LowBattery",@"nfkey",nil];
+//        [notification setUserInfo:dict];
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
+}
+
 @end

@@ -19,4 +19,6 @@
 
 + (void)postLowBatteryLocalNotification;
 
++ (void)postNotifyWithAlartBody:(NSString *)body;
+
 @end

@@ -265,7 +265,7 @@
 "扫描" = "Scan";
 "停止" = "Stop";
 "超时，绑定失败" = "Timeout，Binding failure";
-"已绑定" = "Have paired";
+"已绑定" = "Paired";
 
 
 "按下手表右上角按键进行拍照" = "You will be able to take photos from smart-watch \nby pressing the upper right conier of the key";
@@ -306,4 +306,4 @@
 "目标设置成功" = "Target setting successfully";
 
 "您还没有添加闹钟" = "You haven't add the alarm clock";
-
+"请将手表靠近手机" = "Please will watch near the phone";

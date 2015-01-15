@@ -281,11 +281,14 @@ NSString * const WMSBleControlScanFinish =
     }
     if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
         //应使用下面的方式“终止”连接
-        [self.centralManager.manager cancelPeripheralConnection:self.connectingPeripheral.cbPeripheral];
-//        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
-//            [self disConnectedClearup];
-//        }];
-        [self disConnectedClearup];
+        CBPeripheral *p = self.connectingPeripheral.cbPeripheral;
+        if (p) {
+            [self.centralManager.manager cancelPeripheralConnection:p];
+            //        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
+            //            [self disConnectedClearup];
+            //        }];
+            [self disConnectedClearup];
+        }
     }
 }
 
