@@ -15,4 +15,6 @@
 
 + (WMSDeviceModel *)deviceModel;
 
+- (void)resetDevice;
+
 @end

@@ -9,12 +9,6 @@
 #import "BLEOperations.h"
 #import "Utility.h"
 
-#ifdef DEBUG
-    #define NSLog(s,...)  NSLog(@"DFU--->%@[LINE:%d] %@", self,__LINE__,[NSString stringWithFormat:(s), ##__VA_ARGS__])
-#else
-    #define NSLog(s,...)
-#endif
-
 @implementation BLEOperations
 
 bool isDFUPacketCharacteristicFound, isDFUControlPointCharacteristic;

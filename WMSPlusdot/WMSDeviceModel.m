@@ -28,5 +28,15 @@
     }
     return self;
 }
+- (void)dealloc
+{
+    DEBUGLog(@"%s",__FUNCTION__);
+}
+
+- (void)resetDevice
+{
+    [WMSDeviceModel deviceModel].version = 0;
+    [WMSDeviceModel deviceModel].batteryEnergy = 0;
+}
 
 @end

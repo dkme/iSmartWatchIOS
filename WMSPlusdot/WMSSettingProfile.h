@@ -185,5 +185,4 @@ typedef void (^finishRemind)(BOOL success);
              timeInterval:(NSUInteger)interval
                completion:(setAntiLostCallBack)aCallBack;
 
-
 @end

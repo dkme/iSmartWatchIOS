@@ -232,6 +232,7 @@ NSString * const WMSBleControlScanFinish =
     [self performSelector:@selector(connectPeripheralTimeout:) withObject:peripheral afterDelay:CONNECT_PERIPHERAL_INTERVAL];
 
     [self setConnectingPeripheral:peripheral];
+    DEBUGLog(@"connecting peripheral %@",peripheral);
     [peripheral connectWithCompletion:^(NSError *error) {
         //DEBUGLog(@"connect Completions");
         [NSObject cancelPreviousPerformRequestsWithTarget:self
@@ -612,6 +613,29 @@ NSString * const WMSBleControlScanFinish =
                                    userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
                                     repeats:YES
                                      timeID:TimeIDSwitchUpdateMode];
+}
+
+- (void)resetDevice
+{
+    if (self.isConnected == NO) {
+        return;
+    }
+    
+    Byte package[DATA_LENGTH] = {0};
+    
+    [self setPacketCMD:CMDResetDevice andData:package dataLength:DATA_LENGTH];
+    
+    //send
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    
+    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
+    
+//    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+//                                     target:self
+//                                   selector:@selector(writeValueToCharactTimeout:)
+//                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+//                                    repeats:YES
+//                                     timeID:TimeIDSwitchUpdateMode];
 }
 
 #pragma mark - Time out

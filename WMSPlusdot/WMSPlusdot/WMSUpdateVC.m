@@ -23,7 +23,8 @@ NSString * const WMSUpdateVCStartDFU =
                     @"com.guogee.ios.WMSUpdateVCStartDFU";
 NSString *const WMSUpdateVCEndDFU =
                     @"com.guogee.ios.WMSUpdateVCEndDFU";
-static const NSTimeInterval scanTimeInterval = 120.f;
+static const NSTimeInterval scanTimeInterval    = 120.f;
+static const NSTimeInterval DFU_DELAY           = 2.f;
 
 @interface WMSUpdateVC ()<DFUOperationsDelegate,UIAlertViewDelegate>
 {
@@ -248,6 +249,17 @@ static const NSTimeInterval scanTimeInterval = 120.f;
     [_dfuOperations connectDevice:peripheral];    
 }
 
+- (void)performDFU
+{
+    NSString *path = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
+    NSURL *fileURL = [NSURL fileURLWithPath:path];
+    if (fileURL) {
+        [_dfuOperations performDFUOnFile:fileURL firmwareType:APPLICATION];
+    } else {
+        DEBUGLog(@"升级文件错误");
+    }
+}
+
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -270,7 +282,6 @@ static const NSTimeInterval scanTimeInterval = 120.f;
 #else
     #define NSLog(s,...)
 #endif
-
 -(void)onDeviceConnected:(CBPeripheral *)peripheral
 {
     NSLog(@"onDeviceConnected %@",peripheral.name);
@@ -287,8 +298,8 @@ static const NSTimeInterval scanTimeInterval = 120.f;
             return ;
         }
         
-        NSString *filePath = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
-        [_dfuOperations performDFUOnFile:filePath firmwareType:APPLICATION];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(performDFU) object:nil];
+        [self performSelector:@selector(performDFU) withObject:nil afterDelay:DFU_DELAY];
     });
 }
 
@@ -375,9 +386,6 @@ static const NSTimeInterval scanTimeInterval = 120.f;
 -(void)onBootloaderUploadStarted
 {
     NSLog(@"onBootloaderUploadStarted");
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        uploadStatus.text = @"uploading bootloader ...";
-//    });
 }
 -(void)onBootloaderUploadCompleted
 {

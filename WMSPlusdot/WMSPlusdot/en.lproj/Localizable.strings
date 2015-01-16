@@ -261,7 +261,7 @@
 "退出登录" = "Log out";
 "取消" = "Cancel";
 
-"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please watch the light is on,\nPress the upper right corner of the keys, complete equipment";
+"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please watch the light is on,\nPress the upper right corner of the keys, complete paired";
 "扫描" = "Scan";
 "停止" = "Stop";
 "超时，绑定失败" = "Timeout，Binding failure";
@@ -307,3 +307,4 @@
 
 "您还没有添加闹钟" = "You haven't add the alarm clock";
 "请将手表靠近手机" = "Please will watch near the phone";
+"请稍等，正在绑定配件..." = "Please wait a moment, is paired accessories...";

@@ -12,11 +12,7 @@
 #import "DFUOperationsDetails.h"
 #import "BLEOperations.h"
 
-#ifdef DEBUG
-    #define NSLog(s,...)  NSLog(@"DFU--->%@[LINE:%d] %@", self,__LINE__,[NSString stringWithFormat:(s), ##__VA_ARGS__])
-#else
-    #define NSLog(s,...)
-#endif
+
 
 @implementation DFUOperations
 
@@ -77,70 +73,39 @@ NSDate *startTime, *finishTime;
 
 -(void)performDFUOnFiles:(NSURL *)softdeviceURL bootloaderURL:(NSURL *)bootloaderURL firmwareType:(DfuFirmwareTypes)firmwareType
 {
-//    isPerformedOldDFU = NO;
-//    [self initFirstFileOperations];
-//    [self initSecondFileOperations];
-//    [self initParameters];
-//    self.dfuFirmwareType = firmwareType;
-//    [fileRequests openFile:softdeviceURL];
-//    [fileRequests2 openFile:bootloaderURL];
-//    [dfuRequests enableNotification];
-//    [dfuRequests startDFU:firmwareType];
-//    [dfuRequests writeFilesSizes:(uint32_t)fileRequests.binFileSize bootloaderSize:(uint32_t)fileRequests2.binFileSize];
+    isPerformedOldDFU = NO;
+    [self initFirstFileOperations];
+    [self initSecondFileOperations];
+    [self initParameters];
+    self.dfuFirmwareType = firmwareType;
+    [fileRequests openFile:softdeviceURL];
+    [fileRequests2 openFile:bootloaderURL];
+    [dfuRequests enableNotification];
+    [dfuRequests startDFU:firmwareType];
+    [dfuRequests writeFilesSizes:(uint32_t)fileRequests.binFileSize bootloaderSize:(uint32_t)fileRequests2.binFileSize];
 }
 
-//-(void)performDFUOnFile:(NSURL *)firmwareURL firmwareType:(DfuFirmwareTypes)firmwareType
-//{
-//    isPerformedOldDFU = NO;
-//    firmwareFile = firmwareURL;
-//    [self initFirstFileOperations];
-//    isStartingSecondFile = NO;
-//    [self initParameters];
-//    self.dfuFirmwareType = firmwareType;
-//    [fileRequests openFile:firmwareURL];
-//    [dfuRequests enableNotification];
-//    [dfuRequests startDFU:firmwareType];
-//    [dfuRequests writeFileSize:(uint32_t)fileRequests.binFileSize];
-//}
--(void)performDFUOnFile:(NSString *)firmwarePath firmwareType:(DfuFirmwareTypes)firmwareType
+-(void)performDFUOnFile:(NSURL *)firmwareURL firmwareType:(DfuFirmwareTypes)firmwareType
 {
     isPerformedOldDFU = NO;
-    firmwareFile = firmwarePath;
+    firmwareFile = firmwareURL;
     [self initFirstFileOperations];
     isStartingSecondFile = NO;
     [self initParameters];
     self.dfuFirmwareType = firmwareType;
-    [fileRequests openFile:firmwarePath];
+    [fileRequests openFile:firmwareURL];
     [dfuRequests enableNotification];
     [dfuRequests startDFU:firmwareType];
     [dfuRequests writeFileSize:(uint32_t)fileRequests.binFileSize];
 }
 
-//-(void)performOldDFUOnFile:(NSURL *)firmwareURL
-//{
-//    isPerformedOldDFU = YES;
-//    if (firmwareURL && self.dfuFirmwareType == APPLICATION) {
-//        [self initFirstFileOperations];
-//        [self initParameters];
-//        [fileRequests openFile:firmwareURL];
-//        [dfuRequests enableNotification];
-//        [dfuRequests startOldDFU];
-//        [dfuRequests writeFileSizeForOldDFU:(uint32_t)fileRequests.binFileSize];
-//    }
-//    else {
-//        NSString *errorMessage = [NSString stringWithFormat:@"Old DFU only supports Application upload"];
-//        [dfuDelegate onError:errorMessage];
-//        [dfuRequests resetSystem];
-//    }
-//    
-//}
--(void)performOldDFUOnFile:(NSString *)firmwarePath
+-(void)performOldDFUOnFile:(NSURL *)firmwareURL
 {
     isPerformedOldDFU = YES;
-    if (firmwarePath && self.dfuFirmwareType == APPLICATION) {
+    if (firmwareURL && self.dfuFirmwareType == APPLICATION) {
         [self initFirstFileOperations];
         [self initParameters];
-        [fileRequests openFile:firmwarePath];
+        [fileRequests openFile:firmwareURL];
         [dfuRequests enableNotification];
         [dfuRequests startOldDFU];
         [dfuRequests writeFileSizeForOldDFU:(uint32_t)fileRequests.binFileSize];
@@ -150,6 +115,7 @@ NSDate *startTime, *finishTime;
         [dfuDelegate onError:errorMessage];
         [dfuRequests resetSystem];
     }
+    
 }
 
 -(void)initParameters
@@ -339,7 +305,7 @@ NSDate *startTime, *finishTime;
 {
     finishTime = [NSDate date];
     self.uploadTimeInSeconds = [finishTime timeIntervalSinceDate:startTime];
-    NSLog(@"upload time in sec: %lu",(unsigned long)self.uploadTimeInSeconds);
+    NSLog(@"upload time in sec: %u",self.uploadTimeInSeconds);
 }
 
 #pragma mark - BLEOperations delegates
@@ -388,7 +354,7 @@ NSDate *startTime, *finishTime;
 
 -(void)onFileOpened:(NSUInteger)fileSizeOfBin
 {
-    NSLog(@"onFileOpened file size: %lu",(unsigned long)fileSizeOfBin);
+    NSLog(@"onFileOpened file size: %d",fileSizeOfBin);
     binFileSize += fileSizeOfBin;
 }
 

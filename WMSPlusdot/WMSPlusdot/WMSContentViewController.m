@@ -27,6 +27,7 @@
 
 #import "WMSSportModel.h"
 #import "WMSDeviceModel.h"
+#import "WMSDeviceModel+Configure.h"
 #import "WMSMyAccessory.h"
 #import "WMSSportDatabase.h"
 #import "WMSPersonModel.h"
@@ -707,26 +708,34 @@
 #pragma mark - 收发数据
 - (void)connectedOperation
 {
-    //设置时间，读取设备信息，同步运动数据
-    [self.bleControl.settingProfile setCurrentDate:[NSDate systemDate] completion:^(BOOL success)
-     {
-         DEBUGLog(@"设置系统时间%@",success?@"成功":@"失败");
-         [self readDeviceInfo];
-     }];
+    if (![WMSMyAccessory isBindAccessory]) {
+        return ;
+    }
+    [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
+        [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
+            DEBUGLog(@"[LINE:%d] %s battery %d, lversion %d",__LINE__,__FUNCTION__,batteryEnergy,version);
+        }];
+    }];
+//    //设置时间，读取设备信息，同步运动数据
+//    [self.bleControl.settingProfile setCurrentDate:[NSDate systemDate] completion:^(BOOL success)
+//     {
+//         DEBUGLog(@"设置系统时间%@",success?@"成功":@"失败");
+//         [self readDeviceInfo];
+//     }];
 }
 
-- (void)readDeviceInfo
-{
-    [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
-     {
-         DEBUGLog(@"电池电量：%d",batteryEnergy);
-         //batteryEnergy = 100;
-         [self.syncDataView setEnergy:batteryEnergy];
-         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
-         [WMSDeviceModel deviceModel].version = version;
-         [self checkFirmwareUpdate];
-     }];
-}
+//- (void)readDeviceInfo
+//{
+//    [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
+//     {
+//         DEBUGLog(@"电池电量：%d",batteryEnergy);
+//         //batteryEnergy = 100;
+//         [self.syncDataView setEnergy:batteryEnergy];
+//         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
+//         [WMSDeviceModel deviceModel].version = version;
+//         [self checkFirmwareUpdate];
+//     }];
+//}
 
 - (void)startSyncSportData
 {
@@ -830,9 +839,9 @@
          LGPeripheral *p = [peripherals lastObject];
          if ([WMSMyAccessory isBindAccessory]) {
              NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
-             BOOL flag = [p.cbPeripheral.name isEqualToString:WATCH_NAME] ||
-                         [p.cbPeripheral.name isEqualToString:WATCH_NAME2];
-             if (flag && [p.UUIDString isEqualToString:uuid])
+//             BOOL flag = [p.cbPeripheral.name isEqualToString:WATCH_NAME] ||
+//                         [p.cbPeripheral.name isEqualToString:WATCH_NAME2];
+             if (/*flag && */[p.UUIDString isEqualToString:uuid])
              {
                  [self.bleControl connect:p];
              }
@@ -845,8 +854,12 @@
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
     
+    [self.bleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:^(BOOL success) {
+        [self connectedOperation];
+        [self.bleControl resetDevice];
+    }];
+    
     [self showTipView:NO];
-    [self connectedOperation];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
         [self startSyncSportData];
@@ -855,13 +868,12 @@
         self.isNeedUpdate = YES;
     }
     
-    UIApplication *application = [UIApplication sharedApplication];
-    NSArray *notifys = [application scheduledLocalNotifications];
-    DEBUGLog(@"notifys:%@",notifys);
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"连接断开 %@",NSStringFromClass([self class]));
+    
+    [[WMSDeviceModel deviceModel] resetDevice];
     
     [self showTipView:YES];
     [self.hud hide:YES afterDelay:0];

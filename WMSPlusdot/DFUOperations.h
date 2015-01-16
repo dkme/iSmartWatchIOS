@@ -47,8 +47,7 @@
 @property (nonatomic)DfuFirmwareTypes dfuFirmwareType;
 @property (nonatomic)NSUInteger binFileSize;
 @property (nonatomic)NSUInteger uploadTimeInSeconds;
-//@property (strong, nonatomic)NSURL *firmwareFile;
-@property (strong, nonatomic)NSString *firmwareFile;
+@property (strong, nonatomic)NSURL *firmwareFile;
 @property struct DFUResponse dfuResponse;
 
 -(DFUOperations *) initWithDelegate:(id<DFUOperationsDelegate>) delegate;
@@ -59,11 +58,9 @@
 //define public methods
 -(void)setCentralManager:(CBCentralManager *)manager;
 -(void)connectDevice:(CBPeripheral *)peripheral;
-//-(void)performDFUOnFile:(NSURL *)firmwareURL firmwareType:(DfuFirmwareTypes)firmwareType;
--(void)performDFUOnFile:(NSString *)firmwarePath firmwareType:(DfuFirmwareTypes)firmwareType;
+-(void)performDFUOnFile:(NSURL *)firmwareURL firmwareType:(DfuFirmwareTypes)firmwareType;
 -(void)performDFUOnFiles:(NSURL *)softdeviceURL bootloaderURL:(NSURL *)bootloaderURL firmwareType:(DfuFirmwareTypes)firmwareType;
-//-(void)performOldDFUOnFile:(NSURL *)firmwareURL;
--(void)performOldDFUOnFile:(NSString *)firmwarePath;
+-(void)performOldDFUOnFile:(NSURL *)firmwareURL;
 
 -(void)cancelDFU;
 

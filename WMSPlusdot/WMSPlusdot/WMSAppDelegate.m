@@ -89,7 +89,7 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-
+//    [self test];
     [WMSPostNotificationHelper cancelAllNotification];
     
     _wmsBleControl  = [[WMSBleControl alloc] init];
@@ -188,6 +188,16 @@
         
         [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
     }
+}
+
+- (void)test
+{
+    NSString *path = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
+    NSURL *fileURL = [NSURL fileURLWithPath:path];
+    DEBUGLog(@"path:%@",path);
+    DEBUGLog(@"url:%@",fileURL);
+    NSData *hexFileData = [NSData dataWithContentsOfURL:fileURL];
+    //NSLog(@"file data:%@",hexFileData);
 }
 
 @end

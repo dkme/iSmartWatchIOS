@@ -39,8 +39,7 @@
 -(FileOperations *) initWithDelegate:(id<FileOperationsDelegate>) delegate blePeripheral:(CBPeripheral *)peripheral bleCharacteristic:(CBCharacteristic *)dfuPacketCharacteristic;
 
 //define methods
-//-(void)openFile:(NSURL *)fileURL;
--(void)openFile:(NSString *)filePath;
+-(void)openFile:(NSURL *)fileURL;
 -(void)writeNextPacket;
 -(void)setBLEParameters:(CBPeripheral *)peripheral bleCharacteristic:(CBCharacteristic *)dfuPacketCharacteristic;
 

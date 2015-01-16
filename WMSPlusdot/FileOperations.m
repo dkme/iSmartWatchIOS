@@ -10,12 +10,6 @@
 #import "IntelHex2BinConverter.h"
 #import "Utility.h"
 
-#ifdef DEBUG
-    #define NSLog(s,...)  NSLog(@"DFU--->%@[LINE:%d] %@", self,__LINE__,[NSString stringWithFormat:(s), ##__VA_ARGS__])
-#else
-    #define NSLog(s,...)
-#endif
-
 @implementation FileOperations
 
 -(FileOperations *) initWithDelegate:(id<FileOperationsDelegate>) delegate blePeripheral:(CBPeripheral *)peripheral bleCharacteristic:(CBCharacteristic *)dfuPacketCharacteristic;
@@ -30,22 +24,9 @@
     return self;
 }
 
-//-(void)openFile:(NSURL *)fileURL
-//{
-//    NSData *hexFileData = [NSData dataWithContentsOfURL:fileURL];
-//    if (hexFileData.length > 0) {
-//        [self convertHexFileToBin:hexFileData];
-//        [self.fileDelegate onFileOpened:self.binFileSize];
-//    }
-//    else {
-//        NSLog(@"Error: file is empty!");
-//        NSString *errorMessage = [NSString stringWithFormat:@"Error on openning file\n Message: file is empty or not exist"];
-//        [self.fileDelegate onError:errorMessage];
-//    }
-//}
--(void)openFile:(NSString *)filePath
+-(void)openFile:(NSURL *)fileURL
 {
-    NSData *hexFileData = [NSData dataWithContentsOfFile:filePath];
+    NSData *hexFileData = [NSData dataWithContentsOfURL:fileURL];
     if (hexFileData.length > 0) {
         [self convertHexFileToBin:hexFileData];
         [self.fileDelegate onFileOpened:self.binFileSize];

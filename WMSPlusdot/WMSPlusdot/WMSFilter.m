@@ -21,7 +21,7 @@ static const int MIN_RSSI       = -90;
         NSMutableArray *array = [NSMutableArray array];
         for (LGPeripheral *pObject in peripherals)
         {
-            if (pObject.RSSI < MIN_RSSI) {
+            if (!pObject || pObject.RSSI < MIN_RSSI) {
                 break ;
             }
             NSString *name = pObject.cbPeripheral.name;

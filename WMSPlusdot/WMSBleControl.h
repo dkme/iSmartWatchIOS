@@ -52,6 +52,9 @@ typedef NS_ENUM(NSUInteger, ControlMode) {
 typedef NS_ENUM(NSUInteger, BindSettingCMD) {
     bindSettingCMDBind = 0x01,
     bindSettingCMDUnbind = 0x02,
+    
+    BindSettingCMDMandatoryBind = 0x03,
+    BindSettingCMDMandatoryUnBind = 0x04,
 };
 
 //通讯命令字
@@ -70,6 +73,7 @@ typedef NS_ENUM(Byte, CMDType) {
     
     CMDSwitchControlMode = 0xF2,
     CMDSwitchUpdateMode = 0x30,
+    CMDResetDevice = 0xF4,
 };
 //蓝牙状态
 typedef NS_ENUM(NSInteger, WMSBleState) {
@@ -160,5 +164,10 @@ typedef void (^WMSBleBindSettingCallBack)(BOOL success);
  切换到升级模式
  */
 - (void)switchToUpdateModeCompletion:(WMSBleSwitchToUpdateModeCallback)aCallBack;
+
+/**
+ .........
+ */
+- (void)resetDevice;
 
 @end
