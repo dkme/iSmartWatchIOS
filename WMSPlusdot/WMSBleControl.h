@@ -168,6 +168,6 @@ typedef void (^WMSBleBindSettingCallBack)(BOOL success);
 /**
  .........
  */
-- (void)resetDevice;
+- (void)resetDevice;//discarded
 
 @end

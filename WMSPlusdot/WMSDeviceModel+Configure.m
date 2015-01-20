@@ -8,22 +8,33 @@
 
 #import "WMSDeviceModel+Configure.h"
 #import "NSDate+Formatter.h"
-#import "WMSBluetooth.h"
 
 @implementation WMSDeviceModel (Configure)
 
 + (void)readDeviceInfo:(WMSBleControl *)bleControl
             completion:(readInfoCallBack)callBack;
 {
-    [bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
-     {
-         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
-         [WMSDeviceModel deviceModel].version = version;
-         if (callBack) {
-             callBack(batteryEnergy,version);
-         }
-     }];
+    [bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger energy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+        [WMSDeviceModel deviceModel].batteryEnergy = (int)energy;
+        [WMSDeviceModel deviceModel].version = version;
+        if (callBack) {
+            callBack(energy,version);
+        }
+    }];
 }
+
++ (void)readDevicedetailInfo:(WMSBleControl *)bleControl
+                  completion:(readInfoCallBack2)callBack
+{
+    [bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger energy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+        [WMSDeviceModel deviceModel].batteryEnergy = (int)energy;
+        [WMSDeviceModel deviceModel].version = version;
+        if (callBack) {
+            callBack(energy,version,workStatus,deviceID,isPaired);
+        }
+    }];
+}
+
 + (void)setDeviceDate:(WMSBleControl *)bleControl
                completion:(setDateCallBack)callback
 {

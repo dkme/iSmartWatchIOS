@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-//@class WMSAlarmClockModel;
 
 @interface WMSDataManager : NSObject
 
 + (NSArray *)loadAlarmClocks;
 + (BOOL)savaAlarmClocks:(NSArray *)clocks;
+
+//运动提醒
++ (NSArray *)loadActivityRemind;
++ (BOOL)savaActivityRemind:(NSArray *)activities;
 
 @end

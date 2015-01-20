@@ -15,7 +15,11 @@ typedef void (^detectionUpdateCallBack)(double newVersion,NSString *describe,NSS
 typedef void (^downloadFileCallBack)(BOOL success);
 
 //Error Code
-const static int ERROR_CODE_REQUEST_TIMEOUT = 1000;
+const static int ERROR_CODE_REQUEST_TIMEOUT             = 1000;
+const static int ERROR_CODE_USERNAME_EXIST              = 100001;
+const static int ERROR_CODE_EMAIL_EXIST                 = 100002;
+const static int ERROR_CODE_PHONENUMBER_EXIST           = 100005;
+const static int ERROR_CODE_PARAMETER_LOSE              = 100003;
 
 @interface WMSHTTPRequest : NSObject
 

@@ -7,15 +7,20 @@
 //
 
 #import "WMSDeviceModel.h"
-@class WMSBleControl;
+#import "WMSBluetooth.h"
 
 typedef void(^readInfoCallBack)(NSUInteger batteryEnergy,NSUInteger version);
+typedef void(^readInfoCallBack2)(NSUInteger energy,NSUInteger version,DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired);
 typedef void(^setDateCallBack)(void);
 
 @interface WMSDeviceModel (Configure)
 
 + (void)readDeviceInfo:(WMSBleControl *)bleControl
             completion:(readInfoCallBack)callBack;
+
++ (void)readDevicedetailInfo:(WMSBleControl *)bleControl
+                  completion:(readInfoCallBack2)callBack;
+
 + (void)setDeviceDate:(WMSBleControl *)bleControl
                completion:(setDateCallBack)callback;
 

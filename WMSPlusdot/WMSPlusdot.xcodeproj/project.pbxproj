@@ -34,7 +34,6 @@
 		2316507D19AAEA350066C301 /* WMSMySportView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316507C19AAEA350066C301 /* WMSMySportView.m */; };
 		2316508219AB15510066C301 /* WMSLeftViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316508019AB15510066C301 /* WMSLeftViewCell.m */; };
 		2316508319AB15510066C301 /* WMSLeftViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2316508119AB15510066C301 /* WMSLeftViewCell.xib */; };
-		2316508819AB30D90066C301 /* WMSMySleepView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316508719AB30D90066C301 /* WMSMySleepView.m */; };
 		2316509319AB4A180066C301 /* WMSSmartClockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2316509119AB4A180066C301 /* WMSSmartClockViewController.m */; };
 		2316509419AB4A180066C301 /* WMSSmartClockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2316509219AB4A180066C301 /* WMSSmartClockViewController.xib */; };
 		2316509819AB4E650066C301 /* back_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 2316509619AB4E650066C301 /* back_btn_a.png */; };
@@ -169,6 +168,7 @@
 		2339D81B1A53DFB20097E905 /* Signal_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339D8131A53DFB20097E905 /* Signal_3.png */; };
 		2339D81C1A53DFB20097E905 /* Signal_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339D8141A53DFB20097E905 /* Signal_3@2x.png */; };
 		233A431C19F8F15900BD295B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233A431B19F8F15900BD295B /* AVFoundation.framework */; };
+		23445CE41A6CA6180094DC57 /* add_clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 23445CE31A6CA6180094DC57 /* add_clock.png */; };
 		2347C82C1A63A4C9007A0446 /* WMSClockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2347C82A1A63A4C9007A0446 /* WMSClockCell.m */; };
 		2347C82D1A63A4C9007A0446 /* WMSClockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2347C82B1A63A4C9007A0446 /* WMSClockCell.xib */; };
 		23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23491D271A58E90400C821E8 /* WMSBoundCell.m */; };
@@ -324,8 +324,6 @@
 		2316507F19AB15510066C301 /* WMSLeftViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLeftViewCell.h; sourceTree = "<group>"; };
 		2316508019AB15510066C301 /* WMSLeftViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLeftViewCell.m; sourceTree = "<group>"; };
 		2316508119AB15510066C301 /* WMSLeftViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSLeftViewCell.xib; sourceTree = "<group>"; };
-		2316508619AB30D90066C301 /* WMSMySleepView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMySleepView.h; sourceTree = "<group>"; };
-		2316508719AB30D90066C301 /* WMSMySleepView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMySleepView.m; sourceTree = "<group>"; };
 		2316509019AB4A180066C301 /* WMSSmartClockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSmartClockViewController.h; sourceTree = "<group>"; };
 		2316509119AB4A180066C301 /* WMSSmartClockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSmartClockViewController.m; sourceTree = "<group>"; };
 		2316509219AB4A180066C301 /* WMSSmartClockViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSmartClockViewController.xib; sourceTree = "<group>"; };
@@ -479,8 +477,8 @@
 		2333AB011A64B57000DBA846 /* UIBarButtonItem+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Extension.m"; sourceTree = "<group>"; };
 		2333AB031A64C28600DBA846 /* UIImage+Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
 		2333AB041A64C28600DBA846 /* UIImage+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
-		2333AB061A64FE3400DBA846 /* WMSDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSDataManager.h; sourceTree = "<group>"; };
-		2333AB071A64FE3400DBA846 /* WMSDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSDataManager.m; sourceTree = "<group>"; };
+		2333AB061A64FE3400DBA846 /* WMSDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMSDataManager.h; path = WMSPlusdot/WMSDataManager.h; sourceTree = "<group>"; };
+		2333AB071A64FE3400DBA846 /* WMSDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WMSDataManager.m; path = WMSPlusdot/WMSDataManager.m; sourceTree = "<group>"; };
 		2335118E19A476EF00FBCC81 /* WMSSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSignupViewController.h; sourceTree = "<group>"; };
 		2335118F19A476EF00FBCC81 /* WMSSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSignupViewController.m; sourceTree = "<group>"; };
 		2335119019A476EF00FBCC81 /* WMSSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSignupViewController.xib; sourceTree = "<group>"; };
@@ -514,6 +512,7 @@
 		2339D8141A53DFB20097E905 /* Signal_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Signal_3@2x.png"; sourceTree = "<group>"; };
 		233A431B19F8F15900BD295B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAdaptiveMacro.h; sourceTree = "<group>"; };
+		23445CE31A6CA6180094DC57 /* add_clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_clock.png; sourceTree = "<group>"; };
 		2345B01D1A25D75F00DF3175 /* WMSFileMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSFileMacro.h; sourceTree = "<group>"; };
 		2347C8291A63A4C9007A0446 /* WMSClockCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSClockCell.h; sourceTree = "<group>"; };
 		2347C82A1A63A4C9007A0446 /* WMSClockCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSClockCell.m; sourceTree = "<group>"; };
@@ -885,15 +884,6 @@
 			name = "LeftViewController Cell";
 			sourceTree = "<group>";
 		};
-		2316508519AB30AD0066C301 /* MySleepView */ = {
-			isa = PBXGroup;
-			children = (
-				2316508619AB30D90066C301 /* WMSMySleepView.h */,
-				2316508719AB30D90066C301 /* WMSMySleepView.m */,
-			);
-			name = MySleepView;
-			sourceTree = "<group>";
-		};
 		2316508919AB47310066C301 /* 个人信息视图 */ = {
 			isa = PBXGroup;
 			children = (
@@ -907,6 +897,7 @@
 		2316508A19AB489A0066C301 /* 智能闹钟视图 */ = {
 			isa = PBXGroup;
 			children = (
+				23445CE31A6CA6180094DC57 /* add_clock.png */,
 				2330D70D1A5FB9A500494859 /* WMSClockListVC.h */,
 				2330D70E1A5FB9A500494859 /* WMSClockListVC.m */,
 				2330D70F1A5FB9A500494859 /* WMSClockListVC.xib */,
@@ -916,8 +907,6 @@
 				2347C8291A63A4C9007A0446 /* WMSClockCell.h */,
 				2347C82A1A63A4C9007A0446 /* WMSClockCell.m */,
 				2347C82B1A63A4C9007A0446 /* WMSClockCell.xib */,
-				2333AB061A64FE3400DBA846 /* WMSDataManager.h */,
-				2333AB071A64FE3400DBA846 /* WMSDataManager.m */,
 			);
 			name = "智能闹钟视图";
 			sourceTree = "<group>";
@@ -1087,7 +1076,6 @@
 				230FDC6419D6589400AE98FF /* PNBarChart */,
 				231C80EA1A15A0C30038BD79 /* GGIAnnulusView */,
 				2316507E19AB14D50066C301 /* MySportView */,
-				2316508519AB30AD0066C301 /* MySleepView */,
 				234BF1F119B055AE005D71A0 /* WMSNavBarView */,
 				23911F1B19C29053006E9CAF /* WMSSyncDataView */,
 				23491D2D1A59451C00C821E8 /* WMSInputView */,
@@ -1624,6 +1612,8 @@
 				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
 				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
 				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
+				2333AB061A64FE3400DBA846 /* WMSDataManager.h */,
+				2333AB071A64FE3400DBA846 /* WMSDataManager.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1843,7 +1833,7 @@
 				ORGANIZATIONNAME = GUOGEE;
 				TargetAttributes = {
 					232846BC19A43668001C148D = {
-						DevelopmentTeam = R39529C8UT;
+						DevelopmentTeam = 4E8WUK78VW;
 					};
 					232846D719A43668001C148D = {
 						TestTargetID = 232846BC19A43668001C148D;
@@ -1962,6 +1952,7 @@
 				2326A41719A59E200098657B /* WMSLeftViewController.xib in Resources */,
 				2316508319AB15510066C301 /* WMSLeftViewCell.xib in Resources */,
 				2326A42419A5C4010098657B /* Localizable.strings in Resources */,
+				23445CE41A6CA6180094DC57 /* add_clock.png in Resources */,
 				233511B519A4C3E500FBCC81 /* main_date_next_a.png in Resources */,
 				234DD31519D29DBB00E6A7AE /* Login_bg.png in Resources */,
 				2326A43419A5C6970098657B /* main_menu_setting_icon_a.png in Resources */,
@@ -2057,7 +2048,6 @@
 				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
 				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
 				238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */,
-				2316508819AB30D90066C301 /* WMSMySleepView.m in Sources */,
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
 				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
 				23D7CF0119B5C49C00DFA678 /* LGPeripheral.m in Sources */,
@@ -2241,7 +2231,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "896C643D-34BA-44DA-BC1A-2776F94557A4";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2347,7 +2337,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "896C643D-34BA-44DA-BC1A-2776F94557A4";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2365,7 +2355,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "896C643D-34BA-44DA-BC1A-2776F94557A4";
+				PROVISIONING_PROFILE = "0d9f5efd-1c40-4f28-a678-f0b26eb67442";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

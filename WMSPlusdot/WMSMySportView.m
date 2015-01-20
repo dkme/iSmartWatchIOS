@@ -33,7 +33,6 @@
         _trackUnderLayer.fillColor = [[UIColor clearColor] CGColor];
         _trackUnderLayer.strokeColor = UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
         _trackUnderLayer.opacity = 1;
-        //_trackUnderLayer.lineCap = kCALineCapRound;
         _trackUnderLayer.lineWidth = PROGRESS_WIDTH;
     }
     return _trackUnderLayer;
@@ -46,7 +45,6 @@
         _trackUpperLayer.fillColor = [[UIColor clearColor] CGColor];
         _trackUpperLayer.strokeColor = UIColorFromRGBAlpha(0xDFE88D, 1.0).CGColor;
         _trackUpperLayer.opacity = 1;
-        //_trackUpperLayer.lineCap = kCALineCapRound;
         _trackUpperLayer.lineWidth = PROGRESS_WIDTH;
     }
     return _trackUpperLayer;
@@ -58,13 +56,23 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-        //不执行这里
-        DEBUGLog(@"init MySportView");
-//        [self.layer addSublayer:self.trackUnderLayer];
-//        [self.layer addSublayer:self.trackUpperLayer];
+        [self defaultInit];
     }
     return self;
+}
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self defaultInit];
+    }
+    return self;
+}
+
+- (void)defaultInit
+{
+    [self.layer addSublayer:self.trackUnderLayer];
+    [self.layer addSublayer:self.trackUpperLayer];
 }
 
 #pragma mark - Public Method
@@ -80,36 +88,19 @@
     } else {
         self.mySportSetps = self.myTargetSetps;
     }
-    
     [self setNeedsDisplay];
 }
 
 #pragma mark - Draw
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    
-//    self.myTargetSetps = 300;
-//    self.mySportSetps = 200;
     float factor = 0;
     if (self.myTargetSetps > 0) {
         float a = END_ANGLE - START_ANGLE;
         factor = a / (float)self.myTargetSetps;//一步等价于多少角度
     }
-    
-    if (self.layer != [self.trackUnderLayer superlayer]) {
-        //DEBUGLog(@"MySportView addSublayer");
-        [self.layer addSublayer:self.trackUnderLayer];
-    }
-    if (self.layer != [self.trackUpperLayer superlayer]) {
-        //DEBUGLog(@"MySportView addSublayer2");
-        [self.layer addSublayer:self.trackUpperLayer];
-    }
-    
     [self drawUnderLayerTrack];
-    
     [self drawUpperLayerTrack:(self.mySportSetps * factor + START_ANGLE)];
 }
 

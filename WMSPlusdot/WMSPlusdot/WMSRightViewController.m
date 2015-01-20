@@ -12,6 +12,7 @@
 #import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
 #import "WMSAntiLostVC.h"
+#import "WMSUpdateVC.h"
 
 #import "WMSSwitchCell.h"
 #import "MBProgressHUD.h"
@@ -69,6 +70,7 @@
     
     int _configIndex;
     BOOL _isVisible;
+    BOOL _isNeedConfig;
 }
 
 #pragma mark - Property Getter Method
@@ -181,39 +183,23 @@
     [self.view setBackgroundColor:[UIColor clearColor]];
     
     self.tableView.scrollEnabled = NO;
-    //self.tableView.tintColor = UICOLOR_DEFAULT;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.sideMenuViewController.delegate = self;
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     
-    //监测电量
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(batteyChanged:) name:UIDeviceBatteryLevelDidChangeNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
-    
     _soundOperation = [[WMSSoundOperation alloc] init];
     [self listeningCall];
+    [self registerForNotifications];
 }
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    DEBUGLog(@"+++++RightViewController viewWillAppear");
-    //    self.sideMenuViewController.scaleContentView = NO;
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 - (void)dealloc
 {
-    DEBUGLog(@"RightViewController dealloc");
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    DEBUGLog(@"%s",__FUNCTION__);
+    [self unregisterFromNotifications];
 }
 
 //根据cell的indexPath，得出该cell表示的设置项在字典中的key
@@ -289,7 +275,7 @@
 }
 - (void)setLowBattery:(BOOL)openOrClose
 {
-    [self showOperationSuccessTip:NSLocalizedString(@"提醒设置成功", nil)];
+    //[self showOperationSuccessTip:NSLocalizedString(@"提醒设置成功", nil)];
     //直接保存
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
     NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
@@ -355,11 +341,12 @@
     BOOL isFirst = [userDefaults boolForKey:@"firstConnected"];
     if (isFirst == NO) {
         //配置设置项
-        [self showHUDAtViewCenter:NSLocalizedString(@"正在配置设置项，请稍等...", nil)];
+        //[self showHUDAtViewCenter:NSLocalizedString(@"正在配置设置项，请稍等...", nil)];
         [self startFirstConnectedConfig:^{
             //配置成功
-            [self hideHUDAtViewCenter];
-            [self showTip:NSLocalizedString(@"设置项配置成功", nil)];
+            //[self hideHUDAtViewCenter];
+            //[self showTip:NSLocalizedString(@"设置项配置成功", nil)];
+            DEBUGLog(@"配置完成");
             [userDefaults setBool:YES forKey:@"firstConnected"];
         }];
     }
@@ -533,6 +520,20 @@
 }
 
 #pragma mark - Notification
+- (void)registerForNotifications
+{
+    //监测电量
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(batteyChanged:) name:UIDeviceBatteryLevelDidChangeNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidEndDFU:) name:WMSUpdateVCEndDFU object:nil];
+}
+- (void)unregisterFromNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)batteyChanged:(NSNotification *)notification
 {
     UIDevice *device = notification.object;
@@ -542,7 +543,7 @@
 //Ble
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
-    if (_isVisible) {
+    if (_isVisible || _isNeedConfig) {
         [self firstConnectedConfig];
     }
     [self.tableView reloadData];
@@ -559,6 +560,14 @@
     DEBUGLog(@"self.pickerController:%@",self.pickerController);
     [self hideHUDAtViewCenter];
     [self.pickerController showTip:NSLocalizedString(@"您的连接已断开", nil)];
+}
+
+- (void)peripheralDidEndDFU:(NSNotification *)notification
+{
+    //进行初始化配置
+    _isNeedConfig = YES;
+    [self resetFirstConnectedConfig];
+    //[self firstConnectedConfig];
 }
 
 #pragma mark - RESideMenuDelegate

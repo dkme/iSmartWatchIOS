@@ -79,6 +79,7 @@
     NSUInteger _targetSteps;
     
     BOOL _isStartDFU;//是否准备升级了
+    BOOL _postNotifyFlag;//发送本地通知的一个标志
 }
 
 #pragma mark - Getter
@@ -712,18 +713,13 @@
         return ;
     }
     [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
-        [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
-            DEBUGLog(@"[LINE:%d] %s battery %d, lversion %d",__LINE__,__FUNCTION__,batteryEnergy,version);
+        [WMSDeviceModel readDevicedetailInfo:self.bleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+            if (!isPaired) {
+                [self.bleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:^(BOOL success) {}];
+            }
         }];
     }];
-//    //设置时间，读取设备信息，同步运动数据
-//    [self.bleControl.settingProfile setCurrentDate:[NSDate systemDate] completion:^(BOOL success)
-//     {
-//         DEBUGLog(@"设置系统时间%@",success?@"成功":@"失败");
-//         [self readDeviceInfo];
-//     }];
 }
-
 //- (void)readDeviceInfo
 //{
 //    [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
@@ -854,10 +850,7 @@
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
     
-    [self.bleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:^(BOOL success) {
-        [self connectedOperation];
-        [self.bleControl resetDevice];
-    }];
+    [self connectedOperation];
     
     [self showTipView:NO];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
@@ -868,6 +861,8 @@
         self.isNeedUpdate = YES;
     }
     
+    [WMSPostNotificationHelper cancelAllNotification];
+    _postNotifyFlag = YES;
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
@@ -884,7 +879,10 @@
         [self scanAndConnectPeripheral];
     }
     
-    [WMSPostNotificationHelper postNotifyWithAlartBody:NSLocalizedString(@"蓝牙连接已断开", nil)];
+    if (_postNotifyFlag) {
+        [WMSPostNotificationHelper postNotifyWithAlartBody:NSLocalizedString(@"蓝牙连接已断开", nil)];
+        _postNotifyFlag = NO;
+    }
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {

@@ -99,9 +99,9 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
     __weak __typeof(&*self) weakSelf = self;
     double version = [WMSDeviceModel deviceModel].version;
     BindSettingCMD bindCMD = bindSettingCMDBind;
-    if (version >= FIRMWARE_TARGET_VERSION) {
-        bindCMD = BindSettingCMDMandatoryBind;
-    }
+//    if (version >= FIRMWARE_TARGET_VERSION) {
+//        bindCMD = BindSettingCMDMandatoryBind;
+//    }
     [self.bleControl bindSettingCMD:bindCMD completion:^(BOOL success)
      {
          __strong __typeof(&*self) strongSelf = weakSelf;
@@ -212,9 +212,9 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
     [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
         [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
             DEBUGLog(@"read version:%d",version);
-            if (version < FIRMWARE_TARGET_VERSION) {
+//            if (version < FIRMWARE_TARGET_VERSION) {
                 self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-            }
+//            }
             [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
             [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
             [self sendBindingCMD];

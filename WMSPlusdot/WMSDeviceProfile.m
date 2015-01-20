@@ -352,12 +352,10 @@ static const int STARTED_NUMBER = 50;
                     Byte version = package[4];
                     UInt32 steps = ((UInt32)package[8] << 24) + ((UInt32)package[7] << 16) + ((UInt32)package[6] << 8 ) + package[5];
                     UInt16 durations = ((UInt16)package[10] << 8) + package[9];
-                    Byte endSleepMinute = package[11];
-                    Byte endSleepHour = package[12];
-                    UInt16 sleepDurations = ((UInt16)package[14] << 8) + package[13];
-                    Byte status = package[15];
-                    
-                    callBack(energy,version,steps,durations,endSleepMinute,endSleepHour,sleepDurations,status,YES);
+                    Byte workStatus = package[11];
+                    UInt16 deviceID = ((UInt16)package[13] << 8) + package[12];
+                    UInt8 pairFlag = package[14];
+                    callBack(energy,version,steps,durations,workStatus,deviceID,pairFlag);
                 }
             }
             return;

@@ -7,7 +7,6 @@
 //
 
 #import "WMSDataManager.h"
-//#import "WMSAlarmClockModel.h"
 #import "WMSFileMacro.h"
 
 @implementation WMSDataManager
@@ -33,28 +32,27 @@
     [archiver finishEncoding];
     return [data writeToFile:fileName atomically:YES];
 }
-//+ (WMSAlarmClockModel *)loadAlarmClock
-//{
-//    NSString *fileName = FilePath(FILE_ALRAM_CLOCK);
-//    NSData *data = [NSData dataWithContentsOfFile:fileName];
-//    if ([data length] > 0) {
-//        NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-//        WMSAlarmClockModel *model= [unArchiver decodeObjectForKey:@"alarmClock"];
-//        [unArchiver finishDecoding];
-//        
-//        return model;
-//    }
-//    return nil;
-//}
-//+ (void)savaAlarmClock:(WMSAlarmClockModel *)clock
-//{
-//    //coding
-//    NSString *fileName = FilePath(FILE_ALRAM_CLOCK);
-//    NSMutableData *data = [NSMutableData data];
-//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-//    [archiver encodeObject:clock forKey:@"alarmClock"];
-//    [archiver finishEncoding];
-//    [data writeToFile:fileName atomically:YES];
-//}
+
++ (NSArray *)loadActivityRemind
+{
+    NSString *fileName = FilePath(FILE_ACTIVITY);
+    NSData *data = [NSData dataWithContentsOfFile:fileName];
+    if ([data length] > 0) {
+        NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+        NSArray *array = [unArchiver decodeObjectForKey:@"ActivityModels"];
+        [unArchiver finishDecoding];
+        return array;
+    }
+    return [NSArray array];
+}
++ (BOOL)savaActivityRemind:(NSArray *)activities
+{
+    NSString *fileName = FilePath(FILE_ACTIVITY);
+    NSMutableData *data = [NSMutableData data];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:activities forKey:@"ActivityModels"];
+    [archiver finishEncoding];
+    return [data writeToFile:fileName atomically:YES];
+}
 
 @end

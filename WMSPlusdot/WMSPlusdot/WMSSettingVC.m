@@ -115,7 +115,7 @@
     [self.navBarView.buttonLeft setTitle:@"" forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBarView.buttonLeft addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)setupTableView
 {
@@ -296,7 +296,7 @@
 }
 
 #pragma mark - Action
-- (void)buttonLeftClicked:(id)sender
+- (void)backAction:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -495,7 +495,7 @@
 }
 
 #pragma mark - UINavigationControllerDelegate
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (viewController == self && _updateVC) {
         if (_updateVC.isUpdateSuccess) {

@@ -17,12 +17,13 @@
 
 #import "WMSActivityModel.h"
 #import "WMSMyAccessory.h"
-
+#import "WMSDataManager.h"
 #import "WMSRemindHelper.h"
 #import "WMSFileMacro.h"
+#import "WMSConstants.h"
 
 #define SECTION_NUMBER                      1
-#define SECTION_FOOTER_HEIGHT               1
+#define SECTION_FOOTER_HEIGHT               60.f
 #define SECTION_HEADER_HEIGHT               40
 
 #define PICKER_VIEW_COMPONENT_NUMBER        1
@@ -30,8 +31,6 @@
 #define PICKER_VIEW_ROW_NUMBER              24
 
 #define UISwitch_Frame  ( CGRectMake(260, 6, 51, 31) )
-
-#define ArchiverKey             @"ActivityModels"
 
 @interface WMSActivityRemindViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,UIAlertViewDelegate>
 @property (strong,nonatomic) UISwitch *cellSwitch;
@@ -82,8 +81,7 @@
 {
     if (!_weekPicker) {
         CGSize size = CGSizeMake(ScreenWidth, 50.f);
-        CGRect tableViewFrame = self.tableView.frame;
-        CGPoint or = CGPointMake(0, tableViewFrame.size.height+tableViewFrame.origin.y+10);
+        CGPoint or = CGPointMake(0, 5.f);
         CGRect frame = (CGRect){or,size};
         _weekPicker = [[WMSWeekPicker alloc] initWithFrame:frame];
         _weekPicker.delegate = self;
@@ -147,21 +145,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.view addSubview:self.weekPicker];
-    [self.view addSubview:self.myInputView];
+    [self setupValue];
+    [self setupView];
     [self setupNavBarView];
     [self setupTableView];
-    _oldActivityModel = [self loadData];
     [self setupWeekPicker];
-    
 }
-
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 - (void)dealloc
 {
     DEBUGLog(@"WMSActivityRemindViewController dealloc");
@@ -171,16 +170,20 @@
 }
 
 #pragma mark - Setup
+- (void)setupView
+{
+    [self.view addSubview:self.myInputView];
+    [self.cellSwitch setOn:activityStatus];
+}
 - (void)setupNavBarView
 {
-    [self.buttonBack setTitle:@"" forState:UIControlStateNormal];
-    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
-    [self.buttonBack setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.buttonSync setTitle:NSLocalizedString(@"同步", nil) forState:UIControlStateNormal];
-    [self.buttonSync setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.buttonSync.titleLabel setFont:Font_System(15.0)];
+    self.title = NSLocalizedString(@"Activities remind", nil);
+    self.navigationController.navigationBarHidden = NO;
     
-    self.labelTitle.text = NSLocalizedString(@"Activities remind",nil);
+    UIBarButtonItem *leftItem = [UIBarButtonItem itemWithImageName:@"back_btn_a.png" highImageName:@"back_btn_b.png" target:self action:@selector(backAction:)];
+    UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) size:SYNC_BUTTON_SIZE target:self action:@selector(syncSettingAction:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    self.navigationItem.rightBarButtonItem = item1;
 }
 - (void)setupTableView
 {
@@ -194,56 +197,23 @@
     self.weekPicker.componentStates = activityRepeats;
     [self.weekPicker reloadView];
 }
-- (WMSActivityModel *)loadData
+- (void)setupValue
 {
-    WMSActivityModel *model = [self loadActivityRemind];
-    if (model == nil) {
-        activityStatus = YES;
-        activityStartHour = DEFAULT_HOUR;
-        activityStartMinute = DEFAULT_MINUTE;
-        activityEndHour = DEFAULT_HOUR;
-        activityEndMinute = DEFAULT_MINUTE;
-        activityInterval = DEFAULT_ACTIVITY_INTERVAL;
-        activityRepeats = @[@(YES),@(YES),@(YES),@(YES),@(YES),@(YES),@(YES)];
+    NSArray *activities = [WMSDataManager loadActivityRemind];
+    WMSActivityModel *activity = nil;
+    if (activities && activities.count > 0) {
+        activity = activities[0];
     } else {
-        activityStatus = model.status;
-        activityStartHour = (int)model.startHour;
-        activityStartMinute = (int)model.startMinute;
-        activityEndHour = (int)model.endHour;
-        activityEndMinute = (int)model.endMinute;
-        activityInterval = (int)model.intervalMinute;
-        activityRepeats = model.repeats;
+        activity = [[WMSActivityModel alloc] initWithStatus:YES startHour:DEFAULT_HOUR startMinute:DEFAULT_MINUTE endHour:DEFAULT_HOUR endMinute:DEFAULT_MINUTE intervalMinute:DEFAULT_ACTIVITY_INTERVAL repeats:@[@(YES),@(YES),@(YES),@(YES),@(YES),@(YES),@(YES)]];
     }
-    self.cellSwitch.on = activityStatus;
-    if (model == nil) {
-        return [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
-    }
-    return model;
-}
-
-- (WMSActivityModel *)loadActivityRemind
-{
-    NSString *fileName = FilePath(FILE_ACTIVITY);
-    NSData *data = [NSData dataWithContentsOfFile:fileName];
-    if ([data length] > 0) {
-        NSKeyedUnarchiver *unArchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-        WMSActivityModel *model = [unArchiver decodeObjectForKey:ArchiverKey];
-        [unArchiver finishDecoding];
-        
-        return model;
-    }
-    return nil;
-}
-
-- (void)savaActivityModel:(WMSActivityModel *)model
-{
-    //coding
-    NSString *fileName = FilePath(FILE_ACTIVITY);
-    NSMutableData *data = [NSMutableData data];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:model forKey:ArchiverKey];
-    [archiver finishEncoding];
-    [data writeToFile:fileName atomically:YES];
+    activityStatus = activity.status;
+    activityStartHour = (int)activity.startHour;
+    activityStartMinute = (int)activity.startMinute;
+    activityEndHour = (int)activity.endHour;
+    activityEndMinute = (int)activity.endMinute;
+    activityInterval = (int)activity.intervalMinute;
+    activityRepeats = activity.repeats;
+    _oldActivityModel = activity;
 }
 
 - (void)setActivityRemind
@@ -257,7 +227,7 @@
     {
         DEBUGLog(@"设置提醒%@",success?@"成功":@"失败");
         [self showTip:NSLocalizedString(@"设置活动提醒成功", nil)];
-        [self savaActivityModel:model];
+        [WMSDataManager savaActivityRemind:@[model]];
         _oldActivityModel = model;
     }];
 }
@@ -271,7 +241,7 @@
 }
 
 #pragma mark - Action
-- (IBAction)backAction:(id)sender {
+- (void)backAction:(id)sender {
     WMSActivityModel *model = [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
     BOOL res = [model isEqual:_oldActivityModel];
     if (res == NO) {
@@ -282,7 +252,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
-- (IBAction)syncSettingAction:(id)sender {
+- (void)syncSettingAction:(id)sender {
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     BOOL isBind = [WMSMyAccessory isBindAccessory];
     BOOL isConnected = [bleControl isConnected];
@@ -370,6 +340,10 @@
     UIView *myView = [[UIView alloc] init];
     [myView addSubview:titleLabel];
     return myView;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return self.weekPicker;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

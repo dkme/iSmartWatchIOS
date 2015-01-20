@@ -20,6 +20,7 @@
 
 #import "WMSSleepModel.h"
 #import "WMSDeviceModel.h"
+#import "WMSDeviceModel+Configure.h"
 #import "WMSMyAccessory.h"
 #import "WMSSleepDatabase.h"
 #import "NSDate+Formatter.h"
@@ -521,11 +522,7 @@
 
 - (void)readDeviceInfo
 {
-    [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
-     {
-         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
-         //[self.syncDataView setCellElectricQuantity:batteryEnergy];
-     }];
+    [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {}];
 }
 
 #pragma mark - Date

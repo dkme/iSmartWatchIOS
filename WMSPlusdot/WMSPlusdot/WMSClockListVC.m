@@ -296,7 +296,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         WMSAlarmClockModel *clock = _newClocks[indexPath.row];
         WMSAlarmClockModel *newClock = [[WMSAlarmClockModel alloc] initWithStatus:clock.status startHour:clock.startHour startMinute:clock.startMinute snoozeMinute:clock.snoozeMinute repeats:clock.repeats];
-        if (newClock.status) {
+        if (newClock.status && _oldClocks.count > 0) {
             newClock.status = NO;
             _newClocks[indexPath.row] = newClock;
         } else {

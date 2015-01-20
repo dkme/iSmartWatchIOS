@@ -69,7 +69,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
     [self.navBarView.buttonLeft setTitle:@"" forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
     [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBarView.buttonLeft addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)setupTextView
 {
@@ -150,7 +150,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
 }
 
 #pragma mark - Action
-- (void)buttonLeftClicked:(id)sender
+- (void)backAction:(id)sender
 {
     if (_isUpdating) {
         NSString *title = NSLocalizedString(@"提示", nil);
@@ -161,8 +161,10 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
         [alert show];
         return ;
     }
+    [_updateHelper stopScan];
     _updateHelper = nil;
     _dfuOperations = nil;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -202,8 +204,10 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
             default:
                 return ;
         }
+        self.navBarView.buttonLeft.enabled = NO;
         self.buttonUpdate.enabled = NO;
         self.buttonUpdate.alpha = 0.7;
+        _isUpdating = YES;
         [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
         //发送通知
         [self postNotificationForName:WMSUpdateVCStartDFU];
@@ -217,7 +221,8 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
 - (void)scanPeipheral:(NSString *)specifiedUUID
 {
     DEBUGLog(@"start scan DFU peipheral");
-    [self showHUDAtViewCenter:NSLocalizedString(@"正在重新建立连接...", nil)];
+    self.navBarView.buttonLeft.enabled = YES;
+    //[self showHUDAtViewCenter:NSLocalizedString(@"正在重新建立连接...", nil)];
     __weak WMSUpdateVCHelper *weakHelper = _updateHelper;
     [weakHelper scanPeripheralByInterval:scanTimeInterval results:^(CBPeripheral *peripheral)
     {
@@ -268,11 +273,13 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
         ;
     } else if (buttonIndex == 1) {
         [_dfuOperations cancelDFU];
-        [self onDFUCancelled];
+        [_updateHelper stopScan];
+        [self hideHUDAtViewCenter];
+        _updateHelper = nil;
+        _dfuOperations = nil;
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        
-    }
+    } else {}
 }
 
 #pragma mark - DFUOperationsDelegate
@@ -317,7 +324,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
             [self updateState:NSLocalizedString(@"连接断开，升级中断...", nil)];
         } else {
             [self postNotificationForName:WMSUpdateVCEndDFU];
-            [self updateState:NSLocalizedString(@"升级已取消...", nil)];
+            //[self updateState:NSLocalizedString(@"升级已取消...", nil)];
         }
     });
 }
@@ -338,7 +345,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
     dispatch_async(dispatch_get_main_queue(), ^{
         self.progressView.hidden = YES;
         _isUpdating = NO;
-        [self updateState:NSLocalizedString(@"升级已取消...", nil)];
+        //[self updateState:NSLocalizedString(@"升级已取消...", nil)];
         [self postNotificationForName:WMSUpdateVCEndDFU];
     });
 }

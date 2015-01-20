@@ -246,27 +246,28 @@ NSString * const WMSBleControlScanFinish =
         } else {
             [self performSelector:@selector(discoverServicesTimeout:) withObject:peripheral afterDelay:DISCOVER_SERVICES_INTERVAL];
             
-            [peripheral discoverServicesWithCompletion:^(NSArray *services, NSError *error)
-             {
-                 DEBUGLog(@"发现服务");
-                 [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                                          selector:@selector(discoverServicesTimeout:)
-                                                            object:peripheral];
-                 
-                 if (error) {
-                     DEBUGLog(@"[line:%d] DiscoverServices error",__LINE__);
-                     [self postNotificationConnectFailedForPeripheral:peripheral];
-                     return ;
-                 }
-                 
-                 if ([self checkDiscoverServices:services] == NO) {
-                     DEBUGLog(@"[line:%d] checkDiscoverServices failed",__LINE__);
-                     [self postNotificationConnectFailedForPeripheral:peripheral];
-                     return ;
-                 }
-                 
-                 [self discoverCharacteristics:services forPeripheral:peripheral];
-             }];
+            NSArray *serviceUUIDS = @[[CBUUID UUIDWithString:CUSTOM_SERVICE_UUID]];
+            [peripheral discoverServices:serviceUUIDS completion:^(NSArray *services, NSError *error)
+            {
+                DEBUGLog(@"发现服务");
+                [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                                         selector:@selector(discoverServicesTimeout:)
+                                                           object:peripheral];
+                
+                if (error) {
+                    DEBUGLog(@"[line:%d] DiscoverServices error",__LINE__);
+                    [self postNotificationConnectFailedForPeripheral:peripheral];
+                    return ;
+                }
+                
+                if ([self checkDiscoverServices:services] == NO) {
+                    DEBUGLog(@"[line:%d] checkDiscoverServices failed",__LINE__);
+                    [self postNotificationConnectFailedForPeripheral:peripheral];
+                    return ;
+                }
+                
+                [self discoverCharacteristics:services forPeripheral:peripheral];
+            }];
         }
     }];
 }
@@ -332,7 +333,8 @@ NSString * const WMSBleControlScanFinish =
     [self performSelector:@selector(discoverCharacteristicsTimeout:) withObject:peripheral afterDelay:DISCOVER_CHARACTERISTICS_INTERVAL];
     
     for (LGService *sv in services) {
-        [sv discoverCharacteristicsWithCompletion:^(NSArray *characteristics, NSError *error) {
+        NSArray *charactUUIDS = @[[CBUUID UUIDWithString:CUSTOM_CHARACTERISTIC1_UUID],[CBUUID UUIDWithString:CUSTOM_CHARACTERISTIC2_UUID]];
+        [sv discoverCharacteristicsWithUUIDs:charactUUIDS completion:^(NSArray *characteristics, NSError *error) {
             if (error) {
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(discoverCharacteristicsTimeout:) object:peripheral];//取消定时器
                 DEBUGLog(@"[line:%d] DiscoverCharacteristics error",__LINE__);
@@ -622,6 +624,7 @@ NSString * const WMSBleControlScanFinish =
     }
     
     Byte package[DATA_LENGTH] = {0};
+    package[0] = 0xFF;
     
     [self setPacketCMD:CMDResetDevice andData:package dataLength:DATA_LENGTH];
     

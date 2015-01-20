@@ -22,12 +22,6 @@ enum {
 
 @interface WMSActivityRemindViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIButton *buttonBack;
-@property (weak, nonatomic) IBOutlet UIButton *buttonSync;
-@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-- (IBAction)backAction:(id)sender;
-- (IBAction)syncSettingAction:(id)sender;
 
 @end

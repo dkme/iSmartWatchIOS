@@ -220,26 +220,24 @@
 - (void)onTemperaBarChange:(id)sender
 {
     TemperaBar *bar = (TemperaBar *)sender;
-    //DEBUGLog(@"value:%d",bar.currentTempera);
-    //self.sportTargetSteps = bar.currentTempera*MULTIPLE;
     [self setTargetSteps:bar.currentTempera*MULTIPLE];
+    self.sportTargetSteps = bar.currentTempera*MULTIPLE;
 }
 - (void)onTmpTouchUp:(id)sender
 {
-    TemperaBar *bar = (TemperaBar *)sender;
-    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-    DEBUGLog(@"value:%d",bar.currentTempera);
-    BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:bleControl.isConnected];
-    if (result == NO) {
-        return ;
-    }
-    UInt32 target = bar.currentTempera*MULTIPLE;
-    [bleControl.settingProfile setTargetWithStep:target withSleepMinute:0xFF withCompletion:^(BOOL success)
-    {
-        DEBUGLog(@"设置目标成功");
-        [self showTip:NSLocalizedString(@"目标设置成功", nil)];
-        self.sportTargetSteps = bar.currentTempera*MULTIPLE;
-    }];
+//    TemperaBar *bar = (TemperaBar *)sender;
+//    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+//    BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:bleControl.isConnected];
+//    if (result == NO) {
+//        return ;
+//    }
+//    UInt32 target = (UInt32)bar.currentTempera*MULTIPLE;
+//    [bleControl.settingProfile setTargetWithStep:target withSleepMinute:0xFF withCompletion:^(BOOL success)
+//    {
+//        DEBUGLog(@"设置目标成功");
+//        [self showTip:NSLocalizedString(@"目标设置成功", nil)];
+//        self.sportTargetSteps = bar.currentTempera*MULTIPLE;
+//    }];
 }
 
 #pragma mark - Notification

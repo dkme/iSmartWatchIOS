@@ -297,10 +297,12 @@
             [self registerSuccessed];
             return ;
         } else if (!result && error==nil) {
-            if (errorNO == 10001) {
+            if (errorNO == ERROR_CODE_USERNAME_EXIST) {
                 [hud setLabelText:NSLocalizedString(@"用户名已存在", nil)];
-            } else if (errorNO == 10002) {
+            } else if (errorNO == ERROR_CODE_EMAIL_EXIST) {
                 [hud setLabelText:NSLocalizedString(@"邮箱已经注册", nil)];
+            } else if (errorNO == ERROR_CODE_PARAMETER_LOSE) {
+                
             } else {
                 [hud setLabelText:NSLocalizedString(@"注册失败", nil)];
             }

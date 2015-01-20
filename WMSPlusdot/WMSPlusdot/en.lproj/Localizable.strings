@@ -306,5 +306,6 @@
 "目标设置成功" = "Target setting successfully";
 
 "您还没有添加闹钟" = "You haven't add the alarm clock";
-"请将手表靠近手机" = "Please will watch near the phone";
-"请稍等，正在绑定配件..." = "Please wait a moment, is paired accessories...";
+"请将手表靠近手机" = "Please put watch near the phone";
+"请稍等，正在绑定配件..." = "Please wait a moment, is pairing the watch...";
+"蓝牙连接已断开" = "Bluetooth connection has been disconnected";

@@ -62,6 +62,7 @@
 - (void)stopScan
 {
     [_centralManager stopScan];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
 - (void)scanTimeout

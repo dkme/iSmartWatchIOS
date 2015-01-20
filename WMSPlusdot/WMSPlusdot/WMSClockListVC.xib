@@ -18,15 +18,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="JEX-aY-2zo">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="523"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J3T-t3-ySN">
-                    <rect key="frame" x="273" y="570" width="55" height="30"/>
+                    <rect key="frame" x="285" y="561" width="31" height="31"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="55" id="8E8-EE-DVN"/>
+                        <constraint firstAttribute="height" constant="31" id="P9v-hg-M7N"/>
+                        <constraint firstAttribute="width" constant="31" id="zMw-kF-pbv"/>
                     </constraints>
-                    <state key="normal" title="+">
+                    <state key="normal" backgroundImage="add_clock.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -36,13 +37,16 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="JEX-aY-2zo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8Wl-JQ-d3s"/>
-                <constraint firstItem="JEX-aY-2zo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="aF1-YU-pXS"/>
-                <constraint firstItem="JEX-aY-2zo" firstAttribute="centerX" secondItem="J3T-t3-ySN" secondAttribute="centerX" id="lk6-NI-2w0"/>
-                <constraint firstAttribute="centerX" secondItem="J3T-t3-ySN" secondAttribute="centerX" id="lny-G8-Omz"/>
-                <constraint firstAttribute="bottom" secondItem="J3T-t3-ySN" secondAttribute="bottom" id="rPT-UO-psk"/>
-                <constraint firstItem="J3T-t3-ySN" firstAttribute="top" secondItem="JEX-aY-2zo" secondAttribute="bottom" constant="20" id="slB-IT-XAg"/>
+                <constraint firstAttribute="bottom" secondItem="J3T-t3-ySN" secondAttribute="bottom" constant="8" id="5Va-a2-jpX"/>
+                <constraint firstItem="JEX-aY-2zo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="K9P-hj-URq"/>
+                <constraint firstItem="J3T-t3-ySN" firstAttribute="top" secondItem="JEX-aY-2zo" secondAttribute="bottom" constant="38" id="oq7-oF-Geu"/>
+                <constraint firstItem="JEX-aY-2zo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rEI-ul-0Dk"/>
+                <constraint firstItem="JEX-aY-2zo" firstAttribute="centerX" secondItem="J3T-t3-ySN" secondAttribute="centerX" id="tI5-C5-9hC"/>
+                <constraint firstAttribute="centerX" secondItem="J3T-t3-ySN" secondAttribute="centerX" constant="-0.5" id="yhE-1p-6Hc"/>
             </constraints>
         </view>
     </objects>
+    <resources>
+        <image name="add_clock.png" width="62" height="62"/>
+    </resources>
 </document>

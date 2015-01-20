@@ -27,7 +27,7 @@
     if (urlRequest == nil) {
         if (aCallBack) {
             NSError *error = [NSError errorWithDomain:@"NSURLRequestDomain" code:ERROR_CODE_REQUEST_TIMEOUT userInfo:@{NSLocalizedDescriptionKey:@"The request timed out"}];
-            aCallBack(0,0,error);
+            aCallBack(0,ERROR_CODE_REQUEST_TIMEOUT,error);
         }
     }
     

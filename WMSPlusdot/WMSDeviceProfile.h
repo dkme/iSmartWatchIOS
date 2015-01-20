@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, RemoteDataType) {
 
 
 //Block
-typedef void(^readDeviceInfoCallBack)(NSUInteger batteryEnergy,NSUInteger version,NSUInteger todaySteps,NSUInteger todaySportDurations,NSUInteger endSleepMinute,NSUInteger endSleepHour,NSUInteger sleepDurations,DeviceWorkStatus workStatus,BOOL success);
+typedef void(^readDeviceInfoCallBack)(NSUInteger energy,NSUInteger version,NSUInteger todaySteps,NSUInteger todaySportDurations,DeviceWorkStatus workStatus, NSUInteger deviceID,BOOL isPaired);
 typedef void(^readDeviceTimeCallBack)(NSString *dateString,BOOL success);
 
 /**
