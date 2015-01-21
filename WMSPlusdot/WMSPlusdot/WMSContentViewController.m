@@ -699,6 +699,10 @@
 }
 
 - (void)syncDataAction:(id)sender {
+    [self syncData];
+}
+- (void)syncData
+{
     if (![self.bleControl isConnected]) {
         return;
     }
@@ -940,6 +944,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidStartDFU:) name:WMSUpdateVCStartDFU object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidEndDFU:) name:WMSUpdateVCEndDFU object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -986,6 +992,11 @@
     
     //唤醒扫描
     [self scanAndConnectPeripheral];
+}
+
+- (void)reSyncData:(NSNotification *)notification
+{
+    [self syncData];
 }
 
 - (void)timeDidChange:(NSNotification *)notification

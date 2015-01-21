@@ -27,5 +27,6 @@
 - (IBAction)gotoMyClockViewAction:(id)sender;
 - (IBAction)gotoMyHistoryViewAction:(id)sender;
 
+- (void)syncData;
 
 @end

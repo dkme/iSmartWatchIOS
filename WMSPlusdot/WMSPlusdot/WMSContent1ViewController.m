@@ -333,6 +333,7 @@
 
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -577,13 +578,16 @@
 
 - (void)syncDataAction:(id)sender
 {
+    [self syncData];
+}
+- (void)syncData
+{
     if (![self.bleControl isConnected]) {
         return;
     }
     
     [self startSyncSleepData];
 }
-
 
 #pragma mark - 收发数据
 - (void)startSyncSleepData
@@ -720,6 +724,10 @@
         default:
             break;
     }
+}
+- (void)reSyncData:(NSNotification *)notification
+{
+    [self syncData];
 }
 
 @end

@@ -11,6 +11,8 @@
 #import "WMSFileMacro.h"
 #import "RESideMenu.h"
 
+extern NSString *const WMSAppDelegateReSyncData;
+
 @interface WMSAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

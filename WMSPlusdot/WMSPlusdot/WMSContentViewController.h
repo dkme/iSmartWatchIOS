@@ -37,5 +37,6 @@
 
 - (void)scanAndConnectPeripheral;
 
+- (void)syncData;
 
 @end

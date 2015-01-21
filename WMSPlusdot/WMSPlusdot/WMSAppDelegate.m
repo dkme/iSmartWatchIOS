@@ -27,6 +27,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
+
 @interface WMSAppDelegate ()<RESideMenuDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
@@ -91,6 +93,7 @@
     
 //    [self test];
     [WMSPostNotificationHelper cancelAllNotification];
+    [self setupReSyncDataTimer];
     
     _wmsBleControl  = [[WMSBleControl alloc] init];
     
@@ -130,6 +133,8 @@
     DEBUGLog(@"%s",__FUNCTION__);
     [_backgroundTimer invalidate];
     _backgroundTimer = nil;
+    
+    [self setupReSyncDataTimer];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -188,6 +193,22 @@
         
         [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
     }
+}
+
+- (void)setupReSyncDataTimer
+{
+    NSDate *today = [NSDate systemDate];
+    NSDate *tomorrow = [NSDate dateWithTimeInterval:24*60*60 sinceDate:today];
+    NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d 00:00:00",[NSDate yearOfDate:tomorrow],[NSDate monthOfDate:tomorrow],[NSDate dayOfDate:tomorrow]];
+    NSDate *targetDate = [NSDate dateFromString:strDate format:@"yyyy-MM-dd HH:mm:ss"];
+    NSTimeInterval interval = [targetDate timeIntervalSinceDate:today];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncData) object:nil];
+    [self performSelector:@selector(syncData) withObject:nil afterDelay:interval];
+}
+- (void)syncData
+{
+    DEBUGLog(@"%s",__FUNCTION__);
+    [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
 }
 
 - (void)test
