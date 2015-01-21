@@ -23,7 +23,6 @@
                 <outlet property="labelTiZhong1" destination="ZNk-OD-DG9" id="rwW-My-vgl"/>
                 <outlet property="labelTiZhong2" destination="Hrx-7X-Gli" id="md1-zH-Jq8"/>
                 <outlet property="labelTip2" destination="bhw-yL-igJ" id="2WO-ky-Bzb"/>
-                <outlet property="navBarView" destination="j5N-94-BhH" id="eqk-5C-Noa"/>
                 <outlet property="textFieldName" destination="dyM-0G-bny" id="1RG-8L-gp8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -33,11 +32,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="j5N-94-BhH" customClass="WMSNavBarView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.0" green="0.83529411760000005" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
                 <view contentMode="scaleToFill" id="InB-Lc-5Ic">
                     <rect key="frame" x="0.0" y="64" width="320" height="185"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

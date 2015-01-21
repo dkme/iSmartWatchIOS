@@ -13,7 +13,7 @@
 #import "WMSAppDelegate.h"
 
 #import "MBProgressHUD.h"
-#import "WMSNavBarView.h"
+#import "WMSInputView.h"
 
 #import "WMSMyAccessory.h"
 #import "WMSPersonModel.h"
@@ -22,31 +22,30 @@
 #import "NSDate+Formatter.h"
 #import "UIImage+QuartzProc.h"
 
-#define PickerViewHeight    216.f
-#define DatePickerHeight    PickerViewHeight
-#define ToolbarHeight       44.f
+#define DatePickerHeight                216.f
+#define ToolbarHeight                   44.f
 
-#define HeightViewIndex             100
-#define BirthdayViewIndex           101
-#define CurrentWeightViewIndex      102
-#define TargetWeightViewIndex       103
+#define HeightViewIndex                 100
+#define BirthdayViewIndex               101
+#define CurrentWeightViewIndex          102
+#define TargetWeightViewIndex           103
 
-#define HeightMinValue  100
-#define HeightMaxValue  300
-#define WeightMinValue  35
-#define WeightMaxValue  220
+static const int HeightMinValue         =100;
+static const int HeightMaxValue         =300;
+static const int WeightMinValue         =35;
+static const int WeightMaxValue         =220;
 
-#define HeightUnit      @"cm"
-#define WeightUnit      @"kg"
-#define SEX_MAN         1
-#define SEX_WOMAN       0
+#define HeightUnit                      @"cm"
+#define WeightUnit                      @"kg"
+#define SEX_MAN                         1
+#define SEX_WOMAN                       0
 
-#define COMPONENT_NUMBER 2
-#define COMPONENT_WIDTH  50.f
+#define COMPONENT_NUMBER                2
+#define COMPONENT_WIDTH                 50.f
 
 #define ButtonSavaFrame ( CGRectMake((ScreenWidth-610/2.0)/2, (ScreenHeight-99/2.0-30), 610/2.0, 99/2.0) )
 
-@interface WMSMyAccountViewController ()<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface WMSMyAccountViewController ()<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate,WMSInputViewDelegate>
 {
     //本地化
     __weak IBOutlet UILabel *labelTip2;
@@ -56,23 +55,9 @@
     __weak IBOutlet UILabel *labelTiZhong2;
 }
 
-@property (weak, nonatomic) IBOutlet WMSNavBarView *navBarView;
-@property (weak, nonatomic) IBOutlet UIView *centerView;
-@property (weak, nonatomic) IBOutlet UIImageView *imageViewUserImage;
-@property (weak, nonatomic) IBOutlet UITextField *textFieldName;
-
-@property (weak, nonatomic) IBOutlet UIView *bottomView;
-@property (weak, nonatomic) IBOutlet UIButton *buttonMan;
-@property (weak, nonatomic) IBOutlet UIButton *buttonWoman;
-@property (weak, nonatomic) IBOutlet UILabel *labelSex;
-@property (weak, nonatomic) IBOutlet UILabel *labelHeightValue;
-@property (weak, nonatomic) IBOutlet UILabel *labelBirthdayMonth;
-@property (weak, nonatomic) IBOutlet UILabel *labelBirthdayYear;
-@property (weak, nonatomic) IBOutlet UILabel *labelCurrentWeight;
-@property (weak, nonatomic) IBOutlet UILabel *labelTargetWeight;
 @property (strong, nonatomic) UIButton *buttonSava;
 
-@property (strong, nonatomic) UIPickerView *myPickerView;
+@property (strong, nonatomic) WMSInputView *myInputView;
 @property (strong, nonatomic) UIDatePicker *myDatePicker;
 @property (strong, nonatomic) UIToolbar *myToolbar;
 @property (strong, nonatomic) NSArray *pickerViewComponent2Array;
@@ -99,15 +84,17 @@
 }
 
 #pragma mark - Getter
-- (UIPickerView *)myPickerView
+- (WMSInputView *)myInputView
 {
-    if (!_myPickerView) {
-        _myPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, ScreenHeight, ScreenWidth, PickerViewHeight)];
-        _myPickerView.backgroundColor = [UIColor whiteColor];
-        //_myPickerView.alpha = 1.0;
-        //DEBUGLog(@"PickerView Height:%f",_myPickerView.bounds.size.height);
+    if (!_myInputView) {
+        _myInputView= [[WMSInputView alloc] initWithLeftItemTitle:NSLocalizedString(@"Cancel", nil) RightItemTitle:NSLocalizedString(@"Confirm",nil)];
+        _myInputView.pickerView.backgroundColor = [UIColor whiteColor];
+        _myInputView.pickerView.delegate = self;
+        _myInputView.pickerView.dataSource = self;
+        _myInputView.delegate = self;
+        [_myInputView hidden:NO];
     }
-    return _myPickerView;
+    return _myInputView;
 }
 - (UIDatePicker *)myDatePicker
 {
@@ -125,19 +112,11 @@
         _myToolbar.frame = (CGRect){0,ScreenHeight,ScreenWidth,ToolbarHeight};
         _myToolbar.barTintColor = [UIColor whiteColor];
         _myToolbar.backgroundColor = [UIColor whiteColor];
-        _myToolbar.alpha = 1.0;
-        //_myToolbar.barStyle = UIBarStyleDefault;
-        DEBUGLog(@"toolbar Height:%f,%f",_myToolbar.bounds.size.width,_myToolbar.bounds.size.height);
         
         UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel",nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelClicked:)];
         UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Confirm",nil) style:UIBarButtonItemStyleDone target:self action:@selector(confirmClicked:)];
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        //NSDictionary *attributes = @{NSFontAttributeName:Font_DINCondensed(20)};
-        //[leftBarButton setTitleTextAttributes:attributes forState:UIControlStateNormal];
-        //[rightBarButton setTitleTextAttributes:attributes forState:UIControlStateNormal];
-        
         NSArray *buttons = @[leftBarButton,flexibleSpace,rightBarButton];
-        
         [_myToolbar setItems:buttons animated:YES];
     }
     return _myToolbar;
@@ -194,40 +173,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    DEBUGLog(@"view height:%f",self.view.bounds.size.height);
-    DEBUGLog(@"window height:%f",[[UIScreen mainScreen] bounds].size.height);
-    
-    self.navBarView.labelTitle.text = NSLocalizedString(@"个人信息",nil);
-    self.navBarView.labelTitle.font = Font_DINCondensed(20.0);
-    [self.navBarView.buttonLeft setTitle:@"" forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.navBarView.buttonLeft addTarget:self action:@selector(buttonLeftClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    self.textFieldName.text = @"";
-    self.textFieldName.placeholder = NSLocalizedString(@"Please enter a nickname", nil);
-    self.textFieldName.font = [UIFont systemFontOfSize:25.f];
-    self.textFieldName.delegate = self;
-    
-    self.myPickerView.dataSource = self;
-    self.myPickerView.delegate = self;
-
-    if (self.isNewUser) {
-        self.navBarView.buttonLeft.hidden = YES;
-        [self.view addSubview:self.buttonSava];
-    } else {
-        self.navBarView.buttonLeft.hidden = NO;
-    }
-    [self.view addSubview:self.myPickerView];
-    [self.view addSubview:self.myDatePicker];
-    [self.view addSubview:self.myToolbar];
-    
+    [self setupProperty];
+    [self setupView];
+    [self setupNavigationBar];
     [self setupControl];
+    [self updateViews];
     [self localized];
     [self adaptiveIphone4];
-    [self loadData];
-    [self updateViews];
 }
 
 - (void)didReceiveMemoryWarning
@@ -242,6 +194,27 @@
     self.textFieldName.delegate = nil;
 }
 
+#pragma mark - Setup
+- (void)setupView
+{
+    [self.view addSubview:self.myInputView];
+    [self.view addSubview:self.myDatePicker];
+    [self.view addSubview:self.myToolbar];
+    self.textFieldName.text = @"";
+    self.textFieldName.placeholder = NSLocalizedString(@"Please enter a nickname", nil);
+    self.textFieldName.font = [UIFont systemFontOfSize:25.f];
+    self.textFieldName.delegate = self;
+    if (self.isNewUser) {
+        [self.view addSubview:self.buttonSava];
+    }
+}
+- (void)setupNavigationBar
+{
+    self.title = NSLocalizedString(@"个人信息",nil);
+    if (!self.isNewUser) {
+        self.navigationItem.leftBarButtonItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
+    }
+}
 - (void)setupControl
 {
     [self.buttonMan setTitle:@"" forState:UIControlStateNormal];
@@ -303,9 +276,7 @@
     self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%ld%@%ld%@",(unsigned long)myBirthdayMonth,NSLocalizedString(@"Month",nil),(unsigned long)myBirthdayDay,NSLocalizedString(@"Day",nil)];
 }
 
-#pragma mark - Data
-//加载初始数据
-- (void)loadData
+- (void)setupProperty
 {
     WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
     myName = model.name;
@@ -318,7 +289,6 @@
     myBirthdayYear = [NSDate yearOfDate:birthday];
     myBirthdayMonth = [NSDate monthOfDate:birthday];
     myBirthdayDay = [NSDate dayOfDate:birthday];
-    
 }
 //保存用户信息
 - (void)savaPersonInfoBirthday:(NSDate *)birthday stride:(NSUInteger)stride
@@ -330,33 +300,6 @@
 
 
 #pragma mark - 隐藏与显示输入视图
-//判断self.myPickerView是否显示
-- (BOOL)isShowPickerView
-{
-    if (self.myPickerView.frame.origin.y == ScreenHeight) {
-        return NO;
-    } else {
-        return YES;
-    }
-    return YES;
-}
-//显示或隐藏self.myPickerView
-- (void)showPickerView:(BOOL)show
-{
-    CGPoint or = self.myPickerView.frame.origin;
-    float offset = self.myPickerView.bounds.size.height;
-    if (show) {
-        if (or.y == ScreenHeight) {
-            or.y -= offset;
-            self.myPickerView.frame = (CGRect){or,self.myPickerView.bounds.size};
-        }
-    } else {
-        if (or.y == ScreenHeight - offset) {
-            or.y += offset;
-            self.myPickerView.frame = (CGRect){or,self.myPickerView.bounds.size};
-        }
-    }
-}
 - (BOOL)isShowDatePicker
 {
     if (self.myDatePicker.frame.origin.y == ScreenHeight) {
@@ -396,7 +339,7 @@
 - (void)showToolbar:(BOOL)show
 {
     CGPoint or = self.myToolbar.frame.origin;
-    float offset = ToolbarHeight + PickerViewHeight;
+    float offset = ToolbarHeight + DatePickerHeight;
     if (show) {
         if (or.y == ScreenHeight) {
             or.y -= offset;
@@ -423,13 +366,11 @@
     if (show) {
         [self showToolbar:show];
         if (self.clickedViewIndex != BirthdayViewIndex) {
-            [self showPickerView:show];
         } else {
             [self showDatePicker:show];
         }
     } else {
         [self showToolbar:show];
-        [self showPickerView:show];
         [self showDatePicker:show];
     }
 }
@@ -504,17 +445,8 @@
 
 
 #pragma mark - Action
-- (void)buttonLeftClicked:(id)sender
+- (void)backAction:(id)sender
 {
-//    if (self.isModifyAccount) {
-//        WMSLeftViewController *leftVC = (WMSLeftViewController *)((RESideMenu *)self.presentingViewController).leftMenuViewController;
-//        [leftVC setUserImage:myImage];
-//        [leftVC setUserNickname:myName];
-//        
-//        [self savaInfoAction:nil];
-//        return;
-//    }
-//    [self dismissViewControllerAnimated:YES completion:nil];
     WMSLeftViewController *leftVC = (WMSLeftViewController *)((RESideMenu *)self.presentingViewController).leftMenuViewController;
     [leftVC setUserImage:myImage];
     [leftVC setUserNickname:myName];
@@ -526,14 +458,17 @@
 {
     self.labelSex.text = NSLocalizedString(@"Man",nil);
     mySex = 1;
-    [self updateViews];
+    self.labelSex.text = NSLocalizedString(@"Male",nil);
+    [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"select_man.png"] forState:UIControlStateNormal];
+    [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"unselect_woman.png"] forState:UIControlStateNormal];
 }
-
 - (void)buttonWomanClicked:(id)sender
 {
     self.labelSex.text = NSLocalizedString(@"Woman",nil);
     mySex = 0;
-    [self updateViews];
+    self.labelSex.text = NSLocalizedString(@"Female",nil);
+    [self.buttonWoman setBackgroundImage:[UIImage imageNamed:@"select_woman.png"] forState:UIControlStateNormal];
+    [self.buttonMan setBackgroundImage:[UIImage imageNamed:@"unselect_man.png"] forState:UIControlStateNormal];
 }
 
 - (IBAction)imageViewClicked:(id)sender {
@@ -543,42 +478,44 @@
     [actionSheet showInView:self.view];
 }
 
-//- (IBAction)resignResponse:(id)sender {
-//    if ([self.textFieldName isFirstResponder]) {
-//        [self.textFieldName resignFirstResponder];
-//    }
-//
-//    if ([self isShowInputView]) {
-//        [UIView animateWithDuration:0.5 animations:^{
-//            //[self showPickerView:NO];
-//            [self showInputView:NO];
-//        }];
-//    }
-//}
-
 - (IBAction)heightClicked:(id)sender {
     self.clickedViewIndex = HeightViewIndex;
-    
     [self textFieldNameResignFirstResponder];
-    
     if ([self isShowInputView]) {
-        [UIView animateWithDuration:0.5 animations:^{
-            [self showInputView:NO];
-        }];
-        return;
+        [self showInputView:NO];
     }
-    [UIView animateWithDuration:0.5 animations:^{
-        [self showInputView:YES];
-    }];
     
-    [self.myPickerView reloadAllComponents];
-    [self.myPickerView selectRow:(myHeight-HeightMinValue) inComponent:0 animated:NO];
+    NSInteger row = myHeight-HeightMinValue;
+    [self.myInputView show:YES forView:self.labelHeightValue];
+    [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
+}
+- (IBAction)currentWeightClicked:(id)sender {
+    self.clickedViewIndex = CurrentWeightViewIndex;
+    [self textFieldNameResignFirstResponder];
+    if ([self isShowInputView]) {
+        [self showInputView:NO];
+    }
+    
+    NSInteger row = myCurrentWeight-WeightMinValue;
+    [self.myInputView show:YES forView:self.labelCurrentWeight];
+    [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
+}
+- (IBAction)targetWeightClicked:(id)sender {
+    self.clickedViewIndex = TargetWeightViewIndex;
+    [self textFieldNameResignFirstResponder];
+    if ([self isShowInputView]) {
+        [self showInputView:NO];
+    }
+    
+    NSInteger row = myTargetWeight-WeightMinValue;
+    [self.myInputView show:YES forView:self.labelTargetWeight];
+    [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
 }
 
 - (IBAction)birthdayClicked:(id)sender {
     self.clickedViewIndex = BirthdayViewIndex;
-    
     [self textFieldNameResignFirstResponder];
+    [self.myInputView hidden:NO];
     
     if ([self isShowInputView]) {
         [UIView animateWithDuration:0.5 animations:^{
@@ -596,44 +533,6 @@
     [self.myDatePicker setDate:newdate animated:NO];
 }
 
-- (IBAction)currentWeightClicked:(id)sender {
-    self.clickedViewIndex = CurrentWeightViewIndex;
-    
-    [self textFieldNameResignFirstResponder];
-    
-    if ([self isShowInputView]) {
-        [UIView animateWithDuration:0.5 animations:^{
-            [self showInputView:NO];
-        }];
-        return;
-    }
-    [UIView animateWithDuration:0.5 animations:^{
-        [self showInputView:YES];
-    }];
-    
-    [self.myPickerView reloadAllComponents];
-    [self.myPickerView selectRow:(myCurrentWeight-WeightMinValue) inComponent:0 animated:NO];
-}
-
-- (IBAction)targetWeightClicked:(id)sender {
-    self.clickedViewIndex = TargetWeightViewIndex;
-    
-    [self textFieldNameResignFirstResponder];
-    
-    if ([self isShowInputView]) {
-        [UIView animateWithDuration:0.5 animations:^{
-            [self showInputView:NO];
-        }];
-        return;
-    }
-    [UIView animateWithDuration:0.5 animations:^{
-        [self showInputView:YES];
-    }];
-    
-    [self.myPickerView reloadAllComponents];
-    [self.myPickerView selectRow:(myTargetWeight-WeightMinValue) inComponent:0 animated:NO];
-}
-
 - (void)cancelClicked:(id)sender
 {
     [UIView animateWithDuration:0.5 animations:^{
@@ -646,28 +545,7 @@
         [self showInputView:NO];
     }];
     
-    NSInteger row = [self.myPickerView selectedRowInComponent:0];
-    if (self.clickedViewIndex == HeightViewIndex) {
-        self.labelHeightValue.text = [NSString stringWithFormat:@"%@%@",self.heightArray[row],NSLocalizedString(@"cm",nil)];
-        
-        myHeight = [self.heightArray[row] intValue];
-        
-        return;
-    }
-    if (self.clickedViewIndex == CurrentWeightViewIndex) {
-        self.labelCurrentWeight.text = [NSString stringWithFormat:@"%@%@",self.weightArray[row],NSLocalizedString(@"kg",nil)];
-        
-        myCurrentWeight = [self.weightArray[row] intValue];
-        
-        return;
-    }
-    if (self.clickedViewIndex == TargetWeightViewIndex) {
-        myTargetWeight = [self.weightArray[row] intValue];
-        self.labelTargetWeight.text = [NSString stringWithFormat:@"%@%@",self.weightArray[row],NSLocalizedString(@"kg",nil)];
-        return;
-    }
     if (self.clickedViewIndex == BirthdayViewIndex) {
-        DEBUGLog(@"Birthday:%@",self.myDatePicker.date);
         NSDate *date = self.myDatePicker.date;
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];//@"yyyy-MM-dd'T'HH:mm:ss"
         dateFormatter.dateFormat = @"yyyy";
@@ -676,7 +554,6 @@
         NSString *strMonth = [dateFormatter stringFromDate:date];
         dateFormatter.dateFormat = @"dd";
         NSString *strDay = [dateFormatter stringFromDate:date];
-        //DEBUGLog(@"Birthday year:%@,month:%@,day:%@",strYear,strMonth,strDay);
         self.labelBirthdayYear.text = [NSString stringWithFormat:@"%@%@",strYear,NSLocalizedString(@"Year",nil)];
         self.labelBirthdayMonth.text = [NSString stringWithFormat:@"%@%@%@%@",strMonth,NSLocalizedString(@"Month",nil),strDay,NSLocalizedString(@"Day",nil)];
         
@@ -786,6 +663,7 @@
     if ([self isShowInputView]) {
         [self showInputView:NO];
     }
+    [self.myInputView hidden:NO];
     return YES;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -826,11 +704,9 @@
     }
     return COMPONENT_WIDTH;
 }
-
 //返回值写入pickerView中
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    //DEBUGLog(@"pickerView string");
     if (self.clickedViewIndex == HeightViewIndex) {
         if (component == 0) {
             return self.heightArray[row];
@@ -847,19 +723,20 @@
     
     return nil;
 }
-//- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row
-//          forComponent:(NSInteger)component reusingView:(UIView *)view
-//{
-//    mycom1 = view ? (UILabel *) view : [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 60.0f, 30.0f)];
-//    
-//    NSString *imgstr1 = [[NSString alloc] initWithFormat:@"%d", row];
-//    mycom1.text = imgstr1;
-//    [mycom1 setFont:[UIFont boldSystemFontOfSize:30]];
-//    mycom1.backgroundColor = [UIColor clearColor];
-//    CFShow(mycom1);
-//    [imgstr1 release];
-//    
-//    return mycom1;
-//}
+#pragma mark - WMSInputViewDelegate
+- (void)inputView:(WMSInputView *)inputView forView:(UIView *)responseView didClickRightItem:(UIBarButtonItem *)item
+{
+    NSInteger row = [inputView.pickerView selectedRowInComponent:0];
+    if (responseView == self.labelHeightValue) {
+        myHeight = [self.heightArray[row] intValue];
+        self.labelHeightValue.text = [NSString stringWithFormat:@"%ld%@",(unsigned long)myHeight,NSLocalizedString(@"cm",nil)];
+    } else if (responseView == self.labelCurrentWeight) {
+        myCurrentWeight = [self.weightArray[row] intValue];
+        self.labelCurrentWeight.text = [NSString stringWithFormat:@"%ld%@",(unsigned long)myCurrentWeight,NSLocalizedString(@"kg",nil)];
+    } else if (responseView == self.labelTargetWeight) {
+        myTargetWeight = [self.weightArray[row] intValue];
+        self.labelTargetWeight.text = [NSString stringWithFormat:@"%ld%@",(unsigned long)myTargetWeight,NSLocalizedString(@"kg",nil)];
+    } else {}
+}
 
 @end

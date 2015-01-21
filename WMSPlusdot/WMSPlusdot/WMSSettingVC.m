@@ -196,7 +196,8 @@
     [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
      {
          DEBUGLog(@"firmware curVersion:%f, newVersion:%f",[WMSDeviceModel deviceModel].version,newVersion);
-         //newVersion = 10.0;
+         //DEBUGLog(@"describe:%@, url:%@",describe,strURL);
+         //newVersion = 100.0;
          if ([WMSDeviceModel deviceModel].version < newVersion) {
              [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
               {

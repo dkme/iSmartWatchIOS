@@ -551,12 +551,12 @@ NSString * const WMSBleControlScanFinish =
     
     [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
     
-//    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-//                                     target:self
-//                                   selector:@selector(writeValueToCharactTimeout:)
-//                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-//                                    repeats:YES
-//                                     timeID:TimeIDBindSetting];
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDBindSetting];
 }
 
 - (void)switchToControlMode:(ControlMode)controlMode
@@ -769,14 +769,15 @@ NSString * const WMSBleControlScanFinish =
         Byte cmd = package[2];
         
         if (cmd == CMDSetBinding) {
-            //if ([self.myTimers isValidForTimeID:TimeIDBindSetting]) {//成功
-              //  [self.myTimers deleteTimerForTimeID:TimeIDBindSetting];
+            if ([self.myTimers isValidForTimeID:TimeIDBindSetting]) {//成功
+                [self.myTimers deleteTimerForTimeID:TimeIDBindSetting];
                 
                 WMSBleBindSettingCallBack callBack = [NSMutableArray popFromArray:self.stackBindSetting];
+                NSInteger result = package[3];
                 if (callBack) {
-                    callBack(YES);
+                    callBack(result);
                 }
-            //}
+            }
             return;
         }
         if (cmd == CMDSwitchControlMode) {

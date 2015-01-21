@@ -23,8 +23,8 @@
 {
     NSArray *nibView = [[NSBundle mainBundle] loadNibNamed:@"WMSInputView" owner:nil options:nil];
     WMSInputView *inputView = (WMSInputView *)[nibView objectAtIndex:0];
-    _toolBar.barTintColor = [UIColor whiteColor];
-    _toolBar.backgroundColor = [UIColor whiteColor];
+    inputView.toolBar.barTintColor = [UIColor whiteColor];
+    inputView.toolBar.backgroundColor = [UIColor whiteColor];
     [inputView.leftItem setTitle:leftTitle];
     [inputView.rightItem setTitle:rightTitle];
     

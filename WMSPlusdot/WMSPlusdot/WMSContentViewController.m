@@ -715,7 +715,7 @@
     [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
         [WMSDeviceModel readDevicedetailInfo:self.bleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
             if (!isPaired) {
-                [self.bleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:^(BOOL success) {}];
+                [self.bleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
             }
         }];
     }];

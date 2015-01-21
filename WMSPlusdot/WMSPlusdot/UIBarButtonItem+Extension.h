@@ -15,4 +15,6 @@
 + (UIBarButtonItem *)itemWithTitle:(NSString *)title font:(UIFont *)font size:(CGSize)size target:(id)target action:(SEL)action;
 + (UIBarButtonItem *)itemWithTitle:(NSString *)title textColor:(UIColor *)textColor font:(UIFont *)font size:(CGSize)size target:(id)target action:(SEL)action;
 
++ (UIBarButtonItem *)defaultItemWithTarget:(id)target action:(SEL)action;
+
 @end

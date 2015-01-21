@@ -56,6 +56,12 @@ typedef NS_ENUM(NSUInteger, BindSettingCMD) {
     BindSettingCMDMandatoryBind = 0x03,
     BindSettingCMDMandatoryUnBind = 0x04,
 };
+typedef NS_ENUM(NSInteger, BindingResult) {
+    BindingResultSuccess    = 0x00,
+    BindingResultTimeout    = 0x01,
+    BindingResultPaired     = 0x02,
+};
+
 
 //通讯命令字
 typedef NS_ENUM(Byte, CMDType) {
@@ -112,7 +118,7 @@ typedef void (^WMSBleSwitchToUpdateModeCallback)(SwitchToUpdateResult result,NSS
 
 typedef void (^WMSBleSendDataCallback)(BOOL success);
 
-typedef void (^WMSBleBindSettingCallBack)(BOOL success);
+typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
 
 
 @interface WMSBleControl : NSObject

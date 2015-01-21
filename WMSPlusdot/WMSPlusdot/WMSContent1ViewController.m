@@ -599,6 +599,7 @@
          //             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
          //         }
          //         printf("\n");
+         DEBUGLog(@"sleep date %@",sleepDate);
          
          if ([sleepDate isEqualToString:@"0000-00-00"]) {
              DEBUGLog(@"同步睡眠数据完成");
@@ -626,7 +627,7 @@
          //             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
          //         }
          //         printf("\n");
-         
+         DEBUGLog(@"sleep date %@",sleepDate);
          if ([sleepDate isEqualToString:@"0000-00-00"]) {
              DEBUGLog(@"同步睡眠数据完成");
              [self syncSleepDataOver];

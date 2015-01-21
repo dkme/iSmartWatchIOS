@@ -97,19 +97,19 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
 - (void)sendBindingCMD
 {
     __weak __typeof(&*self) weakSelf = self;
-    double version = [WMSDeviceModel deviceModel].version;
+//    double version = [WMSDeviceModel deviceModel].version;
     BindSettingCMD bindCMD = bindSettingCMDBind;
 //    if (version >= FIRMWARE_TARGET_VERSION) {
 //        bindCMD = BindSettingCMDMandatoryBind;
 //    }
-    [self.bleControl bindSettingCMD:bindCMD completion:^(BOOL success)
+    [self.bleControl bindSettingCMD:bindCMD completion:^(BindingResult result)
      {
          __strong __typeof(&*self) strongSelf = weakSelf;
          if (!strongSelf) {
              return ;
          }
          
-         if (success) {
+         if (result == BindingResultSuccess) {
              NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
              if (identify) {
                  [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
@@ -161,7 +161,10 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
         return ;
     }
     LGPeripheral *peripheral = self.listData[0];
-    NSInteger RSSI = peripheral.RSSI;
+    if (!peripheral) {
+        return ;
+    }
+    NSInteger RSSI = peripheral.RSSI;DEBUGLog(@"signal %d",RSSI);
     if (RSSI >= MAX_RSSI) {
         if ([self.bleControl isScanning]) {
             [self.bleControl stopScanForPeripherals];

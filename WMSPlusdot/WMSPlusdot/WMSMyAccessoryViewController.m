@@ -292,7 +292,7 @@
             color = UICOLOR_DEFAULT;
         }
     } else {
-        state = [NSString stringWithFormat:@"%@%@",state,NSLocalizedString(@"", nil)];
+        state = [NSString stringWithFormat:@"%@(%@)",state,NSLocalizedString(@"点击绑定", nil)];
         color = UICOLOR_DEFAULT;
     }
     cell.bottomLabel.text = state;
@@ -333,7 +333,7 @@
             return;
         }
         WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];
-        vc.generation = indexPath.row+1;
+        vc.generation = (int)indexPath.row+1;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

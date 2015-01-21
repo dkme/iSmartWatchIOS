@@ -272,7 +272,8 @@
     WMSMyAccountViewController *VC = [[WMSMyAccountViewController alloc] init];
     VC.isModifyAccount = YES;
     VC.isNewUser = NO;
-    [self presentViewController:VC animated:YES completion:nil];
+    MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:VC];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 - (void)settingBtnClick:(id)sender
 {

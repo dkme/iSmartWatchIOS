@@ -52,4 +52,10 @@
     return [UIBarButtonItem itemWithTitle:title textColor:textColor font:font size:size target:target action:action];
 }
 
++ (UIBarButtonItem *)defaultItemWithTarget:(id)target action:(SEL)action
+{
+    UIBarButtonItem *leftItem = [UIBarButtonItem itemWithImageName:@"back_btn_a.png" highImageName:@"back_btn_b.png" target:target action:action];
+    return leftItem;
+}
+
 @end

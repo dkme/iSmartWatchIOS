@@ -71,13 +71,11 @@
 {
     self.title = NSLocalizedString(@"Smart alarm clock", nil);
     self.navigationController.delegate = self;
-    //self.navigationController.navigationBar.delegate = self;
     
     UIBarButtonItem *leftItem = [UIBarButtonItem itemWithImageName:@"back_btn_a.png" highImageName:@"back_btn_b.png" target:self action:@selector(backAction:)];
     UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) size:SYNC_BUTTON_SIZE target:self action:@selector(syncAction:)];
-    //UIBarButtonItem *item2 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"编辑", nil) size:size target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = leftItem;
-    self.navigationItem.rightBarButtonItems = @[item1,/*item2*/];
+    self.navigationItem.rightBarButtonItem = item1;
 }
 - (void)setupTableView
 {

@@ -135,9 +135,11 @@
 {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     dispatch_async(queue, ^{
-        NSDictionary *info = [self firmwareInfo];
+        NSDictionary *jsonData = [self firmwareInfo];
+        BOOL success = [jsonData[@"success"] boolValue];
+        NSDictionary *info = jsonData[@"data"];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (info) {
+            if (success) {
                 if (aCallBack) {
                     double version = [info[@"version"] doubleValue];
                     NSString *desc = info[@"desc"];
@@ -167,7 +169,8 @@
         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&error];
         if (jsonData && error==nil) {
             if ([jsonData isKindOfClass:[NSDictionary class]]) {
-                return jsonData[@"data"];
+                //return jsonData[@"data"];
+                return jsonData;
             }
         } else {
             DEBUGLog(@"%s error:not data or error",__FILE__);
@@ -193,9 +196,9 @@
 }
 + (BOOL)download:(NSString *)strURL
 {
-    if ([self isExistFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)]) {
-        return YES;
-    }
+//    if ([self isExistFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)]) {
+//        return YES;
+//    }
     NSString *urlString = strURL;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIME_INTERVAL];
     if (!request) {
