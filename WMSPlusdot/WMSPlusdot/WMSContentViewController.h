@@ -7,9 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+@class WMSMySportView;
 
 @interface WMSContentViewController : UIViewController
-
+{
+    //需本地化
+    __weak IBOutlet UILabel *_labelTitle;
+    __weak IBOutlet UILabel *_labelMySport;
+    __weak IBOutlet UILabel *_labelStep;
+    __weak IBOutlet UILabel *_labelStep2;
+    __weak IBOutlet UILabel *_labelMuBiao;
+    __weak IBOutlet UILabel *_labelRanShao;
+    __weak IBOutlet UILabel *_labelJuli;
+    __weak IBOutlet UILabel *_labelShiJian;
+    __weak IBOutlet UILabel *_labelHour;
+    __weak IBOutlet UILabel *_labelMinute;
+}
 @property (weak, nonatomic) IBOutlet UIButton *buttonLeft;
 @property (weak, nonatomic) IBOutlet UIButton *buttonRight;
 @property (weak, nonatomic) IBOutlet UIButton *buttonPrev;
@@ -24,6 +37,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelDistanceValue;
 @property (weak, nonatomic) IBOutlet UILabel *labelTimeValue;
 @property (weak, nonatomic) IBOutlet UILabel *labelTimeMinuteValue;
+
+@property (weak, nonatomic) IBOutlet UIView *dateView;
+@property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet WMSMySportView *mySportView;
 
 
 - (IBAction)showLeftViewAction:(id)sender;

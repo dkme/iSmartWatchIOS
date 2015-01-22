@@ -93,6 +93,27 @@
     }
     return self;
 }
++ (id)defaultSyncDataView
+{
+    CGRect viewFrame= (CGRect){0,120,ScreenWidth,35};
+    WMSSyncDataView *view = [[WMSSyncDataView alloc] initWithFrame:viewFrame];
+    view.backgroundColor = [UIColor clearColor];
+    view.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
+    view.labelTip.font = Font_DINCondensed(17.0);
+    [view setLabelEnergyFont:Font_DINCondensed(15.0)];
+    
+    UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
+    CGRect frame = view.imageView.frame;
+    frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
+    view.imageView.image = image;
+    view.imageView.frame = frame;
+    
+    [view.buttonSync setTitle:NSLocalizedString(@"同步",nil) forState:UIControlStateNormal];
+    [view.buttonSync.titleLabel setFont:Font_DINCondensed(17.0)];
+    [view.buttonSync addTarget:view action:@selector(syncDataAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return view;
+}
 - (void)setup
 {
     _labelTip = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.frame.size.height-30)/2.0, self.frame.size.width/2.0-10, 30)];
@@ -193,6 +214,12 @@
     self.cellLayer.strokeColor = [color CGColor];
 }
 
+- (void)syncDataAction:(id)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(syncDataView:didClickSyncButton:)]) {
+        [self.delegate syncDataView:self didClickSyncButton:sender];
+    }
+}
 
 #pragma mark - Draw
 - (void)drawRect:(CGRect)rect

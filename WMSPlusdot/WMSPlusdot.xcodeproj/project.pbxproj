@@ -274,6 +274,8 @@
 		23E35B8B1A4BB13B00FDA20D /* WMSAntiLostVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */; };
 		23E84B921A4814CA0061AD36 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84B911A4814CA0061AD36 /* Utility.m */; };
 		23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84B991A4815050061AD36 /* IntelHex2BinConverter.m */; };
+		23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84FE71A709E12006BBAEA /* UILabel+Attribute.m */; };
+		23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84FEB1A70CB30006BBAEA /* WMSSportVCHelper.m */; };
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
 		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
 /* End PBXBuildFile section */
@@ -674,6 +676,10 @@
 		23E84B911A4814CA0061AD36 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
 		23E84B981A4815050061AD36 /* IntelHex2BinConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelHex2BinConverter.h; sourceTree = "<group>"; };
 		23E84B991A4815050061AD36 /* IntelHex2BinConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntelHex2BinConverter.m; sourceTree = "<group>"; };
+		23E84FE61A709E12006BBAEA /* UILabel+Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Attribute.h"; sourceTree = "<group>"; };
+		23E84FE71A709E12006BBAEA /* UILabel+Attribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Attribute.m"; sourceTree = "<group>"; };
+		23E84FEA1A70CB30006BBAEA /* WMSSportVCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportVCHelper.h; sourceTree = "<group>"; };
+		23E84FEB1A70CB30006BBAEA /* WMSSportVCHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportVCHelper.m; sourceTree = "<group>"; };
 		23FB8B5719CA7C9100E7D77C /* WMSSleepDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSleepDatabase.h; sourceTree = "<group>"; };
 		23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSleepDatabase.m; sourceTree = "<group>"; };
 		F41930CD19F16B1400E7B0B5 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
@@ -756,6 +762,8 @@
 				233511A119A4BD5200FBCC81 /* WMSContentViewController.h */,
 				233511A219A4BD5200FBCC81 /* WMSContentViewController.m */,
 				233511A319A4BD5200FBCC81 /* WMSContentViewController.xib */,
+				23E84FEA1A70CB30006BBAEA /* WMSSportVCHelper.h */,
+				23E84FEB1A70CB30006BBAEA /* WMSSportVCHelper.m */,
 			);
 			name = "我的运动视图";
 			sourceTree = "<group>";
@@ -1658,6 +1666,7 @@
 				239F51CE1A2D94E20058F6DE /* EAIntroView */,
 				231972451A358DCB002E8A0F /* JSCustomBadge */,
 				232AC5951A2EB67200186FFD /* CRToast */,
+				23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -1775,6 +1784,15 @@
 			name = "DFU Implementation";
 			sourceTree = "<group>";
 		};
+		23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */ = {
+			isa = PBXGroup;
+			children = (
+				23E84FE61A709E12006BBAEA /* UILabel+Attribute.h */,
+				23E84FE71A709E12006BBAEA /* UILabel+Attribute.m */,
+			);
+			name = "UILabel+Attribute";
+			sourceTree = "<group>";
+		};
 		F4F037C019F23A9D0083DEE1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1833,7 +1851,7 @@
 				ORGANIZATIONNAME = GUOGEE;
 				TargetAttributes = {
 					232846BC19A43668001C148D = {
-						DevelopmentTeam = 4E8WUK78VW;
+						DevelopmentTeam = R39529C8UT;
 					};
 					232846D719A43668001C148D = {
 						TestTargetID = 232846BC19A43668001C148D;
@@ -2058,6 +2076,7 @@
 				234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */,
 				23D7CF0219B5C49C00DFA678 /* LGService.m in Sources */,
 				237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */,
+				23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */,
 				2323BE061A68B0E900FCA216 /* DFUOperations.m in Sources */,
 				2335119E19A4B85700FBCC81 /* RECommonFunctions.m in Sources */,
 				23D7CEFE19B5C49C00DFA678 /* CBUUID+StringExtraction.m in Sources */,
@@ -2067,6 +2086,7 @@
 				236D95BB1A67ACFC00037DD8 /* WMSFilter.m in Sources */,
 				2331838F19B72318005B2BA0 /* WMSAlarmClock.m in Sources */,
 				2331838C19B70D9D005B2BA0 /* WMSRemindProfile.m in Sources */,
+				23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */,
 				2326A44A19A5E9CE0098657B /* WMSRightViewController.m in Sources */,
 				2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */,
 				23305D9A19C7CFAF00F9EEE6 /* WMSMyAccessory.m in Sources */,

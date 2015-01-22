@@ -28,7 +28,7 @@
 #define HEADER_HEIGHT       50
 #define FOOTER_HEIGHT       1
 
-@interface WMSMyAccessoryViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
+@interface WMSMyAccessoryViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIAlertViewDelegate>
 @property (nonatomic, strong) WMSNavBarView *navBarView;
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, strong) NSArray *imageNameArray;
@@ -159,66 +159,32 @@
     }
 }
 
-- (void)showUnBindTip:(BOOL)showOrHide
-{
-    UILabel *label = nil;
-    for (UIView *view in [self.tableView subviews]) {
-        if ([view class] == [UILabel class] && view.tag == 250) {
-            label = (UILabel *)view;
-            break;
-        }
-    }
-    if (label == nil) {
-        label = [[UILabel alloc] initWithFrame:CGRectMake(15, CELL_HIGHT+HEADER_HEIGHT+10, ScreenWidth-15, 60)];
-        NSString *text = [NSString stringWithFormat:@"%@: %@",NSLocalizedString(@"提示", nil),NSLocalizedString(@"请在“设置-蓝牙”中，忽略此设备！", nil)];
-        label.text = text;
-        label.textColor = [UIColor redColor];
-        label.numberOfLines = -1;
-        label.tag = 250;
-        label.adjustsFontSizeToFitWidth = YES;
-        [self.tableView addSubview:label];
-        CGRect frame = label.frame;
-        frame.origin.x = ScreenWidth;
-        label.frame = frame;
-    }
-    //
-    [UIView animateWithDuration:0.5 animations:^{
-        CGRect frame = label.frame;
-        if (showOrHide) {
-            frame.origin.x = 15;
-        } else {
-            frame.origin.x = ScreenWidth;
-        }
-        label.frame = frame;
-    } completion:nil];
-}
-
 //cmd：0表示解绑，1表示绑定
 - (BOOL)showAlertView:(int)cmd
 {
     self.alertView = nil;
-    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-    switch ([bleControl bleState]) {
-        case WMSBleStateUnsupported:
-        {
-            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
-            [_alertView show];
-            return YES;
-        }
-        case WMSBleStatePoweredOff:
-        {
-            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
-            [_alertView show];
-            return YES;
-        }
-        default:
-            break;
-    }
     if (cmd == 0) {
-        if ([bleControl isConnected] == NO) {
-            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"请先连接您的手表",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
-            [_alertView show];
-            return YES;
+        _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您还没有连接手表,强制解绑会导致之前设置在手表的信息（闹钟，久坐）残留在手表中",nil) delegate:self cancelButtonTitle:NSLocalizedString(@"取消",nil) otherButtonTitles:NSLocalizedString(@"解绑",nil), nil];
+        [_alertView show];
+        return YES;
+    }
+    else {
+        WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+        switch ([bleControl bleState]) {
+            case WMSBleStateUnsupported:
+            {
+                _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+                [_alertView show];
+                return YES;
+            }
+            case WMSBleStatePoweredOff:
+            {
+                _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+                [_alertView show];
+                return YES;
+            }
+            default:
+                break;
         }
     }
     return NO;
@@ -231,33 +197,43 @@
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
-#pragma mark - Time out
-- (void)hideUnBindTip
-{
-    [self showUnBindTip:NO];
-}
-
 - (void)skipSportVC
 {
     WMSLeftViewController *vc = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
     [vc skipToViewControllerForIndex:0];
 }
 
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self showTip:NSLocalizedString(@"解绑成功", nil)];
+        [self reset];
+        [self.tableView reloadData];
+        [WMSMyAccessory unBindAccessory];
+    }
+}
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {//destructive
-        [self reset];
-        [self showTip:NSLocalizedString(@"解绑成功", nil)];
-        [self.tableView reloadData];
-        [WMSMyAccessory unBindAccessory];
         WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-        if ([bleControl isConnected]) {
-            [bleControl disconnect];
-        }
-//        [self showUnBindTip:YES];
-//        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideUnBindTip) object:nil];
-//        [self performSelector:@selector(hideUnBindTip) withObject:nil afterDelay:5.0];
+        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BindingResult result) {
+            DEBUGLog(@"解绑%d",result);
+            switch (result) {
+                case BindingResultSuccess:
+                {
+                    [self showTip:NSLocalizedString(@"解绑成功", nil)];
+                    [bleControl disconnect];
+                    [self reset];
+                    [self.tableView reloadData];
+                    [WMSMyAccessory unBindAccessory];
+                    break;
+                }
+                default:
+                    break;
+            }
+        }];
     }
 }
 
@@ -324,7 +300,12 @@
     if ([WMSMyAccessory isBindAccessory]) {
         AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
         if (indexPath.row+1 == g) {
-            [self showActionSheet];
+            WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+            if (bleControl.isConnected) {
+                [self showActionSheet];
+            } else {
+                [self showAlertView:0];
+            }
         } else {
             [self showTip:NSLocalizedString(@"您已经绑定了手表，请先解绑", nil)];
         }

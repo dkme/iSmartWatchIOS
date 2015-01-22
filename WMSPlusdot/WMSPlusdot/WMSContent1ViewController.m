@@ -29,45 +29,10 @@
 #import "WMSAdaptiveMacro.h"
 #import "WMSConstants.h"
 
-@interface WMSContent1ViewController ()
-{
-    //需本地化的UIView
-    
-    __weak IBOutlet UILabel *_labelTitle;
-    __weak IBOutlet UILabel *_labelMySleep;
-    __weak IBOutlet UILabel *_labelDeepsleep;
-    __weak IBOutlet UILabel *_labelLightsleep;
-    __weak IBOutlet UILabel *_labelWakeup;
-    
-    
-    __weak IBOutlet UILabel *_labelHour0;
-    __weak IBOutlet UILabel *_labelMinute0;
-    __weak IBOutlet UILabel *_labelHour1;
-    __weak IBOutlet UILabel *_labelMinute1;
-    __weak IBOutlet UILabel *_labelHour2;
-    __weak IBOutlet UILabel *_labelMinute2;
-    __weak IBOutlet UILabel *_labelHour3;
-    __weak IBOutlet UILabel *_labelMinute3;
-}
-
-@property (weak, nonatomic) IBOutlet UILabel *labelSleepHour;
-@property (weak, nonatomic) IBOutlet UILabel *labelSleepMinute;
-@property (weak, nonatomic) IBOutlet UILabel *labelDeepsleepHour;
-@property (weak, nonatomic) IBOutlet UILabel *labelDeepsleepMinute;
-@property (weak, nonatomic) IBOutlet UILabel *labelLightSleepHour;
-@property (weak, nonatomic) IBOutlet UILabel *labelLightSleepMinute;
-@property (weak, nonatomic) IBOutlet UILabel *labelWakeupSleepHour;
-@property (weak, nonatomic) IBOutlet UILabel *labelWakeupSleepMinute;
-
-@property (weak, nonatomic) IBOutlet UIView *dateView;
-@property (weak, nonatomic) IBOutlet UIView *bottomView;
-
-@property (weak, nonatomic) IBOutlet GGIAnnulusView *annulusView;
-
-
+@interface WMSContent1ViewController ()<WMSSyncDataViewDelegate>
 @property (strong, nonatomic) WMSSyncDataView *syncDataView;
-@property (strong, nonatomic) UIView *tipView;
 @property (strong, nonatomic) MBProgressHUD *hud;
+@property (strong, nonatomic) UIView *tipView;
 
 @property (strong, nonatomic) NSDate *showDate;
 
@@ -75,8 +40,6 @@
 @property (assign, nonatomic) BOOL isNeedUpdate;//是否需要更新界面
 
 @property (strong, nonatomic) WMSBleControl *bleControl;
-
-@property (strong, nonatomic) NSMutableArray *everydaySleepDataArray;
 @end
 
 @implementation WMSContent1ViewController
@@ -85,22 +48,8 @@
 - (WMSSyncDataView *)syncDataView
 {
     if (!_syncDataView) {
-        _syncDataView = [[WMSSyncDataView alloc] initWithFrame:TipViewFrame];
-        _syncDataView.backgroundColor = [UIColor clearColor];
-        
-        _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
-        _syncDataView.labelTip.font = Font_DINCondensed(17.0);
-        [_syncDataView setLabelEnergyFont:Font_DINCondensed(15.0)];
-        
-        UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
-        CGRect frame = _syncDataView.imageView.frame;
-        frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
-        _syncDataView.imageView.image = image;
-        _syncDataView.imageView.frame = frame;
-        
-        [_syncDataView.buttonSync setTitle:NSLocalizedString(@"同步",nil) forState:UIControlStateNormal];
-        [_syncDataView.buttonSync.titleLabel setFont:[UIFont fontWithName:@"DIN Condensed" size:16.0]];
-        [_syncDataView.buttonSync addTarget:self action:@selector(syncDataAction:) forControlEvents:UIControlEventTouchUpInside];
+        _syncDataView = [WMSSyncDataView defaultSyncDataView];
+        _syncDataView.delegate = self;
     }
     return _syncDataView;
 }
@@ -132,14 +81,6 @@
         _hud.minSize = MBProgressHUD_MinSize;
     }
     return _hud;
-}
-
-- (NSMutableArray *)everydaySleepDataArray
-{
-    if (!_everydaySleepDataArray) {
-        _everydaySleepDataArray = [NSMutableArray new];
-    }
-    return _everydaySleepDataArray;
 }
 
 #pragma mark - Setter
@@ -285,11 +226,12 @@
         perDeepSleep = (perDeepSleep<=1.0 ? perDeepSleep : 1.0);
         perLightSleep = (perLightSleep<=1.0-perDeepSleep ? perLightSleep : 1.0-perDeepSleep);
         perAwake = (perAwake<=1.0-perDeepSleep-perLightSleep ? perAwake : 1.0-perDeepSleep-perLightSleep);
+        perLightSleep = (perLightSleep>=0 ? perLightSleep : 0);
+        perAwake      = (perAwake>=0 ? perAwake : 0);
         percents = @[@(perDeepSleep),@(perLightSleep),@(perAwake)];
     } else {
         percents = @[@(0),@(0),@(0)];
     }
-
     NSArray *colors = @[UIColorFromRGBAlpha(0x2BFFD5, 1.0),
                         UIColorFromRGBAlpha(0xF3EC83, 1.0),
                         UIColorFromRGBAlpha(0x76F5FF, 1.0)];
@@ -317,21 +259,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.view addSubview:self.syncDataView];
-    [self.view addSubview:self.tipView];
-    [self.view addSubview:self.hud];
+    [self setupView];
     [self setupControl];
     [self localizableView];
     [self adaptiveIphone4];
     
     ////////////
     [self setLabelShowDate:[NSDate systemDate]];
-    [self updateView];
+    //[self updateView];
     
     [self bleOperation];
     
-
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
 }
@@ -382,6 +320,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - setup
+- (void)setupView
+{
+    [self.view addSubview:self.syncDataView];
+    [self.view addSubview:self.tipView];
+    [self.view addSubview:self.hud];
+}
 - (void)setupControl
 {
     [self.buttonLeft setTitle:@"" forState:UIControlStateNormal];
@@ -535,8 +480,6 @@
     } else {
         [[WMSSleepDatabase sleepDatabase] insertSleepData:model];
     }
-    
-    [self.everydaySleepDataArray addObject:model];
 }
 
 
@@ -576,10 +519,6 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)syncDataAction:(id)sender
-{
-    [self syncData];
-}
 - (void)syncData
 {
     if (![self.bleControl isConnected]) {
@@ -729,5 +668,13 @@
 {
     [self syncData];
 }
+
+
+#pragma mark - WMSSyncDataViewDelegate
+- (void)syncDataView:(WMSSyncDataView *)syncView didClickSyncButton:(UIButton *)button
+{
+    [self syncData];
+}
+
 
 @end

@@ -24,6 +24,7 @@
 #import "WMSSyncDataView.h"
 #import "WMSMySportView.h"
 #import "MBProgressHUD.h"
+#import "UILabel+Attribute.h"
 
 #import "WMSSportModel.h"
 #import "WMSDeviceModel.h"
@@ -40,25 +41,7 @@
 #import "WMSPostNotificationHelper.h"
 #import "WMSHTTPRequest.h"
 
-@interface WMSContentViewController ()
-{
-    //需本地化
-    __weak IBOutlet UILabel *_labelTitle;
-    __weak IBOutlet UILabel *_labelMySport;
-    __weak IBOutlet UILabel *_labelStep;
-    __weak IBOutlet UILabel *_labelStep2;
-    __weak IBOutlet UILabel *_labelMuBiao;
-    __weak IBOutlet UILabel *_labelRanShao;
-    __weak IBOutlet UILabel *_labelJuli;
-    __weak IBOutlet UILabel *_labelShiJian;
-    __weak IBOutlet UILabel *_labelHour;
-    __weak IBOutlet UILabel *_labelMinute;
-}
-
-@property (weak, nonatomic) IBOutlet UIView *dateView;
-@property (weak, nonatomic) IBOutlet UIView *bottomView;
-@property (weak, nonatomic) IBOutlet WMSMySportView *mySportView;
-
+@interface WMSContentViewController ()<WMSSyncDataViewDelegate>
 @property (strong, nonatomic) WMSSyncDataView *syncDataView;
 @property (strong, nonatomic) UIView *tipView;
 @property (strong, nonatomic) MBProgressHUD *hud;
@@ -86,22 +69,8 @@
 - (WMSSyncDataView *)syncDataView
 {
     if (!_syncDataView) {
-        _syncDataView = [[WMSSyncDataView alloc] initWithFrame:TipViewFrame];
-        _syncDataView.backgroundColor = [UIColor clearColor];
-        
-        _syncDataView.labelTip.text = NSLocalizedString(@"智能手表已连接",nil);
-        _syncDataView.labelTip.font = Font_DINCondensed(17.0);
-        [_syncDataView setLabelEnergyFont:Font_DINCondensed(15.0)];
-        
-        UIImage *image = [UIImage imageNamed:@"zq_sync_btn.png"];
-        CGRect frame = _syncDataView.imageView.frame;
-        frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
-        _syncDataView.imageView.image = image;
-        _syncDataView.imageView.frame = frame;
-
-        [_syncDataView.buttonSync setTitle:NSLocalizedString(@"同步",nil) forState:UIControlStateNormal];
-        [_syncDataView.buttonSync.titleLabel setFont:Font_DINCondensed(17.0)];
-        [_syncDataView.buttonSync addTarget:self action:@selector(syncDataAction:) forControlEvents:UIControlEventTouchUpInside];
+        _syncDataView = [WMSSyncDataView defaultSyncDataView];
+        _syncDataView.delegate = self;
     }
     return _syncDataView;
 }
@@ -166,137 +135,6 @@
 }
 
 #pragma mark - Setter
-- (void)setSportStepsValue:(NSUInteger)steps
-{
-    //NSString *unit = NSLocalizedString(@"Step",nil);
-    NSString *str = [NSString stringWithFormat:@"%u",steps];
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
-    NSUInteger loc,len;
-    loc = 0;
-    len = str.length;//-unit.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(55.0) range:NSMakeRange(loc, len)];
-//    loc += len;
-//    len = unit.length;
-//    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    
-    //[self.labelCurrentSteps setText:[NSString stringWithFormat:@"%u",steps]];
-    [self.labelCurrentSteps setAttributedText:text];
-    [self.labelCurrentSteps setAdjustsFontSizeToFitWidth:YES];
-    [self.mySportView setSportSteps:(int)steps];
-    
-}
-- (void)setTargetStepsValue:(NSUInteger)steps
-{
-    //NSString *describe = NSLocalizedString(@"Target",nil);
-    NSString *value = [NSString stringWithFormat:@"%u",steps];
-    //NSString *unit = NSLocalizedString(@"Step",nil);
-    //NSString *str = [NSString stringWithFormat:@"%@: %@ %@",describe,value,unit];
-    NSString *str = [NSString stringWithFormat:@"     %@",value];
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
-    NSUInteger loc,len;
-//    loc = 0;
-//    len = describe.length;
-//    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-//    loc += len;
-//    len = @": ".length;
-//    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    loc =0;//+= len;
-    len = value.length;//+@" ".length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(25.0) range:NSMakeRange(loc, len)];
-//    loc += len;
-//    len = unit.length;
-//    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    
-    //[self.labelTargetSetps setText:[NSString stringWithFormat:@"%u",steps]];
-    [self.labelTargetSetps setAttributedText:text];
-    [self.labelTargetSetps setAdjustsFontSizeToFitWidth:YES];
-    [self.mySportView setTargetSetps:(int)steps];
-}
-- (void)setSportTimeValue:(NSUInteger)minute
-{
-    NSString *hour = [NSString stringWithFormat:@"%u",minute/60];
-    NSString *mu = [NSString stringWithFormat:@"%u",minute%60];
-    NSString *hourLbl = NSLocalizedString(@"Hour",nil);
-    NSString *muLbl = NSLocalizedString(@"Minutes",nil);
-    if (minute/60 <= 0) {
-        hour = @"";
-        hourLbl = @"";
-    }
-    NSString *str = [NSString stringWithFormat:@"%@%@%@%@",hour,hourLbl,mu,muLbl];
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
-    NSUInteger loc,len;
-    loc = 0;
-    len = hour.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
-    loc += len;
-    len = hourLbl.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    loc += len;
-    len = mu.length;//+@" ".length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
-    loc += len;
-    len = muLbl.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    
-    //[self.labelTimeValue setText:[NSString stringWithFormat:@"%u",minute]];
-    //[self.labelTimeValue setText:[NSString stringWithFormat:@"%@",hour]];
-    //[self.labelTimeMinuteValue setText:[NSString stringWithFormat:@"%u",mu]];
-    [self.labelTimeValue setAttributedText:text];
-    [self.labelTimeValue setAdjustsFontSizeToFitWidth:YES];
-}
-- (void)setSportDistanceValue:(NSUInteger)distance
-{
-    NSString *unit = nil;
-    //distance的单位是cm
-    int dis_m = Rounded(distance/100.0);//单位为m
-    NSUInteger value = 0;
-    //distance<1000m,单位用m，>1000m,单位用km
-    if (dis_m < 1000) {
-        value = dis_m;
-        unit = NSLocalizedString(@"米", nil);
-    } else {
-        value = dis_m + 5;
-        NSUInteger gewei = value%10;
-        value -= gewei;//对个位进行4舍5入
-        value = Rounded(dis_m/1000.0);//单位为km
-        unit = NSLocalizedString(@"公里", nil);
-    }
-    
-    NSString *distanceLbl = [NSString stringWithFormat:@"%g",value*1.0];
-    //NSString *unit = NSLocalizedString(@"距离单位",nil);
-    NSString *str = [NSString stringWithFormat:@"%@%@",distanceLbl,unit];
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
-    NSUInteger loc,len;
-    loc = 0;
-    len = distanceLbl.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
-    loc += len;
-    len = unit.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    
-    [self.labelDistanceValue setAttributedText:text];
-    [self.labelDistanceValue setAdjustsFontSizeToFitWidth:YES];
-    //[self.labelDistanceValue setText:[NSString stringWithFormat:@"%g",distance/1000.0]];//km
-}
-- (void)setSportCalorieValue:(NSUInteger)calorie
-{
-    NSString *calorieLbl = [NSString stringWithFormat:@"%u",calorie];
-    NSString *unit = NSLocalizedString(@"大卡",nil);
-    NSString *str = [NSString stringWithFormat:@"%@%@",calorieLbl,unit];
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:str];
-    NSUInteger loc,len;
-    loc = 0;
-    len = calorieLbl.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(35.0) range:NSMakeRange(loc, len)];
-    loc += len;
-    len = unit.length;
-    [text addAttribute:NSFontAttributeName value:Font_DINCondensed(17.0) range:NSMakeRange(loc, len)];
-    
-    [self.labelBurnValue setAttributedText:text];
-    [self.labelBurnValue setAdjustsFontSizeToFitWidth:YES];
-    //[self.labelBurnValue setText:[NSString stringWithFormat:@"%u",calorie]];
-}
-
 - (void)setLabelShowDate:(NSDate *)date
 {
     self.showDate = date;
@@ -321,10 +159,7 @@
     
     _targetSteps = [WMSHelper readTodayTargetSteps];
     
-    [self.view addSubview:self.syncDataView];
-    [self.view addSubview:self.tipView];
-    [self.view addSubview:self.hud];
-    [self.mySportView addSubview:self.imageView];
+    [self setupView];
     [self setupControl];
     [self localizableView];
     [self adaptiveIphone4];
@@ -340,8 +175,6 @@
     } else {
         [self handleScanPeripheralFinish:nil];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timeDidChange:) name:NSSystemClockDidChangeNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -399,7 +232,14 @@
     [self unregisterFromNotifications];
 }
 
-#pragma mark - Methods
+#pragma mark - setup
+- (void)setupView
+{
+    [self.view addSubview:self.syncDataView];
+    [self.view addSubview:self.tipView];
+    [self.view addSubview:self.hud];
+    [self.mySportView addSubview:self.imageView];
+}
 - (void)setupControl
 {
     [self.buttonLeft setTitle:@"" forState:UIControlStateNormal];
@@ -496,7 +336,6 @@
 {
     [self checkUpdateWithAPPID:APP_ID completion:^(DetectResultValue isCanUpdate)
     {
-        DEBUGLog(@"^^^^^%@----->%d[%p]",[self class],isCanUpdate,&isCanUpdate);
         if (isCanUpdate == DetectResultCanUpdate) {
             [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
         }
@@ -522,7 +361,6 @@
 - (void)updateView
 {
     WMSSportModel *model = nil;
-    
     if (self.bleControl && [self.bleControl isConnected]) {
         //从数据库中查询数据
         NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:self.showDate];
@@ -531,86 +369,74 @@
         }
     }
     
-    if (model) {
-        if (NSDateModeToday == [NSDate compareDate:self.showDate]) {
-            [self setTargetStepsValue:_targetSteps];
+    NSUInteger target = model ? model.targetSteps : DEFAULT_TARGET_STEPS;
+    if (NSDateModeToday == [NSDate compareDate:self.showDate]) {
+        target = _targetSteps;
+    } else {}
+    [self updateLabel:self.labelTargetSetps value:target];
+    [self updateLabel:self.labelCurrentSteps value:model.sportSteps];
+    [self updateLabel:self.labelTimeValue value:model.sportMinute];
+    [self updateLabel:self.labelDistanceValue value:model.sportDistance];
+    [self updateLabel:self.labelBurnValue value:model.sportCalorie];
+    [self.mySportView setTargetSetps:target];
+    [self.mySportView setSportSteps:model.sportSteps];
+
+}
+
+- (void)updateLabel:(UILabel *)label value:(NSUInteger)value
+{
+    NSString *text = @"", *unit = @"";
+    UIFont *font = nil, *unitFont = Font_DINCondensed(17.f);
+    text = [NSString stringWithFormat:@"%u",value];
+    if (label == self.labelCurrentSteps) {
+        font = Font_DINCondensed(55.f);
+    }
+    else if (label == self.labelTargetSetps) {
+        font = Font_DINCondensed(25.f);
+        text = [NSString stringWithFormat:@"     %u",value];
+    }
+    else if (label == self.labelBurnValue) {
+        unit = NSLocalizedString(@"大卡",nil);
+        font = Font_DINCondensed(35.f);
+    }
+    else if (label == self.labelDistanceValue) {
+        int dis_m = Rounded(value/100.0);//单位为m
+        if (dis_m < 1000) {//distance<1000m,单位用m，>1000m,单位用km
+            value = dis_m;
+            unit = NSLocalizedString(@"米", nil);
         } else {
-            [self setTargetStepsValue:model.targetSteps];
+            value = dis_m + 5;
+            NSUInteger gewei = value%10;
+            value -= gewei;//对个位进行4舍5入
+            value = Rounded(dis_m/1000.0);//单位为km
+            unit = NSLocalizedString(@"公里", nil);
         }
-        [self setSportStepsValue:model.sportSteps];
-        [self setSportTimeValue:model.sportMinute];
-        [self setSportDistanceValue:model.sportDistance];
-        [self setSportCalorieValue:model.sportCalorie];
-    } else {
-        if (NSDateModeToday == [NSDate compareDate:self.showDate]) {
-            [self setTargetStepsValue:_targetSteps];
-        } else {
-            [self setTargetStepsValue:DEFAULT_TARGET_STEPS];
+        font = Font_DINCondensed(35.f);
+        text = [NSString stringWithFormat:@"%u",value];
+    }
+    else if (label == self.labelTimeValue) {
+        NSString *hour = [NSString stringWithFormat:@"%u",value/60];
+        NSString *mu = [NSString stringWithFormat:@"%u",value%60];
+        NSString *hourLbl = NSLocalizedString(@"Hour",nil);
+        NSString *muLbl = NSLocalizedString(@"Minutes",nil);
+        if (value/60 <= 0) {
+            hour = @"";
+            hourLbl = @"";
         }
-        [self setSportStepsValue:0];
-        [self setSportTimeValue:0];
-        [self setSportDistanceValue:0];
-        [self setSportCalorieValue:0];
-    }
-}
-
-//跳转到绑定界面，只调用一次
-- (void)presentBindingVC
-{
-    static int callCount = 0;
-    if (callCount >= 1) {
+        text = [NSString stringWithFormat:@"%@/%@/%@/%@",hour,hourLbl,mu,muLbl];
+        NSArray *attrisArr = @[@{NSFontAttributeName:Font_DINCondensed(35.0)},
+                               @{NSFontAttributeName:Font_DINCondensed(17.0)},
+                               @{NSFontAttributeName:Font_DINCondensed(35.0)},
+                               @{NSFontAttributeName:Font_DINCondensed(17.0)},
+                               ];
+        [label setSegmentsText:text separateMark:@"/" attributes:attrisArr];
         return;
-    }
-    callCount++;
+    } else{};
     
-    //若为测试账号，不跳转到绑定界面
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_LOGIN_INFO)];
-    NSString *userName = [readData objectForKey:@"userName"];
-    NSString *password = [readData objectForKey:@"password"];
-    if ([@"test" isEqualToString:userName] &&
-        [@"123456" isEqualToString:password])
-    {
-        self.isShowBindVC = NO;
-        [self scanAndConnectPeripheral];
-        return;
-    }
-    
-    
-    if ([WMSMyAccessory isBindAccessory] == NO) {
-        self.isShowBindVC = YES;
-        WMSBindingAccessoryViewController *vc = [[WMSBindingAccessoryViewController alloc] init];
-        [self presentViewController:vc animated:NO completion:nil];
-    } else {
-        self.isShowBindVC = NO;
-        
-        [self scanAndConnectPeripheral];
-    }
-}
-
-- (void)presentPersonInfoVC
-{
-    static int callCount = 0;
-    if (callCount >= 1) {
-        return;
-    }
-    callCount++;
-    
-    WMSMyAccountViewController *vc = [[WMSMyAccountViewController alloc] init];
-    [self presentViewController:vc animated:NO completion:nil];
-}
-
-- (void)presentLoginVC
-{
-    static int callCount = 0;
-    if (callCount >= 1) {
-        return;
-    }
-    callCount++;
-    
-    WMSLoginViewController *loginVC = [[WMSLoginViewController alloc] initWithNibName:@"WMSLoginViewController" bundle:nil];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginVC];
-    nav.navigationBarHidden = YES;
-    [self presentViewController:nav animated:NO completion:nil];
+    text = [NSString stringWithFormat:@"%@/%@",text,unit];
+    NSArray *attrisArr = @[@{NSFontAttributeName:font},
+                           @{NSFontAttributeName:unitFont}];
+    [label setSegmentsText:text separateMark:@"/" attributes:attrisArr];
 }
 
 - (NSUInteger)targetSteps
@@ -698,9 +524,6 @@
     [self.navigationController pushViewController:historyVC animated:YES];
 }
 
-- (void)syncDataAction:(id)sender {
-    [self syncData];
-}
 - (void)syncData
 {
     if (![self.bleControl isConnected]) {
@@ -999,9 +822,11 @@
     [self syncData];
 }
 
-- (void)timeDidChange:(NSNotification *)notification
+#pragma mark - WMSSyncDataViewDelegate
+- (void)syncDataView:(WMSSyncDataView *)syncView didClickSyncButton:(UIButton *)button
 {
-    DEBUGLog(@"%s",__FUNCTION__);
+    [self syncData];
 }
+
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol WMSSyncDataViewDelegate;
 
 @interface WMSSyncDataView : UIView
 
@@ -16,6 +17,8 @@
 
 @property (strong, nonatomic, readonly) UIButton *buttonSync;
 
+@property (nonatomic, weak) id<WMSSyncDataViewDelegate> delegate;
+
 - (void)setLabelEnergyFont:(UIFont *)font;
 
 - (void)setEnergy:(NSUInteger)energy;
@@ -24,4 +27,18 @@
 
 - (void)stopAnimating;
 
++ (id)defaultSyncDataView;
+
 @end
+
+@protocol WMSSyncDataViewDelegate <NSObject>
+
+@optional
+- (void)syncDataView:(WMSSyncDataView *)syncView didClickSyncButton:(UIButton *)button;
+
+@end
+
+
+
+
+
