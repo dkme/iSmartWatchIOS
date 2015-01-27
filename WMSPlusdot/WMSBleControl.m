@@ -194,23 +194,11 @@ NSString * const WMSBleControlScanFinish =
             [scannedPeripheral removeObject:oldObj];
         }
         [scannedPeripheral addObject:newObj];
-        //[scannedPeripheral addObjectsFromArray:peripherals];
         if (aCallback) {
             aCallback(scannedPeripheral);
         }
     }];
-    
-//    NSArray *serviceUUIDs = @[[CBUUID UUIDWithString:@"0A60"]];
     [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
-//    NSArray *array = [self.centralManager retrieveConnectedPeripheralsWithServices:serviceUUIDs];//获取系统已连接的外设
-//    for (LGPeripheral *p in array) {
-//        [scannedPeripheral addObject:p];
-//        DEBUGLog(@"system connected");
-//        if (aCallback) {
-//            aCallback(scannedPeripheral);
-//        }
-//    }
-    
 }
 
 - (void)stopScanForPeripherals
@@ -277,9 +265,9 @@ NSString * const WMSBleControlScanFinish =
     if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
         [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
             [self disConnectedClearup];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:self userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:nil];
         }];
+        return ;
     }
     if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
         //应使用下面的方式“终止”连接
@@ -508,7 +496,7 @@ NSString * const WMSBleControlScanFinish =
     }
     //[peripheral disconnectWithCompletion:nil];
     [self disConnectedClearup];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:peripheral userInfo:nil];
 }
 
 #pragma mark - Peripheral operation

@@ -12,7 +12,9 @@
 #import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
 #import "WMSAntiLostVC.h"
+#import "WMSClockListVC.h"
 #import "WMSUpdateVC.h"
+#import "WMSCameraVC.h"
 
 #import "WMSSwitchCell.h"
 #import "MBProgressHUD.h"
@@ -78,8 +80,6 @@
 {
     if (!_section1TitleArray) {
         _section1TitleArray = @[NSLocalizedString(@"Phone",nil),
-                                //NSLocalizedString(@"Message",nil),
-                                //NSLocalizedString(@"Email",nil),
                                 NSLocalizedString(@"Battery",nil)
                                 ];
     }
@@ -109,7 +109,8 @@
 - (NSArray *)section4TitleArray
 {
     if (!_section4TitleArray) {
-        _section4TitleArray = @[NSLocalizedString(@"防丢",nil)
+        _section4TitleArray = @[NSLocalizedString(@"防丢",nil),
+                                NSLocalizedString(@"Smart alarm clock", nil)
                                 ];
     }
     return _section4TitleArray;
@@ -126,7 +127,6 @@
 {
     if (!_headerTitleArray) {
         _headerTitleArray = @[NSLocalizedString(@"Remind Setting",nil),
-                              //NSLocalizedString(@"Social contact",nil),
                               NSLocalizedString(@"提醒方式",nil),
                               NSLocalizedString(@"其他",nil),
                               @"",
@@ -472,19 +472,22 @@
 #pragma mark - 遥控拍照
 - (void)switchToRemoteMode
 {
-    //NSLocalizedString(@"正在切换至遥控模式...",nil);
-    //[self showHUDAtViewCenter:NSLocalizedString(@"按下手表右上角按键进行拍照", nil)];
     [self.bleControl switchToControlMode:ControlModeRemote openOrClose:YES completion:^(BOOL success, NSString *failReason)
      {
          [self hideHUDAtViewCenter];
          if (success) {//切换模式成功，进入相机界面
-             //[self showTip:NSLocalizedString(@"切换至拍照模式成功", nil)];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 UIImagePickerController *picker = [self openCamera];
+                 self.pickerController = picker;
+             });
              
-             UIImagePickerController *picker = [self openCamera];
-             self.pickerController = picker;
-         } else {
-             //[self showTip:NSLocalizedString(@"切换至拍照模式失败", nil)];
-         }
+//             WMSCameraVC *cameraVC = [[WMSCameraVC alloc] init];
+//             __weak __typeof(self) weakSelf = self;
+//             [self presentViewController:cameraVC animated:YES completion:^{
+//                 weakSelf.pickerController = cameraVC.imagePicker;
+//                 DEBUGLog(@"self.pickerController %@",weakSelf.pickerController);
+//             }];
+         } else {}
      }];
 }
 
@@ -493,16 +496,13 @@
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         return nil;
     }
-    UIImagePickerControllerSourceType sourceType;
-    sourceType=UIImagePickerControllerSourceTypeCamera;
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = sourceType;
-    //设置图像选取控制器的类型为静态图像
-    picker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*)kUTTypeImage, nil];
-    picker.allowsEditing=NO;
-    picker.showsCameraControls = YES;
     picker.delegate = self;
-    
+    picker.allowsEditing= NO;
+    //picker.showsCameraControls = YES;
+    //设置图像选取控制器的类型为静态图像
+    //picker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*)kUTTypeImage, nil];
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:picker animated:YES completion:nil];
     return picker;
 }
@@ -773,10 +773,6 @@
             cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.font = Font_DINCondensed(18);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            //cell.mySwitch.on = [self.bleControl isConnected]?[self antiLostStatus]:NO;
-            
-            //cell.delegate = self;
-            
             return cell;
         }
         case 4-1:
@@ -797,7 +793,7 @@
             cell.textLabel.font = Font_DINCondensed(18);
             //cell.detailTextLabel.text = NSLocalizedString(@"拍摄的照片保存在照片库", nil);
             cell.detailTextLabel.textColor = [UIColor whiteColor];
-            cell.detailTextLabel.font = Font_System(12);//Font_DINCondensed(12);
+            cell.detailTextLabel.font = Font_System(12);
             cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
             cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -933,12 +929,19 @@
         return;
     }
     
-    if (indexPath.section == 3-1 && indexPath.row == 0) {
-        WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
-        vc.title = self.section4TitleArray[indexPath.row];
-        MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
-        [self presentViewController:nav animated:YES completion:nil];
-        return;
+    if (indexPath.section == 3-1) {
+        if (indexPath.row == 0) {
+            WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
+            vc.title = self.section4TitleArray[indexPath.row];
+            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
+            [self presentViewController:nav animated:YES completion:nil];
+        }
+        else if (indexPath.row == 1) {
+            WMSClockListVC *VC = [[WMSClockListVC alloc] init];
+            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:VC];
+            [self presentViewController:nav animated:YES completion:nil];
+        } else{};
+        return ;
     }
     
     if (indexPath.section == 4-1 && indexPath.row == 0) {

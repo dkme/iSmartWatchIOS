@@ -21,7 +21,7 @@
 #define CELL_HEIGHT                     75.f
 #define MAX_NUMBER_CLOCK                10
 
-@interface WMSClockListVC ()<UINavigationControllerDelegate,UINavigationBarDelegate,UINavigationBarDelegate,UIAlertViewDelegate,WMSClockCellDelegage>
+@interface WMSClockListVC ()<UINavigationControllerDelegate,UIAlertViewDelegate,WMSClockCellDelegage>
 {
     WMSSmartClockViewController *_detailClockVC;
     WMSAlarmClockModel *_editClockModel;//nil表示新增，no-nil表示编辑
@@ -34,13 +34,6 @@
 @implementation WMSClockListVC
 
 #pragma mark - Getter/Setter
-//- (NSMutableArray *)clockArray
-//{
-//    if (!_clockArray) {
-//        _clockArray = [[NSMutableArray alloc] initWithCapacity:10];
-//    }
-//    return _clockArray;
-//}
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
@@ -54,8 +47,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.navigationController.navigationBarHidden = NO;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -63,6 +54,8 @@
 }
 - (void)dealloc
 {
+    RESideMenu *menu = [WMSAppDelegate appDelegate].reSideMenu;
+    menu.panGestureEnabled = YES;
     DEBUGLog(@"%s",__FUNCTION__);
 }
 
@@ -72,7 +65,7 @@
     self.title = NSLocalizedString(@"Smart alarm clock", nil);
     self.navigationController.delegate = self;
     
-    UIBarButtonItem *leftItem = [UIBarButtonItem itemWithImageName:@"back_btn_a.png" highImageName:@"back_btn_b.png" target:self action:@selector(backAction:)];
+    UIBarButtonItem *leftItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
     UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) size:SYNC_BUTTON_SIZE target:self action:@selector(syncAction:)];
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = item1;
@@ -93,6 +86,9 @@
     } else {
         _clockArray = [NSMutableArray arrayWithArray:clocks];
     }
+    
+    RESideMenu *menu = [WMSAppDelegate appDelegate].reSideMenu;
+    menu.panGestureEnabled = NO;
 }
 
 #pragma mark - Other
@@ -176,10 +172,10 @@
 }
 - (void)backAction:(id)sender
 {
-    if ([_oldClocks isEqualToArray:_newClocks] /*|| (_newClocks.count <=0)*/)
+    if ([_oldClocks isEqualToArray:_newClocks])
     {
         //没有任何修改
-        [self.navigationController popViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         NSString *message = NSLocalizedString(@"您的闹钟已修改，尚未同步到手表，是否同步?", nil);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:message delegate:self cancelButtonTitle:NSLocalizedString(@"NO", nil) otherButtonTitles:NSLocalizedString(@"YES", nil), nil];
@@ -211,24 +207,12 @@
     }
     [self startSettingClock];
 }
-- (void)editAction:(id)sender
-{
-    UIButton *btn = (UIButton *)sender;
-    if (self.tableView.isEditing) {
-        [self.tableView setEditing:NO animated:YES];
-        [btn setTitle:NSLocalizedString(@"编辑", nil) forState:UIControlStateNormal];
-    } else {
-        [self.tableView setEditing:YES animated:YES];
-        [btn setTitle:NSLocalizedString(@"完成", nil) forState:UIControlStateNormal];
-    }
-    [self.tableView reloadData];
-}
 
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {//NO
-        [self.navigationController popViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self syncAction:nil];
     }
@@ -321,12 +305,6 @@
     [self pushToDetailClockVC:_editClockModel];
 }
 
-#pragma mark - UINavigationBarDelegate
-- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
-{
-    
-    return NO;
-}
 #pragma mark - UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -348,9 +326,6 @@
             }
         } else{};
         _detailClockVC = nil;
-    } else if ([viewController class] == [WMSContent1ViewController class]) {
-        self.navigationController.delegate = nil;
-        self.navigationController.navigationBarHidden = YES;
     } else{};
 }
 

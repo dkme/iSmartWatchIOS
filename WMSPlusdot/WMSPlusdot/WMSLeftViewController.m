@@ -17,6 +17,7 @@
 #import "WMSMyAccessoryViewController.h"
 #import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
+#import "WMSClockListVC.h"
 
 #import "WMSLeftViewCell.h"
 
@@ -117,8 +118,8 @@
     if (!_titleArray) {
         _titleArray = [[NSArray alloc] initWithObjects:
                        NSLocalizedString(@"My sport",nil),
-                       NSLocalizedString(@"My sleep",nil),
                        NSLocalizedString(@"Target setting",nil),
+                       //NSLocalizedString(@"Smart alarm clock", nil),
                        NSLocalizedString(@"Bound watch",nil),
                        nil];
     }
@@ -130,7 +131,7 @@
         _imageNameArray = [[NSArray alloc] initWithObjects:
                            @"main_menu_sport_icon_a.png",
                            @"main_menu_sleep_icon_a.png",
-                           @"main_menu_target_icon_a.png",
+                           //@"main_menu_target_icon_a.png",
                            @"main_menu_binding_icon_a.png",
                            nil];
     }
@@ -142,7 +143,7 @@
         _seletedImageNameArray = [[NSArray alloc] initWithObjects:
                            @"main_menu_sport_icon_b.png",
                            @"main_menu_sleep_icon_b.png",
-                           @"main_menu_target_icon_b.png",
+                           //@"main_menu_target_icon_b.png",
                            @"main_menu_binding_icon_b.png",
                            nil];
     }
@@ -154,9 +155,8 @@
     if (!_specifyContentVCClassArray) {
         _specifyContentVCClassArray = [[NSArray alloc] initWithObjects:
                                        [WMSContentViewController class],
-                                       [WMSContent1ViewController class],
                                        [WMSContent2ViewController class],
-                                       //[WMSBindingAccessoryViewController class],
+                                       //[WMSClockListVC class],
                                        [WMSMyAccessoryViewController class],
                                        nil];
     }
@@ -172,7 +172,7 @@
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
                            Null_Object,
-                           Null_Object,
+                           //Null_Object,
                            Null_Object,
                            nil];
     }

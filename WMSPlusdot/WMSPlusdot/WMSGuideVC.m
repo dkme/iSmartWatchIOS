@@ -124,9 +124,10 @@
 #pragma mark - Action
 - (void)enterMainView:(id)sender {
     WMSMyAccountViewController *vc = [[WMSMyAccountViewController alloc] init];
+    MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
     vc.isNewUser = YES;
     WMSAppDelegate *appDelegate = [WMSAppDelegate appDelegate];
-    appDelegate.window.rootViewController = vc;
+    appDelegate.window.rootViewController = nav;
     UIView *view = [vc view];
     view.alpha = 0;
     [UIView animateWithDuration:1.0 animations:^{

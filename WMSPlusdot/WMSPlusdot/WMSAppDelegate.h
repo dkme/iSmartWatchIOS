@@ -21,7 +21,7 @@ extern NSString *const WMSAppDelegateReSyncData;
 
 @property (nonatomic, strong) RESideMenu *reSideMenu;
 
-@property (nonatomic, readonly) WMSBleControl *wmsBleControl;
+@property (nonatomic, strong) WMSBleControl *wmsBleControl;
 
 
 + (WMSAppDelegate *)appDelegate;

@@ -634,7 +634,7 @@
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
 }
 
-- (void)scanAndConnectPeripheral
+- (void)scanAndConnectPeripheral:(LGPeripheral *)peripheral
 {
     switch ([self.bleControl bleState]) {
         case WMSBleStateResetting:
@@ -651,25 +651,26 @@
     if (_isStartDFU==YES) {
         return ;
     }
-    
-    DEBUGLog(@"》》Scanning %@",NSStringFromClass([self class]));
-    [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
-                                       completion:^(NSArray *peripherals)
-     {
-         if ([self.bleControl isConnecting]) {
-             return ;
-         }
-         LGPeripheral *p = [peripherals lastObject];
-         if ([WMSMyAccessory isBindAccessory]) {
-             NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
-//             BOOL flag = [p.cbPeripheral.name isEqualToString:WATCH_NAME] ||
-//                         [p.cbPeripheral.name isEqualToString:WATCH_NAME2];
-             if (/*flag && */[p.UUIDString isEqualToString:uuid])
-             {
-                 [self.bleControl connect:p];
+    if (peripheral) {
+        [self.bleControl connect:peripheral];
+    } else {
+        DEBUGLog(@"》》Scanning %@",NSStringFromClass([self class]));
+        [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
+                                           completion:^(NSArray *peripherals)
+         {
+             if ([self.bleControl isConnecting]) {
+                 return ;
              }
-         }
-     }];
+             LGPeripheral *p = [peripherals lastObject];
+             if ([WMSMyAccessory isBindAccessory]) {
+                 NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
+                 if ([p.UUIDString isEqualToString:uuid])
+                 {
+                     [self.bleControl connect:p];
+                 }
+             }
+         }];
+    }
 }
 
 //Handle
@@ -688,8 +689,8 @@
         self.isNeedUpdate = YES;
     }
     
-    [WMSPostNotificationHelper cancelAllNotification];
-    _postNotifyFlag = YES;
+//    [WMSPostNotificationHelper cancelAllNotification];
+//    _postNotifyFlag = YES;
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
@@ -703,13 +704,17 @@
     //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
     if ([self isBindingVC] == NO)
     {
-        [self scanAndConnectPeripheral];
+        LGPeripheral *p = (LGPeripheral *)notification.object;
+        [self scanAndConnectPeripheral:p];
     }
     
-    if (_postNotifyFlag) {
-        [WMSPostNotificationHelper postNotifyWithAlartBody:NSLocalizedString(@"蓝牙连接已断开", nil)];
-        _postNotifyFlag = NO;
-    }
+//    if (_postNotifyFlag) {
+//        [WMSPostNotificationHelper postNotifyWithAlartBody:NSLocalizedString(@"蓝牙连接已断开", nil)];
+//        _postNotifyFlag = NO;
+//    }
+    static int i = 0;
+    i++;
+    _labelTitle.text = [NSString stringWithFormat:@"%@%d",NSLocalizedString(@"My sport", nil),i];
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
@@ -721,7 +726,8 @@
     //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
     if ([self isBindingVC] == NO)
     {
-        [self scanAndConnectPeripheral];
+        LGPeripheral *p = (LGPeripheral *)notification.object;
+        [self scanAndConnectPeripheral:p];
     }
 }
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
@@ -729,7 +735,7 @@
     DEBUGLog(@"扫描结束 %@, isConnecting:%d, isConnected:%d",NSStringFromClass([self class]),self.bleControl.isConnecting, self.bleControl.isConnected);
     
     if ([self isBindingVC] == NO) {
-        [self scanAndConnectPeripheral];
+        [self scanAndConnectPeripheral:nil];
     }
 }
 
@@ -781,12 +787,32 @@
 }
 - (void)appDidBecomeActive:(NSNotification *)notification
 {
-    if ([self.bleControl isConnected] == NO) {
-        [self handleScanPeripheralFinish:nil];
-    }
+//    if ([self.bleControl isConnected] == NO) {
+//        [self handleScanPeripheralFinish:nil];
+//    }
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showBLEStateTip) object:nil];
+    [self performSelector:@selector(showBLEStateTip) withObject:nil afterDelay:1.5f];
+}
+
+- (void)peripheralDidStartDFU:(NSNotification *)notification
+{
+    _isStartDFU = YES;
+}
+- (void)peripheralDidEndDFU:(NSNotification *)notification
+{
+    _isStartDFU = NO;
     
-    [self.alertView dismissWithClickedButtonIndex:0 animated:YES];
-    [self setAlertView:nil];
+    //唤醒扫描
+    [self scanAndConnectPeripheral:nil];
+}
+
+- (void)reSyncData:(NSNotification *)notification
+{
+    [self syncData];
+}
+
+- (void)showBLEStateTip
+{
     switch (self.bleControl.bleState) {
         case WMSBleStateUnsupported:
         {
@@ -803,23 +829,6 @@
         default:
             break;
     }
-}
-
-- (void)peripheralDidStartDFU:(NSNotification *)notification
-{
-    _isStartDFU = YES;
-}
-- (void)peripheralDidEndDFU:(NSNotification *)notification
-{
-    _isStartDFU = NO;
-    
-    //唤醒扫描
-    [self scanAndConnectPeripheral];
-}
-
-- (void)reSyncData:(NSNotification *)notification
-{
-    [self syncData];
 }
 
 #pragma mark - WMSSyncDataViewDelegate

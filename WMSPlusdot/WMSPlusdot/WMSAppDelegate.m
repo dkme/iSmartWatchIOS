@@ -70,8 +70,6 @@ NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
         WMSContentViewController *contentVC = [[WMSContentViewController alloc] init];
         WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
         WMSRightViewController *rightVC = [[WMSRightViewController alloc] init];
-        
-        //sideMenu.contentViewController = [[UINavigationController alloc] initWithRootViewController:contentVC];
         sideMenu.contentViewController = [[MyNavigationController alloc] initWithRootViewController:contentVC];
         sideMenu.leftMenuViewController = leftVC;
         sideMenu.rightMenuViewController = rightVC;
@@ -81,6 +79,13 @@ NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
         _reSideMenu = sideMenu;
     }
     return _reSideMenu;
+}
+- (WMSBleControl *)wmsBleControl
+{
+    if (!_wmsBleControl) {
+        _wmsBleControl  = [[WMSBleControl alloc] init];
+    }
+    return _wmsBleControl;
 }
 
 #pragma mark - 启动
@@ -92,10 +97,9 @@ NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
     self.window.backgroundColor = [UIColor whiteColor];
     
 //    [self test];
+    
     [WMSPostNotificationHelper cancelAllNotification];
     [self setupReSyncDataTimer];
-    
-    _wmsBleControl  = [[WMSBleControl alloc] init];
     
     [self setupAppAppearance];
     
@@ -106,7 +110,6 @@ NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
     }
 
     self.window.rootViewController = [self reSideMenu];
-    
     [self.window makeKeyAndVisible];
     return YES;
 }

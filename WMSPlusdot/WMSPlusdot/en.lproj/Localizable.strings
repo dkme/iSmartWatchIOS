@@ -221,8 +221,8 @@
 "平均每日睡眠" = "The average sleep duration every day";
 "时" = "hour";
 "分" = "minute";
-"本月累计步数" = "This month total steps";
-"步" = "STEP";
+"本月累计步数" = "Total steps on this month";
+"步" = "setps";
 "累计消耗" = "Total calories";
 "卡路里" = "cal";
 "累计里程" = "Total distance";
@@ -261,7 +261,7 @@
 "退出登录" = "Log out";
 "取消" = "Cancel";
 
-"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please watch the light is on,\nPress the upper right corner of the keys, complete paired";
+"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please press the upper right corner button of the watch when lights on,and complete paired.";
 "扫描" = "Scan";
 "停止" = "Stop";
 "超时，绑定失败" = "Timeout，Binding failure";
