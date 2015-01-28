@@ -71,13 +71,13 @@
     NSString *languageType = [WMSAppConfig systemLanguage];
     if ([languageType isEqualToString:kLanguageChinese]) {
         images = @[@"intro_page1.png",
-                   @"intro_page2.png",
+                   //@"intro_page2.png",
                    @"intro_page3.png",
                    @"intro_page4.png",
                    ];
     } else {
         images = @[@"intro_page1_b.png",
-                   @"intro_page2_b.png",
+                   //@"intro_page2_b.png",
                    @"intro_page3_b.png",
                    @"intro_page4_b.png",
                    ];
@@ -92,10 +92,10 @@
     EAIntroPage *page3 = [EAIntroPage page];
     page3.bgImage = [UIImage imageNamed:images[2]];
     
-    EAIntroPage *page4 = [EAIntroPage page];
-    page4.bgImage = [UIImage imageNamed:images[3]];
+//    EAIntroPage *page4 = [EAIntroPage page];
+//    page4.bgImage = [UIImage imageNamed:images[3]];
     
-    NSArray *pages = @[page1,page2,page3,page4];
+    NSArray *pages = @[page1,page2,page3,/*page4*/];
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:pages];
     intro.swipeToExit = NO;
     intro.skipButton.hidden = YES;

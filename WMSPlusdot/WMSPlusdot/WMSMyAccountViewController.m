@@ -197,9 +197,6 @@ static const int WeightMaxValue         =220;
 #pragma mark - Setup
 - (void)setupView
 {
-    [self.view addSubview:self.myInputView];
-    [self.view addSubview:self.myDatePicker];
-    [self.view addSubview:self.myToolbar];
     self.textFieldName.text = @"";
     self.textFieldName.placeholder = NSLocalizedString(@"Please enter a nickname", nil);
     self.textFieldName.font = [UIFont systemFontOfSize:25.f];
@@ -207,6 +204,9 @@ static const int WeightMaxValue         =220;
     if (self.isNewUser) {
         [self.view addSubview:self.buttonSava];
     }
+    [self.view addSubview:self.myInputView];
+    [self.view addSubview:self.myDatePicker];
+    [self.view addSubview:self.myToolbar];
 }
 - (void)setupNavigationBar
 {
