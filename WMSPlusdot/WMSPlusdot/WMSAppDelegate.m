@@ -163,7 +163,7 @@ NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
     }
 }
 
-#pragma mark - Private
+#pragma mark - setup
 - (void)setupAppAppearance
 {
     //设置导航栏的颜色，标题字体和颜色
@@ -189,15 +189,29 @@ NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
-- (void)tik{
+#pragma mark - other methods
+- (void)tik
+{
     DEBUGLog(@"tick .....");
+    //发送一个命令，保持蓝牙连接
+    [self keepBLEConnection];
+    
     if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 61.0) {
         [[GGAudioTool sharedInstance] playSilentSound];
         
         [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
     }
 }
+- (void)keepBLEConnection
+{
+    DEBUGLog(@"%s",__FUNCTION__);
+    [_wmsBleControl.deviceProfile readDeviceTimeWithCompletion:^(NSString *dateString, BOOL success) {
+        DEBUGLog(@"read device time %@",dateString);
+    }];
+}
 
+
+#pragma mark - 后台计时，在00:00发送同步命令
 - (void)setupReSyncDataTimer
 {
     NSDate *today = [NSDate systemDate];

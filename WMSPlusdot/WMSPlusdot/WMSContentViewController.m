@@ -239,6 +239,17 @@
     [self.view addSubview:self.tipView];
     [self.view addSubview:self.hud];
     [self.mySportView addSubview:self.imageView];
+    
+#ifdef DEBUG
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 568-50, 320, 50)];
+    textView.backgroundColor = [UIColor clearColor];
+    textView.textColor = [UIColor redColor];
+    textView.textAlignment = NSTextAlignmentCenter;
+    textView.text = @"连接断开的原因：";
+    textView.tag = 40000;
+    textView.editable = NO;
+    [self.view addSubview:textView];
+#endif
 }
 - (void)setupControl
 {
@@ -712,9 +723,15 @@
 //        [WMSPostNotificationHelper postNotifyWithAlartBody:NSLocalizedString(@"蓝牙连接已断开", nil)];
 //        _postNotifyFlag = NO;
 //    }
+#ifdef DEBUG
     static int i = 0;
     i++;
     _labelTitle.text = [NSString stringWithFormat:@"%@%d",NSLocalizedString(@"My sport", nil),i];
+    UITextView *textView = (UITextView *)[self.view viewWithTag:40000];
+    NSString *reason = notification.userInfo[@"reason"];
+    NSString *str = [NSString stringWithFormat:@"%@\n%@",textView.text,reason];
+    textView.text = str;
+#endif
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {

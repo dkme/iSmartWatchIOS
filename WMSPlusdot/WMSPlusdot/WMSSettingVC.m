@@ -58,9 +58,10 @@
 - (NSArray *)section1TitleArray
 {
     if (!_section1TitleArray) {
-        _section1TitleArray = @[NSLocalizedString(@"故障排除", nil),
-                                NSLocalizedString(@"常见问题", nil),
-                                NSLocalizedString(@"适配机型", nil),
+        _section1TitleArray = @[
+                                //NSLocalizedString(@"故障排除", nil),
+                                //NSLocalizedString(@"常见问题", nil),
+                                //NSLocalizedString(@"适配机型", nil),
                                 NSLocalizedString(@"版本更新", nil),
                                 NSLocalizedString(@"固件更新", nil),
                                 ];
@@ -380,7 +381,7 @@
             cell.leftLabel.font = Font_System(15.0);
             cell.rightLabel.text = @"";
             cell.rightLabel.font = Font_System(12.0);
-            if (row == 3) {
+            if (row == 3-3) {
                 if ([self isDetectedNewVersion]==DetectResultCanUpdate/* ||
                     YES*/) {
                     if ([self isExistBadgeOfView:cell] == NO) {
@@ -389,9 +390,11 @@
                     }
                 } else {
                     [self removeBadgeFromView:cell];
-                    cell.rightLabel.text = NSLocalizedString(@"已是最新版本", nil);
+                    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+                    NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
+                    cell.rightLabel.text = currentVersion;//NSLocalizedString(@"已是最新版本", nil);
                 }
-            } else if (row == 4) {
+            } else if (row == 4-3) {
                 if (_isUpdateFirmware/* || YES*/) {
                     if ([self isExistBadgeOfView:cell] == NO) {
                         JSCustomBadge *badge = [JSCustomBadge customBadgeWithString:@"New"];
@@ -399,7 +402,8 @@
                     }
                 } else {
                     [self removeBadgeFromView:cell];
-                    cell.rightLabel.text = NSLocalizedString(@"已是最新版本", nil);
+                    double version = [WMSDeviceModel deviceModel].version;
+                    cell.rightLabel.text = [NSString stringWithFormat:@"%.02f",version];//NSLocalizedString(@"已是最新版本", nil);
                 }
             }
             return cell;
@@ -453,15 +457,15 @@
         case 1:
         {
             switch (row) {
-                case 0:
-                {
-                    WMSWebVC *vc = [[WMSWebVC alloc] init];
-                    vc.navBarTitle = self.section1TitleArray[row];
-                    vc.strRequestURL = @"http://www.lepao.com/faq-mobile.html";
-                    //[self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                case 3:
+//                case 0:
+//                {
+//                    WMSWebVC *vc = [[WMSWebVC alloc] init];
+//                    vc.navBarTitle = self.section1TitleArray[row];
+//                    vc.strRequestURL = @"http://www.lepao.com/faq-mobile.html";
+//                    //[self.navigationController pushViewController:vc animated:YES];
+//                    break;
+//                }
+                case 3-3:
                 {
                     if ([self isDetectedNewVersion]==DetectResultCanUpdate) {
                         [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
@@ -470,7 +474,7 @@
                     }
                     break;
                 }
-                case 4:
+                case 4-3:
                 {
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                     if ([self isExistBadgeOfView:cell] /*||YES*/) {

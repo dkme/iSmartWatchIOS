@@ -262,21 +262,21 @@ NSString * const WMSBleControlScanFinish =
 
 - (void)disconnect
 {
+    [self disconnectWithReason:@"用户自己去断开的"];
+}
+- (void)disconnectWithReason:(NSString *)reason
+{
     if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
         [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
             [self disConnectedClearup];
-            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
         }];
         return ;
     }
     if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
-        //应使用下面的方式“终止”连接
         CBPeripheral *p = self.connectingPeripheral.cbPeripheral;
         if (p) {
             [self.centralManager.manager cancelPeripheralConnection:p];
-            //        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
-            //            [self disConnectedClearup];
-            //        }];
             [self disConnectedClearup];
         }
     }
@@ -656,7 +656,7 @@ NSString * const WMSBleControlScanFinish =
         [self.myTimers deleteAllTimers];
         
         DEBUGLog(@"订阅超时，主动断开");
-        [self disconnect];
+        [self disconnectWithReason:@"订阅超时，app主动断开"];
         return;
     }
     
@@ -685,7 +685,8 @@ NSString * const WMSBleControlScanFinish =
     if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
         DEBUGLog(@"1写入超时[TimerID:%d]，主动断开 %@",[self.myTimers getTimerID:timer],NSStringFromClass([self class]));
         [self.myTimers deleteAllTimers];
-        [self disconnect];
+        NSString *reason = [NSString stringWithFormat:@"写入超时[TimerID:%d]，app主动断开",[self.myTimers getTimerID:timer]];
+        [self disconnectWithReason:reason];
         return;
     }
     
@@ -749,7 +750,7 @@ NSString * const WMSBleControlScanFinish =
     if (charact == self.notifyCharacteristic) {
         if (error) {
             DEBUGLog(@"通知错误，主动断开 %@",NSStringFromClass([WMSBleControl class]));
-            [self disconnect];
+            [self disconnectWithReason:@"通知错误，app主动断开"];
             return;
         }
         Byte package[PACKET_LENGTH] = {0};
