@@ -402,8 +402,12 @@
                     }
                 } else {
                     [self removeBadgeFromView:cell];
-                    double version = [WMSDeviceModel deviceModel].version;
-                    cell.rightLabel.text = [NSString stringWithFormat:@"%.02f",version];//NSLocalizedString(@"已是最新版本", nil);
+                    NSString *strVer = NSLocalizedString(@"已是最新版本", nil);
+                    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected) {
+                        double version = [WMSDeviceModel deviceModel].version;
+                        strVer = [NSString stringWithFormat:@"%.01f",version];
+                    }
+                    cell.rightLabel.text = strVer;
                 }
             }
             return cell;
