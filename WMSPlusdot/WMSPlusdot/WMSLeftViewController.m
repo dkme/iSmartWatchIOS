@@ -15,6 +15,8 @@
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSMyAccountViewController.h"
 #import "WMSMyAccessoryViewController.h"
+#import "WMSGiftVC.h"
+#import "WMSEnergyBeanVC.h"
 #import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
 #import "WMSClockListVC.h"
@@ -25,6 +27,7 @@
 
 #import "WMSConstants.h"
 #import "WMSUserInfoHelper.h"
+#import "WMSAppConfig.h"
 
 
 #define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 30) )
@@ -116,36 +119,59 @@
 - (NSArray *)titleArray
 {
     if (!_titleArray) {
-        _titleArray = [[NSArray alloc] initWithObjects:
-                       NSLocalizedString(@"My sport",nil),
-                       NSLocalizedString(@"Target setting",nil),
-                       //NSLocalizedString(@"Smart alarm clock", nil),
-                       NSLocalizedString(@"Bound watch",nil),
-                       nil];
+        NSArray *items = @[NSLocalizedString(@"My sport",nil),
+                           NSLocalizedString(@"Target setting",nil),
+                           NSLocalizedString(@"Bound watch",nil)
+                           ];
+        NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
+        NSString *languageType = [WMSAppConfig systemLanguage];
+        if ([languageType isEqualToString:kLanguageChinese]) {
+            NSArray *newItems = @[NSLocalizedString(@"好礼兑换",nil),
+                                  NSLocalizedString(@"能量豆",nil)
+                                  ];
+            [mutiArr addObjectsFromArray:newItems];
+        }
+        _titleArray = mutiArr;
     }
     return _titleArray;
 }
 - (NSArray *)imageNameArray
 {
     if (!_imageNameArray) {
-        _imageNameArray = [[NSArray alloc] initWithObjects:
-                           @"main_menu_sport_icon_a.png",
-                           @"main_menu_sleep_icon_a.png",
-                           //@"main_menu_target_icon_a.png",
-                           @"main_menu_binding_icon_a.png",
-                           nil];
+        if (self.titleArray.count == 3) {
+            _imageNameArray = @[@"main_menu_sport_icon_a.png",
+                                @"main_menu_target_icon_a.png",
+                                @"main_menu_binding_icon_a.png",
+                                ];
+        }
+        else if (self.titleArray.count == 5) {
+            _imageNameArray = @[@"main_menu_sport_icon_a.png",
+                                @"main_menu_target_icon_a.png",
+                                @"main_menu_binding_icon_a.png",
+                                @"main_menu_gift_icon_a.png",
+                                @"main_menu_bean_icon_a.png",
+                                ];
+        }else{};
     }
     return _imageNameArray;
 }
 - (NSArray *)seletedImageNameArray
 {
     if (!_seletedImageNameArray) {
-        _seletedImageNameArray = [[NSArray alloc] initWithObjects:
-                           @"main_menu_sport_icon_b.png",
-                           @"main_menu_sleep_icon_b.png",
-                           //@"main_menu_target_icon_b.png",
-                           @"main_menu_binding_icon_b.png",
-                           nil];
+        if (self.titleArray.count == 3) {
+            _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
+                                       @"main_menu_target_icon_b.png",
+                                       @"main_menu_binding_icon_b.png",
+                                       ];
+        }
+        else if (self.titleArray.count == 5) {
+            _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
+                                       @"main_menu_target_icon_b.png",
+                                       @"main_menu_binding_icon_b.png",
+                                       @"main_menu_gift_icon_b.png",
+                                       @"main_menu_bean_icon_b.png",
+                                       ];
+        }else{};
     }
     return _seletedImageNameArray;
 }
@@ -153,12 +179,22 @@
 - (NSArray *)specifyContentVCClassArray
 {
     if (!_specifyContentVCClassArray) {
-        _specifyContentVCClassArray = [[NSArray alloc] initWithObjects:
-                                       [WMSContentViewController class],
-                                       [WMSContent2ViewController class],
-                                       //[WMSClockListVC class],
-                                       [WMSMyAccessoryViewController class],
-                                       nil];
+        if (self.titleArray.count == 3) {
+            _specifyContentVCClassArray = @[
+                                            [WMSContentViewController class],
+                                            [WMSContent2ViewController class],
+                                            [WMSMyAccessoryViewController class],
+                                            ];
+        }
+        else if (self.titleArray.count == 5) {
+            _specifyContentVCClassArray = @[
+                                            [WMSContentViewController class],
+                                            [WMSContent2ViewController class],
+                                            [WMSMyAccessoryViewController class],
+                                            [WMSGiftVC class],
+                                            [WMSEnergyBeanVC class]
+                                            ];
+        }else{};
     }
     return _specifyContentVCClassArray;
 }
@@ -172,7 +208,8 @@
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
                            Null_Object,
-                           //Null_Object,
+                           Null_Object,
+                           Null_Object,
                            Null_Object,
                            nil];
     }
@@ -200,13 +237,6 @@
     [self.view addSubview:self.buttonSetting];
     
     [self reloadView];
-}
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    //[self reloadView];
-    DEBUGLog(@"LeftViewController viewWillAppear");
 }
 - (void)dealloc
 {
@@ -278,8 +308,7 @@
 - (void)settingBtnClick:(id)sender
 {
     WMSSettingVC *vc = [[WMSSettingVC alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.navigationBarHidden = YES;
+    MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:YES completion:nil];
 }
 
@@ -336,6 +365,30 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+//    if (indexPath.row > 2) {
+//        switch (indexPath.row) {
+//            case 3:
+//            {
+//                WMSGiftVC *vc = [[WMSGiftVC alloc] init];
+//                MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
+//                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//                [self.sideMenuViewController presentViewController:nav animated:YES completion:nil];
+//                break;
+//            }
+//            case 4:
+//            {
+//                WMSEnergyBeanVC *vc = [[WMSEnergyBeanVC alloc] init];
+//                MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
+//                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//                [self.sideMenuViewController presentViewController:nav animated:YES completion:nil];
+//                break;
+//            }
+//            default:
+//                break;
+//        }
+//        return ;
+//    }
     
     if ([self.specifyContentVCClassArray objectAtIndex:indexPath.row] == [self.sideMenuViewController.contentViewController class]) {
         [self.sideMenuViewController hideMenuViewController];

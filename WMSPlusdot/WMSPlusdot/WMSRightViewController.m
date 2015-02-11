@@ -31,22 +31,17 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 
-#define SECTION_NUMBER  4//5
-#define SECTION0_HEADER_HEIGHT  50.f
-#define SECTION_HEADER_HEIGHT   40.f
-#define SECTION_HEADER_DEFAULT_HEIGHT   0.1f
-#define SECTION_FOOTER_DEFAULT_HEIGHT   0.1f
-#define CELL_CONTENT_PREFIX     @"                   "
+#define SECTION_NUMBER                          4//5
+#define SECTION0_HEADER_HEIGHT                  50.f
+#define SECTION_HEADER_HEIGHT                   40.f
+#define SECTION_HEADER_DEFAULT_HEIGHT           0.1f
+#define SECTION_FOOTER_DEFAULT_HEIGHT           0.1f
+#define CELL_CONTENT_PREFIX                     @"                   "
 
-#define LOW_BATTERY_LEVEL1       0.20f
-#define LOW_BATTERY_LEVEL2       0.15f
-#define LOW_BATTERY_LEVEL3       0.10f
-#define LOW_BATTERY_LEVEL4       0.05f
-#define LOW_BATTERY_REMIND_TIMEINTERVAL 20
-#define ANTI_LOST_DISTANCE       60
+#define ANTI_LOST_DISTANCE                      60
 
-#define PLAY_ALERT_DURATION         8.0
-#define PLAY_VIBRATE_TIMEINTERVAL   1.0
+#define PLAY_ALERT_DURATION                     8.0
+#define PLAY_VIBRATE_TIMEINTERVAL               1.0
 
 @interface WMSRightViewController ()<WMSSwitchCellDelegage,RESideMenuDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
@@ -510,6 +505,9 @@
 #pragma mark - 电量
 - (void)batteryOperation:(float)battery
 {
+    if ([UIDevice currentDevice].batteryState == UIDeviceBatteryStateCharging) {
+        return ;
+    }
     if ([WMSRightVCHelper isSendLowBatteryRemind:battery]) {
         if ([self lowBatteryStatus]) {
             [WMSRightVCHelper startLowBatteryRemind:self.bleControl.settingProfile completion:^{

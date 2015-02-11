@@ -24,7 +24,7 @@
     if (mutiAttrs.count < components.count) {
         NSDictionary *defaultAttrs = @{NSFontAttributeName:self.font,
                                        NSForegroundColorAttributeName:self.textColor};
-        for (int j=0; j<components.count-mutiAttrs.count; j++) {
+        for (int j=0; j<components.count-attrsArray.count; j++) {
             [mutiAttrs addObject:defaultAttrs];
         }
     }

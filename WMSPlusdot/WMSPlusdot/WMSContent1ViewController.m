@@ -509,8 +509,8 @@
 
 - (IBAction)gotoMyClockViewAction:(id)sender {
     //WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
-    WMSClockListVC *VC = [[WMSClockListVC alloc] init];
-    [self.navigationController pushViewController:VC animated:YES];
+//    WMSClockListVC *VC = [[WMSClockListVC alloc] init];
+//    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {

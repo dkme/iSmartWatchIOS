@@ -25,7 +25,7 @@
 #import "WMSHTTPRequest.h"
 #import "WMSHelper.h"
 
-#define SECTION_NUMBER                  2
+#define SECTION_NUMBER                  3
 #define CELL_HEIGHT                     41.f
 #define SECTION0_HEADER_HEIGHT          30.f
 #define SECTION_HEADER_HEIGHT           20.f
@@ -39,10 +39,11 @@
     NSString *_firmwareUpdateURL;
     
     WMSUpdateVC *_updateVC;
+    
+    CGFloat tableViewTotalHeight;
 }
 @property (nonatomic, strong) NSArray *section0TitleArray;
 @property (nonatomic, strong) NSArray *section1TitleArray;
-@property (nonatomic, strong) UIButton *buttonExitLogin;
 @end
 
 @implementation WMSSettingVC
@@ -62,8 +63,8 @@
                                 //NSLocalizedString(@"故障排除", nil),
                                 //NSLocalizedString(@"常见问题", nil),
                                 //NSLocalizedString(@"适配机型", nil),
-                                NSLocalizedString(@"版本更新", nil),
-                                NSLocalizedString(@"固件更新", nil),
+                                NSLocalizedString(@"APP版本", nil),
+                                NSLocalizedString(@"固件版本", nil),
                                 ];
     }
     return _section1TitleArray;
@@ -78,9 +79,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self setupNavBarView];
+    
+    [self setupProperty];
+    [self setupNavigationBar];
     [self setupTableView];
     [self setupUI];
+    [self registerForNotifications];
     
     //[self checkAppUpdate];
     [self checkFirmwareUpdate];
@@ -92,7 +96,6 @@
     
     if (self.isNeedUpdateView) {
         [self.tableView reloadData];
-        [self updateExitButton];
         self.needUpdateView = NO;
     }
 }
@@ -105,62 +108,42 @@
 - (void)dealloc
 {
     DEBUGLog(@"%s",__FUNCTION__);
+    [self unregisterFromNotifications];
 }
 
 #pragma mark - setup UI
-- (void)setupNavBarView
+- (void)setupProperty
 {
-    self.navBarView.backgroundColor = UICOLOR_DEFAULT;
-    self.navBarView.labelTitle.text = NSLocalizedString(@"设置",nil);
-    self.navBarView.labelTitle.font = Font_DINCondensed(20.0);
-    [self.navBarView.buttonLeft setTitle:@"" forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.navBarView.buttonLeft addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+- (void)setupNavigationBar
+{
+    self.title = NSLocalizedString(@"设置",nil);
+    self.navigationItem.leftBarButtonItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
+//    UINavigationBar *navBar = self.navigationController.navigationBar;
+//    navBar.barStyle = UIBarStyleDefault;
+//    navBar.translucent = NO;
 }
 - (void)setupTableView
 {
-    CGRect frame = self.tableView.frame;
-    frame.size.width = 305;
-    frame.origin.x = (ScreenWidth-frame.size.width)/2.0;
-    self.tableView.frame = frame;
     self.tableView.rowHeight = CELL_HEIGHT;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    CGFloat totalHeight = 0;
+    NSInteger sections = self.tableView.numberOfSections;
+    for (int i=0; i<sections-1; i++) {
+        totalHeight += [self.tableView rectForSection:i].size.height;
+    }
+    totalHeight += [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sections-1]].size.height;
+    tableViewTotalHeight = totalHeight;
 }
 - (void)setupUI
 {
     self.view.backgroundColor = UIColorFromRGBAlpha(0xEEEEEE, 1.0);
-    
-    _buttonExitLogin = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect buttonFrame = CGRectZero;
-    buttonFrame.size = CGSizeMake(315, 45);
-    buttonFrame.origin.x = (self.tableView.frame.size.width-buttonFrame.size.width)/2.0;
-    buttonFrame.origin.y = self.tableView.frame.size.height-buttonFrame.size.height-30;
-    if (!iPhone5) {
-        buttonFrame.origin.y -= (568-480);
-    }
-    _buttonExitLogin.frame = buttonFrame;
-    [_buttonExitLogin setTitle:NSLocalizedString(@"退出登录", nil) forState:UIControlStateNormal];
-    [_buttonExitLogin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_buttonExitLogin setBackgroundImage:[UIImage imageNamed:@"zq_public_red_btn_a.png"] forState:UIControlStateNormal];
-    [_buttonExitLogin setBackgroundImage:[UIImage imageNamed:@"zq_public_red_btn_b.png"] forState:UIControlStateSelected];
-    [_buttonExitLogin addTarget:self action:@selector(exitLoginAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.tableView addSubview:self.buttonExitLogin];
-    [self updateExitButton];
-}
-- (void)updateExitButton
-{
-    BOOL res = [WMSAppConfig isHaveLogin];
-    if (res) {
-        self.buttonExitLogin.enabled = YES;
-        self.buttonExitLogin.alpha = 1.0;
-    } else {
-        self.buttonExitLogin.enabled = NO;
-        self.buttonExitLogin.alpha = 0.7;
-    }
 }
 
 #pragma mark - Private
@@ -303,7 +286,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)exitLoginAction:(id)sender
+- (void)exitLogin
 {
     [self showActionSheet];
 }
@@ -321,7 +304,6 @@
     if (buttonIndex == 0) {//destructive
         if ([WMSAppConfig clearLoginInfo]) {
             [self.tableView reloadData];
-            [self updateExitButton];
         }
     }
 }
@@ -338,7 +320,8 @@
             return [self.section0TitleArray count];
         case 1:
             return [self.section1TitleArray count];
-            
+        case 2:
+            return 1;
         default:
             break;
     }
@@ -348,17 +331,19 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)section,(int)row];
-    UINib *cellNib = [UINib nibWithNibName:@"WMSDetailCell" bundle:nil];
-    [self.tableView registerNib:cellNib forCellReuseIdentifier:CellIdentifier];
-    WMSDetailCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.backgroundColor = [UIColor clearColor];
-    NSDictionary *dic = [self imageNameWithTableView:tableView cellIndexPath:indexPath];
-    cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:dic[@"image"]]];
-    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:dic[@"selectedImage"]]];
-    
+    WMSDetailCell *cell = nil;
+    if (section==0 || section==1) {
+        NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)section,(int)row];
+        UINib *cellNib = [UINib nibWithNibName:@"WMSDetailCell" bundle:nil];
+        [self.tableView registerNib:cellNib forCellReuseIdentifier:CellIdentifier];
+        cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundColor = [UIColor clearColor];
+        NSDictionary *dic = [self imageNameWithTableView:tableView cellIndexPath:indexPath];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:dic[@"image"]]];
+        cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:dic[@"selectedImage"]]];
+    }
     switch (section) {
         case 0:
         {
@@ -402,13 +387,38 @@
                     }
                 } else {
                     [self removeBadgeFromView:cell];
-                    NSString *strVer = NSLocalizedString(@"已是最新版本", nil);
+                    NSString *strVer = @"";
                     if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected) {
                         double version = [WMSDeviceModel deviceModel].version;
                         strVer = [NSString stringWithFormat:@"%.01f",version];
+                    } else {
+                        strVer = @"unknown";
                     }
                     cell.rightLabel.text = strVer;
                 }
+            }
+            return cell;
+        }
+        case 2:
+        {
+            NSString *Identifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Identifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Identifier];
+            }
+            cell.textLabel.text = NSLocalizedString(@"退出登录", nil);
+            cell.textLabel.textColor = [UIColor whiteColor];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.backgroundColor = [UIColor clearColor];
+            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"zq_public_red_btn_a.png"]];
+            cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"zq_public_red_btn_b.png"]];
+            BOOL res = [WMSAppConfig isHaveLogin];
+            if (res) {
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.backgroundView.alpha = 1.0;
+            } else {
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.backgroundView.alpha = 0.7;
             }
             return cell;
         }
@@ -430,6 +440,8 @@
             return SECTION0_HEADER_HEIGHT;
         case 1:
             return SECTION_HEADER_HEIGHT;
+        case 2:
+            return tableView.bounds.size.height-tableViewTotalHeight-10-(NavBar_IS_Translucent?NAV_BAR_HEIGHT:0);
         default:
             break;
     }
@@ -438,6 +450,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([tableView cellForRowAtIndexPath:indexPath].selectionStyle == UITableViewCellSelectionStyleNone) {
+        return ;
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSInteger section = indexPath.section;
@@ -497,7 +512,11 @@
             }
             break;
         }
-            
+        case 2:
+        {
+            [self exitLogin];
+            break;
+        }
         default:
             break;
     }
@@ -514,6 +533,20 @@
         _updateVC = nil;
         self.navigationController.delegate = nil;
     }
+}
+
+#pragma mark - Notification
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+}
+- (void)unregisterFromNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (void)handleSuccessConnectPeripheral:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 @end

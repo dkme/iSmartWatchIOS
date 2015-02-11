@@ -21,7 +21,7 @@
 
 static const NSTimeInterval SCAN_TIME_INTERVAL      = 60.f;
 static const NSTimeInterval BINDING_TIME_INTERVAL   = 60.f;
-static const int            MAX_RSSI                = -50;
+static const int            MAX_RSSI                = -65;
 static const double         FIRMWARE_TARGET_VERSION = 8.0;
 
 @interface WMSBindingAccessoryViewController ()<WMSBindingViewDelegate>
@@ -254,6 +254,7 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
     }
     if (self.bleControl.isConnecting || self.bleControl.isConnected) {
         [self.bleControl disconnect];
+        DEBUGLog(@"disconnect....");
     }
     [self closeVC:NO];
 }

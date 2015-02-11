@@ -271,6 +271,7 @@ NSString * const WMSBleControlScanFinish =
             [self disConnectedClearup];
             [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
         }];
+        DEBUGLog(@"is connected");
         return ;
     }
     if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
@@ -279,6 +280,7 @@ NSString * const WMSBleControlScanFinish =
             [self.centralManager.manager cancelPeripheralConnection:p];
             [self disConnectedClearup];
         }
+        DEBUGLog(@"is Connecting %@",p);
     }
 }
 

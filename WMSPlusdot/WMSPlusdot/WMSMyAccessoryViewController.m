@@ -260,6 +260,7 @@
     UIColor *color = nil;
     if ([WMSMyAccessory isBindAccessory]) {
         AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+        g = 1;//补丁
         if (indexPath.row+1 == g) {
             state = [NSString stringWithFormat:@"%@(%@)",state,NSLocalizedString(@"已绑定", nil)];
             color = [UIColor redColor];

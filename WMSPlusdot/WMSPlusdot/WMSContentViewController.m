@@ -715,8 +715,8 @@
     //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
     if ([self isBindingVC] == NO)
     {
-        LGPeripheral *p = (LGPeripheral *)notification.object;
-        [self scanAndConnectPeripheral:p];
+        //LGPeripheral *p = (LGPeripheral *)notification.object;
+        [self scanAndConnectPeripheral:nil];
     }
     
 //    if (_postNotifyFlag) {
@@ -743,8 +743,8 @@
     //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
     if ([self isBindingVC] == NO)
     {
-        LGPeripheral *p = (LGPeripheral *)notification.object;
-        [self scanAndConnectPeripheral:p];
+        //LGPeripheral *p = (LGPeripheral *)notification.object;
+        [self scanAndConnectPeripheral:nil];
     }
 }
 - (void)handleScanPeripheralFinish:(NSNotification *)notification

@@ -256,6 +256,8 @@
 "适配机型" = "Adaptation model";
 "版本更新" = "App update";
 "固件更新" = "Firmware update";
+"APP版本" = "APP version";
+"固件版本" = "Firmware version";
 "点击此处登录" = "Click here to login";
 "已是最新版本" = "The latest version";
 "退出登录" = "Log out";
