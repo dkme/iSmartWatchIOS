@@ -22,7 +22,7 @@
 static const NSTimeInterval SCAN_TIME_INTERVAL      = 60.f;
 static const NSTimeInterval BINDING_TIME_INTERVAL   = 60.f;
 static const int            MAX_RSSI                = -65;
-static const double         FIRMWARE_TARGET_VERSION = 8.0;
+static const double         FIRMWARE_TARGET_VERSION = 12.0;
 
 @interface WMSBindingAccessoryViewController ()<WMSBindingViewDelegate>
 {
@@ -96,15 +96,16 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
 }
 - (void)sendBindingCMD
 {
-    __weak __typeof(&*self) weakSelf = self;
-//    double version = [WMSDeviceModel deviceModel].version;
+    __weak __typeof(self) weakSelf = self;
+    double version = [WMSDeviceModel deviceModel].version;
     BindSettingCMD bindCMD = bindSettingCMDBind;
-//    if (version >= FIRMWARE_TARGET_VERSION) {
-//        bindCMD = BindSettingCMDMandatoryBind;
-//    }
+    if (version >= FIRMWARE_TARGET_VERSION) {
+        bindCMD = BindSettingCMDMandatoryBind;
+    }
+    NSString *mac = [WMSDeviceModel deviceModel].mac;
     [self.bleControl bindSettingCMD:bindCMD completion:^(BindingResult result)
      {
-         __strong __typeof(&*self) strongSelf = weakSelf;
+         __strong __typeof(weakSelf) strongSelf = weakSelf;
          if (!strongSelf) {
              return ;
          }
@@ -113,6 +114,7 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
              NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
              if (identify) {
                  [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
+                 [WMSMyAccessory setBindAccessoryMac:mac];
                  [strongSelf closeVC:YES];
              } else {}
          } else {}
@@ -213,14 +215,16 @@ static const double         FIRMWARE_TARGET_VERSION = 8.0;
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
 
     [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
-        [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
-            DEBUGLog(@"read version:%d",version);
-//            if (version < FIRMWARE_TARGET_VERSION) {
-                self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-//            }
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
-            [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
-            [self sendBindingCMD];
+        [WMSDeviceModel readDeviceMac:self.bleControl completion:^(NSString *mac) {
+            [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
+                DEBUGLog(@"read version:%d",version);
+                if (version < FIRMWARE_TARGET_VERSION) {
+                    self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
+                }
+                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
+                [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
+                [self sendBindingCMD];
+            }];
         }];
     }];
 }

@@ -28,4 +28,7 @@ typedef NS_ENUM(NSInteger, AccessoryGeneration) {
 
 + (NSString *)identifierForbindAccessory;
 
++ (void)setBindAccessoryMac:(NSString *)mac;
++ (NSString *)macForBindAccessory;
+
 @end

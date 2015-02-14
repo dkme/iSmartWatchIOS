@@ -13,6 +13,7 @@
 enum {
     TimeIDReadDeviceInfo = 300,
     TimeIDReadDeviceTime,
+    TimeIDReadDeviceMac,
     TimeIDPrepareSyncSportData,
     TimeIDStartSyncSportData,
     TimeIDEndSyncSportData,
@@ -91,6 +92,7 @@ static const int STARTED_NUMBER = 50;
 @property (nonatomic, strong) NSMutableArray *stackSyncSportData;
 @property (nonatomic, strong) NSMutableArray *stackSyncSleepData;
 @property (nonatomic, strong) NSMutableArray *stackReadDeviceRemoteData;
+@property (nonatomic, strong) NSMutableArray *stackReadDeviceMac;
 @end
 
 @implementation WMSDeviceProfile
@@ -130,6 +132,13 @@ static const int STARTED_NUMBER = 50;
         _stackReadDeviceRemoteData = [NSMutableArray new];
     }
     return _stackReadDeviceRemoteData;
+}
+- (NSMutableArray *)stackReadDeviceMac
+{
+    if (!_stackReadDeviceMac) {
+        _stackReadDeviceMac = [NSMutableArray new];
+    }
+    return _stackReadDeviceMac;
 }
 
 #pragma mark - Init
@@ -296,6 +305,31 @@ static const int STARTED_NUMBER = 50;
     }
 }
 
+- (void)readDeviceMac:(readDeviceMacCallBack)aCallback
+{
+    if (!self.bleControl.isConnected) {
+        return ;
+    }
+    Byte package[DATA_LENGTH] = {0};
+    
+    [self setPacketCMD:CMDGETDeviceMac andData:package dataLength:DATA_LENGTH];
+    
+    if (aCallback) {
+        [NSMutableArray push:aCallback toArray:self.stackReadDeviceMac];
+    }
+    
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    
+    [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDReadDeviceMac];
+}
+
 
 #pragma mark - Time out
 - (void)writeValueToCharactTimeout:(NSTimer *)timer
@@ -415,6 +449,26 @@ static const int STARTED_NUMBER = 50;
             [self setPacketCMD:CMDReadDeviceRemoteData andData:pg dataLength:DATA_LENGTH];
             NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
             [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+            return;
+        }
+        
+        if (cmd == CMDGETDeviceMac) {
+            if ([self.myTimers isValidForTimeID:TimeIDReadDeviceMac]) {
+                [self.myTimers deleteTimerForTimeID:TimeIDReadDeviceMac];
+                
+                readDeviceMacCallBack callBack = [NSMutableArray popFromArray:self.stackReadDeviceMac];
+                if (callBack) {
+                    UInt8 mac0 = package[3];
+                    UInt8 mac1 = package[4];
+                    UInt8 mac2 = package[5];
+                    UInt8 mac3 = package[6];
+                    UInt8 mac4 = package[7];
+                    UInt8 mac5 = package[8];
+                    NSString *mac = [NSString stringWithFormat:@"%X:%X:%X:%X:%X:%X",mac0,mac1,mac2,mac3,mac4,mac5];
+                    callBack(mac);
+                }
+                callBack = nil;
+            }
             return;
         }
     }

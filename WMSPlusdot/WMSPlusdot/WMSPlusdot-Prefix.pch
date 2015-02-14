@@ -22,6 +22,8 @@
     #import "NSDate+Formatter.h"
     #import "UIImage+QuartzProc.h"
     #import "MyNavigationController.h"
+    #import "AFNetworking.h"
+    #import "UIKit+AFNetworking.h"
 #endif
 
 #ifdef DEBUG

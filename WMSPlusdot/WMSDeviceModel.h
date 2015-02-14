@@ -12,6 +12,7 @@
 
 @property (nonatomic, assign) int batteryEnergy;
 @property (nonatomic, assign) double version;
+@property (nonatomic, strong) NSString *mac;
 
 + (WMSDeviceModel *)deviceModel;
 

@@ -14,6 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *contentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailContentLabel;
 
-- (void)configureWithContent:(NSString *)content;
+- (void)configureWithContent:(NSString *)content beans:(NSUInteger)beans;
 
 @end

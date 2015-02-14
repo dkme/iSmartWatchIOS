@@ -10,10 +10,9 @@
             <connections>
                 <outlet property="bottomButton" destination="ysg-Cf-lGR" id="HwG-yI-fCR"/>
                 <outlet property="getBeanLabel" destination="uF8-f7-LKG" id="BAD-g9-cW7"/>
-                <outlet property="leftImageView" destination="b1S-YZ-o36" id="Nko-9B-Df4"/>
+                <outlet property="iconImageView" destination="5cQ-Ke-QRZ" id="XL3-Ys-xmy"/>
                 <outlet property="multiplierLabel" destination="F5f-98-nNh" id="VVa-er-rZT"/>
                 <outlet property="myBeanLabel" destination="GCQ-y9-biP" id="STZ-3l-JcQ"/>
-                <outlet property="rightImageView" destination="AFo-vS-bvm" id="mLK-Wq-B7q"/>
                 <outlet property="ruleTextView" destination="eTP-gp-Osm" id="fdF-hX-BtL"/>
                 <outlet property="scrollView" destination="6Cc-Db-C99" id="f6g-wc-BVC"/>
                 <outlet property="timeLabel" destination="nHg-j9-Af9" id="wOe-Ut-ytE"/>

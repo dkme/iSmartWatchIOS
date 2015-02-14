@@ -11,6 +11,7 @@
 
 #define KEY_IDENTIFIER          @"identifier"
 #define KEY_GENERATION          @"generation"
+#define KEY_MAC                 @"mac"
 
 @implementation WMSMyAccessory
 
@@ -30,7 +31,7 @@
 
 + (void)unBindAccessory
 {
-    NSDictionary *data = @{KEY_IDENTIFIER:@"",KEY_GENERATION:@(AccessoryGenerationUnknown)};
+    NSDictionary *data = @{KEY_IDENTIFIER:@"",KEY_GENERATION:@(AccessoryGenerationUnknown),KEY_MAC:@""};
     
     [data writeToFile:[self filePath:FILE_ACCESSORY] atomically:YES];
 }
@@ -65,6 +66,21 @@
     NSString *identifier = [data objectForKey:KEY_IDENTIFIER];
     
     return identifier;
+}
+
++ (void)setBindAccessoryMac:(NSString *)mac
+{
+    NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_ACCESSORY]];
+    NSMutableDictionary *mutiDic = [NSMutableDictionary dictionaryWithDictionary:data];
+    [mutiDic setObject:mac forKey:KEY_MAC];
+    
+    [mutiDic writeToFile:[self filePath:FILE_ACCESSORY] atomically:YES];
+}
++ (NSString *)macForBindAccessory
+{
+    NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_ACCESSORY]];
+    NSString *mac = [data objectForKey:KEY_MAC];
+    return mac;
 }
 
 

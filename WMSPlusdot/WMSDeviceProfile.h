@@ -47,6 +47,7 @@ typedef void (^syncDeviceSleepDataCallBack)(NSString *sleepDate,NSUInteger sleep
 
 typedef void (^readDeviceRemoteDataCallBack)(RemoteDataType dataType);
 
+typedef void(^readDeviceMacCallBack)(NSString *mac);
 
 @interface WMSDeviceProfile : NSObject
 
@@ -84,5 +85,10 @@ typedef void (^readDeviceRemoteDataCallBack)(RemoteDataType dataType);
  读取遥控模式下的数据
  */
 - (void)readDeviceRemoteDataWithCompletion:(readDeviceRemoteDataCallBack)aCallBack;
+
+/*
+ 读取设备的mac地址
+ */
+- (void)readDeviceMac:(readDeviceMacCallBack)aCallback;
 
 @end

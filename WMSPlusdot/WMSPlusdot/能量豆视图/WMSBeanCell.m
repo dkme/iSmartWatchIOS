@@ -22,10 +22,10 @@
     // Configure the view for the selected state
 }
 
-- (void)configureWithContent:(NSString *)content
+- (void)configureWithContent:(NSString *)content beans:(NSUInteger)beans
 {
     self.contentLabel.text = content;
-    self.detailContentLabel.text = @"+1";
+    self.detailContentLabel.text = [NSString stringWithFormat:@"+%lu",(unsigned long)beans];
 }
 
 

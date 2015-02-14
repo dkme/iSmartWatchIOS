@@ -10,10 +10,16 @@
 #import "WMSDetailsVC.h"
 #import "WMSAppDelegate.h"
 #import "GGTopMenu.h"
-#import "ArrayDataSource.h"
+#import "WMSLeftViewCell.h"
 #import "KOPopupView.h"
 #import "WMSAlertView.h"
 #import "UILabel+Attribute.h"
+#import "UITableViewCell+Activity.h"
+#import "Activity.h"
+#import "ActivityRule.h"
+#import "GiftBag.h"
+#import "WMSRequestTool.h"
+#import "ArrayDataSource.h"
 
 typedef enum {
     TopMenuItemActivity = 0,
@@ -24,6 +30,8 @@ typedef enum {
 @property (nonatomic, strong) ArrayDataSource *arrayDataSource;
 @property (nonatomic, strong) ArrayDataSource *arrayDataSource2;
 @property (nonatomic, strong) KOPopupView *koPopupView;
+@property (nonatomic, strong) NSMutableArray *activityList;
+@property (nonatomic, strong) NSMutableArray *giftBagList;
 @end
 
 @implementation WMSGiftVC
@@ -32,10 +40,12 @@ typedef enum {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self setupProperty];
     [self setupView];
     [self setupNavigationBar];
     [self setupTopMenu];
     [self setupTableView];
+    [self loadDataWithItem:TopMenuItemActivity];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -43,6 +53,12 @@ typedef enum {
     UINavigationBar *navBar = self.navigationController.navigationBar;
     navBar.barStyle = UIBarStyleDefault;
     navBar.translucent = NO;
+    
+    
+    [WMSRequestTool requestActivityDetailsWithActivityID:5 completion:^(BOOL result, ActivityRule *rult) {
+        DEBUGLog(@"result %d , rult %@",result,[rult description]);
+    }];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -54,6 +70,21 @@ typedef enum {
 }
 
 #pragma mark - setup
+- (void)setupProperty
+{
+    _activityList = [NSMutableArray new];
+    _giftBagList = [NSMutableArray new];
+    
+    //test
+//    Activity *act = [[Activity alloc] initWithID:1 actName:@"test" beginDate:[NSDate systemDate] endDate:[NSDate systemDate] memo:@"test memo" gameName:@"game" logo:@"logo"];
+//    [self.activityList addObject:act];
+//    NSMutableArray *copyList = [self.activityList mutableCopy];
+//    DEBUGLog(@"list:%@, copyList:%@",self.activityList,copyList);
+//    //[self.activityList removeAllObjects];
+//    act.actID = 100;
+//    
+//    DEBUGLog(@"modifed list:%@, copyList:%@",self.activityList,copyList);
+}
 - (void)setupView
 {
     self.title = NSLocalizedString(@"好礼兑换", nil);
@@ -61,7 +92,6 @@ typedef enum {
 }
 - (void)setupNavigationBar
 {
-    //self.navigationItem.leftBarButtonItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithImageName:@"main_menu_icon_a.png" highImageName:@"main_menu_icon_b.png" target:self action:@selector(backAction:)];
 }
 - (void)setupTopMenu
@@ -80,6 +110,7 @@ typedef enum {
 - (void)setupTableView
 {
     self.tableView.tableFooterView = [[UIView alloc] init];
+    self.tableView.rowHeight = 60.f;
     self.tableView.backgroundColor = UIColorFromRGBAlpha(0xEEEEEE, 1.0);
     [self configureCell:TopMenuItemActivity];
 }
@@ -88,26 +119,37 @@ typedef enum {
     switch (item) {
         case TopMenuItemActivity:
         {
+            static NSString *cellIdentifier = @"activityCell";
             if (!self.arrayDataSource) {
-                TableViewCellConfigureBlock configureCell = ^(UITableViewCell *cell, NSString *item) {
-                    cell.textLabel.text = item;
+                TableViewCellConfigureBlock configureCell = ^(UITableViewCell *cell, Activity *item) {
+                    [cell configureCellWithActivity:item];
                 };
-                _arrayDataSource = [[ArrayDataSource alloc] initWithItems:@[@"11",@"22"] cellIdentifier:@"cellIdentifier" configureCellBlock:configureCell];
+                _arrayDataSource = [[ArrayDataSource alloc] initWithItems:self.activityList cellIdentifier:cellIdentifier configureCellBlock:configureCell];
             }
             self.tableView.dataSource = self.arrayDataSource;
-            [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellIdentifier"];
+            [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellIdentifier];
             break;
         }
         case TopMenuItemGiftBag:
         {
             if (!self.arrayDataSource2) {
-                TableViewCellConfigureBlock configureCell = ^(UITableViewCell *cell, NSString *item) {
-                    cell.textLabel.text = item;
+                TableViewConfigureBlock configureTableCell = ^id(UITableView *tableView, NSIndexPath *indexPath, NSArray *items)
+                {
+                    static NSString *cellIdentifier = @"giftBagCell";
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+                    if (cell == nil) {
+                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+                    }
+                    GiftBag *bag = [[GiftBag alloc] init];
+                    bag.exchangeCode = items[indexPath.row];
+                    bag.getDate = [NSDate systemDate];
+                    bag.logo = @"";
+                    [cell configureCellWithGiftBag:bag];
+                    return cell;
                 };
-                _arrayDataSource2 = [[ArrayDataSource alloc] initWithItems:@[@"aa",@"bb"] cellIdentifier:@"cellIdentifier" configureCellBlock:configureCell];
+                _arrayDataSource2 = [[ArrayDataSource alloc] initWithItems:@[@"aa",@"bb"] configureTableViewBlock:configureTableCell];
             }
             self.tableView.dataSource = self.arrayDataSource2;
-            [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellIdentifier"];
             break;
         }
         default:
@@ -116,10 +158,37 @@ typedef enum {
     [self.tableView reloadData];
 }
 
+#pragma mark - Other
+- (void)loadDataWithItem:(TopMenuItem)item
+{
+    switch (item) {
+        case TopMenuItemActivity:
+        {
+            [WMSRequestTool requestActivityList:^(BOOL result, NSArray *list) {
+                [self.activityList removeAllObjects];
+                [self.activityList addObjectsFromArray:list];
+                [self.arrayDataSource setItems:self.activityList];
+                [self.tableView reloadData];
+            }];
+            break;
+        }
+        case TopMenuItemGiftBag:
+        {
+            [WMSRequestTool requestGiftBagListWithUserKey:@"test" completion:^(BOOL result, NSArray *list) {
+                [self.giftBagList removeAllObjects];
+                [self.giftBagList addObjectsFromArray:list];
+                [self.tableView reloadData];
+            }];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 #pragma mark - Action
 - (void)backAction:(id)sender
 {
-    //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
@@ -144,8 +213,7 @@ typedef enum {
         default:
             break;
     }
-    [self.koPopupView hideAnimated:YES];
-    self.koPopupView = nil;
+    [self.koPopupView hideAnimated:YES],self.koPopupView = nil;
 }
 
 #pragma mark - UITableViewDelegate
@@ -177,26 +245,33 @@ typedef enum {
         }
         case TopMenuItemGiftBag:
         {
-            if (!self.koPopupView) {
-                KOPopupView *popupView = [KOPopupView popupView];
-                WMSAlertView *alertView = [WMSAlertView alertViewWithText:@"龙武游戏礼包" detailText:@"" leftButtonTitle:NSLocalizedString(@"复制兑换码", nil) rightButtonTitle:NSLocalizedString(@"取消", nil)];
-                NSArray *attrisArr = @[@{NSForegroundColorAttributeName:[UIColor blackColor]},
-                                       @{NSForegroundColorAttributeName:UICOLOR_DEFAULT},
-                                       ];
-                [alertView.detailTextLabel setSegmentsText:@"兑换码为: /xxx-xxxx-xxx/ \n此礼包可在《龙武》长安大街激活\n 激活后将获得游戏道具" separateMark:@"/" attributes:attrisArr];
-                alertView.frame = [alertView updateSubviews];
-                alertView.delegate = self;
-                alertView.center = self.tableView.center;
-                [popupView.handleView addSubview:alertView];
-                self.koPopupView = popupView;
-            }
-            [self.koPopupView show];
-            
+            NSString *code = [NSString stringWithFormat:@"code-%d",indexPath.row];
+            [self showAlertViewWithCode:code];
             break;
         }
         default:
             break;
     }
+}
+
+- (void)showAlertViewWithCode:(NSString *)code
+{
+    if (!self.koPopupView) {
+        WMSAlertView *alertView = [WMSAlertView alertViewWithText:@"龙武游戏礼包" detailText:@"" leftButtonTitle:NSLocalizedString(@"复制兑换码", nil) rightButtonTitle:NSLocalizedString(@"取消", nil)];
+        NSArray *attrisArr = @[@{NSForegroundColorAttributeName:[UIColor blackColor]},
+                               @{NSForegroundColorAttributeName:UICOLOR_DEFAULT},
+                               ];
+        NSString *text = [NSString stringWithFormat:@"兑换码为: /%@/ \n此礼包可在%@激活\n 激活后将获得游戏道具",code,@"adress"];
+        [alertView.detailTextLabel setSegmentsText:text separateMark:@"/" attributes:attrisArr];
+        alertView.frame = [alertView updateSubviews];
+        alertView.delegate = self;
+        alertView.center = self.tableView.center;
+    
+        KOPopupView *popupView = [KOPopupView popupView];
+        [popupView.handleView addSubview:alertView];
+        self.koPopupView = popupView;
+    }
+    [self.koPopupView show];
 }
 
 @end

@@ -27,7 +27,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-NSString *const WMSAppDelegateReSyncData = @"WMSAppDelegateReSyncData";
+NSString *const WMSAppDelegateReSyncData = @"com.ios.plusdot.WMSAppDelegateReSyncData";
+NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 
 @interface WMSAppDelegate ()<RESideMenuDelegate,UIAlertViewDelegate>
 

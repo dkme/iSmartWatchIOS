@@ -35,6 +35,17 @@
     }];
 }
 
++ (void)readDeviceMac:(WMSBleControl *)bleControl
+           completion:(readDeviceMac)callback
+{
+    [bleControl.deviceProfile readDeviceMac:^(NSString *mac) {
+        [WMSDeviceModel deviceModel].mac = mac;
+        if (callback) {
+            callback(mac);
+        }
+    }];
+}
+
 + (void)setDeviceDate:(WMSBleControl *)bleControl
                completion:(setDateCallBack)callback
 {

@@ -12,6 +12,7 @@
 #import "RESideMenu.h"
 
 extern NSString *const WMSAppDelegateReSyncData;
+extern NSString *const WMSAppDelegateNewDay;
 
 @interface WMSAppDelegate : UIResponder <UIApplicationDelegate>
 

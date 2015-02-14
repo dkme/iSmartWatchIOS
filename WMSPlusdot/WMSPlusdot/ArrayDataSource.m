@@ -29,7 +29,7 @@
 {
     self = [super init];
     if (self) {
-        self.items = anItems;
+        self.items = [anItems copy];
         self.cellIdentifier = aCellIdentifier;
         self.configureCellBlock = [aConfigureCellBlock copy];
     }
@@ -41,7 +41,7 @@ configureTableViewBlock:(TableViewConfigureBlock)aConfigureCellBlock
 {
     self = [super init];
     if (self) {
-        self.items = anItems;
+        self.items = [anItems copy];
         //self.cellIdentifier = aCellIdentifier;
         self.configureTableViewBlock = [aConfigureCellBlock copy];
     }

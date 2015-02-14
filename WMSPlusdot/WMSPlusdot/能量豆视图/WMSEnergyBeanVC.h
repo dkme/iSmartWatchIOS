@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WMSEnergyBeanVC : UIViewController<UITableViewDelegate>
+@interface WMSEnergyBeanVC : UIViewController<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *myBeanLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *bottomButton;

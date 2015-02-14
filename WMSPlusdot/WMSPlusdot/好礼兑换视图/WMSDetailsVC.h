@@ -14,8 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UITextView *ruleTextView;
 @property (weak, nonatomic) IBOutlet UILabel *multiplierLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *leftImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *rightImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *getBeanLabel;
 @property (weak, nonatomic) IBOutlet UILabel *myBeanLabel;
 @property (weak, nonatomic) IBOutlet UIButton *bottomButton;

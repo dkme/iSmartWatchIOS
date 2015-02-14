@@ -25,6 +25,7 @@
     if (self = [super init]) {
         _batteryEnergy = 0;
         _version = 0.0;
+        _mac = nil;
     }
     return self;
 }
@@ -35,8 +36,9 @@
 
 - (void)resetDevice
 {
-    [WMSDeviceModel deviceModel].version = 0;
-    [WMSDeviceModel deviceModel].batteryEnergy = 0;
+    self.version = 0;
+    self.batteryEnergy = 0;
+    self.mac = nil;
 }
 
 @end

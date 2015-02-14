@@ -557,6 +557,9 @@
             }
         }];
     }];
+    [self.bleControl.deviceProfile readDeviceMac:^(NSString *mac) {
+        DEBUGLog(@".....mac:[%@]",mac);
+    }];
 }
 //- (void)readDeviceInfo
 //{

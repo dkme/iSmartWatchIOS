@@ -58,8 +58,6 @@
     [self.getBeanLabel setSegmentsText:NSLocalizedString(@"如何获取能量豆?", nil) separateMark:nil attributes:attributes];
     [self setMyBean:1000];
     self.ruleTextView.text = @"从即日起到范德萨范德萨发范德萨发生的范德萨发生的范德萨发生的范德萨发生范德萨发生范德萨发生范德萨发生范德萨发生的范德萨发生的范德萨的发的啥地方";
-    //self.ruleTextView.lineBreakMode = 0;
-    
 }
 
 #pragma mark - Actions
