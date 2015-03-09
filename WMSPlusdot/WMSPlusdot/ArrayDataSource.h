@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 GUOGEE. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 typedef void (^TableViewCellConfigureBlock)(id cell, id item);
 typedef id (^TableViewConfigureBlock)(UITableView *, NSIndexPath *, NSArray *);
 
@@ -17,7 +19,7 @@ typedef id (^TableViewConfigureBlock)(UITableView *, NSIndexPath *, NSArray *);
  configureCellBlock:(TableViewCellConfigureBlock)aConfigureCellBlock;
 
 - (id)initWithItems:(NSArray *)anItems
- configureTableViewBlock:(TableViewConfigureBlock)aConfigureCellBlock;
+configureTableViewBlock:(TableViewConfigureBlock)aConfigureCellBlock;
 
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 

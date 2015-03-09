@@ -8,16 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Activity : NSObject /*<NSCopying>*/
+@interface Activity : NSObject <NSCopying>
 
 @property (nonatomic) int actID;
 @property (nonatomic, strong) NSString *actName;
 @property (nonatomic, strong) NSDate *beginDate;
 @property (nonatomic, strong) NSDate *endDate;
-@property (nonatomic, strong) NSString *memo;
+@property (nonatomic, strong) NSString *actMemo;
 @property (nonatomic, strong) NSString *gameName;
 @property (nonatomic, strong) NSString *logo;
-
-- (id)initWithID:(int)pID actName:(NSString *)pActName beginDate:(NSDate *)pBeginDate endDate:(NSDate *)pEndDate memo:(NSString *)pMemo gameName:(NSString *)pGameName logo:(NSString *)pLogo;
+@property (nonatomic) int consumeBeans;
 
 @end

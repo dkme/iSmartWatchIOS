@@ -7,6 +7,7 @@
 //
 
 #import "GGTopMenu.h"
+#import "JSCustomBadge.h"
 
 static const NSInteger START_TAG_BUTTON                 = 1000;
 static const NSInteger START_TAG_TINTVIEW               = 2000;
@@ -116,6 +117,27 @@ static const CGFloat SEPARATOR_WIDTH                    = 2.0;
     }
 }
 
+- (void)showBadge:(NSString *)string forItem:(NSInteger)index
+{
+    [self hideBadgeFromItem:index];
+    UIButton *button = (UIButton *)[self viewWithTag:index+START_TAG_BUTTON];
+    JSCustomBadge *badge = [JSCustomBadge customBadgeWithString:string];
+    CGRect frame = badge.frame;
+    frame.origin.x = button.bounds.size.width-frame.size.width-2;
+    badge.frame = frame;
+    [button addSubview:badge];
+}
+- (void)hideBadgeFromItem:(NSInteger)index
+{
+    UIButton *button = (UIButton *)[self viewWithTag:index+START_TAG_BUTTON];
+    for (UIView *obj in button.subviews) {
+        if ([obj isKindOfClass:[JSCustomBadge class]]) {
+            [obj removeFromSuperview];
+            return ;
+        }
+    }
+}
+
 - (void)menuButtonClicked:(id)sender
 {
     UIButton *button = (UIButton *)sender;
@@ -143,11 +165,11 @@ static const CGFloat SEPARATOR_WIDTH                    = 2.0;
 }
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end

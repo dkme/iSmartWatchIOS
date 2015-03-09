@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString* const WMSBindAccessorySuccess;
+
 @interface WMSMyAccessoryViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

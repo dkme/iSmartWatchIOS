@@ -464,7 +464,7 @@ static const int STARTED_NUMBER = 50;
                     UInt8 mac3 = package[6];
                     UInt8 mac4 = package[7];
                     UInt8 mac5 = package[8];
-                    NSString *mac = [NSString stringWithFormat:@"%X:%X:%X:%X:%X:%X",mac0,mac1,mac2,mac3,mac4,mac5];
+                    NSString *mac = [NSString stringWithFormat:@"%X:%X:%X:%X:%X:%X",mac5,mac4,mac3,mac2,mac1,mac0];
                     callBack(mac);
                 }
                 callBack = nil;

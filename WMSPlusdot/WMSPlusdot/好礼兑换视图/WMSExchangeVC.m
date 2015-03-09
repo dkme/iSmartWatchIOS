@@ -30,7 +30,8 @@
 }
 - (void)setExchangeCode:(NSString *)code
 {
-    NSString *format = NSLocalizedString(@"兑换码为: /%@/\n您可以在我的礼包中查看", nil);
+    _exchangeCode = code;
+    NSString *format = NSLocalizedString(@"兑换码为: /%@/\n您可以在我的礼包中查看", code);
     NSArray *attributes = @[@{NSForegroundColorAttributeName:
                                   [UIColor whiteColor]},
                             @{NSForegroundColorAttributeName:
@@ -68,14 +69,15 @@
                             ];
     [self.getBeanLabel setSegmentsText:NSLocalizedString(@"如何获取能量豆?", nil) separateMark:nil attributes:attributes];
     
-    [self setExchangeCode:@"xxxx-xxxxx-xxxxx"];
+    [self setExchangeCode:self.exchangeCode];
     
-    [self setConsumeBean:10];
+    [self setConsumeBean:self.consumeBeans];
 }
 
 #pragma mark - Actions
 - (IBAction)copyCodeAction:(id)sender {
-    DEBUGLog(@"%s",__FUNCTION__);
+    [[UIPasteboard generalPasteboard] setPersistent:YES];
+    [[UIPasteboard generalPasteboard] setValue:self.exchangeCode forPasteboardType:UIPasteboardTypeListString[0]];
 }
 - (IBAction)shareAction:(id)sender {
     DEBUGLog(@"%s",__FUNCTION__);
@@ -84,6 +86,5 @@
     WMSHowGetBeanVC *vc = [[WMSHowGetBeanVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
-
 
 @end

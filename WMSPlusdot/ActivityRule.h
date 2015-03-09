@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSUInteger, ActivityRuleType) {
     ActivityRuleTypeRuning = 1,
     ActivityRuleTypeSleep = 2,
+    ActivityRuleTypeBean = 3,
 };
 typedef NS_ENUM(NSUInteger, ActivityRuleCycleType) {
     ActivityRuleCycleTypeHour = 0,
@@ -21,9 +22,9 @@ typedef NS_ENUM(NSUInteger, ActivityRuleCycleType) {
 @interface ActivityRule : NSObject
 
 @property (nonatomic) int ruleID;
-@property (nonatomic) int ruleType;
+@property (nonatomic) ActivityRuleType ruleType;
 @property (nonatomic) int count;
-@property (nonatomic) int cycleType;
+@property (nonatomic) ActivityRuleCycleType cycleType;
 @property (nonatomic) int cycleCount;
 @property (nonatomic, strong) NSString *ruleMemo;
 @property (nonatomic) int activityID;

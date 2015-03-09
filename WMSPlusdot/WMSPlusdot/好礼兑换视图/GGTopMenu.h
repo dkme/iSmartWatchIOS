@@ -29,6 +29,10 @@
 
 - (void)reloadView;
 - (void)setItems:(NSArray *)items selectedItem:(NSInteger)index;
+
+- (void)showBadge:(NSString *)string forItem:(NSInteger)index;
+- (void)hideBadgeFromItem:(NSInteger)index;
+
 @end
 
 @protocol GGTopMenuDelegate <NSObject>

@@ -13,7 +13,9 @@
 @property (nonatomic) int gbID;
 @property (nonatomic, strong) NSString *userKey;/*用户唯一标识，目前填手表的mac地址即可*/
 @property (nonatomic, strong) NSString *exchangeCode;
-@property (nonatomic, strong) NSDate *getDate;
+@property (nonatomic, strong) NSString *getDate;
 @property (nonatomic, strong) NSString *logo;
+@property (nonatomic, strong) NSString *gameName;
+@property (nonatomic, strong) NSString *memo;
 
 @end

@@ -7,6 +7,9 @@
 //
 
 #import "WMSHowGetBeanVC.h"
+#import "ExchangeBeanRule.h"
+#import "UITableViewCell+Configure.h"
+#import "WMSRequestTool.h"
 
 @interface WMSHowGetBeanVC ()
 @property (nonatomic, strong) NSArray *datas;
@@ -15,15 +18,7 @@
 @implementation WMSHowGetBeanVC
 
 #pragma mark - Getter/Setter
-- (NSArray *)datas
-{
-    if (!_datas) {
-        _datas = @[NSLocalizedString(@"每天跑步10000步", nil),
-                   NSLocalizedString(@"分享1为好友", nil),
-                   ];
-    }
-    return _datas;
-}
+
 #pragma mark - Life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,8 +29,9 @@
     self.title = NSLocalizedString(@"如何获取能量豆", nil);
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorColor = [UIColor whiteColor];
+    
+    [self loadData];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -43,6 +39,17 @@
 - (void)dealloc
 {
     DEBUGLog(@"%s",__FUNCTION__);
+}
+
+#pragma mark - Load data
+- (void)loadData
+{
+    [WMSRequestTool requestExchangeRuleList:^(BOOL result, NSArray *list) {
+        if (result) {
+            self.datas = list;
+            [self.tableView reloadData];
+        }
+    }];
 }
 
 #pragma mark - Table view data source
@@ -58,19 +65,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"reuseIdentifier"];
     }
-    cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.text = [NSString stringWithFormat:@"%d.%@",(int)indexPath.row+1,self.datas[indexPath.row]];
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"+1" attributes:nil];
-    NSTextAttachment *textAttachment = [[NSTextAttachment alloc] initWithData:nil ofType:nil];
-    UIImage *image = [UIImage imageNamed:@"plusdot_gift_bean_small.png"];
-    textAttachment.image = image;
-    textAttachment.bounds = CGRectMake(0, -2.0, 15.0, 15.0);
-    NSAttributedString *textAttachmentString = [NSAttributedString attributedStringWithAttachment:textAttachment];
-    [str appendAttributedString:textAttachmentString];
-    cell.detailTextLabel.attributedText = str;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell configureCellWithExchangeBeanRule:self.datas[indexPath.row] indexPath:indexPath];
     return cell;
 }
 

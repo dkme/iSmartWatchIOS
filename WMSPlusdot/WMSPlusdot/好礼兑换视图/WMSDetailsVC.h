@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class Activity;
+
+extern NSString* const WMSGetNewGiftBag;
+
 @interface WMSDetailsVC : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -18,5 +22,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *getBeanLabel;
 @property (weak, nonatomic) IBOutlet UILabel *myBeanLabel;
 @property (weak, nonatomic) IBOutlet UIButton *bottomButton;
-
+@property (strong, nonatomic) Activity *activity;
+@property (strong, nonatomic) UIImage *icon;
 @end

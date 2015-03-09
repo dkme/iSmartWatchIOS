@@ -59,17 +59,17 @@
     
     CGRect frame = self.textLabel.frame;
     CGPoint or = frame.origin;
-    or.y = frame.origin.y+frame.size.height+12.f;
+    or.y = frame.origin.y+frame.size.height+8.f;
     detailTextLabelFrame = (CGRect){or,self.detailTextLabel.frame.size};
     
     frame = detailTextLabelFrame;
     or = frame.origin;
-    or.y = frame.origin.y+frame.size.height+10.f;
+    or.y = frame.origin.y+frame.size.height+8.f;
     leftButtonFrame = (CGRect){or,self.leftButton.frame.size};
     
     frame = leftButtonFrame;
     or = frame.origin;
-    or.y = frame.origin.y+frame.size.height+3.f;
+    or.y = frame.origin.y+frame.size.height+2.f;
     rightButtonFrame = (CGRect){or,self.rightButton.frame.size};
     
     self.detailTextLabel.frame = detailTextLabelFrame;

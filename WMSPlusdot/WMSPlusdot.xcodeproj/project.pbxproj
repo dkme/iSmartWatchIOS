@@ -18,6 +18,12 @@
 		230298D819A87F0A009D4306 /* link_connect_failure_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D419A87F0A009D4306 /* link_connect_failure_icon.png */; };
 		230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D519A87F0A009D4306 /* link_connect_ing_icon.png */; };
 		230298DA19A87F0A009D4306 /* link_connect_success_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D619A87F0A009D4306 /* link_connect_success_icon.png */; };
+		23087B621AAD778C0023350B /* UITableViewCell+Configure.m in Sources */ = {isa = PBXBuildFile; fileRef = 23087B611AAD778C0023350B /* UITableViewCell+Configure.m */; };
+		23087B671AAD77C30023350B /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23087B641AAD77C30023350B /* CircleView.m */; };
+		23087B681AAD77C30023350B /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23087B661AAD77C30023350B /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		23087B6C1AAD78350023350B /* CacheClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 23087B6B1AAD78350023350B /* CacheClass.m */; };
+		23087B6F1AAD78960023350B /* ExchangeBeanRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 23087B6E1AAD78960023350B /* ExchangeBeanRule.m */; };
+		23087B721AAD79E20023350B /* FormatClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 23087B711AAD79E20023350B /* FormatClass.m */; };
 		230FDC6219D6548F00AE98FF /* WMSSleepHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 230FDC6019D6548F00AE98FF /* WMSSleepHistoryViewController.m */; };
 		230FDC6319D6548F00AE98FF /* WMSSleepHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 230FDC6119D6548F00AE98FF /* WMSSleepHistoryViewController.xib */; };
 		230FDC6919D659EB00AE98FF /* PNBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 230FDC6619D659EB00AE98FF /* PNBarChartView.m */; };
@@ -242,7 +248,6 @@
 		237241051A8C96A9009791AD /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 237240FB1A8C96A9009791AD /* UIProgressView+AFNetworking.m */; };
 		237241061A8C96A9009791AD /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 237240FD1A8C96A9009791AD /* UIRefreshControl+AFNetworking.m */; };
 		237241071A8C96A9009791AD /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 237240FF1A8C96A9009791AD /* UIWebView+AFNetworking.m */; };
-		2372410A1A8CA4A4009791AD /* UITableViewCell+Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 237241091A8CA4A4009791AD /* UITableViewCell+Activity.m */; };
 		237545C319AED3D200685CD1 /* account_head.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C219AED3D200685CD1 /* account_head.png */; };
 		237545C519AED3E100685CD1 /* account_edit_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C419AED3E100685CD1 /* account_edit_icon.png */; };
 		237545C819AED4BE00685CD1 /* exit_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 237545C619AED4BE00685CD1 /* exit_btn_a.png */; };
@@ -358,6 +363,18 @@
 		230298D419A87F0A009D4306 /* link_connect_failure_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_failure_icon.png; sourceTree = "<group>"; };
 		230298D519A87F0A009D4306 /* link_connect_ing_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_ing_icon.png; sourceTree = "<group>"; };
 		230298D619A87F0A009D4306 /* link_connect_success_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_success_icon.png; sourceTree = "<group>"; };
+		23087B601AAD778C0023350B /* UITableViewCell+Configure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Configure.h"; sourceTree = "<group>"; };
+		23087B611AAD778C0023350B /* UITableViewCell+Configure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Configure.m"; sourceTree = "<group>"; };
+		23087B631AAD77C30023350B /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CircleView.h; path = AFNetworking/CircleView.h; sourceTree = "<group>"; };
+		23087B641AAD77C30023350B /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CircleView.m; path = AFNetworking/CircleView.m; sourceTree = "<group>"; };
+		23087B651AAD77C30023350B /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGORefreshTableHeaderView.h; path = AFNetworking/EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		23087B661AAD77C30023350B /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EGORefreshTableHeaderView.m; path = AFNetworking/EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		23087B6A1AAD78350023350B /* CacheClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheClass.h; sourceTree = "<group>"; };
+		23087B6B1AAD78350023350B /* CacheClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheClass.m; sourceTree = "<group>"; };
+		23087B6D1AAD78960023350B /* ExchangeBeanRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeBeanRule.h; sourceTree = "<group>"; };
+		23087B6E1AAD78960023350B /* ExchangeBeanRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExchangeBeanRule.m; sourceTree = "<group>"; };
+		23087B701AAD79E20023350B /* FormatClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormatClass.h; sourceTree = "<group>"; };
+		23087B711AAD79E20023350B /* FormatClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormatClass.m; sourceTree = "<group>"; };
 		230FDC5F19D6548F00AE98FF /* WMSSleepHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSleepHistoryViewController.h; sourceTree = "<group>"; };
 		230FDC6019D6548F00AE98FF /* WMSSleepHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSleepHistoryViewController.m; sourceTree = "<group>"; };
 		230FDC6119D6548F00AE98FF /* WMSSleepHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSleepHistoryViewController.xib; sourceTree = "<group>"; };
@@ -688,8 +705,6 @@
 		237240FD1A8C96A9009791AD /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		237240FE1A8C96A9009791AD /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		237240FF1A8C96A9009791AD /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
-		237241081A8CA4A4009791AD /* UITableViewCell+Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Activity.h"; sourceTree = "<group>"; };
-		237241091A8CA4A4009791AD /* UITableViewCell+Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Activity.m"; sourceTree = "<group>"; };
 		237545C219AED3D200685CD1 /* account_head.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_head.png; sourceTree = "<group>"; };
 		237545C419AED3E100685CD1 /* account_edit_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = account_edit_icon.png; sourceTree = "<group>"; };
 		237545C619AED4BE00685CD1 /* exit_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exit_btn_a.png; sourceTree = "<group>"; };
@@ -952,6 +967,26 @@
 			name = "左右菜单视图";
 			sourceTree = "<group>";
 		};
+		23087B5F1AAD777D0023350B /* UITableViewCell+Configure */ = {
+			isa = PBXGroup;
+			children = (
+				23087B601AAD778C0023350B /* UITableViewCell+Configure.h */,
+				23087B611AAD778C0023350B /* UITableViewCell+Configure.m */,
+			);
+			name = "UITableViewCell+Configure";
+			sourceTree = "<group>";
+		};
+		23087B691AAD77D70023350B /* RefreshTableHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				23087B631AAD77C30023350B /* CircleView.h */,
+				23087B641AAD77C30023350B /* CircleView.m */,
+				23087B651AAD77C30023350B /* EGORefreshTableHeaderView.h */,
+				23087B661AAD77C30023350B /* EGORefreshTableHeaderView.m */,
+			);
+			name = RefreshTableHeaderView;
+			sourceTree = "<group>";
+		};
 		230FDC5E19D6545D00AE98FF /* 睡眠历史视图 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1006,6 +1041,7 @@
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 				232471B71A50FD0300F70565 /* UIPickerView+Display */,
 				23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */,
+				23087B5F1AAD777D0023350B /* UITableViewCell+Configure */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1175,8 +1211,6 @@
 				2349C54E1A80A66200CEADA2 /* WMSAlertView.h */,
 				2349C54F1A80A66200CEADA2 /* WMSAlertView.m */,
 				2349C5511A80A68300CEADA2 /* WMSAlertView.xib */,
-				237241081A8CA4A4009791AD /* UITableViewCell+Activity.h */,
-				237241091A8CA4A4009791AD /* UITableViewCell+Activity.m */,
 				2349C5531A80D13B00CEADA2 /* 活动详情视图 */,
 				2368A8231A84A1F0003DFAAC /* 获取能量豆视图 */,
 			);
@@ -1281,11 +1315,11 @@
 			isa = PBXGroup;
 			children = (
 				23204A941A42A246005874CE /* Tool */,
+				23B0094819D54529008424FA /* Macro */,
 				2354A5EF19EE179F00751E92 /* Helper */,
 				2388E5BF19ED24BC005864D4 /* HTTP */,
 				23305D9B19C836EF00F9EEE6 /* 数据库 */,
 				23D7CEC419B571F900DFA678 /* Bluetooth */,
-				23B0094819D54529008424FA /* Macro */,
 				23D7CEC319B571B400DFA678 /* External */,
 				2311611A19B1A3070012B066 /* Categories */,
 				23C350DA19C04D7200BCB7B8 /* Models */,
@@ -1605,6 +1639,8 @@
 				2319723E1A354535002E8A0F /* WMSAppConfig.m */,
 				235427661A3E906E008E5CFD /* WMSPostNotificationHelper.h */,
 				235427671A3E906E008E5CFD /* WMSPostNotificationHelper.m */,
+				23087B701AAD79E20023350B /* FormatClass.h */,
+				23087B711AAD79E20023350B /* FormatClass.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -1790,6 +1826,8 @@
 				2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */,
 				23472E931A8B00E000ED3CA4 /* WMSRequestTool.h */,
 				23472E941A8B00E000ED3CA4 /* WMSRequestTool.m */,
+				23087B6A1AAD78350023350B /* CacheClass.h */,
+				23087B6B1AAD78350023350B /* CacheClass.m */,
 			);
 			name = HTTP;
 			sourceTree = "<group>";
@@ -1929,6 +1967,8 @@
 				23472E9A1A8B495E00ED3CA4 /* ActivityRule.m */,
 				23472E9C1A8B5AA300ED3CA4 /* GiftBag.h */,
 				23472E9D1A8B5AA300ED3CA4 /* GiftBag.m */,
+				23087B6D1AAD78960023350B /* ExchangeBeanRule.h */,
+				23087B6E1AAD78960023350B /* ExchangeBeanRule.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1977,6 +2017,7 @@
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
 				237240EE1A8C96A9009791AD /* UIKit+AFNetworking */,
 				23472E701A8AF8C500ED3CA4 /* AFNetworking */,
+				23087B691AAD77D70023350B /* RefreshTableHeaderView */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -2395,10 +2436,10 @@
 				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
 				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
 				238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */,
+				23087B6C1AAD78350023350B /* CacheClass.m in Sources */,
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
 				23472E8C1A8AF8C500ED3CA4 /* AFURLSessionManager.m in Sources */,
 				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
-				2372410A1A8CA4A4009791AD /* UITableViewCell+Activity.m in Sources */,
 				23D7CF0119B5C49C00DFA678 /* LGPeripheral.m in Sources */,
 				237241011A8C96A9009791AD /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				234B6C141A81B13000FF46CB /* WMSDetailsVC.m in Sources */,
@@ -2421,6 +2462,7 @@
 				236D95BB1A67ACFC00037DD8 /* WMSFilter.m in Sources */,
 				23472E981A8B374600ED3CA4 /* Activity.m in Sources */,
 				2331838C19B70D9D005B2BA0 /* WMSRemindProfile.m in Sources */,
+				23087B621AAD778C0023350B /* UITableViewCell+Configure.m in Sources */,
 				23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */,
 				2326A44A19A5E9CE0098657B /* WMSRightViewController.m in Sources */,
 				2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */,
@@ -2481,6 +2523,7 @@
 				23472E871A8AF8C500ED3CA4 /* AFNetworkReachabilityManager.m in Sources */,
 				23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */,
 				239109321A3A90C900333A2A /* WMSUpdateVCHelper.m in Sources */,
+				23087B6F1AAD78960023350B /* ExchangeBeanRule.m in Sources */,
 				237241021A8C96A9009791AD /* UIAlertView+AFNetworking.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
@@ -2491,6 +2534,7 @@
 				23472E951A8B00E000ED3CA4 /* WMSRequestTool.m in Sources */,
 				237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */,
 				23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */,
+				23087B671AAD77C30023350B /* CircleView.m in Sources */,
 				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,
 				23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */,
 				2333AB081A64FE3400DBA846 /* WMSDataManager.m in Sources */,
@@ -2498,6 +2542,7 @@
 				237D2EFF1A5A35AD0002AB4F /* WMSWeekPicker.m in Sources */,
 				2323BE091A68B0E900FCA216 /* BLEOperations.m in Sources */,
 				23472E891A8AF8C500ED3CA4 /* AFURLConnectionOperation.m in Sources */,
+				23087B681AAD77C30023350B /* EGORefreshTableHeaderView.m in Sources */,
 				23E35B8A1A4BB13B00FDA20D /* WMSAntiLostVC.m in Sources */,
 				238FE0D31A7A1D8D00D27E65 /* GGTopMenu.m in Sources */,
 				2333AB021A64B57000DBA846 /* UIBarButtonItem+Extension.m in Sources */,
@@ -2511,6 +2556,7 @@
 				231DE6EE1A78EAF80065E911 /* WMSEnergyBeanVC.m in Sources */,
 				232471BA1A50FD6D00F70565 /* UIPickerView+Display.m in Sources */,
 				23D7CF0019B5C49C00DFA678 /* LGCharacteristic.m in Sources */,
+				23087B721AAD79E20023350B /* FormatClass.m in Sources */,
 				239F51D41A2D94F90058F6DE /* EAIntroView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

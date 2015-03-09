@@ -28,6 +28,8 @@
 #define HEADER_HEIGHT       50
 #define FOOTER_HEIGHT       1
 
+NSString* const WMSBindAccessorySuccess = @"com.guogee.pludsot.WMSBindAccessorySuccess";
+
 @interface WMSMyAccessoryViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIAlertViewDelegate>
 @property (nonatomic, strong) WMSNavBarView *navBarView;
 @property (nonatomic, strong) UIAlertView *alertView;
@@ -154,6 +156,7 @@
         [self buttonLeftClicked:nil];
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(skipSportVC) object:nil];
         [self performSelector:@selector(skipSportVC) withObject:nil afterDelay:0.8];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WMSBindAccessorySuccess object:nil userInfo:nil];
     } else {
         [self showTip:NSLocalizedString(@"绑定失败", nil)];
     }
@@ -277,7 +280,7 @@
     cell.bottomLabel.font = Font_System(15.0);
     NSString *imageName = self.imageNameArray[indexPath.row];
     cell.topImageView.image = [UIImage imageNamed:imageName];
-
+    
     return cell;
 }
 

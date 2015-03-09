@@ -17,13 +17,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) id<WMSAlertViewDelegate> delegate;
+@property (strong, nonatomic) NSString *code;
+
 
 + (id)alertViewWithText:(NSString *)text
              detailText:(NSString *)detailText
         leftButtonTitle:(NSString *)leftTitle
        rightButtonTitle:(NSString *)rightTitle;
 
-//+ (id)defaultAlertView;
 - (CGRect)updateSubviews;
 
 @end

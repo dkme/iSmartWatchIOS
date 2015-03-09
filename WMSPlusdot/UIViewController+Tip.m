@@ -77,7 +77,9 @@
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:[WMSAppDelegate appDelegate].window];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.yOffset = HUD_LOCATED_CENTER_Y_OFFSET;
-    hud.minSize = HUD_LOCATED_CENTER_SIZE;
+    if (text && text.length>0) {
+        hud.minSize = HUD_LOCATED_CENTER_SIZE;
+    }
     hud.labelText = text;
     hud.tag = HUD_TAG;
     [[WMSAppDelegate appDelegate].window addSubview:hud];

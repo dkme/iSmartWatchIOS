@@ -19,7 +19,7 @@
 #import "WMSConstants.h"
 
 #define CELL_HEIGHT                     75.f
-#define MAX_NUMBER_CLOCK                10
+#define MAX_NUMBER_CLOCK                1
 
 @interface WMSClockListVC ()<UINavigationControllerDelegate,UIAlertViewDelegate,WMSClockCellDelegage>
 {
@@ -162,7 +162,8 @@
 {
     if ([self.clockArray count] >= MAX_NUMBER_CLOCK) {
         NSString *title = NSLocalizedString(@"提示", nil);
-        NSString *message = NSLocalizedString(@"只能添加10个闹钟", nil);
+        NSString *format = NSLocalizedString(@"只能添加%d个闹钟", nil);
+        NSString *message = [NSString stringWithFormat:format,MAX_NUMBER_CLOCK];
         NSString *cancelBtn = NSLocalizedString(@"知道了", nil);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:cancelBtn otherButtonTitles:nil];
         [alert show];

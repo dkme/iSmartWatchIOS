@@ -12,7 +12,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"[ruleID=%d,ruleType=%d,count=%d,cycleType=%d,cycleCount=%d,ruleMemo=%@,activityID=%d]",_ruleID,_ruleType,_count,_cycleType,_cycleCount,_ruleMemo,_activityID];
+    return [NSString stringWithFormat:@"[ruleID=%d,ruleType=%d,count=%d,cycleType=%d,cycleCount=%d,ruleMemo=%@]",_ruleID,_ruleType,_count,_cycleType,_cycleCount,_ruleMemo];
 }
 
 @end

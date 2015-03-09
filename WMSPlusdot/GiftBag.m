@@ -12,7 +12,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"[gbID=%d,userKey=%@,exchangeCode=%@,getDate=%@,logo=%@]",_gbID,_userKey,_exchangeCode,[_getDate description],_logo];
+    return [NSString stringWithFormat:@"[gbID=%d,userKey=%@,exchangeCode=%@,getDate=%@,logo=%@,gameName=%@,memo=%@]",_gbID,_userKey,_exchangeCode,_getDate,_logo,_gameName,_memo];
 }
 
 @end
