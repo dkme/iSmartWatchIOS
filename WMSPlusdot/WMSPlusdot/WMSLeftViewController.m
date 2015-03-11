@@ -124,7 +124,7 @@
                            NSLocalizedString(@"Bound watch",nil)
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
-#ifdef DEBUG
+//#ifdef DEBUG
         NSString *languageType = [WMSAppConfig systemLanguage];
         if ([languageType isEqualToString:kLanguageChinese]) {
             NSArray *newItems = @[NSLocalizedString(@"好礼兑换",nil),
@@ -132,7 +132,7 @@
                                   ];
             [mutiArr addObjectsFromArray:newItems];
         }
-#endif
+//#endif
         _titleArray = mutiArr;
     }
     return _titleArray;

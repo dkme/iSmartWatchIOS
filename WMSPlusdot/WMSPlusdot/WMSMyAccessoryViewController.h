@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 extern NSString* const WMSBindAccessorySuccess;
+extern NSString* const WMSUnBindAccessorySuccess;
 
 @interface WMSMyAccessoryViewController : UIViewController
 

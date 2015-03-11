@@ -56,7 +56,6 @@ enum {
     NSAttributedString *textAttachmentString = [NSAttributedString attributedStringWithAttachment:textAttachment];
     [str appendAttributedString:textAttachmentString];
     self.myBeanLabel.attributedText = str;
-    [CacheClass cacheMyBeans:bean mac:[WMSMyAccessory macForBindAccessory]];
 }
 
 #pragma mark - Life cycle
@@ -94,7 +93,7 @@ enum {
 - (void)setupProperty
 {
     _listData = [NSMutableArray new];
-    
+//    [CacheClass cleanCacheData];
     NSDictionary *data = [CacheClass cachedExchangedStepsAndDateForMac:[WMSMyAccessory macForBindAccessory]];
     NSDate *savaDate = data[@"date"];
     if ([NSDate daysOfDuringDate:[NSDate systemDate] andDate:savaDate] == 0)
@@ -107,8 +106,8 @@ enum {
 - (void)setupUI
 {
     self.title = NSLocalizedString(@"能量豆", nil);
+    self.myBeanLabel.text = @"    我的能量豆: ";
     [self updateBottomButtonTitle];
-    [self setMyBean:0];
 }
 - (void)setupNavigationBar
 {
@@ -131,26 +130,31 @@ enum {
     }
 
     [self showHUDAtViewCenter:nil];
-    [WMSRequestTool requestUserBeansWithUserKey:[WMSMyAccessory macForBindAccessory] completion:^(BOOL result, int beans,NSError *error)
-     {
-         if (result) {
-             _currentBeans = beans;
-             [self setMyBean:beans];
-             [self hideHUDAtViewCenter];
-         }else{
-             [self hideHUDAtViewCenter];
-         }
-     }];
-    
     [WMSRequestTool requestExchangeRuleList:^(BOOL result, NSArray *list) {
         if (result) {
             for (ExchangeBeanRule *rule in list) {
                 if (rule.ruleType == ExchangeBeanRuleTypeRuning) {
                     _targetSteps = rule.eventNumber/10;//test
-                    [self reloadData];
+//                    [self reloadData];
                 }else{}
             }
-        }else{}
+            [WMSRequestTool requestUserBeansWithUserKey:[WMSMyAccessory macForBindAccessory] completion:^(BOOL result, int beans,NSError *error)
+             {
+                 if (result) {
+                     _currentBeans = beans;
+                     [self setMyBean:beans];
+                     [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
+                     [self hideHUDAtViewCenter];
+                     [self reloadData];
+                 }else{
+                     [self hideHUDAtViewCenter];
+                     [self showLoadFailedTip];
+                 }
+             }];
+        } else {
+            [self hideHUDAtViewCenter];
+            [self showLoadFailedTip];
+        }
     }];
 }
 
@@ -169,6 +173,7 @@ enum {
              if (result) {
                  _currentBeans = beans;
                  [self setMyBean:beans];
+                 [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
              }else{}
          }];
         NSDictionary *data = [CacheClass cachedExchangedStepsAndDateForMac:[WMSMyAccessory macForBindAccessory]];
@@ -179,6 +184,9 @@ enum {
         } else {
             _exchangedSteps = 0;
         }
+    } else {
+        _currentBeans = beans;
+        [self setMyBean:beans];
     }
     
     //从数据库中查询数据
@@ -186,7 +194,14 @@ enum {
     NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:[NSDate systemDate]];
     if (results.count > 0) {
         WMSSportModel *model = results[0];
-        NSUInteger unExchangeSteps = model.sportSteps-_exchangedSteps;
+        
+        NSUInteger unExchangeSteps = 0;
+        if (model.sportSteps >= _exchangedSteps) {
+            unExchangeSteps = model.sportSteps-_exchangedSteps;
+        } else {
+            _exchangedSteps = 0;
+            [CacheClass cacheMyExchangedSteps:_exchangedSteps date:[NSDate systemDate] mac:[WMSMyAccessory macForBindAccessory]];
+        }
         if (_targetSteps == 0) {
             [self.tableView reloadData];
             return ;
@@ -209,16 +224,35 @@ enum {
         [self.bottomButton setTitle:BOTTOM_BUTTON_TITLE2 forState:UIControlStateNormal];
     }
 }
+- (void)showLoadFailedTip
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 120.f)];
+    label.center = self.view.center;
+    label.text = @"加载失败\n请检查您的网络，轻击屏幕重新加载";
+    label.textAlignment = NSTextAlignmentCenter;
+    label.numberOfLines = -1;
+    label.userInteractionEnabled = YES;
+    label.tag = 1001;
+    [self.view addSubview:label];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedScreen:)];
+    [self.view addGestureRecognizer:tap];
+}
 
 #pragma mark - Actions
+- (void)clickedScreen:(id)sender
+{
+    [self.view removeGestureRecognizer:sender];
+    [[self.view viewWithTag:1001] removeFromSuperview];
+    [self loadDataFromServer];
+}
+
 - (void)backAction:(id)sender
 {
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
 - (IBAction)bottomButtonAction:(id)sender {
-    if (self.listData.count == 0 &&
-        [[(UIButton *)sender titleForState:UIControlStateNormal] isEqualToString:BOTTOM_BUTTON_TITLE2])
+    if (self.listData.count == 0)
     {
         //跳转到如何获取能量豆界面
         WMSHowGetBeanVC *vc = [[WMSHowGetBeanVC alloc] init];
@@ -227,31 +261,32 @@ enum {
     }
     
     NSInteger i = 0;
-    NSUInteger willExchangeSteps = _exchangedSteps;
-    NSUInteger willBeanNumber = _currentBeans;
+    NSUInteger willExchangeSteps = 0;
+    NSUInteger willPostBeanNumber = _currentBeans;
     for (NSNumber *obj in self.listData) {
         if (i == SportSteps) {
-            willExchangeSteps += [obj unsignedIntegerValue];
+            willExchangeSteps = [obj unsignedIntegerValue];
             NSUInteger beans = willExchangeSteps/_targetSteps;
-            willBeanNumber += beans;
+            willPostBeanNumber += beans;
         }
         i++;
     }
-    [self getsBeans:(int)willBeanNumber willExchangeSteps:willBeanNumber];
+    [self getsBeans:(int)willPostBeanNumber willExchangeSteps:willExchangeSteps];
 }
 - (void)getsBeans:(int)beans willExchangeSteps:(NSUInteger)steps
 {
     [self showHUDAtViewCenter:nil];
     [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:beans secretKey:SECRET_KEY completion:^(BOOL result, int beans) {
         if (result) {
-            _currentBeans = beans, _exchangedSteps = steps;
+            _currentBeans = beans, _exchangedSteps += steps;
             [self setMyBean:beans];
-            [self updateBottomButtonTitle];
+            [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
             while (self.listData.count) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                 [self.listData removeObjectAtIndex:0];
                 [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
+            [self updateBottomButtonTitle];
         }else{
             [self showTip:@"领取失败"];
         }
@@ -323,8 +358,9 @@ enum {
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beansDidOutOfDate:) name:WMSAppDelegateNewDay object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
-    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handelBindSuccess:) name:WMSBindAccessorySuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handelUnBindSuccess:) name:WMSUnBindAccessorySuccess object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGetNewGiftBag:) name:WMSGetNewGiftBag object:nil];
     
 }
@@ -341,33 +377,23 @@ enum {
 {
     [CacheClass cacheMyExchangedSteps:_exchangedSteps date:[NSDate systemDate] mac:[WMSMyAccessory macForBindAccessory]];
 }
+- (void)appDidEnterBackground:(NSNotification *)notification
+{
+    [CacheClass cacheMyExchangedSteps:_exchangedSteps date:[NSDate systemDate] mac:[WMSMyAccessory macForBindAccessory]];
+}
 - (void)handelBindSuccess:(NSNotification *)notification
 {
-    [CacheClass cleanCacheData];
     [self reloadData];
+}
+- (void)handelUnBindSuccess:(NSNotification *)notification
+{
+    [CacheClass cleanCacheData];
+    [self setMyBean:0];
 }
 - (void)handleGetNewGiftBag:(NSNotification *)notification
 {
     int beans = [CacheClass cachedBeansForMac:[WMSMyAccessory macForBindAccessory]];
     [self setMyBean:beans];
 }
-//- (void)handleSuccessConnectPeripheral:(NSNotification *)notification
-//{
-//    [WMSRequestTool requestUserBeansWithUserKey:[WMSMyAccessory macForBindAccessory] completion:^(BOOL result, int beans,NSError *error)
-//     {
-//         if (result) {
-//             _currentBeans = beans;
-//             [self setMyBean:beans];
-//         }else{}
-//     }];
-//    NSDictionary *data = [CacheClass cachedExchangedStepsAndDateForMac:[WMSMyAccessory macForBindAccessory]];
-//    NSDate *savaDate = data[@"date"];
-//    if ([NSDate daysOfDuringDate:[NSDate systemDate] andDate:savaDate] == 0)
-//    {
-//        _exchangedSteps = [data[@"steps"] unsignedIntegerValue];
-//    } else {
-//        _exchangedSteps = 0;
-//    }
-//}
 
 @end

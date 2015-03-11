@@ -22,6 +22,7 @@
 
 #import "WMSMyAccessory.h"
 #import "WMSHelper.h"
+#import "CacheClass.h"
 
 #define SECTION_NUMBER      1
 #define CELL_HIGHT          207
@@ -29,6 +30,8 @@
 #define FOOTER_HEIGHT       1
 
 NSString* const WMSBindAccessorySuccess = @"com.guogee.pludsot.WMSBindAccessorySuccess";
+NSString* const WMSUnBindAccessorySuccess =
+    @"com.guogee.pludsot.WMSUnBindAccessorySuccess";
 
 @interface WMSMyAccessoryViewController ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIAlertViewDelegate>
 @property (nonatomic, strong) WMSNavBarView *navBarView;
@@ -161,6 +164,21 @@ NSString* const WMSBindAccessorySuccess = @"com.guogee.pludsot.WMSBindAccessoryS
         [self showTip:NSLocalizedString(@"绑定失败", nil)];
     }
 }
+- (void)showUnBindTip:(BOOL)success
+{
+    if (success) {
+        WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+        [bleControl disconnect];
+        [self showTip:NSLocalizedString(@"解绑成功", nil)];
+        [self reset];
+        [self.tableView reloadData];
+        [WMSMyAccessory unBindAccessory];
+        [CacheClass cleanCacheData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WMSUnBindAccessorySuccess object:nil userInfo:nil];
+    } else {
+        [self showTip:NSLocalizedString(@"解绑失败", nil)];
+    }
+}
 
 //cmd：0表示解绑，1表示绑定
 - (BOOL)showAlertView:(int)cmd
@@ -210,10 +228,7 @@ NSString* const WMSBindAccessorySuccess = @"com.guogee.pludsot.WMSBindAccessoryS
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        [self showTip:NSLocalizedString(@"解绑成功", nil)];
-        [self reset];
-        [self.tableView reloadData];
-        [WMSMyAccessory unBindAccessory];
+        [self showUnBindTip:YES];
     }
 }
 #pragma mark - UIActionSheetDelegate
@@ -226,14 +241,11 @@ NSString* const WMSBindAccessorySuccess = @"com.guogee.pludsot.WMSBindAccessoryS
             switch (result) {
                 case BindingResultSuccess:
                 {
-                    [self showTip:NSLocalizedString(@"解绑成功", nil)];
-                    [bleControl disconnect];
-                    [self reset];
-                    [self.tableView reloadData];
-                    [WMSMyAccessory unBindAccessory];
+                    [self showUnBindTip:YES];
                     break;
                 }
                 default:
+                    [self showUnBindTip:NO];
                     break;
             }
         }];

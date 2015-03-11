@@ -80,6 +80,9 @@
 {
     NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[self filePath:FILE_ACCESSORY]];
     NSString *mac = [data objectForKey:KEY_MAC];
+    if (!mac) {
+        mac = @"";
+    }
     return mac;
 }
 

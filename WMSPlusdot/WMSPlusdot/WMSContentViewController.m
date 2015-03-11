@@ -235,6 +235,7 @@
 #pragma mark - setup
 - (void)setupView
 {
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport.jpg"]]];
     [self.view addSubview:self.syncDataView];
     [self.view addSubview:self.tipView];
     [self.view addSubview:self.hud];
@@ -389,8 +390,8 @@
     [self updateLabel:self.labelTimeValue value:model.sportMinute];
     [self updateLabel:self.labelDistanceValue value:model.sportDistance];
     [self updateLabel:self.labelBurnValue value:model.sportCalorie];
-    [self.mySportView setTargetSetps:target];
-    [self.mySportView setSportSteps:model.sportSteps];
+    [self.mySportView setTargetSetps:(int)target];
+    [self.mySportView setSportSteps:(int)model.sportSteps];
 
 }
 

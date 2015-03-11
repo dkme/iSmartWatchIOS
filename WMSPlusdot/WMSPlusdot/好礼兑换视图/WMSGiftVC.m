@@ -8,6 +8,7 @@
 
 #import "WMSGiftVC.h"
 #import "WMSDetailsVC.h"
+#import "WMSMyAccessoryViewController.h"
 #import "WMSAppDelegate.h"
 #import "GGTopMenu.h"
 #import "WMSLeftViewCell.h"
@@ -131,7 +132,7 @@ typedef enum {
 {
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.rowHeight = 60.f;
-    self.tableView.backgroundColor = UIColorFromRGBAlpha(0xEEEEEE, 1.0);
+    self.tableView.backgroundColor = [UIColor whiteColor];//UIColorFromRGBAlpha(0xEEEEEE, 1.0);
     [self.tableView addSubview:self.refreshHeaderView];
     [self configureCell:TopMenuItemActivity];
 }
@@ -313,12 +314,12 @@ typedef enum {
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0.f;
+    return 2.f;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [[UIView alloc] init];
-    view.backgroundColor = [UIColor clearColor];
+    view.backgroundColor = UIColorFromRGBAlpha(0xEEEEEE, 1.0);
     return view;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -406,6 +407,8 @@ typedef enum {
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getNewGiftBag:) name:WMSGetNewGiftBag object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUnBindSuccess:) name:WMSUnBindAccessorySuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleBindSuccess:) name:WMSBindAccessorySuccess object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -413,13 +416,21 @@ typedef enum {
 }
 - (void)getNewGiftBag:(NSNotification *)notification
 {
-    [self.topMenu showBadge:@"New" forItem:TopMenuItemGiftBag];
+    //[self.topMenu showBadge:@"New" forItem:TopMenuItemGiftBag];
     _isNewGiftBag = YES;
 }
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [self loadDataWithItem:TopMenuItemGiftBag];
     [self loadDataFromServer];
+}
+- (void)handleBindSuccess:(NSNotification *)notification
+{
+    [self loadDataWithItem:TopMenuItemGiftBag];
+}
+- (void)handleUnBindSuccess:(NSNotification *)notification
+{
+    [self loadDataWithItem:TopMenuItemGiftBag];
 }
 
 @end

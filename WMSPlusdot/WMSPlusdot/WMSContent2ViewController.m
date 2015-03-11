@@ -91,6 +91,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.view addSubview:self.temperaBar];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_setting_target.jpg"]]];
     
     CGPoint center = [[self.temperaBar superview] center];
     self.temperaBar.center = center;

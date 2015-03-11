@@ -75,11 +75,14 @@ NSString* const WMSGetNewGiftBag = @"com.guogee.plusdot.WMSGetNewGiftBag";
 - (void)setupUI
 {
     self.title = self.activity.actName;
+    self.bottomButton.enabled = NO;
+    self.bottomButton.alpha = 0.7;
+    
     NSArray *attributes = @[@{NSUnderlineStyleAttributeName:
                                   @(NSUnderlineStyleSingle)}
                             ];
     [self.getBeanLabel setSegmentsText:NSLocalizedString(@"如何获取能量豆?", nil) separateMark:nil attributes:attributes];
-    [self setMyBean:0];
+//    [self setMyBean:0];
     self.ruleTextView.editable = NO;
     
     [self.iconImageView setClipsToBounds:YES];
@@ -127,13 +130,16 @@ NSString* const WMSGetNewGiftBag = @"com.guogee.plusdot.WMSGetNewGiftBag";
     //    self.ruleTextView.text = describe;
     //[self setmultiplierBean:beans];
 }
-- (void)updateMyBeans
+- (void)updateMyBeans:(void(^)())aCallback
 {
     NSUInteger beans = _currentMyBeans - _consumeBeans;
+    [self setMyBean:beans];
+    [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
     [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:beans secretKey:SECRET_KEY completion:^(BOOL result, int beans) {
         if (result) {
-            [self setMyBean:beans];
-            [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
+            if (aCallback) {
+                aCallback();
+            }else{}
         }else{}
     }];
 }
@@ -151,7 +157,7 @@ NSString* const WMSGetNewGiftBag = @"com.guogee.plusdot.WMSGetNewGiftBag";
              }else{}
          }];
     } else {
-        [self setMyBean:0];
+        [self setMyBean:beans];
     }
     
     //load rult lists
@@ -178,12 +184,13 @@ NSString* const WMSGetNewGiftBag = @"com.guogee.plusdot.WMSGetNewGiftBag";
                     [self showTip:@"该活动的礼包已被领取完了"];
                     return ;
                 }
-                [self updateMyBeans];
+                [self updateMyBeans:^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:WMSGetNewGiftBag object:nil userInfo:nil];//发送通知
+                }];
                 WMSExchangeVC *vc = [[WMSExchangeVC alloc] init];
                 vc.exchangeCode = exchangeCode, vc.consumeBeans = _consumeBeans;
                 vc.title = self.title;
                 [self.navigationController pushViewController:vc animated:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:WMSGetNewGiftBag object:nil userInfo:nil];//发送通知
             } else {
                 [self hideHUDAtViewCenter];
                 [self showTip:@"兑换失败"];

@@ -31,9 +31,11 @@
         _trackUnderLayer = [CAShapeLayer layer];
         _trackUnderLayer.frame = self.bounds;
         _trackUnderLayer.fillColor = [[UIColor clearColor] CGColor];
-        _trackUnderLayer.strokeColor = UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
-        _trackUnderLayer.opacity = 1;
+        _trackUnderLayer.strokeColor = [UIColor whiteColor].CGColor;//UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
+        _trackUnderLayer.opacity = 1.0;
         _trackUnderLayer.lineWidth = PROGRESS_WIDTH;
+//        _trackUnderLayer.borderColor = [UIColor redColor].CGColor;
+//        _trackUnderLayer.borderWidth = 2.f;
     }
     return _trackUnderLayer;
 }
@@ -44,7 +46,7 @@
         _trackUpperLayer.frame = self.bounds;
         _trackUpperLayer.fillColor = [[UIColor clearColor] CGColor];
         _trackUpperLayer.strokeColor = UIColorFromRGBAlpha(0xDFE88D, 1.0).CGColor;
-        _trackUpperLayer.opacity = 1;
+        _trackUpperLayer.opacity = 1.0;
         _trackUpperLayer.lineWidth = PROGRESS_WIDTH;
     }
     return _trackUpperLayer;
