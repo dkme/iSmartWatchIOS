@@ -20,6 +20,10 @@
 
 NSString* const WMSGetNewGiftBag = @"com.guogee.plusdot.WMSGetNewGiftBag";
 
+static const int TextViewLine1                  = 16;
+static const int TextViewLine2                  = TextViewLine1+24;
+static const int TextViewLine3                  = TextViewLine2+20;
+
 @interface WMSDetailsVC ()
 {
     NSUInteger _currentMyBeans;
@@ -77,13 +81,26 @@ NSString* const WMSGetNewGiftBag = @"com.guogee.plusdot.WMSGetNewGiftBag";
     self.title = self.activity.actName;
     self.bottomButton.enabled = NO;
     self.bottomButton.alpha = 0.7;
+    NSString *begin = [NSDate stringFromDate:self.activity.beginDate format:@"yyyy.MM.dd"];
+    NSString *end = [NSDate stringFromDate:self.activity.endDate format:@"yyyy.MM.dd"];
+    self.timeLabel.text = [NSString stringWithFormat:@"%@----%@",begin,end];
     
     NSArray *attributes = @[@{NSUnderlineStyleAttributeName:
                                   @(NSUnderlineStyleSingle)}
                             ];
     [self.getBeanLabel setSegmentsText:NSLocalizedString(@"如何获取能量豆?", nil) separateMark:nil attributes:attributes];
-//    [self setMyBean:0];
     self.ruleTextView.editable = NO;
+    NSMutableString *mutiStr = [[NSMutableString alloc] initWithString:self.activity.actMemo];
+    if (TextViewLine1 < mutiStr.length) {
+        [mutiStr insertString:@"\n" atIndex:TextViewLine1];
+    }else{}
+    if (TextViewLine2 < mutiStr.length) {
+        [mutiStr insertString:@"\n" atIndex:TextViewLine2];
+    }else{}
+    if (TextViewLine3 < mutiStr.length) {
+        [mutiStr insertString:@"\n" atIndex:TextViewLine3];
+    }else{}
+    self.ruleTextView.text = mutiStr;
     
     [self.iconImageView setClipsToBounds:YES];
     [self.iconImageView.layer setCornerRadius:self.iconImageView.bounds.size.width/2];
@@ -154,23 +171,27 @@ NSString* const WMSGetNewGiftBag = @"com.guogee.plusdot.WMSGetNewGiftBag";
              if (result) {
                  [self setMyBean:beans];
                  [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
+                 self.bottomButton.enabled = YES;
+                 self.bottomButton.alpha = 1.0;
              }else{}
          }];
     } else {
         [self setMyBean:beans];
+        self.bottomButton.enabled = YES;
+        self.bottomButton.alpha = 1.0;
     }
     
     //load rult lists
-    [WMSRequestTool requestActivityDetailsWithActivityID:self.activity.actID completion:^(BOOL result, NSArray *rultList) {
-        if (result) {
-            [self updateView:rultList];
-            self.bottomButton.enabled = YES;
-            self.bottomButton.alpha = 1.0;
-        }else{
-            self.bottomButton.enabled = NO;
-            self.bottomButton.alpha = 0.7;
-        }
-    }];
+//    [WMSRequestTool requestActivityDetailsWithActivityID:self.activity.actID completion:^(BOOL result, NSArray *rultList) {
+//        if (result) {
+//            [self updateView:rultList];
+//            self.bottomButton.enabled = YES;
+//            self.bottomButton.alpha = 1.0;
+//        }else{
+//            self.bottomButton.enabled = NO;
+//            self.bottomButton.alpha = 0.7;
+//        }
+//    }];
 }
 
 #pragma mark - Actions

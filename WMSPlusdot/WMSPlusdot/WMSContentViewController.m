@@ -235,7 +235,11 @@
 #pragma mark - setup
 - (void)setupView
 {
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport.jpg"]]];
+    if (iPhone4s) {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport"]]];
+    } else {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport-568h"]]];
+    }
     [self.view addSubview:self.syncDataView];
     [self.view addSubview:self.tipView];
     [self.view addSubview:self.hud];

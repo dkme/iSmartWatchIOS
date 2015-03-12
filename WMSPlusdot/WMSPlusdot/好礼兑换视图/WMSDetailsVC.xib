@@ -84,7 +84,7 @@
                             </constraints>
                         </view>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="eTP-gp-Osm">
-                            <rect key="frame" x="10" y="133" width="300" height="70"/>
+                            <rect key="frame" x="10" y="129" width="300" height="75"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -207,14 +207,14 @@
                         <constraint firstAttribute="trailing" secondItem="PDA-ur-7QJ" secondAttribute="trailing" id="52q-m0-XyO"/>
                         <constraint firstItem="5Ce-1P-zhN" firstAttribute="leading" secondItem="6Cc-Db-C99" secondAttribute="leading" id="7DS-1p-BKb"/>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="PDA-ur-7QJ" secondAttribute="bottom" constant="40" id="DCR-sw-ftQ"/>
-                        <constraint firstItem="PDA-ur-7QJ" firstAttribute="top" secondItem="eTP-gp-Osm" secondAttribute="bottom" id="Ew9-yP-uJg"/>
+                        <constraint firstItem="PDA-ur-7QJ" firstAttribute="top" secondItem="eTP-gp-Osm" secondAttribute="bottom" constant="-1" id="Ew9-yP-uJg"/>
                         <constraint firstItem="eTP-gp-Osm" firstAttribute="leading" secondItem="6Cc-Db-C99" secondAttribute="leading" constant="10" id="O6j-SZ-8gh"/>
                         <constraint firstAttribute="trailing" secondItem="eTP-gp-Osm" secondAttribute="trailing" constant="10" id="P03-Mo-zOw"/>
                         <constraint firstItem="PDA-ur-7QJ" firstAttribute="top" secondItem="6Cc-Db-C99" secondAttribute="top" constant="203" id="YRc-Q1-2kK"/>
                         <constraint firstItem="5Ce-1P-zhN" firstAttribute="centerX" secondItem="6Cc-Db-C99" secondAttribute="centerX" id="fDe-Wh-WrG"/>
                         <constraint firstAttribute="trailing" secondItem="5Ce-1P-zhN" secondAttribute="trailing" id="hvu-OK-QfY"/>
                         <constraint firstItem="PDA-ur-7QJ" firstAttribute="leading" secondItem="6Cc-Db-C99" secondAttribute="leading" id="idP-aN-ztD"/>
-                        <constraint firstItem="eTP-gp-Osm" firstAttribute="top" secondItem="5Ce-1P-zhN" secondAttribute="bottom" id="jHk-Re-6v3"/>
+                        <constraint firstItem="eTP-gp-Osm" firstAttribute="top" secondItem="5Ce-1P-zhN" secondAttribute="bottom" constant="-4" id="jHk-Re-6v3"/>
                     </constraints>
                 </scrollView>
             </subviews>

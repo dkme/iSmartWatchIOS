@@ -134,8 +134,7 @@ enum {
         if (result) {
             for (ExchangeBeanRule *rule in list) {
                 if (rule.ruleType == ExchangeBeanRuleTypeRuning) {
-                    _targetSteps = rule.eventNumber/10;//test
-//                    [self reloadData];
+                    _targetSteps = rule.eventNumber;
                 }else{}
             }
             [WMSRequestTool requestUserBeansWithUserKey:[WMSMyAccessory macForBindAccessory] completion:^(BOOL result, int beans,NSError *error)
@@ -226,14 +225,14 @@ enum {
 }
 - (void)showLoadFailedTip
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 120.f)];
-    label.center = self.view.center;
-    label.text = @"加载失败\n请检查您的网络，轻击屏幕重新加载";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.numberOfLines = -1;
-    label.userInteractionEnabled = YES;
-    label.tag = 1001;
-    [self.view addSubview:label];
+    UILabel *centerLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 120.f)];
+    centerLbl.center = CGPointMake(ScreenWidth/2, ScreenHeight/2);
+    centerLbl.text = @"加载失败\n请检查您的网络，轻击屏幕重新加载";
+    centerLbl.textAlignment = NSTextAlignmentCenter;
+    centerLbl.numberOfLines = -1;
+    centerLbl.userInteractionEnabled = YES;
+    centerLbl.tag = 1001;
+    [self.view addSubview:centerLbl];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedScreen:)];
     [self.view addGestureRecognizer:tap];
 }

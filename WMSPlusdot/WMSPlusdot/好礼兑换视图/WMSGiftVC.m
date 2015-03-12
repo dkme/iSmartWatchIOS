@@ -345,7 +345,8 @@ typedef enum {
         {
             GiftBag *bag = self.giftBagList[indexPath.row];
             //NSString *code = [NSString stringWithFormat:@"%@",bag.exchangeCode];
-            [self showAlertViewWithTitle:bag.gameName code:bag.exchangeCode memo:bag.memo];
+//            [self showAlertViewWithTitle:bag.gameName code:bag.exchangeCode memo:bag.memo];
+            [self showAlertViewWithGiftBag:bag];
             break;
         }
         default:
@@ -353,19 +354,21 @@ typedef enum {
     }
 }
 
-- (void)showAlertViewWithTitle:(NSString *)title code:(NSString *)code memo:(NSString *)memo
+- (void)showAlertViewWithGiftBag:(GiftBag *)bag
 {
     if (!self.koPopupView) {
-        WMSAlertView *alertView = [WMSAlertView alertViewWithText:title detailText:@"" leftButtonTitle:NSLocalizedString(@"复制兑换码", nil) rightButtonTitle:NSLocalizedString(@"取消", nil)];
+        WMSAlertView *alertView = [WMSAlertView alertViewWithText:bag.gameName detailText:@"" leftButtonTitle:NSLocalizedString(@"复制兑换码", nil) rightButtonTitle:NSLocalizedString(@"取消", nil)];
         NSArray *attrisArr = @[@{NSForegroundColorAttributeName:[UIColor blackColor]},
                                @{NSForegroundColorAttributeName:UICOLOR_DEFAULT},
                                ];
-        NSString *text = [NSString stringWithFormat:@"兑换码为: /%@/ \n%@",code,memo];
+        NSString *text = [NSString stringWithFormat:@"兑换码为: /%@/ \n%@",bag.exchangeCode,bag.memo];
+        NSString *strDate = [NSDate stringFromDate:bag.expiryDate format:@"yyyy.MM.dd"];
+        text = [text stringByAppendingFormat:@"\n(有效期至:%@)",strDate];
         [alertView.detailTextLabel setSegmentsText:text separateMark:@"/" attributes:attrisArr];
         alertView.delegate = self;
         alertView.frame = [alertView updateSubviews];
         alertView.center = self.tableView.center;
-        alertView.code = code;
+        alertView.code = bag.exchangeCode;
         
         KOPopupView *popupView = [KOPopupView popupView];
         [popupView.handleView addSubview:alertView];

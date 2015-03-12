@@ -74,14 +74,14 @@
                    //@"intro_page2.png",
                    //@"intro_page3.png",
                    //@"intro_page4.png",
-                   @"skin_intro_page.jpg",
+                   @"skin_intro_page",
                    ];
     } else {
         images = @[//@"intro_page1_b.png",
                    //@"intro_page2_b.png",
                    //@"intro_page3_b.png",
                    //@"intro_page4_b.png",
-                   @"skin_intro_page.jpg",
+                   @"skin_intro_page",
                    ];
     }
     

@@ -140,10 +140,12 @@ enum {
     
     int triggerCount = [self.myTimers triggerCountForTimer:timer];
     if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
-        [self.myTimers deleteAllTimers];
         
-        DEBUGLog(@"写入超时，主动断开");
-        [self.bleControl disconnect];
+        DEBUGLog(@"写入超时，主动断开 %@, timeID[%d]",NSStringFromClass([self class]),[self.myTimers getTimerID:timer]);
+        NSString *reason = [NSString stringWithFormat:@"写入超时[TimerID:%d]，app主动断开",[self.myTimers getTimerID:timer]];
+        [self.myTimers deleteAllTimers];
+        //[self.bleControl disconnect];
+        [self.bleControl disconnectWithReason:reason];
         return;
     }
     

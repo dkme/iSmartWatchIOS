@@ -182,7 +182,8 @@ static inline NSError* ERROR(NSInteger code,NSString *localizedDescription)
                         logoURL = [logoURL stringByAppendingString:@".jpg"];
                         bag.logo = logoURL;
                         bag.gameName = dicObj1[@"actgamename"];
-                        bag.memo = dicObj1[@"actmemo"];
+                        bag.memo = dicObj1[@"actgiftbagmemo"];
+                        bag.expiryDate = [NSDate dateFromString:dicObj1[@"actenddate"] format:@"yyyy-MM-dd"];
                         [list addObject:bag];
                     } else {
                         aCallback(NO,nil,ERROR(RequestErrorCodeResultDataFormatError, RequestErrorDescriptionResultDataFormatError));

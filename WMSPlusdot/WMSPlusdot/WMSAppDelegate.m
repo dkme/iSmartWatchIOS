@@ -74,7 +74,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         sideMenu.contentViewController = [[MyNavigationController alloc] initWithRootViewController:contentVC];
         sideMenu.leftMenuViewController = leftVC;
         sideMenu.rightMenuViewController = rightVC;
-        sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
+        sideMenu.backgroundImage = [UIImage imageNamed:@"skin_setting_target.png"];
         sideMenu.delegate = self;
         
         _reSideMenu = sideMenu;

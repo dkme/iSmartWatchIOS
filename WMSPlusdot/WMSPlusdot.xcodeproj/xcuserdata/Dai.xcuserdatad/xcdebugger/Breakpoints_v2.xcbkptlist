@@ -51,28 +51,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSGiftVC.m"
-            timestampString = "447646948.701889"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSDetailsVC.m"
-            timestampString = "447583037.576377"
+            timestampString = "447755827.539988"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
             landmarkName = "-setupUI"
             landmarkType = "5">
          </BreakpointContent>
@@ -80,39 +64,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x80fd;&#x91cf;&#x8c46;&#x89c6;&#x56fe;/WMSEnergyBeanVC.m"
-            timestampString = "447583667.600055"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "-setupProperty"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x80fd;&#x91cf;&#x8c46;&#x89c6;&#x56fe;/WMSEnergyBeanVC.m"
-            timestampString = "447642465.840592"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "-loadDataFromServer"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSGiftVC.m"
@@ -125,13 +77,13 @@
             landmarkType = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[WMSGiftVC loadDataFromServer]"
                   moduleName = "WMSPlusdot"
                   urlString = "file:///Users/Dai/Desktop/iSmartWatchIOS/WMSPlusdot/WMSPlusdot/%E5%A5%BD%E7%A4%BC%E5%85%91%E6%8D%A2%E8%A7%86%E5%9B%BE/WMSGiftVC.m"
-                  timestampString = "447665706.501309"
+                  timestampString = "447736337.302008"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "220"
@@ -139,13 +91,13 @@
                   offsetFromSymbolStart = "2">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__31-[WMSGiftVC loadDataFromServer]_block_invoke"
                   moduleName = "WMSPlusdot"
                   urlString = "file:///Users/Dai/Desktop/iSmartWatchIOS/WMSPlusdot/WMSPlusdot/%E5%A5%BD%E7%A4%BC%E5%85%91%E6%8D%A2%E8%A7%86%E5%9B%BE/WMSGiftVC.m"
-                  timestampString = "447665706.501593"
+                  timestampString = "447736337.302293"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "222"
@@ -161,13 +113,77 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x80fd;&#x91cf;&#x8c46;&#x89c6;&#x56fe;/WMSEnergyBeanVC.m"
-            timestampString = "447643636.709332"
+            filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSGiftVC.m"
+            timestampString = "447757099.768999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "-reloadData"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSRequestTool.m"
+            timestampString = "447757164.080531"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "+requestGiftBagListWithUserKey:completion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSDeviceProfile.m"
+            timestampString = "447764173.877361"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "310"
+            endingLineNumber = "310"
+            landmarkName = "-readDeviceMac:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSDeviceModel+Configure.m"
+            timestampString = "447764254.539631"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "+setDeviceDate:completion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSDeviceModel+Configure.m"
+            timestampString = "447764262.830372"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "+setDeviceDate:completion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

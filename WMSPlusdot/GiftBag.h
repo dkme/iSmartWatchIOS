@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSString *logo;
 @property (nonatomic, strong) NSString *gameName;
 @property (nonatomic, strong) NSString *memo;
+@property (nonatomic, strong) NSDate *expiryDate;
 
 @end
