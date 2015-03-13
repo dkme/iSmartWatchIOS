@@ -499,7 +499,7 @@
                     if ([self isExistBadgeOfView:cell] /*||YES*/) {
                         //........
                         _updateVC = [[WMSUpdateVC alloc] init];
-                        _updateVC.navBarTitle = self.section1TitleArray[row];
+                        _updateVC.title = self.section1TitleArray[row];
                         _updateVC.updateDescribe = _firmwareUpdateDesc;
                         self.navigationController.delegate = self;
                         [self.navigationController pushViewController:_updateVC animated:YES];

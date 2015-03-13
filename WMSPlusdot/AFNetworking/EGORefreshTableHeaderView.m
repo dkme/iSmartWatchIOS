@@ -153,8 +153,8 @@
             
             
             CABasicAnimation* rotate =  [CABasicAnimation animationWithKeyPath: @"transform.rotation.z"];
-//            rotate.removedOnCompletion = YES;
-//            rotate.fillMode = kCAFillModeForwards;
+            rotate.removedOnCompletion = NO;
+            rotate.fillMode = kCAFillModeForwards;
             //Do a series of 5 quarter turns for a total of a 1.25 turns
             //(2PI is a full turn, so pi/2 is a quarter turn)
             [rotate setToValue: [NSNumber numberWithFloat: M_PI/2]];

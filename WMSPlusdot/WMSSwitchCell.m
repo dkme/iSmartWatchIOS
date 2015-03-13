@@ -16,7 +16,7 @@
     //DEBUGLog(@"awakeFromNib");
     [self.mySwitch setOn:YES animated:NO];
     [self.mySwitch addTarget:self action:@selector(switchBtnValueChangedHandle:) forControlEvents:UIControlEventValueChanged];
-    [self.mySwitch setOnTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
+    [self.mySwitch setOnTintColor:UICOLOR_DEFAULT];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

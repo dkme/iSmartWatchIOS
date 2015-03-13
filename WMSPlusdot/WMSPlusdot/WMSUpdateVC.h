@@ -27,7 +27,6 @@ extern NSString *const WMSUpdateVCEndDFU;
 @property (weak, nonatomic) IBOutlet UIButton *buttonUpdate;
 @property (weak, nonatomic) IBOutlet LDProgressView *progressView;
 
-@property (strong, nonatomic) NSString *navBarTitle;
 @property (strong, nonatomic) NSString *updateDescribe;
 @property (strong, nonatomic) NSString *updateStrURL;
 

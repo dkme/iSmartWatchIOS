@@ -58,7 +58,7 @@
         _cellSwitch = [[UISwitch alloc] initWithFrame:UISwitch_Frame];
         [_cellSwitch setOn:YES animated:NO];
         [_cellSwitch addTarget:self action:@selector(switchBtnValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [_cellSwitch setOnTintColor:UIColorFromRGBAlpha(0x00D5E1, 1)];
+        [_cellSwitch setOnTintColor:UICOLOR_DEFAULT];
     }
     return _cellSwitch;
 }

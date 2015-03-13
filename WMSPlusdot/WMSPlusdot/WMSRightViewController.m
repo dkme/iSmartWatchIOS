@@ -590,7 +590,7 @@
     if ( [self class] == [menuViewController class] ) {
         _isVisible = YES;
         if ([self.bleControl isConnected]) {
-            [self firstConnectedConfig];
+//            [self firstConnectedConfig];
         }
         AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
         if ([WMSMyAccessory isBindAccessory]) {

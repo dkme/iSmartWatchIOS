@@ -63,13 +63,8 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
 #pragma mark - setup UI
 - (void)setupNavBarView
 {
-    self.navBarView.backgroundColor = UICOLOR_DEFAULT;
-    self.navBarView.labelTitle.text = self.navBarTitle;
-    self.navBarView.labelTitle.font = Font_DINCondensed(20.0);
-    [self.navBarView.buttonLeft setTitle:@"" forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_a.png"] forState:UIControlStateNormal];
-    [self.navBarView.buttonLeft setBackgroundImage:[UIImage imageNamed:@"back_btn_b.png"] forState:UIControlStateHighlighted];
-    [self.navBarView.buttonLeft addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
+    self.navigationItem.leftBarButtonItem = backItem;
 }
 - (void)setupTextView
 {
@@ -87,8 +82,10 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
     frame.origin.x = (ScreenWidth-frame.size.width)/2.0;
     frame.origin.y = ScreenHeight-frame.size.height-10.0;
     [self.buttonUpdate setFrame:frame];
-    [self.buttonUpdate setBackgroundImage:image forState:UIControlStateNormal];
-    [self.buttonUpdate setBackgroundImage:[UIImage imageNamed:@"zq_public_green_btn_b.png"] forState:UIControlStateSelected];
+//    [self.buttonUpdate setBackgroundImage:image forState:UIControlStateNormal];
+//    [self.buttonUpdate setBackgroundImage:[UIImage imageNamed:@"zq_public_green_btn_b.png"] forState:UIControlStateSelected];
+    [self.buttonUpdate setBackgroundColor:UICOLOR_DEFAULT];
+    [self.buttonUpdate.layer setCornerRadius:10.0];
     [self.buttonUpdate setTitle:NSLocalizedString(@"立即更新", nil) forState:UIControlStateNormal];
     [self.buttonUpdate setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     

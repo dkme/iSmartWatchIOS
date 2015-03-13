@@ -10,7 +10,7 @@
 #import "WMSBluetooth.h"
 #import "WMSMyAccessory.h"
 
-static const int MIN_RSSI       = -90;
+static const int MIN_RSSI       = -150;
 
 @implementation WMSFilter
 

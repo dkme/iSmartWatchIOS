@@ -105,7 +105,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Login_bg.png"]];
+    if (iPhone4s) {
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:/*@"Login_bg.png"*/@"skin_setting_target"]];
+    } else {
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:/*@"Login_bg.png"*/@"skin_setting_target-568h@2x"]];
+    }
     
     self.textPassword.secureTextEntry = YES;
     self.textConfirmPassword.secureTextEntry = YES;

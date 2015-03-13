@@ -251,7 +251,7 @@
     WMSClockCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     WMSAlarmClockModel *model = self.clockArray[indexPath.row];
     cell.myTextLabel.text = [NSString stringWithFormat:@"%02d:%02d",model.startHour,model.startMinute];
-    cell.myDetailTextLabel.text = [WMSRemindHelper description2OfRepeats:model.repeats];
+    cell.myDetailTextLabel.text = [NSString stringWithFormat:@" %@",[WMSRemindHelper description2OfRepeats:model.repeats]];
     cell.myTextLabel.textColor = UICOLOR_DEFAULT;
     cell.myTextLabel.font = Font_System(35.f);
     cell.myDetailTextLabel.font = Font_System(15.f);

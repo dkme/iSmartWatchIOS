@@ -36,7 +36,8 @@
 
 //方法
 #define UIColorFromRGBAlpha(rgbValue,a) ( [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a] )
-#define UICOLOR_DEFAULT       ( UIColorFromRGBAlpha(0x00D5E1, 1) )
+#define UICOLOR_DEFAULT       ( UIColorFromRGBAlpha(/*0x00D5E1*/0xF47FDD, 1) )
+
 #define Font_System(sz)       ( [UIFont systemFontOfSize:sz] )
 #define Font_DINCondensed(sz) ( [UIFont fontWithName:@"DIN Condensed" size:sz] )
 

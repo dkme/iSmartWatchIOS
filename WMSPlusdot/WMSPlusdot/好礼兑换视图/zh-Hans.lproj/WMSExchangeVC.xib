@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WMSExchangeVC">
             <connections>
+                <outlet property="buttonCopy" destination="Q4E-Nr-sgM" id="bjZ-kh-PAf"/>
                 <outlet property="codeLabel" destination="dkg-dK-Nb5" id="2UF-4z-cTS"/>
                 <outlet property="consumeBeanLabel" destination="6VK-7Z-uH9" id="XjR-9t-qub"/>
                 <outlet property="getBeanLabel" destination="UfJ-Ga-rff" id="Heg-uE-JfU"/>
@@ -45,21 +46,6 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4E-Nr-sgM">
-                    <rect key="frame" x="10" y="280" width="300" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="e2a-3f-jWK"/>
-                        <constraint firstAttribute="width" constant="300" id="sBb-dy-h5M"/>
-                    </constraints>
-                    <state key="normal" title="复制兑换码" backgroundImage="login_btn_a.png">
-                        <color key="titleColor" red="0.0" green="0.83529411760000005" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="highlighted" backgroundImage="login_btn_b.png"/>
-                    <connections>
-                        <action selector="copyCodeAction:" destination="-1" eventType="touchUpInside" id="xw7-Xn-cCx"/>
-                    </connections>
-                </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ju5-iV-rfS">
                     <rect key="frame" x="10" y="328" width="300" height="37"/>
                     <color key="backgroundColor" red="0.56078431370000004" green="0.90588235289999997" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -98,6 +84,21 @@
                         <outletCollection property="gestureRecognizers" destination="8c2-RS-584" appends="YES" id="Jpt-q8-k8P"/>
                     </connections>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4E-Nr-sgM">
+                    <rect key="frame" x="10" y="280" width="300" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="e2a-3f-jWK"/>
+                        <constraint firstAttribute="width" constant="300" id="sBb-dy-h5M"/>
+                    </constraints>
+                    <state key="normal" title="复制兑换码" backgroundImage="login_btn_a.png">
+                        <color key="titleColor" red="0.0" green="0.83529411760000005" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted" backgroundImage="login_btn_b.png"/>
+                    <connections>
+                        <action selector="copyCodeAction:" destination="-1" eventType="touchUpInside" id="xw7-Xn-cCx"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.83529411760000005" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>

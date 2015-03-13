@@ -27,6 +27,7 @@
     // self.clearsSelectionOnViewWillAppear = NO;
     
     self.title = NSLocalizedString(@"如何获取能量豆", nil);
+    self.view.backgroundColor = UICOLOR_DEFAULT;
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.separatorColor = [UIColor whiteColor];
     

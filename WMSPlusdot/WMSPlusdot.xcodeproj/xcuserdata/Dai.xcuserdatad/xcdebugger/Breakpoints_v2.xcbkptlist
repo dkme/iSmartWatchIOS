@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSDetailsVC.m"
-            timestampString = "447755827.539988"
+            timestampString = "447844654.843886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "-setupUI"
             landmarkType = "5">
          </BreakpointContent>
@@ -145,45 +145,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WMSDeviceProfile.m"
-            timestampString = "447764173.877361"
+            filePath = "WMSPlusdot/WMSRightViewController.m"
+            timestampString = "447905718.308403"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
-            landmarkName = "-readDeviceMac:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSDeviceModel+Configure.m"
-            timestampString = "447764254.539631"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "+setDeviceDate:completion:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSDeviceModel+Configure.m"
-            timestampString = "447764262.830372"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "+setDeviceDate:completion:"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
+            landmarkName = "-setRemindWay:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

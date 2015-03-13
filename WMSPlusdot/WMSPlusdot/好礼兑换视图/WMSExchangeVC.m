@@ -64,6 +64,8 @@
 #pragma mark - setup
 - (void)setupUI
 {
+    self.view.backgroundColor = UICOLOR_DEFAULT;
+    
     NSArray *attributes = @[@{NSUnderlineStyleAttributeName:
                                   @(NSUnderlineStyleSingle)}
                             ];

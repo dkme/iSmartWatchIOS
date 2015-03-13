@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *codeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *consumeBeanLabel;
 @property (weak, nonatomic) IBOutlet UILabel *getBeanLabel;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCopy;
 @property (strong, nonatomic) NSString *exchangeCode;
 @property (nonatomic) int consumeBeans;
 

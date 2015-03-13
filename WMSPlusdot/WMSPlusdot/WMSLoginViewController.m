@@ -68,8 +68,11 @@
 #pragma mark - Setup
 - (void)setupUI
 {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Login_bg.png"]];
-    //self.view.backgroundColor = UICOLOR_DEFAULT;
+    if (iPhone4s) {
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:/*@"Login_bg.png"*/@"skin_setting_target"]];
+    } else {
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:/*@"Login_bg.png"*/@"skin_setting_target-568h@2x"]];
+    }
     self.textPassword.secureTextEntry = YES;
     self.textPassword.delegate = self;
     self.textEmail.delegate = self;
@@ -79,6 +82,7 @@
     
     [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_a.png"] forState:UIControlStateNormal];
     [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_b.png"] forState:UIControlStateSelected];
+//    [self.buttonLogin setBackgroundColor:[UIColor clearColor]];
     [self.buttonCancel setBackgroundImage:[UIImage imageNamed:@"zq_sound_no_a.png"] forState:UIControlStateNormal];
     [self.buttonCancel setBackgroundImage:[UIImage imageNamed:@"zq_sound_no_b.png"] forState:UIControlStateSelected];
 }
