@@ -11,7 +11,7 @@
 "My sport" = "我的运动";
 "My sleep" = "我的睡眠";
 "Target setting" = "设置目标";
-"Bound watch" = "绑定配件";
+"Bound watch" = "绑定手表";
 
 //RightViewController String
 "Remind Setting" = "提醒设置";
@@ -57,7 +57,7 @@
 
 
 //BindingAccessoryViewController String
-"Bound watch" = "绑定配件";
+"Bound watch" = "绑定手表";
 "Searching Plusdot watches" = "正在搜索Plusdot手表";
 "Please make sure the watch power is on and near the phone" = "请确认手表电源已经开启并在手机附近";
 

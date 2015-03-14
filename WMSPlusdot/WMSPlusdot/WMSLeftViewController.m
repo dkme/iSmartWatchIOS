@@ -125,13 +125,13 @@
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
 //#ifdef DEBUG
-        NSString *languageType = [WMSAppConfig systemLanguage];
-        if ([languageType isEqualToString:kLanguageChinese]) {
-            NSArray *newItems = @[NSLocalizedString(@"好礼兑换",nil),
-                                  NSLocalizedString(@"能量豆",nil)
-                                  ];
-            [mutiArr addObjectsFromArray:newItems];
-        }
+//        NSString *languageType = [WMSAppConfig systemLanguage];
+//        if ([languageType isEqualToString:kLanguageChinese]) {
+//            NSArray *newItems = @[NSLocalizedString(@"好礼兑换",nil),
+//                                  NSLocalizedString(@"能量豆",nil)
+//                                  ];
+//            [mutiArr addObjectsFromArray:newItems];
+//        }
 //#endif
         _titleArray = mutiArr;
     }

@@ -40,6 +40,7 @@
 #import "WMSHelper.h"
 #import "WMSPostNotificationHelper.h"
 #import "WMSHTTPRequest.h"
+#import "WMSAppConfig.h"
 
 @interface WMSContentViewController ()<WMSSyncDataViewDelegate>
 @property (strong, nonatomic) WMSSyncDataView *syncDataView;
@@ -235,11 +236,6 @@
 #pragma mark - setup
 - (void)setupView
 {
-    if (iPhone4s) {
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport"]]];
-    } else {
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport-568h"]]];
-    }
     [self.view addSubview:self.syncDataView];
     [self.view addSubview:self.tipView];
     [self.view addSubview:self.hud];
@@ -416,19 +412,29 @@
         font = Font_DINCondensed(35.f);
     }
     else if (label == self.labelDistanceValue) {
-        int dis_m = Rounded(value/100.0);//单位为m
-        if (dis_m < 1000) {//distance<1000m,单位用m，>1000m,单位用km
-            value = dis_m;
-            unit = NSLocalizedString(@"米", nil);
-        } else {
-            value = dis_m + 5;
-            NSUInteger gewei = value%10;
-            value -= gewei;//对个位进行4舍5入
-            value = Rounded(dis_m/1000.0);//单位为km
-            unit = NSLocalizedString(@"公里", nil);
-        }
         font = Font_DINCondensed(35.f);
-        text = [NSString stringWithFormat:@"%u",value];
+        int dis_m = Rounded(value/100.0);//单位为m
+        if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {
+            if (dis_m < 1000) {//distance<1000m,单位用m，>1000m,单位用km
+                value = dis_m;
+                unit = NSLocalizedString(@"米", nil);
+            } else {
+                value = dis_m + 5;
+                NSUInteger gewei = value%10;
+                value -= gewei;//对个位进行4舍5入
+                value = Rounded(dis_m/1000.0);//单位为km
+                unit = NSLocalizedString(@"公里", nil);
+            }
+            text = [NSString stringWithFormat:@"%u",value];
+        } else {
+            float dis_mile = dis_m * 1.0/1609.344;//单位英里
+            dis_mile += 0.005;//保留两位小数，四舍五入
+            if (dis_mile < 0.005) {
+                dis_mile = 0;
+            }
+            text = [NSString stringWithFormat:@"%.2g",dis_mile];
+            unit = @"mile";
+        }
     }
     else if (label == self.labelTimeValue) {
         NSString *hour = [NSString stringWithFormat:@"%u",value/60];

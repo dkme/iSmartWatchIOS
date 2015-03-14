@@ -74,7 +74,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         sideMenu.contentViewController = [[MyNavigationController alloc] initWithRootViewController:contentVC];
         sideMenu.leftMenuViewController = leftVC;
         sideMenu.rightMenuViewController = rightVC;
-        sideMenu.backgroundImage = [UIImage imageNamed:@"skin_setting_target.png"];
+        sideMenu.backgroundImage = [UIImage imageNamed:@"main_bg.png"];
         sideMenu.delegate = self;
         
         _reSideMenu = sideMenu;
@@ -96,8 +96,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
-    
-//    [self test];
     
     [WMSPostNotificationHelper cancelAllNotification];
     [self setupReSyncDataTimer];

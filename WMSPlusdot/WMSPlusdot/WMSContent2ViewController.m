@@ -90,11 +90,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    if (iPhone4s) {
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_setting_target"]]];
-    } else {
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_setting_target-568h"]]];
-    }
+//    if (iPhone4s) {
+//        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_setting_target"]]];
+//    } else {
+//        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_setting_target-568h"]]];
+//    }
     [self.view addSubview:self.temperaBar];
     CGPoint center = [[self.temperaBar superview] center];
     self.temperaBar.center = center;

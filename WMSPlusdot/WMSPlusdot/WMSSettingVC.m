@@ -496,7 +496,7 @@
                 case 4-3:
                 {
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    if ([self isExistBadgeOfView:cell] /*||YES*/) {
+                    if ([self isExistBadgeOfView:cell]) {
                         //........
                         _updateVC = [[WMSUpdateVC alloc] init];
                         _updateVC.title = self.section1TitleArray[row];

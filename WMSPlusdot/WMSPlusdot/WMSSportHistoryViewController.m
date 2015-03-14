@@ -24,6 +24,7 @@
 #import "WMSConstants.h"
 #import "WMSHistoryVCHelper.h"
 #import "WMSUserInfoHelper.h"
+#import "WMSAppConfig.h"
 
 #define X_COORDINATE_NUMBER         24
 
@@ -206,23 +207,31 @@
     NSString *unit = nil;
     //distance的单位是cm
     int dis_m = Rounded(distance/100.0);//单位为m
-    NSUInteger value = 0;
+    float value = 0;
     float number = 0;
-    //distance<1000m,单位用m，>1000m,单位用km
-    if (dis_m < 1000) {
-        value = dis_m;
-        unit = NSLocalizedString(@"米", nil);
-        number = value/400.0;
+    if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {
+        //distance<1000m,单位用m，>1000m,单位用km
+        if (dis_m < 1000) {
+            value = dis_m;
+            unit = NSLocalizedString(@"米", nil);
+            number = value/400.0;
+        } else {
+            int var_int = dis_m + 5;
+            NSUInteger gewei = var_int%10;
+            var_int -= gewei;//对个位进行4舍5入
+            var_int = Rounded(dis_m/1000.0);//单位为km
+            unit = NSLocalizedString(@"公里", nil);
+            number = var_int*1000/400.0;
+            value = var_int;
+        }
     } else {
-        value = dis_m + 5;
-        NSUInteger gewei = value%10;
-        value -= gewei;//对个位进行4舍5入
-        value = Rounded(dis_m/1000.0);//单位为km
-        unit = NSLocalizedString(@"公里", nil);
-        number = value*1000/400.0;
+        double dis_mile = dis_m * (1.0/1609.344);//单位英里
+        dis_mile += 0.005;//保留两位小数，四舍五入
+        value = dis_mile;
+        unit = @"mile";
     }
     NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计里程", nil),@": "];
-    NSString *distanceStr = [NSString stringWithFormat:@"%u",(unsigned int)value];
+    NSString *distanceStr = [NSString stringWithFormat:@"%.2g",value];
     NSString *symbol = @" ≈ ";
     NSString *numberStr = [NSString stringWithFormat:@"%d",Rounded(number)];
     NSString *unti2 = NSLocalizedString(@"圈", nil);

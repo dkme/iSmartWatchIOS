@@ -21,7 +21,7 @@
 
 static const NSTimeInterval SCAN_TIME_INTERVAL      = 60.f;
 static const NSTimeInterval BINDING_TIME_INTERVAL   = 60.f;
-static const int            MAX_RSSI                = -65;
+static const int            MAX_RSSI                = -75;
 static const double         FIRMWARE_TARGET_VERSION = 12.0;
 static const double         FIRMWARE_CAN_READ_MAC   = 13.0;
 

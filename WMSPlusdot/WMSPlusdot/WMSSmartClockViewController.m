@@ -14,6 +14,7 @@
 #import "MBProgressHUD.h"
 #import "WMSInputView.h"
 #import "WMSWeekPicker.h"
+#import "WMSSwitchCell.h"
 
 #import "WMSAlarmClockModel.h"
 #import "WMSMyAccessory.h"
@@ -31,7 +32,7 @@
 #define DAY_HOURS                           24
 #define DAY_MINUTES                         60
 
-@interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate>
+@interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,WMSSwitchCellDelegage>
 @property (strong,nonatomic) WMSInputView *myInputView;
 @property (strong,nonatomic) WMSWeekPicker *weekPicker;
 @property (strong,nonatomic) NSArray *textArray;
