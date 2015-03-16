@@ -107,9 +107,6 @@ enum {
 {
     self.title = NSLocalizedString(@"能量豆", nil);
     self.myBeanLabel.text = @"    我的能量豆: ";
-    [self.bottomButton setBackgroundImage:nil forState:UIControlStateNormal];
-    [self.bottomButton setBackgroundColor:UICOLOR_DEFAULT];
-    [self.bottomButton.layer setCornerRadius:10.0];
     [self updateBottomButtonTitle];
 }
 - (void)setupNavigationBar

@@ -81,10 +81,10 @@ static const int TextViewLine3                  = TextViewLine2+20;
     self.title = self.activity.actName;
     self.view.backgroundColor = UICOLOR_DEFAULT;
     
-    [self.bottomButton setBackgroundImage:nil forState:UIControlStateNormal];
-    [self.bottomButton setBackgroundImage:nil forState:UIControlStateHighlighted];
-    [self.bottomButton setBackgroundColor:UICOLOR_DEFAULT];
-    [self.bottomButton.layer setCornerRadius:10.0];
+//    [self.bottomButton setBackgroundImage:nil forState:UIControlStateNormal];
+//    [self.bottomButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+//    [self.bottomButton setBackgroundColor:UICOLOR_DEFAULT];
+//    [self.bottomButton.layer setCornerRadius:10.0];
     self.bottomButton.enabled = NO;
     self.bottomButton.alpha = 0.7;
     NSString *begin = [NSDate stringFromDate:self.activity.beginDate format:@"yyyy.MM.dd"];
@@ -226,7 +226,6 @@ static const int TextViewLine3                  = TextViewLine2+20;
     } else {
         [self showTip:@"您的能量豆不足，快去运动吧！"];
     }
-    
 }
 - (IBAction)howToGetBeanAction:(id)sender {
     WMSHowGetBeanVC *vc = [[WMSHowGetBeanVC alloc] init];

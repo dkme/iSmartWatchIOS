@@ -244,6 +244,7 @@
     [self.view addSubview:self.tipView];
     [self.view addSubview:self.hud];
     [self.mySportView addSubview:self.imageView];
+    self.navigationController.navigationBarHidden = YES;
     
 #ifdef DEBUG
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 568-50, 320, 50)];

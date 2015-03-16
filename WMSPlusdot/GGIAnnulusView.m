@@ -52,7 +52,7 @@
     [path addArcWithCenter:center radius:RADIUS startAngle:degreesToRadians(START_ANGLE) endAngle:degreesToRadians(END_ANGLE) clockwise:YES];
     
     CAShapeLayer *underLayer = [CAShapeLayer layer];
-    underLayer.strokeColor = UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
+    underLayer.strokeColor = [UIColor whiteColor].CGColor;//UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
     underLayer.fillColor = [UIColor clearColor].CGColor;
     underLayer.frame = self.bounds;
     underLayer.lineWidth = PROGRESS_WIDTH;

@@ -81,10 +81,9 @@
     [self.viewPassword setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_menu_bg_a.png"]]];
     
     [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_a.png"] forState:UIControlStateNormal];
-    [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_b.png"] forState:UIControlStateSelected];
-//    [self.buttonLogin setBackgroundColor:[UIColor clearColor]];
+    [self.buttonLogin setBackgroundImage:[UIImage imageNamed:@"login_btn_b.png"] forState:UIControlStateHighlighted];
     [self.buttonCancel setBackgroundImage:[UIImage imageNamed:@"zq_sound_no_a.png"] forState:UIControlStateNormal];
-    [self.buttonCancel setBackgroundImage:[UIImage imageNamed:@"zq_sound_no_b.png"] forState:UIControlStateSelected];
+    [self.buttonCancel setBackgroundImage:[UIImage imageNamed:@"zq_sound_no_b.png"] forState:UIControlStateHighlighted];
 }
 
 - (void)localizableView

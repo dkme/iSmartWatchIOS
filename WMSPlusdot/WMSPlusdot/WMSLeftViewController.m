@@ -33,8 +33,8 @@
 #define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 30) )
 #define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 40, _userInfoView.center.y - 45 - 10, 79, 79) )
 #define userLabelFrame ( CGRectMake(0, userImgBtn.center.y + 45, _userInfoView.frame.size.width, 35) )
-#define tableViewFrame ( iPhone5 ? (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 60, self.view.frame.size.width, 65 * 5)) : (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 150, self.view.frame.size.width, 65 * 5)) )
-#define settingBtnFrame ( iPhone5 ? CGRectMake(16, self.view.frame.size.height - 50, 30, 30) : CGRectMake(16, self.view.frame.size.height - 150, 30, 30) )
+#define tableViewFrame ( iPhone5 ? (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 60, self.view.frame.size.width, 65 * 5)) : (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 115, self.view.frame.size.width, 65 * 5)) )
+#define settingBtnFrame ( iPhone5 ? CGRectMake(16, self.view.frame.size.height - 50, 30, 30) : CGRectMake(16, self.view.frame.size.height - 130, 30, 30) )
 
 #define Null_Object     @"Null_Object"
 
@@ -120,18 +120,19 @@
 {
     if (!_titleArray) {
         NSArray *items = @[NSLocalizedString(@"My sport",nil),
+                           NSLocalizedString(@"My sleep",nil),
                            NSLocalizedString(@"Target setting",nil),
                            NSLocalizedString(@"Bound watch",nil)
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
 //#ifdef DEBUG
-        NSString *languageType = [WMSAppConfig systemLanguage];
-        if ([languageType isEqualToString:kLanguageChinese]) {
+//        NSString *languageType = [WMSAppConfig systemLanguage];
+//        if ([languageType isEqualToString:kLanguageChinese]) {
             NSArray *newItems = @[NSLocalizedString(@"好礼兑换",nil),
                                   NSLocalizedString(@"能量豆",nil)
                                   ];
             [mutiArr addObjectsFromArray:newItems];
-        }
+//        }
 //#endif
         _titleArray = mutiArr;
     }
@@ -146,8 +147,9 @@
                                 @"main_menu_binding_icon_a.png",
                                 ];
         }
-        else if (self.titleArray.count == 5) {
+        else if (self.titleArray.count == 6) {
             _imageNameArray = @[@"main_menu_sport_icon_a.png",
+                                @"main_menu_sleep_icon_a.png",
                                 @"main_menu_target_icon_a.png",
                                 @"main_menu_binding_icon_a.png",
                                 @"main_menu_gift_icon_a.png",
@@ -166,8 +168,9 @@
                                        @"main_menu_binding_icon_b.png",
                                        ];
         }
-        else if (self.titleArray.count == 5) {
+        else if (self.titleArray.count == 6) {
             _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
+                                       @"main_menu_sleep_icon_b.png",
                                        @"main_menu_target_icon_b.png",
                                        @"main_menu_binding_icon_b.png",
                                        @"main_menu_gift_icon_b.png",
@@ -188,9 +191,10 @@
                                             [WMSMyAccessoryViewController class],
                                             ];
         }
-        else if (self.titleArray.count == 5) {
+        else if (self.titleArray.count == 6) {
             _specifyContentVCClassArray = @[
                                             [WMSContentViewController class],
+                                            [WMSContent1ViewController class],
                                             [WMSContent2ViewController class],
                                             [WMSMyAccessoryViewController class],
                                             [WMSGiftVC class],
@@ -209,6 +213,7 @@
         UIViewController *vc = ((MyNavigationController *)self.sideMenuViewController.contentViewController).topViewController;
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
+                           Null_Object,
                            Null_Object,
                            Null_Object,
                            Null_Object,
@@ -363,7 +368,6 @@
 {
     return CELL_HEIGHT;
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

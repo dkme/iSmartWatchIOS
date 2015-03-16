@@ -50,6 +50,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setupUI];
+    [self setupNavBar];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,8 +76,16 @@
     
     [self setConsumeBean:self.consumeBeans];
 }
+- (void)setupNavBar
+{
+    UIBarButtonItem *backItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
+    self.navigationItem.leftBarButtonItem = backItem;
+}
 
 #pragma mark - Actions
+- (void)backAction:(id)sender {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (IBAction)copyCodeAction:(id)sender {
     [[UIPasteboard generalPasteboard] setPersistent:YES];
     [[UIPasteboard generalPasteboard] setValue:self.exchangeCode forPasteboardType:UIPasteboardTypeListString[0]];

@@ -105,7 +105,7 @@
 {
     if (!_section4TitleArray) {
         _section4TitleArray = @[NSLocalizedString(@"防丢",nil),
-                                NSLocalizedString(@"Smart alarm clock", nil)
+//                                NSLocalizedString(@"Smart alarm clock", nil)
                                 ];
     }
     return _section4TitleArray;
@@ -179,6 +179,7 @@
     
     self.tableView.scrollEnabled = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.tintColor = UICOLOR_DEFAULT;
     self.sideMenuViewController.delegate = self;
     self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     
@@ -590,7 +591,7 @@
     if ( [self class] == [menuViewController class] ) {
         _isVisible = YES;
         if ([self.bleControl isConnected]) {
-//            [self firstConnectedConfig];
+            [self firstConnectedConfig];
         }
         AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
         if ([WMSMyAccessory isBindAccessory]) {

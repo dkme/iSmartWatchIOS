@@ -129,6 +129,7 @@ static const int WeightMaxValue         =220;
         _buttonSava.backgroundColor = [UIColor clearColor];
         _buttonSava.frame = ButtonSavaFrame;
         [_buttonSava setTitle:NSLocalizedString(@"保存信息", nil) forState:UIControlStateNormal];
+        [_buttonSava setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_buttonSava setBackgroundImage:[UIImage imageNamed:@"sava_info_btn_a.png"] forState:UIControlStateNormal];
         [_buttonSava setBackgroundImage:[UIImage imageNamed:@"sava_info_btn_b.png"] forState:UIControlStateHighlighted];
         [_buttonSava addTarget:self action:@selector(savaInfoAction:) forControlEvents:UIControlEventTouchUpInside];

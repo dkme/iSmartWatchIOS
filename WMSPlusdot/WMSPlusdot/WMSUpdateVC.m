@@ -76,16 +76,14 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
 }
 - (void)setupUI
 {
-    UIImage *image = [UIImage imageNamed:@"zq_public_green_btn_a.png"];
+    UIImage *image = [UIImage imageNamed:@"login_btn_a.png"];
     CGRect frame = CGRectZero;
     frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
     frame.origin.x = (ScreenWidth-frame.size.width)/2.0;
     frame.origin.y = ScreenHeight-frame.size.height-10.0;
     [self.buttonUpdate setFrame:frame];
-//    [self.buttonUpdate setBackgroundImage:image forState:UIControlStateNormal];
-//    [self.buttonUpdate setBackgroundImage:[UIImage imageNamed:@"zq_public_green_btn_b.png"] forState:UIControlStateSelected];
-    [self.buttonUpdate setBackgroundColor:UICOLOR_DEFAULT];
-    [self.buttonUpdate.layer setCornerRadius:10.0];
+    [self.buttonUpdate setBackgroundImage:image forState:UIControlStateNormal];
+    [self.buttonUpdate setBackgroundImage:[UIImage imageNamed:@"login_btn_b.png"] forState:UIControlStateHighlighted];
     [self.buttonUpdate setTitle:NSLocalizedString(@"立即更新", nil) forState:UIControlStateNormal];
     [self.buttonUpdate setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     

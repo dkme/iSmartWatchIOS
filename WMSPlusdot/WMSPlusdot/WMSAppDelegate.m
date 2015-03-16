@@ -93,16 +93,13 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [WMSPostNotificationHelper cancelAllNotification];
+    [self setupReSyncDataTimer];
+    [self setupAppAppearance];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
-    
-//    [self test];
-    
-    [WMSPostNotificationHelper cancelAllNotification];
-    [self setupReSyncDataTimer];
-    
-    [self setupAppAppearance];
     
     if ([WMSHelper isFirstLaunchApp]) {
         self.window.rootViewController = [WMSGuideVC guide];
@@ -227,16 +224,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 {
     DEBUGLog(@"%s",__FUNCTION__);
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
-}
-
-- (void)test
-{
-    NSString *path = FileTmpPath(FILE_TMP_FIRMWARE_UPDATE);
-    NSURL *fileURL = [NSURL fileURLWithPath:path];
-    DEBUGLog(@"path:%@",path);
-    DEBUGLog(@"url:%@",fileURL);
-    NSData *hexFileData = [NSData dataWithContentsOfURL:fileURL];
-    //NSLog(@"file data:%@",hexFileData);
 }
 
 @end

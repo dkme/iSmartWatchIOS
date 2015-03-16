@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -235,8 +235,8 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="login_btn_a.png" width="542" height="92"/>
-        <image name="login_btn_b.png" width="542" height="92"/>
+        <image name="login_btn_a.png" width="610" height="104"/>
+        <image name="login_btn_b.png" width="610" height="104"/>
         <image name="plusdot_gift_bag.png" width="205" height="129"/>
         <image name="plusdot_gift_bean.png" width="127" height="105"/>
         <image name="plusdot_gift_bean_b贴在礼包图标上.png" width="71" height="77"/>

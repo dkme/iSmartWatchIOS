@@ -45,6 +45,7 @@
     [super viewWillAppear:animated];
     
     [self showIntroView];
+//    [self enterMainView:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -96,8 +97,8 @@
     
 //    EAIntroPage *page4 = [EAIntroPage page];
 //    page4.bgImage = [UIImage imageNamed:images[3]];
-    
-    NSArray *pages = @[page1/*,page2,page3*/,/*page4*/];
+ 
+    NSArray *pages = @[page1];
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:pages];
     intro.swipeToExit = NO;
     intro.skipButton.hidden = YES;
@@ -113,14 +114,17 @@
     button.frame = frame;
     button.backgroundColor = [UIColor clearColor];
     button.tag = INTRO_BUTTON_TAG;
-    button.alpha = 1.0;
+    button.alpha = 0.0;
     [button setTitle:@"Go" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setBackgroundImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(enterMainView:) forControlEvents:UIControlEventTouchUpInside];
     [intro addSubview:button];
-    
+    [intro.pageControl setHidden:YES];
     [intro showInView:self.view animateDuration:0];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(enterMainView:) withObject:nil afterDelay:0.5];
 }
 
 #pragma mark - Action

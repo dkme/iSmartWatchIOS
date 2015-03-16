@@ -162,6 +162,7 @@ NSString * const WMSBleControlScanFinish =
 
 - (void)dealloc
 {
+    DEBUGLog(@"%s",__FUNCTION__);
     [self.myTimers deleteAllTimers];
     [self setMyTimers:nil];
     

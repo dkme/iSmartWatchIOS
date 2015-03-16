@@ -323,6 +323,11 @@
 #pragma mark - setup
 - (void)setupView
 {
+    if (iPhone4s) {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport"]]];
+    } else {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_sport-568h"]]];
+    }
     [self.view addSubview:self.syncDataView];
     [self.view addSubview:self.tipView];
     [self.view addSubview:self.hud];
@@ -448,7 +453,7 @@
     [self setLightSleepDurations:2*60+30];
     [self setAwakeDurations:(8*60+5)-(4*60+26)-(2*60+30)];
     [self setSleepMinute:8*60+5 deepSleepMinute:4*60+26 lightSleepMinute:2*60+30 awakeMinute:(8*60+5)-(4*60+26)-(2*60+30)];
-     */
+    */
 }
 
 //是否显示TipView，0表示显示syncDataView，1表示显示tipView，2表示两者都不显示
@@ -508,9 +513,9 @@
 }
 
 - (IBAction)gotoMyClockViewAction:(id)sender {
-    //WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
-//    WMSClockListVC *VC = [[WMSClockListVC alloc] init];
-//    [self.navigationController pushViewController:VC animated:YES];
+    WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
+    VC.title = NSLocalizedString(@"Smart alarm clock", nil);
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {
