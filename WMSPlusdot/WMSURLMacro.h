@@ -11,7 +11,7 @@
 #define URL_APP_INFO                        @"http://itunes.apple.com/lookup?id＝930839162"
 
 /******************好礼兑换***********************/
-#define URL_GIFT_AND_BEANS                  @"http://115.28.165.93:8080/gambler"
+#define URL_GIFT_AND_BEANS                  @"http://115.28.165.93:9527/gambler"
 #define API_ACTIVITY_LIST                   @"activity/list"
 #define API_ACTIVITY_LOGO                   @"image"
 #define API_ACTIVITY_RULE                   @"activity/getInfo"
