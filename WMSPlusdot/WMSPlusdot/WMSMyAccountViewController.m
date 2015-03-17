@@ -181,8 +181,17 @@ static const int WeightMaxValue         =220;
     [self updateViews];
     [self localized];
     [self adaptiveIphone4];
+    
+//    self.extendedLayoutIncludesOpaqueBars = YES;
+//    DEBUGLog(@"nav bar is translucent:%d",NavBar_IS_Translucent);
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 70)];
+//    view.backgroundColor = [UIColor redColor];
+//    [self.view addSubview:view];
 }
-
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -217,6 +226,7 @@ static const int WeightMaxValue         =220;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
     }
+    SetControllerKeepExtendedLayout();
 }
 - (void)setupControl
 {

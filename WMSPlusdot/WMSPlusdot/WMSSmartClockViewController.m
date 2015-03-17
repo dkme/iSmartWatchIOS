@@ -154,6 +154,7 @@
 - (void)setupNavBarView
 {
     self.navigationController.navigationBarHidden = NO;
+    SetControllerKeepExtendedLayout();
     
     UIBarButtonItem *leftItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
     UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) font:Font_System(18.0) size:SYNC_BUTTON_SIZE target:self action:@selector(syncAction:)];

@@ -179,6 +179,7 @@
 {
     self.title = NSLocalizedString(@"Activities remind", nil);
     self.navigationController.navigationBarHidden = NO;
+    SetControllerKeepExtendedLayout();
     
     UIBarButtonItem *leftItem = [UIBarButtonItem itemWithImageName:@"back_btn_a.png" highImageName:@"back_btn_b.png" target:self action:@selector(backAction:)];
     UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) font:Font_System(18.0) size:SYNC_BUTTON_SIZE target:self action:@selector(syncSettingAction:)];

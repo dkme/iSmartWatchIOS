@@ -109,6 +109,7 @@
     UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) font:Font_System(18.0) size:SYNC_BUTTON_SIZE target:self action:@selector(syncSettingAction:)];
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = item1;
+    SetControllerKeepExtendedLayout();
 }
 - (void)setupTableView
 {

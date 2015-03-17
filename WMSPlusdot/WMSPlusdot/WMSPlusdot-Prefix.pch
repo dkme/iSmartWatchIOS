@@ -58,11 +58,13 @@
 #define IS_IOS8      ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #define ScreenWidth  ( [[UIScreen mainScreen] bounds].size.width )
 #define ScreenHeight ( [[UIScreen mainScreen] bounds].size.height )
+
 /*当UINavigationBar为透明状态时，self.view的坐标原点是最上方
  为不透明状态时，坐标原点在导航栏的左下方
  */
 #define NAV_BAR_HEIGHT          64.f
-#define NavBar_IS_Translucent   (self.navigationController.navigationBar.translucent == YES)
+#define NavBar_IS_Translucent   (self.navigationController.navigationBar.translucent)
+#define SetControllerKeepExtendedLayout() (IS_IOS7?self.extendedLayoutIncludesOpaqueBars=YES:DEBUGLog(@""))
 
 
 //固定尺寸

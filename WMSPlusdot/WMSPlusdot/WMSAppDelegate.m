@@ -170,13 +170,14 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     [navBar setTintColor:[UIColor whiteColor]];
     [navBar setBackgroundImage:[UIImage imageFromColor:UICOLOR_DEFAULT] forBarMetrics:UIBarMetricsDefault];
     [navBar setShadowImage:[[UIImage alloc] init]];
-    if (IS_IOS8) {
-        navBar.barStyle = UIBarStyleBlack;
-        navBar.translucent = YES;
-    } else {
+//    if (IS_IOS8) {
+//        navBar.barStyle = UIBarStyleBlack;
+//        navBar.translucent = YES;
+//    }
+//    else {
 //        navBar.barStyle = UIBarStyleBlackTranslucent;
 //        navBar.translucent = YES;
-    }
+//    }
     
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName:[UIColor whiteColor],
