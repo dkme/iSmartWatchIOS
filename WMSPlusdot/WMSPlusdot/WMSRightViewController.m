@@ -14,7 +14,7 @@
 #import "WMSAntiLostVC.h"
 #import "WMSClockListVC.h"
 #import "WMSUpdateVC.h"
-#import "WMSCameraVC.h"
+#import "GGIViewController.h"
 
 #import "WMSSwitchCell.h"
 #import "MBProgressHUD.h"
@@ -43,7 +43,7 @@
 #define PLAY_ALERT_DURATION                     8.0
 #define PLAY_VIBRATE_TIMEINTERVAL               1.0
 
-@interface WMSRightViewController ()<WMSSwitchCellDelegage,RESideMenuDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface WMSRightViewController ()<WMSSwitchCellDelegage,RESideMenuDelegate,GGIViewControllerDelegate>
 
 @property (strong, nonatomic) NSArray *section1TitleArray;
 @property (strong, nonatomic) NSArray *section2TitleArray;
@@ -53,7 +53,7 @@
 @property (strong, nonatomic) NSArray *headerTitleArray;
 
 @property (strong, nonatomic) WMSBleControl *bleControl;
-@property (strong, nonatomic) UIImagePickerController *pickerController;
+@property (strong, nonatomic) GGIViewController *pickerController;
 
 @property (strong, nonatomic) NSArray *settingItemArray;
 @property (strong, nonatomic) NSArray *cellIndexPathArray;//与上面的值一一对应
@@ -406,7 +406,7 @@
      {
          DEBUGLog(@"监听到的按键dataType:0x%X",(int)dataType);
          if (RemoteDataTypeTakephoto == dataType) {
-             [self.pickerController takePicture];
+             [self.pickerController takePhoto];
          }
          else if (RemoteDataTypeFindPhone == dataType) {
              [_soundOperation playAlarmWithDuration:PLAY_ALERT_DURATION andVibrateWithTimeInterval:PLAY_VIBRATE_TIMEINTERVAL completion:nil];
@@ -473,32 +473,19 @@
          [self hideHUDAtViewCenter];
          if (success) {//切换模式成功，进入相机界面
              dispatch_async(dispatch_get_main_queue(), ^{
-                 UIImagePickerController *picker = [self openCamera];
+                 GGIViewController *picker = [self openCamera];
                  self.pickerController = picker;
              });
-             
-//             WMSCameraVC *cameraVC = [[WMSCameraVC alloc] init];
-//             __weak __typeof(self) weakSelf = self;
-//             [self presentViewController:cameraVC animated:YES completion:^{
-//                 weakSelf.pickerController = cameraVC.imagePicker;
-//                 DEBUGLog(@"self.pickerController %@",weakSelf.pickerController);
-//             }];
          } else {}
      }];
 }
-
-- (UIImagePickerController *)openCamera
+- (GGIViewController *)openCamera
 {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         return nil;
     }
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    GGIViewController *picker = [[GGIViewController alloc] init];
     picker.delegate = self;
-    picker.allowsEditing= NO;
-    //picker.showsCameraControls = YES;
-    //设置图像选取控制器的类型为静态图像
-    //picker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*)kUTTypeImage, nil];
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     [self presentViewController:picker animated:YES completion:nil];
     return picker;
 }
@@ -613,35 +600,32 @@
     }
 }
 
-
-#pragma mark - UIImagePickerControllerDelegate
--(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+#pragma mark - GGIViewControllerDelegate
+- (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image
 {
-    NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    //判断是静态图像还是视频
-    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-        //UIImage* editedImage = [info objectForKey:UIImagePickerControllerEditedImage];//获取用户编辑之后的图像
-        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        //将该图像保存到媒体库中
-        UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+    [self openPhotoLibrary];
+}
+- (void)openPhotoLibrary
+{
+    UIImagePickerControllerSourceType sourceType;
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        return ;
     }
     
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    self.pickerController = nil;
-}
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    self.pickerController = nil;
+    sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = sourceType;
+    picker.allowsEditing=NO;
+    picker.delegate = nil;
+    
+    [self.pickerController presentViewController:picker animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return SECTION_NUMBER;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
@@ -660,8 +644,6 @@
     }
     return 0;
 }
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section) {
