@@ -262,8 +262,21 @@
 		238370D01AB671AF0022F8CF /* login_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370CE1AB671AF0022F8CF /* login_btn_b.png */; };
 		238370D31AB673CC0022F8CF /* sava_info_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370D11AB673CC0022F8CF /* sava_info_btn_a.png */; };
 		238370D41AB673CC0022F8CF /* sava_info_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370D21AB673CC0022F8CF /* sava_info_btn_b.png */; };
-		2383D4501A723F9D006217CC /* WMSCameraVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2383D44E1A723F9D006217CC /* WMSCameraVC.m */; };
-		2383D4511A723F9D006217CC /* WMSCameraVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2383D44F1A723F9D006217CC /* WMSCameraVC.xib */; };
+		238370E41AB826480022F8CF /* CameraImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 238370D61AB826480022F8CF /* CameraImageHelper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		238370E51AB826480022F8CF /* GGIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 238370D81AB826480022F8CF /* GGIViewController.m */; };
+		238370E61AB826480022F8CF /* GGIViewControlleraa.xib in Resources */ = {isa = PBXBuildFile; fileRef = 238370D91AB826480022F8CF /* GGIViewControlleraa.xib */; };
+		238370E71AB826480022F8CF /* switch_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370DA1AB826480022F8CF /* switch_camera.png */; };
+		238370E81AB826480022F8CF /* switch_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370DB1AB826480022F8CF /* switch_camera@2x.png */; };
+		238370E91AB826480022F8CF /* switch_camera_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370DC1AB826480022F8CF /* switch_camera_h.png */; };
+		238370EA1AB826480022F8CF /* switch_camera_h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370DD1AB826480022F8CF /* switch_camera_h@2x.png */; };
+		238370EB1AB826480022F8CF /* flashing_auto.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370DE1AB826480022F8CF /* flashing_auto.png */; };
+		238370EC1AB826480022F8CF /* flashing_auto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370DF1AB826480022F8CF /* flashing_auto@2x.png */; };
+		238370ED1AB826480022F8CF /* flashing_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370E01AB826480022F8CF /* flashing_off.png */; };
+		238370EE1AB826480022F8CF /* flashing_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370E11AB826480022F8CF /* flashing_off@2x.png */; };
+		238370EF1AB826480022F8CF /* flashing_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370E21AB826480022F8CF /* flashing_on.png */; };
+		238370F01AB826480022F8CF /* flashing_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370E31AB826480022F8CF /* flashing_on@2x.png */; };
+		238370F21AB827880022F8CF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238370F11AB827880022F8CF /* ImageIO.framework */; };
+		238370F41AB829DC0022F8CF /* close_cha_h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 238370F31AB829DC0022F8CF /* close_cha_h@2x.png */; };
 		23876EA71A52479800F1F15C /* intro_page2.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876E9F1A52479800F1F15C /* intro_page2.png */; };
 		23876EA91A52479800F1F15C /* intro_page3.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA11A52479800F1F15C /* intro_page3.png */; };
 		23876EAB1A52479800F1F15C /* intro_page4.png in Resources */ = {isa = PBXBuildFile; fileRef = 23876EA31A52479800F1F15C /* intro_page4.png */; };
@@ -733,9 +746,23 @@
 		238370CE1AB671AF0022F8CF /* login_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_b.png; sourceTree = "<group>"; };
 		238370D11AB673CC0022F8CF /* sava_info_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sava_info_btn_a.png; sourceTree = "<group>"; };
 		238370D21AB673CC0022F8CF /* sava_info_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sava_info_btn_b.png; sourceTree = "<group>"; };
-		2383D44D1A723F9D006217CC /* WMSCameraVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSCameraVC.h; sourceTree = "<group>"; };
-		2383D44E1A723F9D006217CC /* WMSCameraVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSCameraVC.m; sourceTree = "<group>"; };
-		2383D44F1A723F9D006217CC /* WMSCameraVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSCameraVC.xib; sourceTree = "<group>"; };
+		238370D51AB826480022F8CF /* CameraImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraImageHelper.h; sourceTree = "<group>"; };
+		238370D61AB826480022F8CF /* CameraImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraImageHelper.m; sourceTree = "<group>"; };
+		238370D71AB826480022F8CF /* GGIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGIViewController.h; sourceTree = "<group>"; };
+		238370D81AB826480022F8CF /* GGIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGIViewController.m; sourceTree = "<group>"; };
+		238370D91AB826480022F8CF /* GGIViewControlleraa.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GGIViewControlleraa.xib; sourceTree = "<group>"; };
+		238370DA1AB826480022F8CF /* switch_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch_camera.png; sourceTree = "<group>"; };
+		238370DB1AB826480022F8CF /* switch_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch_camera@2x.png"; sourceTree = "<group>"; };
+		238370DC1AB826480022F8CF /* switch_camera_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switch_camera_h.png; sourceTree = "<group>"; };
+		238370DD1AB826480022F8CF /* switch_camera_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch_camera_h@2x.png"; sourceTree = "<group>"; };
+		238370DE1AB826480022F8CF /* flashing_auto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashing_auto.png; sourceTree = "<group>"; };
+		238370DF1AB826480022F8CF /* flashing_auto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flashing_auto@2x.png"; sourceTree = "<group>"; };
+		238370E01AB826480022F8CF /* flashing_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashing_off.png; sourceTree = "<group>"; };
+		238370E11AB826480022F8CF /* flashing_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flashing_off@2x.png"; sourceTree = "<group>"; };
+		238370E21AB826480022F8CF /* flashing_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flashing_on.png; sourceTree = "<group>"; };
+		238370E31AB826480022F8CF /* flashing_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flashing_on@2x.png"; sourceTree = "<group>"; };
+		238370F11AB827880022F8CF /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		238370F31AB829DC0022F8CF /* close_cha_h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_cha_h@2x.png"; sourceTree = "<group>"; };
 		23876E9F1A52479800F1F15C /* intro_page2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page2.png; sourceTree = "<group>"; };
 		23876EA11A52479800F1F15C /* intro_page3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page3.png; sourceTree = "<group>"; };
 		23876EA31A52479800F1F15C /* intro_page4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_page4.png; sourceTree = "<group>"; };
@@ -858,6 +885,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				238370F21AB827880022F8CF /* ImageIO.framework in Frameworks */,
 				23472E921A8AFBCC00ED3CA4 /* Security.framework in Frameworks */,
 				23472E901A8AFB8B00ED3CA4 /* SystemConfiguration.framework in Frameworks */,
 				23472E8E1A8AFB7800ED3CA4 /* CoreLocation.framework in Frameworks */,
@@ -1356,6 +1384,7 @@
 		232846BF19A43668001C148D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				238370F11AB827880022F8CF /* ImageIO.framework */,
 				23472E911A8AFBCC00ED3CA4 /* Security.framework */,
 				23472E8F1A8AFB8B00ED3CA4 /* SystemConfiguration.framework */,
 				23472E8D1A8AFB7800ED3CA4 /* CoreLocation.framework */,
@@ -1594,6 +1623,15 @@
 			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
+		234986821AB97C740065CB65 /* CameraImageHelper */ = {
+			isa = PBXGroup;
+			children = (
+				238370D51AB826480022F8CF /* CameraImageHelper.h */,
+				238370D61AB826480022F8CF /* CameraImageHelper.m */,
+			);
+			name = CameraImageHelper;
+			sourceTree = "<group>";
+		};
 		2349C54D1A80A5BC00CEADA2 /* KOPopupView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1794,9 +1832,21 @@
 		2383D44C1A723F23006217CC /* 相机视图 */ = {
 			isa = PBXGroup;
 			children = (
-				2383D44D1A723F9D006217CC /* WMSCameraVC.h */,
-				2383D44E1A723F9D006217CC /* WMSCameraVC.m */,
-				2383D44F1A723F9D006217CC /* WMSCameraVC.xib */,
+				234986821AB97C740065CB65 /* CameraImageHelper */,
+				238370D71AB826480022F8CF /* GGIViewController.h */,
+				238370D81AB826480022F8CF /* GGIViewController.m */,
+				238370D91AB826480022F8CF /* GGIViewControlleraa.xib */,
+				238370DA1AB826480022F8CF /* switch_camera.png */,
+				238370DB1AB826480022F8CF /* switch_camera@2x.png */,
+				238370DC1AB826480022F8CF /* switch_camera_h.png */,
+				238370DD1AB826480022F8CF /* switch_camera_h@2x.png */,
+				238370DE1AB826480022F8CF /* flashing_auto.png */,
+				238370DF1AB826480022F8CF /* flashing_auto@2x.png */,
+				238370E01AB826480022F8CF /* flashing_off.png */,
+				238370E11AB826480022F8CF /* flashing_off@2x.png */,
+				238370E21AB826480022F8CF /* flashing_on.png */,
+				238370E31AB826480022F8CF /* flashing_on@2x.png */,
+				238370F31AB829DC0022F8CF /* close_cha_h@2x.png */,
 			);
 			name = "相机视图";
 			sourceTree = "<group>";
@@ -2281,6 +2331,7 @@
 				23876EAB1A52479800F1F15C /* intro_page4.png in Resources */,
 				234BF1F619B05914005D71A0 /* WMSMyAccountViewController.xib in Resources */,
 				23876EA71A52479800F1F15C /* intro_page2.png in Resources */,
+				238370EE1AB826480022F8CF /* flashing_off@2x.png in Resources */,
 				2335119619A479DA00FBCC81 /* signup_arrow_b.png in Resources */,
 				230298CB19A83281009D4306 /* target_progress_btn.png in Resources */,
 				23AD5F561AB0003800DB32BB /* skin_intro_page.png in Resources */,
@@ -2294,9 +2345,9 @@
 				234BF1F019B0308F005D71A0 /* WMSNavBarView.xib in Resources */,
 				230298D819A87F0A009D4306 /* link_connect_failure_icon.png in Resources */,
 				2319724E1A35B8CA002E8A0F /* zq_light_list_middle_a.png in Resources */,
-				2383D4511A723F9D006217CC /* WMSCameraVC.xib in Resources */,
 				236D14551A83105500EE6FF4 /* plusdot_successful.png in Resources */,
 				23114A4819D120D600FA594C /* unselect_man.png in Resources */,
+				238370EC1AB826480022F8CF /* flashing_auto@2x.png in Resources */,
 				2368A8211A8460EE003DFAAC /* WMSBeanCell.xib in Resources */,
 				230298DA19A87F0A009D4306 /* link_connect_success_icon.png in Resources */,
 				231972521A35B8FC002E8A0F /* zq_light_list_top_a.png in Resources */,
@@ -2305,9 +2356,11 @@
 				233511B219A4C3D300FBCC81 /* main_date_prev_b.png in Resources */,
 				2326A43719A5C6970098657B /* main_menu_sleep_icon_b.png in Resources */,
 				239F51D61A2D963E0058F6DE /* WMSGuideVC.xib in Resources */,
+				238370EF1AB826480022F8CF /* flashing_on.png in Resources */,
 				2335119519A479DA00FBCC81 /* signup_arrow_a.png in Resources */,
 				23876EA91A52479800F1F15C /* intro_page3.png in Resources */,
 				2326A40F19A593E20098657B /* main_history_btn_a.png in Resources */,
+				238370F01AB826480022F8CF /* flashing_on@2x.png in Resources */,
 				2347C82D1A63A4C9007A0446 /* WMSClockCell.xib in Resources */,
 				237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */,
 				230298CA19A83281009D4306 /* target_progress_bg.png in Resources */,
@@ -2320,6 +2373,7 @@
 				238370D31AB673CC0022F8CF /* sava_info_btn_a.png in Resources */,
 				23BD875B1A5D3B6C007A4F2C /* zq_sound_no_b.png in Resources */,
 				233511AE19A4C00600FBCC81 /* main_setting_icon_b.png in Resources */,
+				238370E61AB826480022F8CF /* GGIViewControlleraa.xib in Resources */,
 				23491D2C1A58EA0C00C821E8 /* plusdot_one.png in Resources */,
 				233511B119A4C3D300FBCC81 /* main_date_prev_a.png in Resources */,
 				230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */,
@@ -2335,14 +2389,17 @@
 				2326A44B19A5E9CE0098657B /* WMSRightViewController.xib in Resources */,
 				2326A41219A593E20098657B /* main_target_btn_b.png in Resources */,
 				23876EC01A52985A00F1F15C /* intro_page2@2x.png in Resources */,
+				238370F41AB829DC0022F8CF /* close_cha_h@2x.png in Resources */,
 				23204A991A42A4E6005874CE /* Audio.mp3 in Resources */,
 				2326A43919A5C6970098657B /* main_menu_sport_icon_b.png in Resources */,
 				231972441A3588EA002E8A0F /* setting_vc_bg_b.png in Resources */,
 				23114A4519D11FAE00FA594C /* bind_btn_b.png in Resources */,
 				2316961619C7062500E3CA24 /* WMSMyAccessoryViewController.xib in Resources */,
 				2326A43619A5C6970098657B /* main_menu_sleep_icon_a.png in Resources */,
+				238370E71AB826480022F8CF /* switch_camera.png in Resources */,
 				2326A43819A5C6970098657B /* main_menu_sport_icon_a.png in Resources */,
 				23114A4F19D1640800FA594C /* zq_sync_btn.png in Resources */,
+				238370EB1AB826480022F8CF /* flashing_auto.png in Resources */,
 				232471BF1A51067F00F70565 /* WMSInputView.xib in Resources */,
 				2335119219A476EF00FBCC81 /* WMSSignupViewController.xib in Resources */,
 				2339D81C1A53DFB20097E905 /* Signal_3@2x.png in Resources */,
@@ -2363,6 +2420,7 @@
 				2368A8281A84A2A6003DFAAC /* WMSHowGetBeanVC.xib in Resources */,
 				2326A43419A5C6970098657B /* main_menu_setting_icon_a.png in Resources */,
 				232846F319A43825001C148D /* WMSLoginViewController.xib in Resources */,
+				238370E81AB826480022F8CF /* switch_camera@2x.png in Resources */,
 				23A153251A369F790026D741 /* WMSWebVC.xib in Resources */,
 				233511A819A4BFC900FBCC81 /* main_menu_icon_a.png in Resources */,
 				2326A40419A58CCF0098657B /* main_circle_white.png in Resources */,
@@ -2388,6 +2446,7 @@
 				2326A43A19A5C6970098657B /* main_menu_target_icon_a.png in Resources */,
 				2326A41F19A5A2FC0098657B /* main_avatar_default.png in Resources */,
 				23876EB51A52974D00F1F15C /* intro_page3_b.png in Resources */,
+				238370E91AB826480022F8CF /* switch_camera_h.png in Resources */,
 				23876EC81A529DC200F1F15C /* intro_enter.png in Resources */,
 				23A1532E1A36F4630026D741 /* zq_public_green_btn_b.png in Resources */,
 				2326A45119A605660098657B /* WMSSwitchCell.xib in Resources */,
@@ -2416,6 +2475,8 @@
 				236D144E1A82FFCF00EE6FF4 /* plusdot_gift_bag.png in Resources */,
 				2326A43F19A5D71B0098657B /* main_menu_bg_b.png in Resources */,
 				233511AD19A4C00600FBCC81 /* main_setting_icon_a.png in Resources */,
+				238370ED1AB826480022F8CF /* flashing_off.png in Resources */,
+				238370EA1AB826480022F8CF /* switch_camera_h@2x.png in Resources */,
 				23AD5F5A1AB0003800DB32BB /* skin_sport@2x.png in Resources */,
 				23E35B8B1A4BB13B00FDA20D /* WMSAntiLostVC.xib in Resources */,
 				2326A43319A5C6970098657B /* main_menu_binding_icon_b.png in Resources */,
@@ -2517,6 +2578,7 @@
 				238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */,
 				236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */,
 				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,
+				238370E51AB826480022F8CF /* GGIViewController.m in Sources */,
 				235427681A3E906E008E5CFD /* WMSPostNotificationHelper.m in Sources */,
 				23204A9F1A42F9E2005874CE /* WMSBindingView.m in Sources */,
 				2349C54C1A80794400CEADA2 /* KOPopupView.m in Sources */,
@@ -2541,13 +2603,13 @@
 				2335119F19A4B85700FBCC81 /* RESideMenu.m in Sources */,
 				23B0094719D50100008424FA /* PNPlot.m in Sources */,
 				237241061A8C96A9009791AD /* UIRefreshControl+AFNetworking.m in Sources */,
+				238370E41AB826480022F8CF /* CameraImageHelper.m in Sources */,
 				23D7CF0319B5C49C00DFA678 /* LGUtils.m in Sources */,
 				2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */,
 				2316509319AB4A180066C301 /* WMSSmartClockViewController.m in Sources */,
 				237241001A8C96A9009791AD /* AFNetworkActivityIndicatorManager.m in Sources */,
 				2319723B1A3540DE002E8A0F /* WMSDetailCell.m in Sources */,
 				23472E841A8AF8C500ED3CA4 /* AFHTTPRequestOperation.m in Sources */,
-				2383D4501A723F9D006217CC /* WMSCameraVC.m in Sources */,
 				231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */,
 				23472E8B1A8AF8C500ED3CA4 /* AFURLResponseSerialization.m in Sources */,
 				23204A9C1A42E71F005874CE /* GGDeviceTool.m in Sources */,
