@@ -486,8 +486,25 @@
     }
     GGIViewController *picker = [[GGIViewController alloc] init];
     picker.delegate = self;
-    [self presentViewController:picker animated:YES completion:nil];
+    [self presentViewController:picker animated:YES completion:^{
+        picker.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
+    }];
     return picker;
+}
+- (void)openPhotoLibrary
+{
+    UIImagePickerControllerSourceType sourceType;
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        return ;
+    }
+    
+    sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = sourceType;
+    picker.allowsEditing=YES;
+    picker.delegate = nil;
+    
+    [self.pickerController presentViewController:picker animated:YES completion:nil];
 }
 
 #pragma mark - 电量
@@ -538,6 +555,8 @@
     [self batteryOperation:battery];
     
     [self listeningKeys];
+    
+    self.pickerController.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
 }
 
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
@@ -545,7 +564,7 @@
     //[self.tableView reloadData];
     DEBUGLog(@"self.pickerController:%@",self.pickerController);
     [self hideHUDAtViewCenter];
-    [self.pickerController showTip:NSLocalizedString(@"您的连接已断开", nil)];
+    self.pickerController.textLabel.text = NSLocalizedString(@"正在尝试重新连接...", nil);
 }
 
 - (void)peripheralDidEndDFU:(NSNotification *)notification
@@ -605,20 +624,10 @@
 {
     [self openPhotoLibrary];
 }
-- (void)openPhotoLibrary
+- (void)GGIViewControllerDidClose:(GGIViewController *)viewController
 {
-    UIImagePickerControllerSourceType sourceType;
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        return ;
-    }
-    
-    sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = sourceType;
-    picker.allowsEditing=NO;
-    picker.delegate = nil;
-    
-    [self.pickerController presentViewController:picker animated:YES completion:nil];
+    self.pickerController.delegate = nil;
+    self.pickerController = nil;
 }
 
 #pragma mark - Table view data source

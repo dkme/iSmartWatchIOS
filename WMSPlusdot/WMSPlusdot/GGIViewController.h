@@ -24,5 +24,6 @@
 
 @optional
 - (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image;
+- (void)GGIViewControllerDidClose:(GGIViewController *)viewController;
 
 @end

@@ -41,7 +41,7 @@
     _textLabel.textColor = [UIColor whiteColor];
     
     UIImage *image = [UIImage imageNamed:@"close_cha_h.png"];
-    CGSize size = CGSizeMake(image.size.width/2, image.size.height/2);
+    CGSize size = image.size;//CGSizeMake(image.size.width/2, image.size.height/2);
     CGPoint or = CGPointMake((ScreenWidth-size.width)/2.0, ScreenHeight-size.height-15);
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = (CGRect){or,size};
@@ -73,12 +73,11 @@
     [self.view addSubview:button2];
     [self.view addSubview:button3];
     [self.view addSubview:button4];
-    
+    [[UIApplication sharedApplication] setStatusBarHidden:TRUE];
     self.view.backgroundColor = [UIColor blackColor];
     
     _CameraHelper = [[CameraImageHelper alloc] init];
     _CameraHelper.delegate = self;
-    
     // 开始实时取景
     [_CameraHelper startRunning];
     [_CameraHelper embedPreviewInView:self.liveView];
@@ -110,7 +109,11 @@
 
 #pragma mark - Action
 - (void)closeAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(GGIViewControllerDidClose:)]) {
+            [self.delegate GGIViewControllerDidClose:self];
+        }
+    }];
 }
 
 - (void)switchCamera:(id)sender
@@ -158,12 +161,14 @@
 
 - (void)clickImage:(id)sender
 {
-    if (self.delegate &&
-        [self.delegate respondsToSelector:@selector(GGIViewController:didClickImage:)])
-    {
-        UIImage *image = [(UIButton *)sender imageForState:UIControlStateNormal];
-        [self.delegate GGIViewController:self didClickImage:image];
-    }
+    UIImage *image = [(UIButton *)sender backgroundImageForState:UIControlStateNormal];
+    if (image) {
+        if (self.delegate &&
+            [self.delegate respondsToSelector:@selector(GGIViewController:didClickImage:)])
+        {
+            [self.delegate GGIViewController:self didClickImage:image];
+        }
+    }else{}
 }
 
 #pragma mark - AVHelperDelegate
@@ -199,8 +204,6 @@
 
 - (void)animationDidStop:(id)sender
 {
-    
-    
     UIImageView *imageView = (UIImageView *)[self.view viewWithTag:100];
     [imageView removeFromSuperview];
     
