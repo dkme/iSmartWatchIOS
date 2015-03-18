@@ -400,8 +400,6 @@
 #pragma mark - 监听按键
 - (void)listeningKeys
 {
-    [self.pickerController showTip:NSLocalizedString(@"重新建立了连接", nil)];
-    
     [self.bleControl.deviceProfile readDeviceRemoteDataWithCompletion:^(RemoteDataType dataType)
      {
          DEBUGLog(@"监听到的按键dataType:0x%X",(int)dataType);
@@ -487,6 +485,7 @@
     GGIViewController *picker = [[GGIViewController alloc] init];
     picker.delegate = self;
     [self presentViewController:picker animated:YES completion:^{
+        picker.textLabel.adjustsFontSizeToFitWidth = YES;
         picker.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
     }];
     return picker;

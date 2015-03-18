@@ -314,8 +314,8 @@
 "蓝牙连接已断开" = "Bluetooth connection has been disconnected";
 "解绑" = "Remove paired";
 "您还没有连接手表,强制解绑会导致之前设置在手表的信息（闹钟，久坐）残留在手表中" = "Bluetooth disconnected ,the information was setted(alarm etc) will residues in the watch if unbinding";
-
-
+"请按下手表上的确认键拍照..." = "Please confirm key press the watch on the pictures...";
+"正在尝试重新连接..." = "Trying to reconnect...";
 
 
 

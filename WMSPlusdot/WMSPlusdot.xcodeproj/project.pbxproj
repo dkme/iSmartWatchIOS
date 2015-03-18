@@ -1623,6 +1623,15 @@
 			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
+		234986821AB97C740065CB65 /* CameraImageHelper */ = {
+			isa = PBXGroup;
+			children = (
+				238370D51AB826480022F8CF /* CameraImageHelper.h */,
+				238370D61AB826480022F8CF /* CameraImageHelper.m */,
+			);
+			name = CameraImageHelper;
+			sourceTree = "<group>";
+		};
 		2349C54D1A80A5BC00CEADA2 /* KOPopupView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1823,8 +1832,7 @@
 		2383D44C1A723F23006217CC /* 相机视图 */ = {
 			isa = PBXGroup;
 			children = (
-				238370D51AB826480022F8CF /* CameraImageHelper.h */,
-				238370D61AB826480022F8CF /* CameraImageHelper.m */,
+				234986821AB97C740065CB65 /* CameraImageHelper */,
 				238370D71AB826480022F8CF /* GGIViewController.h */,
 				238370D81AB826480022F8CF /* GGIViewController.m */,
 				238370D91AB826480022F8CF /* GGIViewControlleraa.xib */,

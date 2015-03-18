@@ -36,7 +36,7 @@
     
     _liveView = [[UIView alloc] initWithFrame:CGRectMake(0,40,320,465)];
     _textLabel = [[UILabel alloc] initWithFrame:CGRectMake((ScreenWidth-230)/2,10,230,30)];
-    _textLabel.text = @"this is label...";
+    _textLabel.text = @"";
     _textLabel.textAlignment = NSTextAlignmentCenter;
     _textLabel.textColor = [UIColor whiteColor];
     
@@ -73,7 +73,7 @@
     [self.view addSubview:button2];
     [self.view addSubview:button3];
     [self.view addSubview:button4];
-    [[UIApplication sharedApplication] setStatusBarHidden:TRUE];
+    
     self.view.backgroundColor = [UIColor blackColor];
     
     _CameraHelper = [[CameraImageHelper alloc] init];
@@ -87,6 +87,16 @@
     [_CameraHelper changePreviewOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -96,11 +106,11 @@
 {
     DEBUGLog(@"%s",__FUNCTION__);
 }
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
+//
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return YES;
+//}
 
 - (void)takePhoto
 {
