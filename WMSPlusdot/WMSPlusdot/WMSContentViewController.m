@@ -679,7 +679,7 @@
     if (peripheral) {
         [self.bleControl connect:peripheral];
     } else {
-        DEBUGLog(@"》》Scanning %@",NSStringFromClass([self class]));
+        DEBUGLog(@">>>>>>Scanning peripherals");
         [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
                                            completion:^(NSArray *peripherals)
          {
@@ -729,8 +729,9 @@
     //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
     if ([self isBindingVC] == NO)
     {
-        //LGPeripheral *p = (LGPeripheral *)notification.object;
-        [self scanAndConnectPeripheral:nil];
+        LGPeripheral *p = (LGPeripheral *)notification.object;
+        DEBUGLog(@"disconnected peripheral:%@",p);
+        [self scanAndConnectPeripheral:p];
     }
     
 //    if (_postNotifyFlag) {
