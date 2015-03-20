@@ -148,7 +148,6 @@ NSString * const WMSBleControlScanFinish =
 - (void)setup
 {
     _centralManager = [LGCentralManager sharedInstance];
-    //_centralManager.centralState;
     
     _myTimers = [[WMSMyTimers alloc] init];
     
