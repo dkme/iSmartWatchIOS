@@ -508,9 +508,9 @@
 }
 
 - (IBAction)gotoMyClockViewAction:(id)sender {
-    //WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
-//    WMSClockListVC *VC = [[WMSClockListVC alloc] init];
-//    [self.navigationController pushViewController:VC animated:YES];
+    WMSSmartClockViewController *VC = [[WMSSmartClockViewController alloc] init];
+    VC.title = NSLocalizedString(@"Smart alarm clock", nil);
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (IBAction)gotoMyHistoryViewAction:(id)sender {

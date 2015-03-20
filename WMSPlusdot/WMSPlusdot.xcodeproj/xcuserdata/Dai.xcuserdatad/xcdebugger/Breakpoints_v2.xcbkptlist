@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "384"
             endingLineNumber = "384"
-            landmarkName = "-weekPicker:didClickComponent:"
+            landmarkName = "-pickerView:widthForComponent:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

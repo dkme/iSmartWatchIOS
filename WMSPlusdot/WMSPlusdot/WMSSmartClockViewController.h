@@ -15,7 +15,7 @@
 
 //cell所在行的下标
 enum {
-    SmartClockTimeCell = 0,
+    SmartClockTimeCell = 1,
     SmartClockSleepTimeCell,
     SmartClockRepeatCell,
 };
