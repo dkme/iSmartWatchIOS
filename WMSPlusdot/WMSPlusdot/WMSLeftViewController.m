@@ -120,19 +120,11 @@
 {
     if (!_titleArray) {
         NSArray *items = @[NSLocalizedString(@"My sport",nil),
+                           NSLocalizedString(@"My sleep",nil),
                            NSLocalizedString(@"Target setting",nil),
                            NSLocalizedString(@"Bound watch",nil)
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
-//#ifdef DEBUG
-//        NSString *languageType = [WMSAppConfig systemLanguage];
-//        if ([languageType isEqualToString:kLanguageChinese]) {
-//            NSArray *newItems = @[NSLocalizedString(@"好礼兑换",nil),
-//                                  NSLocalizedString(@"能量豆",nil)
-//                                  ];
-//            [mutiArr addObjectsFromArray:newItems];
-//        }
-//#endif
         _titleArray = mutiArr;
     }
     return _titleArray;
@@ -140,40 +132,22 @@
 - (NSArray *)imageNameArray
 {
     if (!_imageNameArray) {
-        if (self.titleArray.count == 3) {
-            _imageNameArray = @[@"main_menu_sport_icon_a.png",
-                                @"main_menu_target_icon_a.png",
-                                @"main_menu_binding_icon_a.png",
-                                ];
-        }
-        else if (self.titleArray.count == 5) {
-            _imageNameArray = @[@"main_menu_sport_icon_a.png",
-                                @"main_menu_target_icon_a.png",
-                                @"main_menu_binding_icon_a.png",
-                                @"main_menu_gift_icon_a.png",
-                                @"main_menu_bean_icon_a.png",
-                                ];
-        }else{};
+        _imageNameArray = @[@"main_menu_sport_icon_a.png",
+                            @"main_menu_sleep_icon_a.png",
+                            @"main_menu_target_icon_a.png",
+                            @"main_menu_binding_icon_a.png",
+                            ];
     }
     return _imageNameArray;
 }
 - (NSArray *)seletedImageNameArray
 {
     if (!_seletedImageNameArray) {
-        if (self.titleArray.count == 3) {
-            _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
-                                       @"main_menu_target_icon_b.png",
-                                       @"main_menu_binding_icon_b.png",
-                                       ];
-        }
-        else if (self.titleArray.count == 5) {
-            _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
-                                       @"main_menu_target_icon_b.png",
-                                       @"main_menu_binding_icon_b.png",
-                                       @"main_menu_gift_icon_b.png",
-                                       @"main_menu_bean_icon_b.png",
-                                       ];
-        }else{};
+        _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
+                                   @"main_menu_sleep_icon_b.png",
+                                   @"main_menu_target_icon_b.png",
+                                   @"main_menu_binding_icon_b.png",
+                                   ];
     }
     return _seletedImageNameArray;
 }
@@ -181,22 +155,12 @@
 - (NSArray *)specifyContentVCClassArray
 {
     if (!_specifyContentVCClassArray) {
-        if (self.titleArray.count == 3) {
-            _specifyContentVCClassArray = @[
-                                            [WMSContentViewController class],
-                                            [WMSContent2ViewController class],
-                                            [WMSMyAccessoryViewController class],
-                                            ];
-        }
-        else if (self.titleArray.count == 5) {
-            _specifyContentVCClassArray = @[
-                                            [WMSContentViewController class],
-                                            [WMSContent2ViewController class],
-                                            [WMSMyAccessoryViewController class],
-                                            [WMSGiftVC class],
-                                            [WMSEnergyBeanVC class]
-                                            ];
-        }else{};
+        _specifyContentVCClassArray = @[
+                                        [WMSContentViewController class],
+                                        [WMSContent1ViewController class],
+                                        [WMSContent2ViewController class],
+                                        [WMSMyAccessoryViewController class],
+                                        ];
     }
     return _specifyContentVCClassArray;
 }
@@ -209,7 +173,6 @@
         UIViewController *vc = ((MyNavigationController *)self.sideMenuViewController.contentViewController).topViewController;
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
-                           Null_Object,
                            Null_Object,
                            Null_Object,
                            Null_Object,
@@ -367,30 +330,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-//    if (indexPath.row > 2) {
-//        switch (indexPath.row) {
-//            case 3:
-//            {
-//                WMSGiftVC *vc = [[WMSGiftVC alloc] init];
-//                MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
-//                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//                [self.sideMenuViewController presentViewController:nav animated:YES completion:nil];
-//                break;
-//            }
-//            case 4:
-//            {
-//                WMSEnergyBeanVC *vc = [[WMSEnergyBeanVC alloc] init];
-//                MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
-//                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//                [self.sideMenuViewController presentViewController:nav animated:YES completion:nil];
-//                break;
-//            }
-//            default:
-//                break;
-//        }
-//        return ;
-//    }
     
     if ([self.specifyContentVCClassArray objectAtIndex:indexPath.row] == [self.sideMenuViewController.contentViewController class]) {
         [self.sideMenuViewController hideMenuViewController];

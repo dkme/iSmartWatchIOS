@@ -410,8 +410,8 @@
             cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.backgroundColor = [UIColor clearColor];
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"zq_public_red_btn_a.png"]];
-            cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"zq_public_red_btn_b.png"]];
+            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_btn_b.png"]];
+            cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_btn_a.png"]];
             BOOL res = [WMSAppConfig isHaveLogin];
             if (res) {
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;

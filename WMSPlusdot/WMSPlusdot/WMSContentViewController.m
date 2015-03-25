@@ -372,16 +372,22 @@
 {
     NSString *text = @"", *unit = @"";
     UIFont *font = nil, *unitFont = Font_DINCondensed(17.f);
-    text = [NSString stringWithFormat:@"%u",value];
+    text = [NSString stringWithFormat:@"%u",(unsigned int)value];
     if (label == self.labelCurrentSteps) {
         font = Font_DINCondensed(55.f);
     }
     else if (label == self.labelTargetSetps) {
         font = Font_DINCondensed(25.f);
-        text = [NSString stringWithFormat:@"     %u",value];
+        text = [NSString stringWithFormat:@"     %u",(unsigned int)value];
     }
     else if (label == self.labelBurnValue) {
-        unit = NSLocalizedString(@"大卡",nil);
+        if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese])
+        {
+            unit = NSLocalizedString(@"大卡",nil);
+        } else {//英文用cal
+            unit = NSLocalizedString(@"卡",nil);
+            text = [NSString stringWithFormat:@"%u",(unsigned int)value*1000];
+        }
         font = Font_DINCondensed(35.f);
     }
     else if (label == self.labelDistanceValue) {
@@ -398,20 +404,20 @@
                 value = Rounded(dis_m/1000.0);//单位为km
                 unit = NSLocalizedString(@"公里", nil);
             }
-            text = [NSString stringWithFormat:@"%u",value];
+            text = [NSString stringWithFormat:@"%u",(unsigned int)value];
         } else {
             float dis_mile = dis_m * 1.0/1609.344;//单位英里
             dis_mile += 0.005;//保留两位小数，四舍五入
             if (dis_mile < 0.005) {
                 dis_mile = 0;
             }
-            text = [NSString stringWithFormat:@"%.2g",dis_mile];
+            text = [NSString stringWithFormat:@"%.1g",dis_mile];
             unit = @"mile";
         }
     }
     else if (label == self.labelTimeValue) {
-        NSString *hour = [NSString stringWithFormat:@"%u",value/60];
-        NSString *mu = [NSString stringWithFormat:@"%u",value%60];
+        NSString *hour = [NSString stringWithFormat:@"%u",(unsigned int)(value/60)];
+        NSString *mu = [NSString stringWithFormat:@"%u",(unsigned int)(value%60)];
         NSString *hourLbl = NSLocalizedString(@"Hour",nil);
         NSString *muLbl = NSLocalizedString(@"Minutes",nil);
         if (value/60 <= 0) {

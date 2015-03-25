@@ -124,7 +124,7 @@
 "周日" = "Sun";//"Sunday";
 "每天" = "Everyday";
 
-"努力同步数据中..." = "Strive syncing data...";
+"努力同步数据中..." = "Syncing data...";
 "运动记录" = "Sport records";
 "睡眠记录" = "Sleep records";
 "完成目标的" = "Completed progress";
@@ -314,6 +314,7 @@
 "蓝牙连接已断开" = "Bluetooth connection has been disconnected";
 "解绑" = "Remove paired";
 "您还没有连接手表,强制解绑会导致之前设置在手表的信息（闹钟，久坐）残留在手表中" = "Bluetooth disconnected ,the information was setted(alarm etc) will residues in the watch if unbinding";
+"闹钟" = "Smart clock";
 
 
 

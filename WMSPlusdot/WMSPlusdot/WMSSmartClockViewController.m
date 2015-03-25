@@ -167,6 +167,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.scrollEnabled = NO;
+    self.tableView.rowHeight = 44.f;
 }
 - (void)setupWeekPicker
 {

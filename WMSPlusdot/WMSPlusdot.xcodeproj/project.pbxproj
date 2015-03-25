@@ -967,6 +967,7 @@
 				23B0093B19D4FF7C008424FA /* 运动历史视图 */,
 			);
 			name = "我的运动视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		230298DC19A88CF6009D4306 /* 我的睡眠视图 */ = {
@@ -978,6 +979,7 @@
 				230FDC5E19D6545D00AE98FF /* 睡眠历史视图 */,
 			);
 			name = "我的睡眠视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		230298DD19A88D10009D4306 /* 设置目标视图 */ = {
@@ -988,6 +990,7 @@
 				230298C219A82FDC009D4306 /* WMSContent2ViewController.xib */,
 			);
 			name = "设置目标视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		230298DE19A88D3C009D4306 /* 左右菜单视图 */ = {
@@ -1005,6 +1008,7 @@
 				234F81F61A4D42D100332C03 /* WMSSoundOperation.m */,
 			);
 			name = "左右菜单视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		23087B5F1AAD777D0023350B /* UITableViewCell+Configure */ = {
@@ -1061,6 +1065,7 @@
 				2335119019A476EF00FBCC81 /* WMSSignupViewController.xib */,
 			);
 			name = "登陆注册视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		2311611619B1A2620012B066 /* NSDate+Formatter */ = {
@@ -1123,6 +1128,7 @@
 				234BF1F419B05914005D71A0 /* WMSMyAccountViewController.xib */,
 			);
 			name = "个人信息视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		2316508A19AB489A0066C301 /* 智能闹钟视图 */ = {
@@ -1140,6 +1146,7 @@
 				2347C82B1A63A4C9007A0446 /* WMSClockCell.xib */,
 			);
 			name = "智能闹钟视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		2316509519AB4E3F0066C301 /* 智能闹钟视图 Icon */ = {
@@ -1163,6 +1170,7 @@
 				230298CC19A87D65009D4306 /* 绑定配件视图 */,
 			);
 			name = "我的配件视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		231972301A3533AF002E8A0F /* 设置视图 */ = {
@@ -1181,6 +1189,7 @@
 				239109311A3A90C900333A2A /* WMSUpdateVCHelper.m */,
 			);
 			name = "设置视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		231972361A35404F002E8A0F /* cells */ = {
@@ -1254,7 +1263,8 @@
 				2349C5531A80D13B00CEADA2 /* 活动详情视图 */,
 				2368A8231A84A1F0003DFAAC /* 获取能量豆视图 */,
 			);
-			path = "好礼兑换视图";
+			name = "好礼兑换视图";
+			path = "WMSPlusdot/好礼兑换视图";
 			sourceTree = "<group>";
 		};
 		231DE6EA1A78EAAD0065E911 /* 能量豆视图 */ = {
@@ -1268,7 +1278,8 @@
 				2368A81E1A8460EE003DFAAC /* WMSBeanCell.m */,
 				2368A81F1A8460EE003DFAAC /* WMSBeanCell.xib */,
 			);
-			path = "能量豆视图";
+			name = "能量豆视图";
+			path = "WMSPlusdot/能量豆视图";
 			sourceTree = "<group>";
 		};
 		23204A941A42A246005874CE /* Tool */ = {
@@ -1354,16 +1365,18 @@
 		232846B419A43668001C148D = {
 			isa = PBXGroup;
 			children = (
+				23305D9B19C836EF00F9EEE6 /* 数据库 */,
+				23D7CEC419B571F900DFA678 /* Bluetooth */,
+				2388E5BF19ED24BC005864D4 /* HTTP */,
 				23204A941A42A246005874CE /* Tool */,
 				2354A5EF19EE179F00751E92 /* Helper */,
 				23B0094819D54529008424FA /* Macro */,
-				2388E5BF19ED24BC005864D4 /* HTTP */,
-				23305D9B19C836EF00F9EEE6 /* 数据库 */,
-				23D7CEC419B571F900DFA678 /* Bluetooth */,
 				23D7CEC319B571B400DFA678 /* External */,
 				2311611A19B1A3070012B066 /* Categories */,
 				23C350DA19C04D7200BCB7B8 /* Models */,
 				2326A44C19A604B80098657B /* Views */,
+				234BD0A41AC0116B00BF2E89 /* ViewControllers */,
+				23911F1A19C28F1D006E9CAF /* appDelegate */,
 				F4F037C019F23A9D0083DEE1 /* Resources */,
 				232846C619A43668001C148D /* WMSPlusdot */,
 				232846DF19A43668001C148D /* WMSPlusdotTests */,
@@ -1407,23 +1420,6 @@
 		232846C619A43668001C148D /* WMSPlusdot */ = {
 			isa = PBXGroup;
 			children = (
-				2333AAFC1A64B32300DBA846 /* MyNavigationController */,
-				23911F1A19C28F1D006E9CAF /* appDelegate */,
-				239F51CD1A2D6B480058F6DE /* 引导页视图 */,
-				2311611519B180EC0012B066 /* 登陆注册视图 */,
-				230298DE19A88D3C009D4306 /* 左右菜单视图 */,
-				230298DB19A88CC5009D4306 /* 我的运动视图 */,
-				230298DC19A88CF6009D4306 /* 我的睡眠视图 */,
-				230298DD19A88D10009D4306 /* 设置目标视图 */,
-				2316961119C705AF00E3CA24 /* 我的配件视图 */,
-				2316508919AB47310066C301 /* 个人信息视图 */,
-				231972301A3533AF002E8A0F /* 设置视图 */,
-				23E35B861A4BB10B00FDA20D /* 防丢视图 */,
-				2316508A19AB489A0066C301 /* 智能闹钟视图 */,
-				2383D44C1A723F23006217CC /* 相机视图 */,
-				231DE6E41A78E92B0065E911 /* 好礼兑换视图 */,
-				231DE6EA1A78EAAD0065E911 /* 能量豆视图 */,
-				2357CAC51A7F771800C4F427 /* ArrayDataSource */,
 				232846C719A43668001C148D /* Supporting Files */,
 				232846D219A43668001C148D /* Images.xcassets */,
 			);
@@ -1530,6 +1526,7 @@
 				2316509719AB4E650066C301 /* back_btn_b.png */,
 			);
 			name = MyNavigationController;
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		2335119719A4B82700FBCC81 /* ResideMenu */ = {
@@ -1653,6 +1650,29 @@
 			name = "活动详情视图";
 			sourceTree = "<group>";
 		};
+		234BD0A41AC0116B00BF2E89 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				239F51CD1A2D6B480058F6DE /* 引导页视图 */,
+				2311611519B180EC0012B066 /* 登陆注册视图 */,
+				230298DE19A88D3C009D4306 /* 左右菜单视图 */,
+				230298DB19A88CC5009D4306 /* 我的运动视图 */,
+				230298DC19A88CF6009D4306 /* 我的睡眠视图 */,
+				230298DD19A88D10009D4306 /* 设置目标视图 */,
+				2316961119C705AF00E3CA24 /* 我的配件视图 */,
+				2316508919AB47310066C301 /* 个人信息视图 */,
+				231972301A3533AF002E8A0F /* 设置视图 */,
+				23E35B861A4BB10B00FDA20D /* 防丢视图 */,
+				2316508A19AB489A0066C301 /* 智能闹钟视图 */,
+				2383D44C1A723F23006217CC /* 相机视图 */,
+				231DE6E41A78E92B0065E911 /* 好礼兑换视图 */,
+				231DE6EA1A78EAAD0065E911 /* 能量豆视图 */,
+				2333AAFC1A64B32300DBA846 /* MyNavigationController */,
+				2357CAC51A7F771800C4F427 /* ArrayDataSource */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
 		234BF1F119B055AE005D71A0 /* WMSNavBarView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1693,6 +1713,7 @@
 				2357CAC71A7F775600C4F427 /* ArrayDataSource.m */,
 			);
 			name = ArrayDataSource;
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		2368A8231A84A1F0003DFAAC /* 获取能量豆视图 */ = {
@@ -1840,6 +1861,7 @@
 				2393885F1ABBA99F0018BDA1 /* close_cha_h@2x.png */,
 			);
 			name = "相机视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		23876EAD1A5295BC00F1F15C /* 中文 */ = {
@@ -1892,6 +1914,7 @@
 				232846D019A43668001C148D /* WMSAppDelegate.m */,
 			);
 			name = appDelegate;
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		23911F1B19C29053006E9CAF /* WMSSyncDataView */ = {
@@ -1939,6 +1962,7 @@
 				239F51D51A2D963E0058F6DE /* WMSGuideVC.xib */,
 			);
 			name = "引导页视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		239F51CE1A2D94E20058F6DE /* EAIntroView */ = {
@@ -2153,6 +2177,7 @@
 				23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */,
 			);
 			name = "防丢视图";
+			path = WMSPlusdot;
 			sourceTree = "<group>";
 		};
 		23E84B8E1A4814A10061AD36 /* DFU */ = {
@@ -2746,8 +2771,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Guogee";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
