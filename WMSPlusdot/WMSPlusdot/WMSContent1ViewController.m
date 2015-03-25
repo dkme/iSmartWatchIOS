@@ -448,7 +448,7 @@
     [self setLightSleepDurations:2*60+30];
     [self setAwakeDurations:(8*60+5)-(4*60+26)-(2*60+30)];
     [self setSleepMinute:8*60+5 deepSleepMinute:4*60+26 lightSleepMinute:2*60+30 awakeMinute:(8*60+5)-(4*60+26)-(2*60+30)];
-     */
+    */
 }
 
 //是否显示TipView，0表示显示syncDataView，1表示显示tipView，2表示两者都不显示
