@@ -63,6 +63,7 @@
  */
 #define NAV_BAR_HEIGHT          64.f
 #define NavBar_IS_Translucent   (self.navigationController.navigationBar.translucent == YES)
+#define SetControllerKeepExtendedLayout() (IS_IOS7?self.extendedLayoutIncludesOpaqueBars=YES:NSLog(@""))
 
 
 //固定尺寸

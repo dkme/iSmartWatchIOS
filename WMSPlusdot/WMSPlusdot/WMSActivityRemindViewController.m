@@ -179,9 +179,9 @@
 {
     self.title = NSLocalizedString(@"Activities remind", nil);
     self.navigationController.navigationBarHidden = NO;
-    
+    SetControllerKeepExtendedLayout();
     UIBarButtonItem *leftItem = [UIBarButtonItem itemWithImageName:@"back_btn_a.png" highImageName:@"back_btn_b.png" target:self action:@selector(backAction:)];
-    UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) size:SYNC_BUTTON_SIZE target:self action:@selector(syncSettingAction:)];
+    UIBarButtonItem *item1 = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) font:Font_System(18.0) size:SYNC_BUTTON_SIZE target:self action:@selector(syncSettingAction:)];
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = item1;
 }
@@ -204,7 +204,7 @@
     if (activities && activities.count > 0) {
         activity = activities[0];
     } else {
-        activity = [[WMSActivityModel alloc] initWithStatus:YES startHour:DEFAULT_HOUR startMinute:DEFAULT_MINUTE endHour:DEFAULT_HOUR endMinute:DEFAULT_MINUTE intervalMinute:DEFAULT_ACTIVITY_INTERVAL repeats:@[@(YES),@(YES),@(YES),@(YES),@(YES),@(YES),@(YES)]];
+        activity = [[WMSActivityModel alloc] initWithStatus:NO startHour:DEFAULT_HOUR startMinute:DEFAULT_MINUTE endHour:DEFAULT_HOUR endMinute:DEFAULT_MINUTE intervalMinute:DEFAULT_ACTIVITY_INTERVAL repeats:@[@(NO),@(NO),@(NO),@(NO),@(NO),@(NO),@(NO)]];
     }
     activityStatus = activity.status;
     activityStartHour = (int)activity.startHour;

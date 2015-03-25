@@ -211,6 +211,7 @@ static const int WeightMaxValue         =220;
 - (void)setupNavigationBar
 {
     self.title = NSLocalizedString(@"个人信息",nil);
+    SetControllerKeepExtendedLayout();
     if (!self.isNewUser) {
         self.navigationItem.leftBarButtonItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
     } else {

@@ -157,8 +157,16 @@
 - (void)setBottomLabelCalorie:(NSUInteger)calorie
 {
     NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计消耗", nil),@": "];
-    NSString *calorieStr = [NSString stringWithFormat:@"%u",calorie];
-    NSString *unit = NSLocalizedString(@"大卡", nil);
+    NSString *calorieStr = @"";
+    NSString *unit = @"";
+    if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese])
+    {
+        unit = NSLocalizedString(@"大卡",nil);
+        calorieStr = [NSString stringWithFormat:@"%lu",(unsigned long)calorie];
+    } else {//英文用cal
+        unit = NSLocalizedString(@"卡",nil);
+        calorieStr = [NSString stringWithFormat:@"%lu",(unsigned long)calorie*1000];
+    }
     NSString *symbol = @" ≈ ";
     //1大卡=1000卡，100毫升(标准)可乐=43大卡，1瓶(500ml)=215大卡
     NSString *number = [NSString stringWithFormat:@"%d",Rounded((calorie/215.0))];
@@ -231,7 +239,7 @@
         unit = @"mile";
     }
     NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计里程", nil),@": "];
-    NSString *distanceStr = [NSString stringWithFormat:@"%.2g",value];
+    NSString *distanceStr = [NSString stringWithFormat:@"%.1g",value];
     NSString *symbol = @" ≈ ";
     NSString *numberStr = [NSString stringWithFormat:@"%d",Rounded(number)];
     NSString *unti2 = NSLocalizedString(@"圈", nil);

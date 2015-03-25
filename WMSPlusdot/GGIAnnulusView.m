@@ -83,9 +83,7 @@
     sz.height = size.height * 1.0f;
     UIGraphicsBeginImageContextWithOptions(sz, NO, 0.0);
     CGContextRef con = UIGraphicsGetCurrentContext();
-    DEBUGLog(@"draw [line:%d] %s",__LINE__,__FUNCTION__);
-    //CGContextSaveGState(con);
-    //UIGraphicsPushContext(con);
+    CGContextSaveGState(con);
     
     UIBezierPath *path;
     CGFloat startAngle,endAngle;
@@ -122,7 +120,6 @@
 
     UIImage* im = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    //UIGraphicsPopContext();
     return im;
 }
 
