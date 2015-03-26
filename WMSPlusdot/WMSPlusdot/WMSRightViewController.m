@@ -502,7 +502,9 @@
     picker.sourceType = sourceType;
     picker.allowsEditing=YES;
     picker.delegate = nil;
-    
+    picker.navigationBar.barStyle = UIBarStyleDefault;
+    picker.navigationBar.translucent = NO;
+
     [self.pickerController presentViewController:picker animated:YES completion:nil];
 }
 

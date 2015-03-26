@@ -11,7 +11,7 @@
 "My sport" = "My sport";
 "My sleep" = "My sleep";
 "Target setting" = "Target setting";
-"Bound watch" = "Paired Watch";
+"Bound watch" = "Binding watch";
 
 //RightViewController String
 "Remind Setting" = "Remind Setting";
@@ -99,12 +99,12 @@
 "智能手表已连接" = "Connected smart watch";
 "智能手表连接中" = "Connecting smart watch";
 "手表" = "watch";
-"解除绑定" = "Remove the paired devices";
+"解除绑定" = "Remove the binding devices";
 "坚持锻炼一个月" = "Insist to take exercise for a month";
 "并分享到朋友圈，即可获得精美礼品哦" = "and for the exquisite gift to share to the circle of friends";
 "菜鸟" = "菜鸟";
 "砖家" = "砖家";
-"绑定配件" = "Bind device";
+"绑定配件" = "Binding device";
 "重新扫描" = "Research";
 "绑定的配件" = "Binding accessories";
 
@@ -171,7 +171,7 @@
 "震动+蜂鸣" = "Vibration+Beep";
 "其他" = "Other";
 "永不" = "Never";
-"请先在“绑定配件”中绑定您的手表" = "First in “Paired Watch” paired your watch";
+"请先在“绑定配件”中绑定您的手表" = "First in “Binding watch” binding your watch";
 "您还没有连接手表或连接已断开" = "You have not connected the watch or connection disconnected";
 "智能手表搜索" = "Search watch";
 "追踪活动/睡眠，蓝牙4.0无线连接" = "Track active/sleep, Bluetooth 4.0 wireless connection";
@@ -179,9 +179,9 @@
 "请确认智能手表已经开启并在手机附近" = "Please confirm smart watches have been open and mobile phone in the near";
 "没有找到蓝牙设备" = "Not find watch";
 "请确认手机蓝牙已开启\n请确认智能手表在附近" = "Please confirm smart watches have been open and mobile phone in the near";
-"点击绑定" = "Click bind";
-"绑定成功" = "Bind successfully";
-"绑定失败" = "Bind failure";
+"点击绑定" = "Click binding";
+"绑定成功" = "Binding successfully";
+"绑定失败" = "Binding failure";
 "提示" = "Warning";
 "知道了" = "Know";
 "您的设备不支持BLE4.0" = "Your device does not support BLE4.0";
@@ -235,8 +235,8 @@
 "圈" = "circle ";
 "400米操场" = "400m playground";
 
-"解绑成功" = "Remove the paired devices successfully";
-"解绑失败" = "Remove the paired devices failure";
+"解绑成功" = "Remove the binding devices successfully";
+"解绑失败" = "Remove the binding devices failure";
 "正在连接手表..." = "Is connecting the watch...";
 "正在绑定配件，请按手表上的确认键..." = "Binding accessories,please click on the watch to confirm key...";
 "(剩余%.0f秒)" = "(Remaining %.0f seconds)";
@@ -263,18 +263,18 @@
 "退出登录" = "Log out";
 "取消" = "Cancel";
 
-"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please press the upper right corner button of the watch when lights on,and complete paired.";
+"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please press the upper right corner button of the watch when lights on,and complete binding.";
 "扫描" = "Scan";
 "停止" = "Stop";
 "超时，绑定失败" = "Timeout，Binding failure";
-"已绑定" = "Paired";
-"点击绑定" = "Click on the pairing";
+"已绑定" = "Binding";
+"点击绑定" = "Click on the binding";
 
 
 "按下手表右上角按键进行拍照" = "You will be able to take photos from smart-watch \nby pressing the upper right conier of the key";
 "Take picture" = "Take picture";
 "你的手机没电了，快去充电吧！" = "Your phone battery is low, please charge!";
-"你的手机在这里~" = "Your phone to here~";
+"你的手机在这里~" = "Your phone is here~";
 
 "开启防丢后，手表将会在连接断开后，到达指定时间时报警" = "After open the lost watch will be after the connection is broken, arrived at specified time report to the police";
 
@@ -304,19 +304,19 @@
 "您的活动提醒已修改，尚未同步到手表，是否同步?" = "your activity remind the modified, has not yet been synchronized to watch, synchronous?";
 "您的防丢提醒已修改，尚未同步到手表，是否同步?" = "Your lost to remind the modified, has not yet been synchronized to watch, synchronous?";
 "您的闹钟已修改，尚未同步到手表，是否同步?" = "Your alarm clock has been modified, has not yet been synchronized to watch, synchronous?";
-"您已经绑定了手表，请先解绑" = "You have paired the watch, please remove paired";
+"您已经绑定了手表，请先解绑" = "You have binding the watch, please remove binding";
 
 "目标设置成功" = "Target setting successfully";
 
 "您还没有添加闹钟" = "You haven't add the alarm clock";
 "请将手表靠近手机" = "Please put watch near the phone";
-"请稍等，正在绑定配件..." = "Please wait a moment, is pairing the watch...";
+"请稍等，正在绑定配件..." = "Please wait a moment, is connecting the watch...";
 "蓝牙连接已断开" = "Bluetooth connection has been disconnected";
-"解绑" = "Remove paired";
+"解绑" = "Remove binding";
 "您还没有连接手表,强制解绑会导致之前设置在手表的信息（闹钟，久坐）残留在手表中" = "Bluetooth disconnected ,the information was setted(alarm etc) will residues in the watch if unbinding";
 "闹钟" = "Smart clock";
-
-
+"请按下手表上的确认键拍照..." = "Please click the button on the top to take a photo...";
+"正在尝试重新连接..." = "Trying to reconnect...";
 
 
 

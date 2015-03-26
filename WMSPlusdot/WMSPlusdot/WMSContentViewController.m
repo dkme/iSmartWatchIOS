@@ -385,7 +385,7 @@
         {
             unit = NSLocalizedString(@"大卡",nil);
         } else {//英文用cal
-            unit = NSLocalizedString(@"卡",nil);
+            unit = @"Cal";
             text = [NSString stringWithFormat:@"%u",(unsigned int)value*1000];
         }
         font = Font_DINCondensed(35.f);
@@ -412,7 +412,7 @@
                 dis_mile = 0;
             }
             text = [NSString stringWithFormat:@"%.1g",dis_mile];
-            unit = @"mile";
+            unit = @"m";
         }
     }
     else if (label == self.labelTimeValue) {

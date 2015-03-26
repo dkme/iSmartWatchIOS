@@ -164,7 +164,7 @@
         unit = NSLocalizedString(@"大卡",nil);
         calorieStr = [NSString stringWithFormat:@"%lu",(unsigned long)calorie];
     } else {//英文用cal
-        unit = NSLocalizedString(@"卡",nil);
+        unit = @"Cal";
         calorieStr = [NSString stringWithFormat:@"%lu",(unsigned long)calorie*1000];
     }
     NSString *symbol = @" ≈ ";
@@ -236,7 +236,7 @@
         double dis_mile = dis_m * (1.0/1609.344);//单位英里
         dis_mile += 0.005;//保留两位小数，四舍五入
         value = dis_mile;
-        unit = @"mile";
+        unit = @"m";
     }
     NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计里程", nil),@": "];
     NSString *distanceStr = [NSString stringWithFormat:@"%.1g",value];

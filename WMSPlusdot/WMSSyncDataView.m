@@ -116,7 +116,8 @@
 }
 - (void)setup
 {
-    _labelTip = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.frame.size.height-30)/2.0, self.frame.size.width/2.0-10, 30)];
+    CGSize labelSize = CGSizeMake(self.frame.size.width/2.0-10, 30);
+    _labelTip = [[UILabel alloc] initWithFrame:(CGRect){0,(self.frame.size.height-30)/2.0,labelSize}];
     _labelTip.textColor = [UIColor whiteColor];
     _labelTip.textAlignment = NSTextAlignmentRight;
     
