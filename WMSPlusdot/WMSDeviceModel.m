@@ -15,7 +15,7 @@
     static dispatch_once_t onceToken = 0;
     __strong static WMSDeviceModel *defaultObject = nil;
     dispatch_once(&onceToken, ^{
-        defaultObject = [[WMSDeviceModel alloc] init];
+        defaultObject = [[self alloc] init];
     });
     return defaultObject;
 }

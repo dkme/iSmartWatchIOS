@@ -14,6 +14,7 @@ enum {
     TimeIDReadDeviceInfo = 300,
     TimeIDReadDeviceTime,
     TimeIDReadDeviceMac,
+    TimeIDReadDeviceBatteryInfo,
     TimeIDPrepareSyncSportData,
     TimeIDStartSyncSportData,
     TimeIDEndSyncSportData,
@@ -93,6 +94,7 @@ static const int STARTED_NUMBER = 50;
 @property (nonatomic, strong) NSMutableArray *stackSyncSleepData;
 @property (nonatomic, strong) NSMutableArray *stackReadDeviceRemoteData;
 @property (nonatomic, strong) NSMutableArray *stackReadDeviceMac;
+@property (nonatomic, strong) NSMutableArray *stackReadBatteryInfo;
 @end
 
 @implementation WMSDeviceProfile
@@ -139,6 +141,13 @@ static const int STARTED_NUMBER = 50;
         _stackReadDeviceMac = [NSMutableArray new];
     }
     return _stackReadDeviceMac;
+}
+- (NSMutableArray *)stackReadBatteryInfo
+{
+    if (!_stackReadBatteryInfo) {
+        _stackReadBatteryInfo = [NSMutableArray new];
+    }
+    return _stackReadBatteryInfo;
 }
 
 #pragma mark - Init
@@ -330,6 +339,31 @@ static const int STARTED_NUMBER = 50;
                                      timeID:TimeIDReadDeviceMac];
 }
 
+- (void)readDeviceBatteryInfo:(readDeviceBatteryInfoCallBack)aCallback
+{
+    if (!self.bleControl.isConnected) {
+        return ;
+    }
+    Byte package[DATA_LENGTH] = {0};
+    
+    [self setPacketCMD:CMDReadDeviceBatteryInfo andData:package dataLength:DATA_LENGTH];
+    
+    if (aCallback) {
+        [NSMutableArray push:aCallback toArray:self.stackReadBatteryInfo];
+    }
+    
+    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    
+    [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
+                                    repeats:YES
+                                     timeID:TimeIDReadDeviceBatteryInfo];
+}
+
 
 #pragma mark - Time out
 - (void)writeValueToCharactTimeout:(NSTimer *)timer
@@ -470,6 +504,23 @@ static const int STARTED_NUMBER = 50;
                     callBack(mac);
                 }
                 callBack = nil;
+            }
+            return;
+        }
+        
+        if (cmd == CMDReadDeviceBatteryInfo) {
+            if ([self.myTimers isValidForTimeID:TimeIDReadDeviceBatteryInfo]) {
+                [self.myTimers deleteTimerForTimeID:TimeIDReadDeviceBatteryInfo];
+                
+                readDeviceBatteryInfoCallBack callBack = [NSMutableArray popFromArray:self.stackReadBatteryInfo];
+                if (callBack) {
+                    UInt8 batt_type = package[3];
+                    UInt16 batt_vol = package[4] + ((UInt16)package[5] << 8);//mv
+                    UInt8 batt_stat = package[6];
+                    UInt8 batt_level = package[7];
+                    callBack(batt_type,batt_stat,batt_vol/1000.0,batt_level/100.0);
+                    callBack = nil;
+                }
             }
             return;
         }

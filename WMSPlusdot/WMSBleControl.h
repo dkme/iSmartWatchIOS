@@ -77,6 +77,7 @@ typedef NS_ENUM(Byte, CMDType) {
     CMDGetDeviceInfo = 0x0A,
     CMDGetDeviceTime = 0x0B,
     CMDGETDeviceMac = 0xA1,
+    CMDReadDeviceBatteryInfo = 0x0D,
     
     CMDSwitchControlMode = 0xF2,
     CMDSwitchUpdateMode = 0x30,
