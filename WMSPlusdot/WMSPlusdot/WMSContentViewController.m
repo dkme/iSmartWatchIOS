@@ -386,7 +386,7 @@
             unit = NSLocalizedString(@"大卡",nil);
         } else {//英文用cal
             unit = @"Cal";
-            text = [NSString stringWithFormat:@"%u",(unsigned int)value*1000];
+            text = [NSString stringWithFormat:@"%u",(unsigned int)value];
         }
         font = Font_DINCondensed(35.f);
     }

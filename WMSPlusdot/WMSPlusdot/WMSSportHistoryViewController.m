@@ -165,7 +165,7 @@
         calorieStr = [NSString stringWithFormat:@"%lu",(unsigned long)calorie];
     } else {//英文用cal
         unit = @"Cal";
-        calorieStr = [NSString stringWithFormat:@"%lu",(unsigned long)calorie*1000];
+        calorieStr = [NSString stringWithFormat:@"%lu",(unsigned long)calorie];
     }
     NSString *symbol = @" ≈ ";
     //1大卡=1000卡，100毫升(标准)可乐=43大卡，1瓶(500ml)=215大卡
