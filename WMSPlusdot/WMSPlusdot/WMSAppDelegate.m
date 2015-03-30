@@ -15,6 +15,7 @@
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSMyAccessoryViewController.h"
 #import "WMSGuideVC.h"
+#import "WMSUpdateVC.h"
 #import "WMSBleControl.h"
 
 #import "WMSHelper.h"
@@ -22,6 +23,9 @@
 #import "WMSAppConfig.h"
 #import "WMSConstants.h"
 #import "UIImage+Color.h"
+#import "WMSMyAccessory.h"
+#import "WMSDeviceModel.h"
+#import "WMSDeviceModel+Configure.h"
 
 #import "GGAudioTool.h"
 
@@ -30,15 +34,13 @@
 NSString *const WMSAppDelegateReSyncData = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 
-@interface WMSAppDelegate ()<RESideMenuDelegate,UIAlertViewDelegate>
-
-@property (nonatomic, strong) UIAlertView *alertView;
-
+@interface WMSAppDelegate ()<RESideMenuDelegate>
 @end
 
 @implementation WMSAppDelegate
 {
     NSTimer *_backgroundTimer;
+    BOOL _isStartDFU;//是否准备升级了
 }
 
 #pragma mark - 获取appDelegate
@@ -93,28 +95,24 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [WMSPostNotificationHelper cancelAllNotification];
-    [self setupReSyncDataTimer];
-    [self setupAppAppearance];
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
+    _wmsBleControl = [[WMSBleControl alloc] init];
+    [WMSPostNotificationHelper cancelAllNotification];
+    [self setupReSyncDataTimer];
+    [self setupAppAppearance];
+    [self registerForNotifications];
     if ([WMSHelper isFirstLaunchApp]) {
         self.window.rootViewController = [WMSGuideVC guide];
         [self.window makeKeyAndVisible];
         return YES;
     }
-
+    
     self.window.rootViewController = [self reSideMenu];
     [self.window makeKeyAndVisible];
     return YES;
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    DEBUGLog(@"%s",__FUNCTION__);
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -144,11 +142,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     [WMSPostNotificationHelper resetAllNotification];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    
-}
-
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
@@ -161,6 +154,11 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     }
 }
 
+- (void)dealloc
+{
+    [self unregisterFromNotifications];
+}
+
 #pragma mark - setup
 - (void)setupAppAppearance
 {
@@ -170,22 +168,37 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     [navBar setTintColor:[UIColor whiteColor]];
     [navBar setBackgroundImage:[UIImage imageFromColor:UICOLOR_DEFAULT] forBarMetrics:UIBarMetricsDefault];
     [navBar setShadowImage:[[UIImage alloc] init]];
-//    if (IS_IOS8) {
-//        navBar.barStyle = UIBarStyleBlack;
-//        navBar.translucent = YES;
-//    }
-//    else {
-//        navBar.barStyle = UIBarStyleBlackTranslucent;
-//        navBar.translucent = YES;
-//    }
+    if (IS_IOS8) {
+        navBar.barStyle = UIBarStyleBlack;
+        navBar.translucent = YES;
+    } else {
+        //        navBar.barStyle = UIBarStyleBlackTranslucent;
+        //        navBar.translucent = YES;
+    }
     
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName:[UIColor whiteColor],
                                  NSFontAttributeName:Font_DINCondensed(20.f),
-                                  };
+                                 };
     [navBar setTitleTextAttributes:attributes];
-
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+//#pragma mark - 后台计时，在00:00发送同步命令
+- (void)setupReSyncDataTimer
+{
+    NSDate *today = [NSDate systemDate];
+    NSDate *tomorrow = [NSDate dateWithTimeInterval:24*60*60 sinceDate:today];
+    NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d 00:00:00",[NSDate yearOfDate:tomorrow],[NSDate monthOfDate:tomorrow],[NSDate dayOfDate:tomorrow]];
+    NSDate *targetDate = [NSDate dateFromString:strDate format:@"yyyy-MM-dd HH:mm:ss"];
+    NSTimeInterval interval = [targetDate timeIntervalSinceDate:today];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncData) object:nil];
+    [self performSelector:@selector(syncData) withObject:nil afterDelay:interval];
+}
+- (void)syncData
+{
+    DEBUGLog(@"%s",__FUNCTION__);
+    [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
 }
 
 #pragma mark - other methods
@@ -203,28 +216,149 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 }
 - (void)keepBLEConnection
 {
-    DEBUGLog(@"%s",__FUNCTION__);
     [_wmsBleControl.deviceProfile readDeviceTimeWithCompletion:^(NSString *dateString, BOOL success) {
         DEBUGLog(@"read device time %@",dateString);
     }];
 }
 
-
-#pragma mark - 后台计时，在00:00发送同步命令
-- (void)setupReSyncDataTimer
+#pragma mark -  Notifications
+- (void)registerForNotifications
 {
-    NSDate *today = [NSDate systemDate];
-    NSDate *tomorrow = [NSDate dateWithTimeInterval:24*60*60 sinceDate:today];
-    NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d 00:00:00",[NSDate yearOfDate:tomorrow],[NSDate monthOfDate:tomorrow],[NSDate dayOfDate:tomorrow]];
-    NSDate *targetDate = [NSDate dateFromString:strDate format:@"yyyy-MM-dd HH:mm:ss"];
-    NSTimeInterval interval = [targetDate timeIntervalSinceDate:today];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncData) object:nil];
-    [self performSelector:@selector(syncData) withObject:nil afterDelay:interval];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFailedConnectPeripheral:) name:WMSBleControlPeripheralConnectFailed object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScanPeripheralFinish:) name:WMSBleControlScanFinish object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdatedBLEState:) name:WMSBleControlBluetoothStateUpdated object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidStartDFU:) name:WMSUpdateVCStartDFU object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidEndDFU:) name:WMSUpdateVCEndDFU object:nil];
 }
-- (void)syncData
+- (void)unregisterFromNotifications
 {
-    DEBUGLog(@"%s",__FUNCTION__);
-    [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+#pragma mark - Handle
+- (void)handleSuccessConnectPeripheral:(NSNotification *)notification
+{
+    [self connectedConfigure];
+}
+- (void)handleDidDisConnectPeripheral:(NSNotification *)notification
+{
+    [[WMSDeviceModel deviceModel] resetDevice];
+    //只有绑定了配件，在断开后才去重连
+    if ([WMSMyAccessory isBindAccessory])
+    {
+        LGPeripheral *p = (LGPeripheral *)notification.object;
+        [self scanAndConnectPeripheral:p];
+    }
+}
+- (void)handleFailedConnectPeripheral:(NSNotification *)notification
+{
+    //只有绑定了配件，在断开后才去重连
+    if ([WMSMyAccessory isBindAccessory])
+    {
+        [self scanAndConnectPeripheral:nil];
+    }
+}
+- (void)handleScanPeripheralFinish:(NSNotification *)notification
+{
+    if ([WMSMyAccessory isBindAccessory]) {
+        [self scanAndConnectPeripheral:nil];
+    }
+}
+- (void)handleUpdatedBLEState:(NSNotification *)notification
+{
+    switch ([self.wmsBleControl bleState]) {
+        case WMSBleStateResetting:
+        case WMSBleStatePoweredOff:
+            break;
+        case WMSBleStatePoweredOn:
+        {
+            if ([WMSMyAccessory isBindAccessory]) {
+                [self scanAndConnectPeripheral:nil];
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)connectedConfigure
+{
+    if (![WMSMyAccessory isBindAccessory]) {
+        return ;
+    }
+    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
+        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+            if (!isPaired) {
+                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
+            }else{}
+            [self checkDeviceBattery];
+        }];
+    }];
+}
+- (void)scanAndConnectPeripheral:(LGPeripheral *)peripheral
+{
+    switch ([self.wmsBleControl bleState]) {
+        case WMSBleStateResetting:
+        case WMSBleStatePoweredOff:
+            return;
+        default:
+            break;
+    }
+    if ([self.wmsBleControl isConnecting]||[self.wmsBleControl isConnected])
+    {
+        return ;
+    }
+    if (_isStartDFU==YES) {
+        return ;
+    }
+    if (peripheral) {
+        [self.wmsBleControl connect:peripheral];
+    } else {
+        [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion:^(NSArray *peripherals)
+         {
+             LGPeripheral *p = [peripherals lastObject];
+             if ([WMSMyAccessory isBindAccessory]) {
+                 NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
+                 if ([p.UUIDString isEqualToString:uuid])
+                 {
+                     [self.wmsBleControl connect:p];
+                 }
+             }
+         }];
+    }
+}
+- (void)checkDeviceBattery
+{
+    static int checkCount = 0;
+    if (checkCount >= 1) {
+        return ;
+    }
+    if ([WMSDeviceModel deviceModel].version < FIRMWARE_ADD_BATTERY_INFO) {
+        return ;
+    }
+    [WMSDeviceModel readDeviceBatteryInfo:self.wmsBleControl completion:^(float voltage) {
+        DEBUGLog(@"device voltage:%f",voltage);
+        if (voltage <= WATCH_LOW_VOLTAGE) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"手表电量过低，请尽快更换电池！", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+            [alert show];
+            checkCount ++;
+        }else{}
+    }];
+}
+
+#pragma mark - DFU
+- (void)peripheralDidStartDFU:(NSNotification *)notification
+{
+    _isStartDFU = YES;
+}
+- (void)peripheralDidEndDFU:(NSNotification *)notification
+{
+    _isStartDFU = NO;
+    //唤醒扫描
+    [self scanAndConnectPeripheral:nil];
 }
 
 @end

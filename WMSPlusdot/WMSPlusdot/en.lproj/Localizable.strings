@@ -1,324 +1,324 @@
-/* 
-  Localizable.strings
-  WMSPlusdot
-
-  Created by John on 14-8-21.
-  Copyright (c) 2014年 GUOGEE. All rights reserved.
-*/
-
-
-//LeftViewController String
-"My sport" = "My sport";
-"My sleep" = "My sleep";
-"Target setting" = "Target setting";
-"Bound watch" = "Paired Watch";
-
-//RightViewController String
-"Remind Setting" = "Remind Setting";
-"Social contact" = "Social contact";
-
-"Phone" = "Phone";
-"Message" = "Message";
-"Email" = "Email";
-"Battery" = "Battery";
-
-"Wechat" = "Wechat";
-"QQ" = "QQ";
-"Facebook" = "Facebook";
-"Twitter" = "Twitter";
-
-"Take a Photo" = "Take a Photo";
-
-
-//MySport ViewController String
-"Today" = "Today";
-"Yesterday" = "Yesterday";
-"Tomorrow" = "Tomorrow";
-"Target" = "Target";
-"Burn" = "Burn";
-"Distance" = "Distance";
-"Time" = "Time";
-
-
-//MySleep ViewController String
-"Deep sleep" = "Deep sleep";
-"Light sleep" = "Light sleep";
-"Wake up" = "Wake up";
-"Hour" = "h";
-"Minutes" = "min";
-
-//Set Target ViewController String
-"Step" = "Step";
-"%@ mode" = "%@mode";
-"Rookie" = "Rookie";
-"Expert" = "Expert";
-"The range of %d-%d steps" = "The range of %d-%d steps";
-"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle" = "Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle";
-
-
-//WMSSmartClockViewController String
-"Smart alarm clock" = "Smart alarm clock";
-"Alarm clock time" = "Alarm clock time";
-"Smart sleep Windows" = "Smart sleep Windows";
-"Repeat" = "Repeat";
-"Minutes clock" = "Minutes";
-"Alarm clock" = "Alarm clock";
-
-//WMSAccountViewController String
-"My account" = "My account";
-"%@ watches" = "%@ watches";
-"Exit" = "Exit";
-
-//WMSAccountViewController String
-"Personal data" = "Personal data";
-"Please enter a nickname" = "Please enter a nickname";
-"Please enter the character signature" = "Please enter the signature";
-"Height" = "Height";
-"Birthday" = "Birthday";
-"Current weight" = "Current weight";
-"Target weight" = "Target weight";
-"Year" = "Year";
-"Month" = "Month";
-"Day" = "Day";
-"cm" = "cm";
-"kg" = "kg";
-"Male" = "Male";
-"Female" = "Female";
-"Cancel" = "Cancel";
-"Confirm" = "Confirm";
-
-//WMSActivityRemindViewController String
-"Activities remind" = "Exercise reminder";
-"Start" = "From";
-"Finish" = "To";
-"Interval" = "Interval";
-"Remind" = "Reminder";
-
-
-"同步" = "Sync";
-"智能手表已连接" = "Connected smart watch";
-"智能手表连接中" = "Connecting smart watch";
-"手表" = "watch";
-"解除绑定" = "Remove the paired devices";
-"坚持锻炼一个月" = "Insist to take exercise for a month";
-"并分享到朋友圈，即可获得精美礼品哦" = "and for the exquisite gift to share to the circle of friends";
-"菜鸟" = "菜鸟";
-"砖家" = "砖家";
-"绑定配件" = "Bind device";
-"重新扫描" = "Research";
-"绑定的配件" = "Binding accessories";
-
-"一" = "Mon";
-"二" = "Tue";
-"三" = "Wed";
-"四" = "Thu";
-"五" = "Fri";
-"六" = "Sat";
-"七" = "Sun";
-"周一" = "Mon";//"Monday";
-"周二" = "Tue";//"Tuesday";
-"周三" = "Wed";//"Wednesday";
-"周四" = "Thu";//"Thursday";
-"周五" = "Fri";//"Friday";
-"周六" = "Sat";//"Saturday";
-"周日" = "Sun";//"Sunday";
-"每天" = "Everyday";
-
-"努力同步数据中..." = "Strive syncing data...";
-"运动记录" = "Sport records";
-"睡眠记录" = "Sleep records";
-"完成目标的" = "Completed progress";
-"设置目标" = "Target setting";
-"拍照" = "Take photos remotely";
-"选取照片" = "Choose photo";
-"防丢" = "Anti-lost";
-"正在连接您的手表" = "Connecting smart watch";
-"拍摄的照片保存在照片库" = "Photos stored in the library";
-"个性签名不能为空" = "Signature cannot be empty";
-"保存信息" = "Save user information";
-
-"用户名" = "User name";
-"密码" = "Password";
-"确认密码" = "Confirm password";
-"邮箱" = "Email";
-"完成" = "Complete";
-"忘记密码？" = "Forgot password？";
-"登陆" = "Log in";
-"注册" = "Sign up";
-"请输入用户名" = "Please enter your user name";
-"请输入密码" = "Please enter the password";
-"登陆成功" = "Log in successfully";
-"登陆失败" = "Log in failure";
-"网络请求超时" = "Network request timeout";
-"注册成功" = "Sign up successfully";
-"注册失败" = "Sign up failure";
-"用户名已存在" = "User name already exists";
-"邮箱已经注册" = "Email has been sign up";
-"请输入邮箱" = "Please enter the email address";
-"请输入正确的邮箱" = "Please enter the correct email";
-"请输入正确的用户名" = "Please enter the correct username";
-"两次输入的密码不同，请重新输入" = "Two different input password, please enter again";
-
-"隐私条款" = "Privacy policy";
-"注册代表您同意" = "Registered Express agree ";
-
-"热量单位" = "cal";
-"距离单位" = "km";
-
-"提醒方式" = "Remind way";
-"震动" = "Vibration";
-"蜂鸣" = "Beep";
-"震动+蜂鸣" = "Vibration+Beep";
-"其他" = "Other";
-"永不" = "Never";
-"请先在“绑定配件”中绑定您的手表" = "First in “Paired Watch” paired your watch";
-"您还没有连接手表或连接已断开" = "You have not connected the watch or connection disconnected";
-"智能手表搜索" = "Search watch";
-"追踪活动/睡眠，蓝牙4.0无线连接" = "Track active/sleep, Bluetooth 4.0 wireless connection";
-"正在搜索蓝牙设备......" = "Sarching for watch......";
-"请确认智能手表已经开启并在手机附近" = "Please confirm smart watches have been open and mobile phone in the near";
-"没有找到蓝牙设备" = "Not find watch";
-"请确认手机蓝牙已开启\n请确认智能手表在附近" = "Please confirm smart watches have been open and mobile phone in the near";
-"点击绑定" = "Click bind";
-"绑定成功" = "Bind successfully";
-"绑定失败" = "Bind failure";
-"提示" = "Warning";
-"知道了" = "Know";
-"您的设备不支持BLE4.0" = "Your device does not support BLE4.0";
-"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开" = "Your bluetooth has been closed, please in the “Settings - Bluetooth” will open it";
-"切换至拍照模式成功" = "Switch to camera mode successfully";
-"切换至拍照模式失败" = "Switch to camera mode failure";
-"重新建立了连接" = "To establish the connection";
-"您的连接已断开" = "Your Connection disconnected";
-"结束时间必须晚于开始时间" = "The end of time must be later than the start time";
-"设置活动提醒成功" = "Set the active remind successfully";
-"设置闹钟成功" = "Set the alarm successfully";
-"提醒设置成功" = "Set remind successfully";
-"提醒方式设置成功" = "Set remind way successfully";
-"防丢设置成功" = "Set lost successfully";
-"设置防丢成功" = "Set lost successfully";
-"正在切换至遥控模式..." = " You will be able to take photos from smart-watch by pressing the upper right conier of the key";//"Is switch to the remote control mode...";
-"正在绑定配件..." = "Is binding accessories...";
-"正在配置设置项，请稍等..." = "Is config settings, please wait...";
-"设置项配置成功" = "Config settings successfully";
-"当前步数" = "Current step";
-"个人信息" = "User Information";
-"睡眠时长" = "Sleep time";
-"唤醒时段" = "Wakeup space";
-
-"1月" = "Jan";
-"2月" = "Feb";
-"3月" = "Mar";
-"4月" = "Apr";
-"5月" = "May";
-"6月" = "Jun";
-"7月" = "Jul";
-"8月" = "Aug";
-"9月" = "Sept";
-"10月" = "Oct";
-"11月" = "Nov";
-"12月" = "Dec";
-"平均每日睡眠" = "The average sleep duration every day";
-"时" = "hour";
-"分" = "minute";
-"本月累计步数" = "Total steps on this month";
-"步" = "setps";
-"累计消耗" = "Total calories";
-"卡路里" = "cal";
-"累计里程" = "Total distance";
-"米" = "m";
-"公里" = "km";
-"卡" = "cal";
-"大卡" = "kcal";
-"瓶" = "bottle ";
-"可乐" = "coke";
-"圈" = "circle ";
-"400米操场" = "400m playground";
-
-"解绑成功" = "Remove the paired devices successfully";
-"解绑失败" = "Remove the paired devices failure";
-"正在连接手表..." = "Is connecting the watch...";
-"正在绑定配件，请按手表上的确认键..." = "Binding accessories,please click on the watch to confirm key...";
-"(剩余%.0f秒)" = "(Remaining %.0f seconds)";
-"提示" = "Tip";
-"解绑后，记得在“设置-蓝牙”中，点击设备右边的图标，然后点击“忽略此设备”，这样下次绑定手表时连接更稳定哦！" = "After the unbundling, remember in the “Settings - Bluetooth”, click on the device to the right of the icon, and then click the “Forget this Device”, so that next time binding watch connection more stable!";
-"请在“设置-蓝牙”中，忽略此设备！" = "Please in the “Settings - Bluetooth”, forget this Device!";
-
-"更新提醒" = "Update reminder";
-"发现新的版本，快去更新吧！" = "Discover new version, go to the update!";
-"暂不更新" = "No update";
-"去App Store更新" = "Update";//"to update the App Store";
-
-"设置" = "Settings";
-"我的账户" = "My account";
-"故障排除" = "Troubleshooting";
-"常见问题" = "Common problem";
-"适配机型" = "Adaptation model";
-"版本更新" = "App update";
-"固件更新" = "Firmware update";
-"APP版本" = "APP version";
-"固件版本" = "Firmware version";
-"点击此处登录" = "Click here to login";
-"已是最新版本" = "The latest version";
-"退出登录" = "Log out";
-"取消" = "Cancel";
-
-"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please press the upper right corner button of the watch when lights on,and complete paired.";
-"扫描" = "Scan";
-"停止" = "Stop";
-"超时，绑定失败" = "Timeout，Binding failure";
-"已绑定" = "Paired";
-"点击绑定" = "Click on the pairing";
-
-
-"按下手表右上角按键进行拍照" = "You will be able to take photos from smart-watch \nby pressing the upper right conier of the key";
-"Take picture" = "Take picture";
-"你的手机没电了，快去充电吧！" = "Your phone battery is low, please charge!";
-"你的手机在这里~" = "Your phone to here~";
-
-"开启防丢后，手表将会在连接断开后，到达指定时间时报警" = "After open the lost watch will be after the connection is broken, arrived at specified time report to the police";
-
-"更新说明" = "Update description";
-"立即更新" = "Update now";
-"正在切换至升级模式..." = "Is switch to upgrade mode...";
-"切换模式成功..." = "Switching mode successfully...";
-"您的手表电量过低，不能升级" = "You watch battery is too low, can't upgrade";
-"您的手表不支持升级" = "You watch does not support the upgrade";
-"正在准备升级..." = "Are preparing to update...";
-"正在进行升级..." = "Ongoing update...";
-"升级已取消..." = "The upgrade has already cancelled...";
-"升级成功..." = "Upgrade successfully...";
-"升级失败..." = "Upgrade failed...";
-"正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, exit will stop update, whether to quit?";
-"连接成功..." = "connection successfully...";
-"正在重新建立连接..." = "Is to establish a connection...";
-"连接断开，升级中断..." = "Disconnects, upgrade the interrupt...";
-
-"正在检测新版本..." = "Is testing a new version...";
-"网络不给力，稍后再试试吧" = "Network not to force, try again later";
-
-"如果您坐的时间过长，手表会轻微震动，提醒您活动一下" = "The watch will remind to do sports with vibration if you sit too long";
-"添加闹钟，手表会在指定的时间将您唤醒" = "Add alarm,watch will wake you up at the specified time.";
-"添加时间，手表会在蓝牙断开后的这个时间提醒您" = "Add time,watch will remind you after bluetooth disconnecting at this time.";
-
-"您的活动提醒已修改，尚未同步到手表，是否同步?" = "your activity remind the modified, has not yet been synchronized to watch, synchronous?";
-"您的防丢提醒已修改，尚未同步到手表，是否同步?" = "Your lost to remind the modified, has not yet been synchronized to watch, synchronous?";
-"您的闹钟已修改，尚未同步到手表，是否同步?" = "Your alarm clock has been modified, has not yet been synchronized to watch, synchronous?";
-"您已经绑定了手表，请先解绑" = "You have paired the watch, please remove paired";
-
-"目标设置成功" = "Target setting successfully";
-
-"您还没有添加闹钟" = "You haven't add the alarm clock";
-"请将手表靠近手机" = "Please put watch near the phone";
-"请稍等，正在绑定配件..." = "Please wait a moment, is pairing the watch...";
-"蓝牙连接已断开" = "Bluetooth connection has been disconnected";
-"解绑" = "Remove paired";
-"您还没有连接手表,强制解绑会导致之前设置在手表的信息（闹钟，久坐）残留在手表中" = "Bluetooth disconnected ,the information was setted(alarm etc) will residues in the watch if unbinding";
-"请按下手表上的确认键拍照..." = "Please confirm key press the watch on the pictures...";
-"正在尝试重新连接..." = "Trying to reconnect...";
-
-
-
-
-
-
+///* 
+//  Localizable.strings
+//  WMSPlusdot
+//
+//  Created by John on 14-8-21.
+//  Copyright (c) 2014年 GUOGEE. All rights reserved.
+//*/
+//
+//
+////LeftViewController String
+//"My sport" = "My sport";
+//"My sleep" = "My sleep";
+//"Target setting" = "Target setting";
+//"Bound watch" = "Paired Watch";
+//
+////RightViewController String
+//"Remind Setting" = "Remind Setting";
+//"Social contact" = "Social contact";
+//
+//"Phone" = "Phone";
+//"Message" = "Message";
+//"Email" = "Email";
+//"Battery" = "Battery";
+//
+//"Wechat" = "Wechat";
+//"QQ" = "QQ";
+//"Facebook" = "Facebook";
+//"Twitter" = "Twitter";
+//
+//"Take a Photo" = "Take a Photo";
+//
+//
+////MySport ViewController String
+//"Today" = "Today";
+//"Yesterday" = "Yesterday";
+//"Tomorrow" = "Tomorrow";
+//"Target" = "Target";
+//"Burn" = "Burn";
+//"Distance" = "Distance";
+//"Time" = "Time";
+//
+//
+////MySleep ViewController String
+//"Deep sleep" = "Deep sleep";
+//"Light sleep" = "Light sleep";
+//"Wake up" = "Wake up";
+//"Hour" = "h";
+//"Minutes" = "min";
+//
+////Set Target ViewController String
+//"Step" = "Step";
+//"%@ mode" = "%@mode";
+//"Rookie" = "Rookie";
+//"Expert" = "Expert";
+//"The range of %d-%d steps" = "The range of %d-%d steps";
+//"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle" = "Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle";
+//
+//
+////WMSSmartClockViewController String
+//"Smart alarm clock" = "Smart alarm clock";
+//"Alarm clock time" = "Alarm clock time";
+//"Smart sleep Windows" = "Smart sleep Windows";
+//"Repeat" = "Repeat";
+//"Minutes clock" = "Minutes";
+//"Alarm clock" = "Alarm clock";
+//
+////WMSAccountViewController String
+//"My account" = "My account";
+//"%@ watches" = "%@ watches";
+//"Exit" = "Exit";
+//
+////WMSAccountViewController String
+//"Personal data" = "Personal data";
+//"Please enter a nickname" = "Please enter a nickname";
+//"Please enter the character signature" = "Please enter the signature";
+//"Height" = "Height";
+//"Birthday" = "Birthday";
+//"Current weight" = "Current weight";
+//"Target weight" = "Target weight";
+//"Year" = "Year";
+//"Month" = "Month";
+//"Day" = "Day";
+//"cm" = "cm";
+//"kg" = "kg";
+//"Male" = "Male";
+//"Female" = "Female";
+//"Cancel" = "Cancel";
+//"Confirm" = "Confirm";
+//
+////WMSActivityRemindViewController String
+//"Activities remind" = "Exercise reminder";
+//"Start" = "From";
+//"Finish" = "To";
+//"Interval" = "Interval";
+//"Remind" = "Reminder";
+//
+//
+//"同步" = "Sync";
+//"智能手表已连接" = "Connected smart watch";
+//"智能手表连接中" = "Connecting smart watch";
+//"手表" = "watch";
+//"解除绑定" = "Remove the paired devices";
+//"坚持锻炼一个月" = "Insist to take exercise for a month";
+//"并分享到朋友圈，即可获得精美礼品哦" = "and for the exquisite gift to share to the circle of friends";
+//"菜鸟" = "菜鸟";
+//"砖家" = "砖家";
+//"绑定配件" = "Bind device";
+//"重新扫描" = "Research";
+//"绑定的配件" = "Binding accessories";
+//
+//"一" = "Mon";
+//"二" = "Tue";
+//"三" = "Wed";
+//"四" = "Thu";
+//"五" = "Fri";
+//"六" = "Sat";
+//"七" = "Sun";
+//"周一" = "Mon";//"Monday";
+//"周二" = "Tue";//"Tuesday";
+//"周三" = "Wed";//"Wednesday";
+//"周四" = "Thu";//"Thursday";
+//"周五" = "Fri";//"Friday";
+//"周六" = "Sat";//"Saturday";
+//"周日" = "Sun";//"Sunday";
+//"每天" = "Everyday";
+//
+//"努力同步数据中..." = "Strive syncing data...";
+//"运动记录" = "Sport records";
+//"睡眠记录" = "Sleep records";
+//"完成目标的" = "Completed progress";
+//"设置目标" = "Target setting";
+//"拍照" = "Take photos remotely";
+//"选取照片" = "Choose photo";
+//"防丢" = "Anti-lost";
+//"正在连接您的手表" = "Connecting smart watch";
+//"拍摄的照片保存在照片库" = "Photos stored in the library";
+//"个性签名不能为空" = "Signature cannot be empty";
+//"保存信息" = "Save user information";
+//
+//"用户名" = "User name";
+//"密码" = "Password";
+//"确认密码" = "Confirm password";
+//"邮箱" = "Email";
+//"完成" = "Complete";
+//"忘记密码？" = "Forgot password？";
+//"登陆" = "Log in";
+//"注册" = "Sign up";
+//"请输入用户名" = "Please enter your user name";
+//"请输入密码" = "Please enter the password";
+//"登陆成功" = "Log in successfully";
+//"登陆失败" = "Log in failure";
+//"网络请求超时" = "Network request timeout";
+//"注册成功" = "Sign up successfully";
+//"注册失败" = "Sign up failure";
+//"用户名已存在" = "User name already exists";
+//"邮箱已经注册" = "Email has been sign up";
+//"请输入邮箱" = "Please enter the email address";
+//"请输入正确的邮箱" = "Please enter the correct email";
+//"请输入正确的用户名" = "Please enter the correct username";
+//"两次输入的密码不同，请重新输入" = "Two different input password, please enter again";
+//
+//"隐私条款" = "Privacy policy";
+//"注册代表您同意" = "Registered Express agree ";
+//
+//"热量单位" = "cal";
+//"距离单位" = "km";
+//
+//"提醒方式" = "Remind way";
+//"震动" = "Vibration";
+//"蜂鸣" = "Beep";
+//"震动+蜂鸣" = "Vibration+Beep";
+//"其他" = "Other";
+//"永不" = "Never";
+//"请先在“绑定配件”中绑定您的手表" = "First in “Paired Watch” paired your watch";
+//"您还没有连接手表或连接已断开" = "You have not connected the watch or connection disconnected";
+//"智能手表搜索" = "Search watch";
+//"追踪活动/睡眠，蓝牙4.0无线连接" = "Track active/sleep, Bluetooth 4.0 wireless connection";
+//"正在搜索蓝牙设备......" = "Sarching for watch......";
+//"请确认智能手表已经开启并在手机附近" = "Please confirm smart watches have been open and mobile phone in the near";
+//"没有找到蓝牙设备" = "Not find watch";
+//"请确认手机蓝牙已开启\n请确认智能手表在附近" = "Please confirm smart watches have been open and mobile phone in the near";
+//"点击绑定" = "Click bind";
+//"绑定成功" = "Bind successfully";
+//"绑定失败" = "Bind failure";
+//"提示" = "Warning";
+//"知道了" = "Know";
+//"您的设备不支持BLE4.0" = "Your device does not support BLE4.0";
+//"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开" = "Your bluetooth has been closed, please in the “Settings - Bluetooth” will open it";
+//"切换至拍照模式成功" = "Switch to camera mode successfully";
+//"切换至拍照模式失败" = "Switch to camera mode failure";
+//"重新建立了连接" = "To establish the connection";
+//"您的连接已断开" = "Your Connection disconnected";
+//"结束时间必须晚于开始时间" = "The end of time must be later than the start time";
+//"设置活动提醒成功" = "Set the active remind successfully";
+//"设置闹钟成功" = "Set the alarm successfully";
+//"提醒设置成功" = "Set remind successfully";
+//"提醒方式设置成功" = "Set remind way successfully";
+//"防丢设置成功" = "Set lost successfully";
+//"设置防丢成功" = "Set lost successfully";
+//"正在切换至遥控模式..." = " You will be able to take photos from smart-watch by pressing the upper right conier of the key";//"Is switch to the remote control mode...";
+//"正在绑定配件..." = "Is binding accessories...";
+//"正在配置设置项，请稍等..." = "Is config settings, please wait...";
+//"设置项配置成功" = "Config settings successfully";
+//"当前步数" = "Current step";
+//"个人信息" = "User Information";
+//"睡眠时长" = "Sleep time";
+//"唤醒时段" = "Wakeup space";
+//
+//"1月" = "Jan";
+//"2月" = "Feb";
+//"3月" = "Mar";
+//"4月" = "Apr";
+//"5月" = "May";
+//"6月" = "Jun";
+//"7月" = "Jul";
+//"8月" = "Aug";
+//"9月" = "Sept";
+//"10月" = "Oct";
+//"11月" = "Nov";
+//"12月" = "Dec";
+//"平均每日睡眠" = "The average sleep duration every day";
+//"时" = "hour";
+//"分" = "minute";
+//"本月累计步数" = "Total steps on this month";
+//"步" = "setps";
+//"累计消耗" = "Total calories";
+//"卡路里" = "cal";
+//"累计里程" = "Total distance";
+//"米" = "m";
+//"公里" = "km";
+//"卡" = "cal";
+//"大卡" = "kcal";
+//"瓶" = "bottle ";
+//"可乐" = "coke";
+//"圈" = "circle ";
+//"400米操场" = "400m playground";
+//
+//"解绑成功" = "Remove the paired devices successfully";
+//"解绑失败" = "Remove the paired devices failure";
+//"正在连接手表..." = "Is connecting the watch...";
+//"正在绑定配件，请按手表上的确认键..." = "Binding accessories,please click on the watch to confirm key...";
+//"(剩余%.0f秒)" = "(Remaining %.0f seconds)";
+//"提示" = "Tip";
+//"解绑后，记得在“设置-蓝牙”中，点击设备右边的图标，然后点击“忽略此设备”，这样下次绑定手表时连接更稳定哦！" = "After the unbundling, remember in the “Settings - Bluetooth”, click on the device to the right of the icon, and then click the “Forget this Device”, so that next time binding watch connection more stable!";
+//"请在“设置-蓝牙”中，忽略此设备！" = "Please in the “Settings - Bluetooth”, forget this Device!";
+//
+//"更新提醒" = "Update reminder";
+//"发现新的版本，快去更新吧！" = "Discover new version, go to the update!";
+//"暂不更新" = "No update";
+//"去App Store更新" = "Update";//"to update the App Store";
+//
+//"设置" = "Settings";
+//"我的账户" = "My account";
+//"故障排除" = "Troubleshooting";
+//"常见问题" = "Common problem";
+//"适配机型" = "Adaptation model";
+//"版本更新" = "App update";
+//"固件更新" = "Firmware update";
+//"APP版本" = "APP version";
+//"固件版本" = "Firmware version";
+//"点击此处登录" = "Click here to login";
+//"已是最新版本" = "The latest version";
+//"退出登录" = "Log out";
+//"取消" = "Cancel";
+//
+//"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配" = "Please press the upper right corner button of the watch when lights on,and complete paired.";
+//"扫描" = "Scan";
+//"停止" = "Stop";
+//"超时，绑定失败" = "Timeout，Binding failure";
+//"已绑定" = "Paired";
+//"点击绑定" = "Click on the pairing";
+//
+//
+//"按下手表右上角按键进行拍照" = "You will be able to take photos from smart-watch \nby pressing the upper right conier of the key";
+//"Take picture" = "Take picture";
+//"你的手机没电了，快去充电吧！" = "Your phone battery is low, please charge!";
+//"你的手机在这里~" = "Your phone to here~";
+//
+//"开启防丢后，手表将会在连接断开后，到达指定时间时报警" = "After open the lost watch will be after the connection is broken, arrived at specified time report to the police";
+//
+//"更新说明" = "Update description";
+//"立即更新" = "Update now";
+//"正在切换至升级模式..." = "Is switch to upgrade mode...";
+//"切换模式成功..." = "Switching mode successfully...";
+//"您的手表电量过低，不能升级" = "You watch battery is too low, can't upgrade";
+//"您的手表不支持升级" = "You watch does not support the upgrade";
+//"正在准备升级..." = "Are preparing to update...";
+//"正在进行升级..." = "Ongoing update...";
+//"升级已取消..." = "The upgrade has already cancelled...";
+//"升级成功..." = "Upgrade successfully...";
+//"升级失败..." = "Upgrade failed...";
+//"正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, exit will stop update, whether to quit?";
+//"连接成功..." = "connection successfully...";
+//"正在重新建立连接..." = "Is to establish a connection...";
+//"连接断开，升级中断..." = "Disconnects, upgrade the interrupt...";
+//
+//"正在检测新版本..." = "Is testing a new version...";
+//"网络不给力，稍后再试试吧" = "Network not to force, try again later";
+//
+//"如果您坐的时间过长，手表会轻微震动，提醒您活动一下" = "The watch will remind to do sports with vibration if you sit too long";
+//"添加闹钟，手表会在指定的时间将您唤醒" = "Add alarm,watch will wake you up at the specified time.";
+//"添加时间，手表会在蓝牙断开后的这个时间提醒您" = "Add time,watch will remind you after bluetooth disconnecting at this time.";
+//
+//"您的活动提醒已修改，尚未同步到手表，是否同步?" = "your activity remind the modified, has not yet been synchronized to watch, synchronous?";
+//"您的防丢提醒已修改，尚未同步到手表，是否同步?" = "Your lost to remind the modified, has not yet been synchronized to watch, synchronous?";
+//"您的闹钟已修改，尚未同步到手表，是否同步?" = "Your alarm clock has been modified, has not yet been synchronized to watch, synchronous?";
+//"您已经绑定了手表，请先解绑" = "You have paired the watch, please remove paired";
+//
+//"目标设置成功" = "Target setting successfully";
+//
+//"您还没有添加闹钟" = "You haven't add the alarm clock";
+//"请将手表靠近手机" = "Please put watch near the phone";
+//"请稍等，正在绑定配件..." = "Please wait a moment, is pairing the watch...";
+//"蓝牙连接已断开" = "Bluetooth connection has been disconnected";
+//"解绑" = "Remove paired";
+//"您还没有连接手表,强制解绑会导致之前设置在手表的信息（闹钟，久坐）残留在手表中" = "Bluetooth disconnected ,the information was setted(alarm etc) will residues in the watch if unbinding";
+//"请按下手表上的确认键拍照..." = "Please confirm key press the watch on the pictures...";
+//"正在尝试重新连接..." = "Trying to reconnect...";
+//
+//
+//
+//
+//
+//

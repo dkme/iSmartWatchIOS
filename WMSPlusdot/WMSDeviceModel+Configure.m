@@ -57,4 +57,14 @@
      }];
 }
 
++ (void)readDeviceBatteryInfo:(WMSBleControl *)bleControl
+                   completion:(readDeviceBatteryInfo)callback
+{
+    [bleControl.deviceProfile readDeviceBatteryInfo:^(BatteryType type, BatteryStatus status, float voltage, float percentage) {
+        if (callback) {
+            callback(voltage);
+        }
+    }];
+}
+
 @end

@@ -157,8 +157,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    _targetSteps = [WMSHelper readTodayTargetSteps];
-    
+    [self setupProperty];
     [self setupView];
     [self setupControl];
     [self localizableView];
@@ -168,13 +167,9 @@
     [self reloadView];
     [self checkAppUpdate];
     
-    //
-    [self bleOperation];
     if ([WMSMyAccessory isBindAccessory] == NO) {
         [self showTip:NSLocalizedString(TIP_NO_BINDING, nil)];
-    } else {
-        [self handleScanPeripheralFinish:nil];
-    }
+    } else {}
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -233,6 +228,11 @@
 }
 
 #pragma mark - setup
+- (void)setupProperty
+{
+    _targetSteps = [WMSHelper readTodayTargetSteps];
+    _bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+}
 - (void)setupView
 {
     if (iPhone4s) {
@@ -470,21 +470,59 @@
     return targetSteps;
 }
 
-- (void)checkFirmwareUpdate
+#pragma mark - Data
+- (void)syncData
 {
-//    [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
-//     {
-//         if ([WMSDeviceModel deviceModel].version < newVersion) {
-//             [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
-//              {
-//                  //do something
-//                  DEBUGLog(@"下载%@",success?@"成功":@"失败");
-//              }];
-//         }
-//     }];
+    if (![self.bleControl isConnected]) {
+        return;
+    }
+    
+    [self startSyncSportData];
+}
+- (void)startSyncSportData
+{
+    self.isHasBeenSyncData = YES;
+    [self.syncDataView startAnimating];
+    [self.hud show:YES];
+    
+    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
+     {
+         //保存数据
+         [self savaSportDate:[NSDate dateFromString:sportdate format:@"yyyy-MM-dd"] steps:todaySteps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
+         
+         if (surplusDays <= 1) {//同步完成
+             [self stopSyncSportData];
+             return ;
+         }
+         
+         [self continueSyncSportData];
+     }];
+}
+- (void)continueSyncSportData
+{
+    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
+     {
+         NSDate *date = [NSDate dateFromString:sportdate format:@"yyyy-MM-dd"];
+         //保存数据
+         [self savaSportDate:date steps:todaySteps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
+         
+         if (surplusDays <= 1) {//同步完成
+             [self stopSyncSportData];
+             return ;
+         }
+         
+         [self continueSyncSportData];
+     }];
+}
+- (void)stopSyncSportData
+{
+    [self.syncDataView stopAnimating];
+    [self.hud hide:YES afterDelay:0];
+    
+    [self setLabelShowDate:[NSDate systemDate]];
+    [self updateView];
 }
 
-#pragma mark - Data
 - (void)savaSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations perHourData:(UInt16 *)perHourData dataLength:(NSUInteger)dataLength
 {
     WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
@@ -541,165 +579,23 @@
     [self.navigationController pushViewController:historyVC animated:YES];
 }
 
-- (void)syncData
-{
-    if (![self.bleControl isConnected]) {
-        return;
-    }
-    
-    [self startSyncSportData];
-}
 
-#pragma mark - 收发数据
-- (void)connectedOperation
-{
-    if (![WMSMyAccessory isBindAccessory]) {
-        return ;
-    }
-    [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
-        [WMSDeviceModel readDevicedetailInfo:self.bleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
-            if (!isPaired) {
-                [self.bleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
-            }
-        }];
-    }];
-    [self.bleControl.deviceProfile readDeviceMac:^(NSString *mac) {
-        DEBUGLog(@".....mac:[%@]",mac);
-    }];
-}
-//- (void)readDeviceInfo
-//{
-//    [self.bleControl.deviceProfile readDeviceInfoWithCompletion:^(NSUInteger batteryEnergy, NSUInteger version, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger endSleepMinute, NSUInteger endSleepHour, NSUInteger sleepDurations, DeviceWorkStatus workStatus, BOOL success)
-//     {
-//         DEBUGLog(@"电池电量：%d",batteryEnergy);
-//         //batteryEnergy = 100;
-//         [self.syncDataView setEnergy:batteryEnergy];
-//         [WMSDeviceModel deviceModel].batteryEnergy = batteryEnergy;
-//         [WMSDeviceModel deviceModel].version = version;
-//         [self checkFirmwareUpdate];
-//     }];
-//}
-
-- (void)startSyncSportData
-{
-    self.isHasBeenSyncData = YES;
-    [self.syncDataView startAnimating];
-    [self.hud show:YES];
-    
-    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
-     {
-         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
-//         DEBUGLog(@"====>Per Hour Data:");
-//         printf("\t\t{");
-//         for (int i=0; i<dataLength; i++) {
-//             printf("%d ",PerHourData[i]);
-//         }
-//         printf("}\n");
-         
-         //保存数据
-         [self savaSportDate:[NSDate dateFromString:sportdate format:@"yyyy-MM-dd"] steps:todaySteps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
-         
-         if (surplusDays <= 1) {//同步完成
-             [self stopSyncSportData];
-             return ;
-         }
-         
-         [self continueSyncSportData];
-     }];
-}
-- (void)continueSyncSportData
-{
-    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
-     {
-         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
-//         DEBUGLog(@"====>Per Hour Data:");
-//         printf("\t\t{");
-//         for (int i=0; i<dataLength; i++) {
-//             printf("%d ",PerHourData[i]);
-//         }
-//         printf("}\n");
-         
-         
-         NSDate *date = [NSDate dateFromString:sportdate format:@"yyyy-MM-dd"];
-         //保存数据
-         [self savaSportDate:date steps:todaySteps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
-         
-         if (surplusDays <= 1) {//同步完成
-             [self stopSyncSportData];
-             return ;
-         }
-         
-         [self continueSyncSportData];
-     }];
-}
-
-- (void)stopSyncSportData
-{
-    [self.syncDataView stopAnimating];
-    [self.hud hide:YES afterDelay:0];
-    
-    [self setLabelShowDate:[NSDate systemDate]];
-    [self updateView];
-}
-
-#pragma mark - 蓝牙操作
-- (void)bleOperation
+#pragma mark -  Notifications
+- (void)registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFailedConnectPeripheral:) name:WMSBleControlPeripheralConnectFailed object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScanPeripheralFinish:) name:WMSBleControlScanFinish object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdatedBLEState:) name:WMSBleControlBluetoothStateUpdated object:nil];
     
-    self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
 }
-
-- (void)scanAndConnectPeripheral:(LGPeripheral *)peripheral
+- (void)unregisterFromNotifications
 {
-    switch ([self.bleControl bleState]) {
-        case WMSBleStateResetting:
-        case WMSBleStatePoweredOff:
-            return;
-        default:
-            break;
-    }
-    if ([self.bleControl isConnecting] ||
-        [self.bleControl isConnected])
-    {
-        return ;
-    }
-    if (_isStartDFU==YES) {
-        return ;
-    }
-    if (peripheral) {
-        [self.bleControl connect:peripheral];
-    } else {
-        DEBUGLog(@"》》Scanning %@",NSStringFromClass([self class]));
-        [self.bleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL
-                                           completion:^(NSArray *peripherals)
-         {
-             if ([self.bleControl isConnecting]) {
-                 return ;
-             }
-             LGPeripheral *p = [peripherals lastObject];
-             if ([WMSMyAccessory isBindAccessory]) {
-                 NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
-                 if ([p.UUIDString isEqualToString:uuid])
-                 {
-                     [self.bleControl connect:p];
-                 }
-             }
-         }];
-    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-//Handle
+#pragma mark - Handle
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
-    DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
-    
-    [self connectedOperation];
-    
     [self showTipView:NO];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
@@ -708,30 +604,12 @@
     } else {
         self.isNeedUpdate = YES;
     }
-    
-//    [WMSPostNotificationHelper cancelAllNotification];
-//    _postNotifyFlag = YES;
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
-    DEBUGLog(@"连接断开 %@",NSStringFromClass([self class]));
-    
-    [[WMSDeviceModel deviceModel] resetDevice];
-    
     [self showTipView:YES];
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
-    //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
-    if ([self isBindingVC] == NO)
-    {
-        //LGPeripheral *p = (LGPeripheral *)notification.object;
-        [self scanAndConnectPeripheral:nil];
-    }
-    
-//    if (_postNotifyFlag) {
-//        [WMSPostNotificationHelper postNotifyWithAlartBody:NSLocalizedString(@"蓝牙连接已断开", nil)];
-//        _postNotifyFlag = NO;
-//    }
 #ifdef DEBUG
     static int i = 0;
     i++;
@@ -742,32 +620,8 @@
     textView.text = str;
 #endif
 }
-- (void)handleFailedConnectPeripheral:(NSNotification *)notification
-{
-    DEBUGLog(@"连接失败 %@",NSStringFromClass([self class]));
-    
-    [self showTipView:YES];
-    [self.hud hide:YES afterDelay:0];
-    [self.syncDataView stopAnimating];
-    //若在进行绑定配件（没有绑定配件），则不进行扫描连接操作
-    if ([self isBindingVC] == NO)
-    {
-        //LGPeripheral *p = (LGPeripheral *)notification.object;
-        [self scanAndConnectPeripheral:nil];
-    }
-}
-- (void)handleScanPeripheralFinish:(NSNotification *)notification
-{
-    DEBUGLog(@"扫描结束 %@, isConnecting:%d, isConnected:%d",NSStringFromClass([self class]),self.bleControl.isConnecting, self.bleControl.isConnected);
-    
-    if ([self isBindingVC] == NO) {
-        [self scanAndConnectPeripheral:nil];
-    }
-}
-
 - (void)handleUpdatedBLEState:(NSNotification *)notification
 {
-    DEBUGLog(@"%@ %s",self.class,__FUNCTION__);
     switch ([self.bleControl bleState]) {
         case WMSBleStateResetting:
         case WMSBleStatePoweredOff:
@@ -782,79 +636,14 @@
             break;
         }
         case WMSBleStatePoweredOn:
-            [self handleScanPeripheralFinish:nil];
             break;
         default:
             break;
     }
 }
-
-
-#pragma mark -  Notifications
-- (void)registerForNotifications
-{
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidStartDFU:) name:WMSUpdateVCStartDFU object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidEndDFU:) name:WMSUpdateVCEndDFU object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
-}
-- (void)unregisterFromNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-- (void)appWillResignActive:(NSNotification *)notification
-{
-    [self.alertView dismissWithClickedButtonIndex:0 animated:YES];
-    [self setAlertView:nil];
-}
-- (void)appDidBecomeActive:(NSNotification *)notification
-{
-//    if ([self.bleControl isConnected] == NO) {
-//        [self handleScanPeripheralFinish:nil];
-//    }
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showBLEStateTip) object:nil];
-    [self performSelector:@selector(showBLEStateTip) withObject:nil afterDelay:1.5f];
-}
-
-- (void)peripheralDidStartDFU:(NSNotification *)notification
-{
-    _isStartDFU = YES;
-}
-- (void)peripheralDidEndDFU:(NSNotification *)notification
-{
-    _isStartDFU = NO;
-    
-    //唤醒扫描
-    [self scanAndConnectPeripheral:nil];
-}
-
 - (void)reSyncData:(NSNotification *)notification
 {
     [self syncData];
-}
-
-- (void)showBLEStateTip
-{
-    switch (self.bleControl.bleState) {
-        case WMSBleStateUnsupported:
-        {
-            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的设备不支持BLE4.0",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
-            [_alertView show];
-            break;
-        }
-        case WMSBleStatePoweredOff:
-        {
-            _alertView= [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"您的蓝牙已关闭，请在“设置-蓝牙”中将其打开",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
-            [_alertView show];
-            break;
-        }
-        default:
-            break;
-    }
 }
 
 #pragma mark - WMSSyncDataViewDelegate
@@ -862,6 +651,5 @@
 {
     [self syncData];
 }
-
 
 @end

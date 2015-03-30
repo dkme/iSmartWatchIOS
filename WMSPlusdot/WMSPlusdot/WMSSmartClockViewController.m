@@ -164,6 +164,7 @@
 - (void)setupTableView
 {
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.rowHeight = 44.f;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.scrollEnabled = NO;
