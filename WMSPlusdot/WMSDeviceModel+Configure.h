@@ -13,6 +13,7 @@ typedef void(^readInfoCallBack)(NSUInteger batteryEnergy,NSUInteger version);
 typedef void(^readInfoCallBack2)(NSUInteger energy,NSUInteger version,DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired);
 typedef void(^readDeviceMac)(NSString *mac);
 typedef void(^setDateCallBack)(void);
+typedef void(^readDeviceBatteryInfo)(float voltage);
 
 @interface WMSDeviceModel (Configure)
 
@@ -27,5 +28,8 @@ typedef void(^setDateCallBack)(void);
 
 + (void)setDeviceDate:(WMSBleControl *)bleControl
                completion:(setDateCallBack)callback;
+
++ (void)readDeviceBatteryInfo:(WMSBleControl *)bleControl
+                   completion:(readDeviceBatteryInfo)callback;
 
 @end

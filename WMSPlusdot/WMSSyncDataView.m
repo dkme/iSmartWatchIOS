@@ -116,7 +116,8 @@
 }
 - (void)setup
 {
-    _labelTip = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.frame.size.height-30)/2.0, self.frame.size.width/2.0-10, 30)];
+    CGSize labelSize = CGSizeMake(self.frame.size.width/2.0-10, 30);
+    _labelTip = [[UILabel alloc] initWithFrame:(CGRect){(ScreenWidth-labelSize.width)/2.0-55,(self.frame.size.height-30)/2.0,labelSize}];
     _labelTip.textColor = [UIColor whiteColor];
     _labelTip.textAlignment = NSTextAlignmentRight;
     
@@ -128,7 +129,7 @@
     
     _buttonSync = [UIButton buttonWithType:UIButtonTypeCustom];
     CGSize size = CGSizeMake(70, 30);
-    CGPoint point = CGPointMake(self.frame.size.width-size.width-10, (self.frame.size.height-size.height)/2);
+    CGPoint point = CGPointMake(self.frame.size.width-size.width-10-30, (self.frame.size.height-size.height)/2);
     _buttonSync.frame = (CGRect){point,size};
     
     point = CGPointMake(point.x-5, point.y);
@@ -136,7 +137,7 @@
     
     
     [self addSubview:_labelTip];
-    [self addSubview:intervalView];
+//    [self addSubview:intervalView];
     [self addSubview:_imageView];
     [self addSubview:_buttonSync];
     [self addSubview:self.labelElectricQuantity];
@@ -226,10 +227,10 @@
 {
     // Drawing code
     
-    [self drawUnderLayer];
-    [self drawHeadLayer];
-    
-    [self drawCellLayer];
+//    [self drawUnderLayer];
+//    [self drawHeadLayer];
+//    
+//    [self drawCellLayer];
 }
 
 - (void)drawUnderLayer

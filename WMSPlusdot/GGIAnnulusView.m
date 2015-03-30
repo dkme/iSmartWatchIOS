@@ -51,15 +51,17 @@
     CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     [path addArcWithCenter:center radius:RADIUS startAngle:degreesToRadians(START_ANGLE) endAngle:degreesToRadians(END_ANGLE) clockwise:YES];
     
+    //底色
     CAShapeLayer *underLayer = [CAShapeLayer layer];
     underLayer.strokeColor = [UIColor whiteColor].CGColor;//UIColorFromRGBAlpha(0x2EC4DD, 1.0).CGColor;
     underLayer.fillColor = [UIColor clearColor].CGColor;
     underLayer.frame = self.bounds;
     underLayer.lineWidth = PROGRESS_WIDTH;
-    underLayer.path = [path CGPath];
-    [path stroke];
+    underLayer.path = path.CGPath;
+    underLayer.strokeEnd = 1.0;
     [self.layer addSublayer:underLayer];
     
+    //上层色
     layer=[CAShapeLayer layer];
     layer.strokeColor=[UIColor redColor].CGColor;
     layer.fillColor=[UIColor clearColor].CGColor;
@@ -67,13 +69,11 @@
     layer.lineWidth=PROGRESS_WIDTH;
     layer.path=path.CGPath;
     layer.strokeEnd=0;
-    [path stroke];
     
     contain=[CALayer layer];
     contain.frame=self.bounds;
     contain.mask=layer;
     [self.layer addSublayer:contain];
-    
 }
 
 -(UIImage*)getArcImageWithSize:(CGSize)size andCenter:(CGPoint)pt andRadius:(CGFloat)radius andColors:(NSArray*)colors andAngle:(NSArray*)angles
@@ -83,9 +83,7 @@
     sz.height = size.height * 1.0f;
     UIGraphicsBeginImageContextWithOptions(sz, NO, 0.0);
     CGContextRef con = UIGraphicsGetCurrentContext();
-    DEBUGLog(@"draw [line:%d] %s",__LINE__,__FUNCTION__);
-    //CGContextSaveGState(con);
-    //UIGraphicsPushContext(con);
+    CGContextSaveGState(con);
     
     UIBezierPath *path;
     CGFloat startAngle,endAngle;
@@ -122,7 +120,6 @@
 
     UIImage* im = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    //UIGraphicsPopContext();
     return im;
 }
 
