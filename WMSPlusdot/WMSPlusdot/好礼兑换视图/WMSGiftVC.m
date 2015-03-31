@@ -362,8 +362,8 @@ typedef enum {
                                @{NSForegroundColorAttributeName:UICOLOR_DEFAULT},
                                ];
         NSString *text = [NSString stringWithFormat:@"兑换码为: /%@/ \n%@",bag.exchangeCode,bag.memo];
-        NSString *strDate = [NSDate stringFromDate:bag.expiryDate format:@"yyyy.MM.dd"];
-        text = [text stringByAppendingFormat:@"\n(有效期至:%@)",strDate];
+        //NSString *strDate = [NSDate stringFromDate:bag.expiryDate format:@"yyyy.MM.dd"];
+        //text = [text stringByAppendingFormat:@"\n(有效期至:%@)",strDate];
         [alertView.detailTextLabel setSegmentsText:text separateMark:@"/" attributes:attrisArr];
         alertView.delegate = self;
         alertView.frame = [alertView updateSubviews];
