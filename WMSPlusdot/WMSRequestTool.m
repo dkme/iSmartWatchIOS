@@ -226,6 +226,8 @@ static inline NSError* ERROR(NSInteger code,NSString *localizedDescription)
                 NSDictionary *dicObj = json[@"datas"];
                 NSString *code = dicObj[@"accode"];
                 aCallback(YES,code,nil);
+            } else if (code == 201) {//当天已经兑换过
+                aCallback(YES,nil,nil);
             } else {
                 aCallback(NO,nil,ERROR(RequestErrorCodeServerError, RequestErrorDescriptionServerError));
             }

@@ -63,7 +63,8 @@ typedef void (^requestCallBack)(BOOL result,id data,NSError *error);
 
 /**
  *  领取礼包
- *  sKey    提交到服务器的秘钥，初步定义为:guogee_shoubiao
+ *  @param sKey    提交到服务器的秘钥，初步定义为:guogee_shoubiao
+ *  @param aCallback    当result为YES,data不为nil时，表示兑换礼包成功；当result为YES,data为nil时，表示当天已经兑换过1次礼包
  */
 + (void)requestGetGiftBagWithUserKey:(NSString *)key
                           activityID:(int)actID

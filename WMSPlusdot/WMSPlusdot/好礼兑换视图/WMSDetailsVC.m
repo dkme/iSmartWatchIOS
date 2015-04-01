@@ -208,14 +208,16 @@ static const int TextViewLine3                  = TextViewLine2+20;
             if (result) {
                 [self hideHUDAtViewCenter];
                 if (!exchangeCode) {
-                    [self showTip:@"该活动的礼包已被领取完了"];
+                    //[self showTip:@"该活动的礼包已被领取完了"];
+                    [self showTip:@"您已兑换过礼包,每天只能兑换一次"];
                     return ;
                 }
                 [self updateMyBeans:^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:WMSGetNewGiftBag object:nil userInfo:nil];//发送通知
                 }];
                 WMSExchangeVC *vc = [[WMSExchangeVC alloc] init];
-                vc.exchangeCode = exchangeCode, vc.consumeBeans = _consumeBeans;
+                vc.exchangeCode = exchangeCode;
+                vc.consumeBeans = (int)_consumeBeans;
                 vc.title = self.title;
                 [self.navigationController pushViewController:vc animated:YES];
             } else {

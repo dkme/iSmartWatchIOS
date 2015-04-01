@@ -134,7 +134,7 @@ enum {
         if (result) {
             for (ExchangeBeanRule *rule in list) {
                 if (rule.ruleType == ExchangeBeanRuleTypeRuning) {
-                    _targetSteps = rule.eventNumber;
+                    _targetSteps = rule.eventNumber;//
                 }else{}
             }
             [WMSRequestTool requestUserBeansWithUserKey:[WMSMyAccessory macForBindAccessory] completion:^(BOOL result, int beans,NSError *error)
