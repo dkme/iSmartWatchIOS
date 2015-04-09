@@ -158,13 +158,16 @@ static const int TextViewLine3                  = TextViewLine2+20;
     NSUInteger beans = _currentMyBeans - _consumeBeans;
     [self setMyBean:beans];
     [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
-    [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:beans secretKey:SECRET_KEY completion:^(BOOL result, int beans) {
-        if (result) {
-            if (aCallback) {
-                aCallback();
-            }else{}
-        }else{}
-    }];
+//    [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:beans secretKey:SECRET_KEY completion:^(BOOL result, int beans) {
+//        if (result) {
+//            if (aCallback) {
+//                aCallback();
+//            }else{}
+//        }else{}
+//    }];
+    if (aCallback) {
+        aCallback();
+    }else{}
 }
 
 - (void)loadDataFromServer

@@ -63,6 +63,8 @@
     
     BOOL _isStartDFU;//是否准备升级了
     BOOL _postNotifyFlag;//发送本地通知的一个标志
+    
+    int _syncDataCount;//同步的次数，当连接成功时，将之置为0
 }
 
 #pragma mark - Getter
@@ -397,7 +399,14 @@
     [self updateLabel:self.labelBurnValue value:model.sportCalorie];
     [self.mySportView setTargetSetps:(int)target];
     [self.mySportView setSportSteps:(int)model.sportSteps];
-
+    
+    if (_syncDataCount == 1) {//连接成功后的第一次同步数据
+        BOOL isHaveData = NO;
+        if (model.sportSteps > 0) {
+            isHaveData = YES;
+        }else{}
+        [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_FIRST_SYNC_DATA object:nil userInfo:@{@"type":@(1),@"isHaveData":@(isHaveData)}];//1表示运动
+    }else{}
 }
 
 - (void)updateLabel:(UILabel *)label value:(NSUInteger)value
@@ -516,6 +525,7 @@
 }
 - (void)stopSyncSportData
 {
+    _syncDataCount ++;//完成1次同步
     [self.syncDataView stopAnimating];
     [self.hud hide:YES afterDelay:0];
     
@@ -597,6 +607,7 @@
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [self showTipView:NO];
+    _syncDataCount = 0;
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
         [self startSyncSportData];

@@ -77,11 +77,18 @@ typedef void (^requestCallBack)(BOOL result,id data,NSError *error);
 + (void)requestExchangeRuleList:(requestExchangeRuleListCallBack)aCallback;
 
 /**
- *  领取能量豆
+ * 领取能量豆
+ * @param beans 填0
+ * @param steps 运动的步数
+ * @param state YES表示连接成功后，同步没有数据
+ * @param type  1
  */
 + (void)requestGetBeanWithUserKey:(NSString *)key
                        beanNumber:(int)beans
                         secretKey:(NSString *)sKey
+                       stepNumber:(int)steps
+                            state:(BOOL)state
+                             type:(int)type
                        completion:(requestGetBeanCallBack)aCallback;
 
 /**

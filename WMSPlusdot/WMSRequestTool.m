@@ -272,10 +272,14 @@ static inline NSError* ERROR(NSInteger code,NSString *localizedDescription)
 + (void)requestGetBeanWithUserKey:(NSString *)key
                        beanNumber:(int)beans
                         secretKey:(NSString *)sKey
+                       stepNumber:(int)steps
+                            state:(BOOL)state
+                             type:(int)type
                        completion:(requestGetBeanCallBack)aCallback
 {
     NSString *url = [URL_GIFT_AND_BEANS stringByAppendingPathComponent:API_USER_GET_BEAN];
-    NSDictionary *parameters = @{@"usbuserkey":key,@"usbbeancount":@(beans),@"skey":sKey};
+    NSString *strState = (state ? @"y" : @"n");
+    NSDictionary *parameters = @{@"usbuserkey":key,@"usbbeancount":@(beans),@"skey":sKey,@"stepnumber":@(steps),@"state":strState,@"type":@(type)};
     [self POSTJSONDataWithUrl:UTF8Encoding(url) parameters:parameters success:^(id json) {
         if (aCallback) {
             int code = [json[@"code"] intValue];

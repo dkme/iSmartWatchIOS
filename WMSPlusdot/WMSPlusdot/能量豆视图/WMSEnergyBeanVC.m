@@ -21,6 +21,7 @@
 #import "CacheClass.h"
 #import "WMSMyAccessory.h"
 #import "ArrayDataSource.h"
+#import "WMSConstants.h"
 
 #define BOTTOM_BUTTON_TITLE1                    @"领取"
 #define BOTTOM_BUTTON_TITLE2                    @"如何获取能量豆?"
@@ -38,6 +39,7 @@ enum {
     NSUInteger _currentBeans;//当前的能量豆
     NSUInteger _exchangedSteps;//已兑换过的步数
     NSUInteger _targetSteps;//几步兑换1个能量豆
+    BOOL _postState;//用于领取能量豆时要发送的状态
 }
 @property (nonatomic, strong) NSMutableArray *listData;
 @end
@@ -102,6 +104,7 @@ enum {
     } else {
         _exchangedSteps = 0;
     }
+    _postState = NO;
 }
 - (void)setupUI
 {
@@ -188,31 +191,6 @@ enum {
         [self setMyBean:beans];
     }
     
-    //从数据库中查询数据
-    [self.listData removeAllObjects];
-    NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:[NSDate systemDate]];
-    if (results.count > 0) {
-        WMSSportModel *model = results[0];
-        
-        NSUInteger unExchangeSteps = 0;
-        if (model.sportSteps >= _exchangedSteps) {
-            unExchangeSteps = model.sportSteps-_exchangedSteps;
-        } else {
-            _exchangedSteps = 0;
-            [CacheClass cacheMyExchangedSteps:_exchangedSteps date:[NSDate systemDate] mac:[WMSMyAccessory macForBindAccessory]];
-        }
-        if (_targetSteps == 0) {
-            [self.tableView reloadData];
-            return ;
-        }
-        NSUInteger showSteps = (unExchangeSteps/_targetSteps)*_targetSteps;
-        if (showSteps >= _targetSteps) {
-            [self.listData addObject:@(showSteps)];
-        }else{}
-    }else{}
-    if (self.listData.count > 0) {
-        [self updateBottomButtonTitle];
-    }else{}
     [self.tableView reloadData];
 }
 - (void)updateBottomButtonTitle
@@ -275,9 +253,15 @@ enum {
 - (void)getsBeans:(int)beans willExchangeSteps:(NSUInteger)steps
 {
     [self showHUDAtViewCenter:nil];
-    [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:beans secretKey:SECRET_KEY completion:^(BOOL result, int beans) {
+    
+    NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:[NSDate systemDate]];
+    NSUInteger sportSteps = 0;
+    if (results.count > 0) {
+        WMSSportModel *model = results[0];
+        sportSteps = model.sportSteps;
+    }else{}
+    [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:beans secretKey:SECRET_KEY stepNumber:(int)sportSteps state:_postState type:1 completion:^(BOOL result, int beans) {
         if (result) {
-            _currentBeans = beans, _exchangedSteps += steps;
             [self setMyBean:beans];
             [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
             while (self.listData.count) {
@@ -286,7 +270,8 @@ enum {
                 [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
             [self updateBottomButtonTitle];
-        }else{
+            _postState = NO;
+        } else {
             [self showTip:@"领取失败"];
         }
         [self hideHUDAtViewCenter];
@@ -361,6 +346,7 @@ enum {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handelBindSuccess:) name:WMSBindAccessorySuccess object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handelUnBindSuccess:) name:WMSUnBindAccessorySuccess object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleGetNewGiftBag:) name:WMSGetNewGiftBag object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleFirstSyncData:) name:NOTIFICATION_FIRST_SYNC_DATA object:nil];
     
 }
 - (void)unregisterFromNotifications
@@ -393,6 +379,11 @@ enum {
 {
     int beans = [CacheClass cachedBeansForMac:[WMSMyAccessory macForBindAccessory]];
     [self setMyBean:beans];
+}
+- (void)handleFirstSyncData:(NSNotification *)notification
+{
+    BOOL isHaveData = [notification.userInfo[@"isHaveData"] boolValue];
+    _postState = !isHaveData;
 }
 
 @end

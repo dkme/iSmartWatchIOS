@@ -193,38 +193,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x80fd;&#x91cf;&#x8c46;&#x89c6;&#x56fe;/WMSEnergyBeanVC.m"
-            timestampString = "448190829.484609"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
-            landmarkName = "-getsBeans:willExchangeSteps:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x80fd;&#x91cf;&#x8c46;&#x89c6;&#x56fe;/WMSEnergyBeanVC.m"
-            timestampString = "448190832.676935"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "-getsBeans:willExchangeSteps:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSGiftVC.m"
             timestampString = "449462543.479903"
             startingColumnNumber = "9223372036854775807"
@@ -232,6 +200,68 @@
             startingLineNumber = "364"
             endingLineNumber = "364"
             landmarkName = "-showAlertViewWithGiftBag:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSPlusdot/&#x80fd;&#x91cf;&#x8c46;&#x89c6;&#x56fe;/WMSEnergyBeanVC.m"
+            timestampString = "450183034.765648"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "306"
+            endingLineNumber = "306"
+            landmarkName = "-getsBeans:willExchangeSteps:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[WMSEnergyBeanVC getsBeans:willExchangeSteps:]"
+                  moduleName = "WMSPlusdot"
+                  urlString = "file:///Users/Dai/Desktop/iSmartWatchIOS/WMSPlusdot/WMSPlusdot/%E8%83%BD%E9%87%8F%E8%B1%86%E8%A7%86%E5%9B%BE/WMSEnergyBeanVC.m"
+                  timestampString = "450185187.891177"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "306"
+                  endingLineNumber = "306"
+                  offsetFromSymbolStart = "422">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__47-[WMSEnergyBeanVC getsBeans:willExchangeSteps:]_block_invoke"
+                  moduleName = "WMSPlusdot"
+                  urlString = "file:///Users/Dai/Desktop/iSmartWatchIOS/WMSPlusdot/WMSPlusdot/%E8%83%BD%E9%87%8F%E8%B1%86%E8%A7%86%E5%9B%BE/WMSEnergyBeanVC.m"
+                  timestampString = "450185187.891344"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "307"
+                  endingLineNumber = "307"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSPlusdot/&#x80fd;&#x91cf;&#x8c46;&#x89c6;&#x56fe;/WMSEnergyBeanVC.m"
+            timestampString = "450183098.191043"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "-bottomButtonAction:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

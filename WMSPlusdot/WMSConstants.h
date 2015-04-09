@@ -62,7 +62,8 @@
 #define FIRMWARE_ADD_BATTERY_INFO   20.0//添加读取设备电池信息的接口
 
 
-
+#pragma mark - Notification
+#define NOTIFICATION_FIRST_SYNC_DATA    @"com.guogee.ios.NOTIFICATION_FIRST_SYNC_DATA"
 
 
 
