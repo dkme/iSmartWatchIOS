@@ -617,7 +617,7 @@
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
     
-    //[self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
+//    [self.syncDataView setCellElectricQuantity:[WMSDeviceModel deviceModel].batteryEnergy];
     
     [self showTipView:NO];
     

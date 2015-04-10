@@ -618,6 +618,10 @@
     } else {
         self.isNeedUpdate = YES;
     }
+    
+    [WMSDeviceModel readDevicedetailInfo:self.bleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+        [self.syncDataView setEnergy:energy];
+    }];
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {

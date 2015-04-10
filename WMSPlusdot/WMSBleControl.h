@@ -146,8 +146,6 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
 - (void)connect:(LGPeripheral *)peripheral;
 
 - (void)disconnect;
-#pragma mark - Private
-- (void)disconnectWithReason:(NSString *)reason;
 
 /**
  发送数据
@@ -177,5 +175,8 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
  .........
  */
 - (void)resetDevice;//discarded
+
+#pragma mark - Private
+- (void)disconnectWithReason:(NSString *)reason;
 
 @end
