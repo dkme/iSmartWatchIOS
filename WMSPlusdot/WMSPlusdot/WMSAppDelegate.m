@@ -33,6 +33,7 @@
 
 NSString *const WMSAppDelegateReSyncData = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncData";
+NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfiguredBLEDevice";
 
 @interface WMSAppDelegate ()<RESideMenuDelegate>
 @end
@@ -284,19 +285,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     }
 }
 
-- (void)connectedConfigure
-{
-    if (![WMSMyAccessory isBindAccessory]) {
-        return ;
-    }
-    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
-        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
-            if (!isPaired) {
-                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
-            }
-        }];
-    }];
-}
 - (void)scanAndConnectPeripheral:(LGPeripheral *)peripheral
 {
     switch ([self.wmsBleControl bleState]) {
@@ -328,6 +316,24 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
              }
          }];
     }
+}
+
+- (void)connectedConfigure
+{
+    if (![WMSMyAccessory isBindAccessory]) {
+        return ;
+    }
+    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
+        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+            if (!isPaired) {
+                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
+            }else{}
+//            [self checkDeviceBattery:^{
+//                [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
+//            }];
+            [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
+        }];
+    }];
 }
 
 #pragma mark - DFU

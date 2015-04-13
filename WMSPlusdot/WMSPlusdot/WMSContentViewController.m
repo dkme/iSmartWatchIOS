@@ -197,6 +197,8 @@
         //若已绑定手表
         if ([self.bleControl isConnected]) {
             [self showTipView:NO];
+            int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
+            [self.syncDataView setEnergy:batteryEnergy];
         } else {
             [self showTipView:YES];
         }
@@ -599,6 +601,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdatedBLEState:) name:WMSBleControlBluetoothStateUpdated object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAlreadyConfiguredDevice:) name:AlreadyConfiguredBLEDevice object:nil];
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -608,20 +611,28 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 #pragma mark - Handle
+- (void)handleAlreadyConfiguredDevice:(NSNotification *)notification
+{
+    if (self.isVisible) {
+        [self startSyncSportData];
+    }else{};
+}
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [self showTipView:NO];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
-        [self startSyncSportData];
+//        [self startSyncSportData];
         self.isNeedUpdate = NO;
     } else {
         self.isNeedUpdate = YES;
     }
     
-    [WMSDeviceModel readDevicedetailInfo:self.bleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
-        [self.syncDataView setEnergy:energy];
-    }];
+//    if ([WMSMyAccessory isBindAccessory]) {
+//        [WMSDeviceModel readDevicedetailInfo:self.bleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+//            [self.syncDataView setEnergy:energy];
+//        }];
+//    }else{}
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {

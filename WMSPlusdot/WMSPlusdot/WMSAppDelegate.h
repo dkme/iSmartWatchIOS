@@ -13,6 +13,7 @@
 
 extern NSString *const WMSAppDelegateReSyncData;
 extern NSString *const WMSAppDelegateNewDay;
+extern NSString *const AlreadyConfiguredBLEDevice;//Already configured devices
 
 @interface WMSAppDelegate : UIResponder <UIApplicationDelegate>
 
