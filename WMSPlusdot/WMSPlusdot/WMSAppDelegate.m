@@ -33,6 +33,7 @@
 
 NSString *const WMSAppDelegateReSyncData = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncData";
+NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfiguredBLEDevice";
 
 @interface WMSAppDelegate ()<RESideMenuDelegate>
 @end
@@ -284,6 +285,25 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     }
 }
 
+- (void)connectedConfigure:(void(^)(void))callBack
+{
+    if (![WMSMyAccessory isBindAccessory]) {
+        return ;
+    }
+    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
+        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+            if (!isPaired) {
+                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
+            }else{}
+            [self checkDeviceBattery:^{
+                if (callBack) {
+                    callBack();
+                }else{}
+            }];
+        }];
+    }];
+}
+
 - (void)connectedConfigure
 {
     if (![WMSMyAccessory isBindAccessory]) {
@@ -294,7 +314,9 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
             if (!isPaired) {
                 [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
             }else{}
-            [self checkDeviceBattery];
+            [self checkDeviceBattery:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
+            }];
         }];
     }];
 }
@@ -330,7 +352,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
          }];
     }
 }
-- (void)checkDeviceBattery
+- (void)checkDeviceBattery:(void(^)(void))callBack
 {
     static int checkCount = 0;
     if (checkCount >= 1) {
@@ -346,6 +368,9 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
             [alert show];
             checkCount ++;
         }else{}
+        if (callBack) {
+            callBack();
+        }else{};
     }];
 }
 

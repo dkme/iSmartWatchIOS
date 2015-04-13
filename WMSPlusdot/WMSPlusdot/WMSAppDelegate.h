@@ -13,6 +13,7 @@
 
 extern NSString *const WMSAppDelegateReSyncData;
 extern NSString *const WMSAppDelegateNewDay;
+extern NSString *const AlreadyConfiguredBLEDevice;//Already configured devices
 
 @interface WMSAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -26,5 +27,8 @@ extern NSString *const WMSAppDelegateNewDay;
 
 
 + (WMSAppDelegate *)appDelegate;
+
+- (void)connectedConfigure:(void(^)(void))callBack;
+//- (void)checkDeviceBattery;
 
 @end

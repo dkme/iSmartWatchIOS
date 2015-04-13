@@ -272,6 +272,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAlreadyConfiguredDevice:) name:AlreadyConfiguredBLEDevice object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -618,6 +619,12 @@
 }
 
 //Handle
+- (void)handleAlreadyConfiguredDevice:(NSNotification *)notification
+{
+    if (self.isVisible) {
+        [self startSyncSleepData];
+    }else{};
+}
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
@@ -628,7 +635,7 @@
     
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
-        [self startSyncSleepData];
+//        [self startSyncSleepData];
         self.isNeedUpdate = NO;
     } else {
         self.isNeedUpdate = YES;
