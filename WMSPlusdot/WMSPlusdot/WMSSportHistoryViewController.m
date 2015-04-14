@@ -239,7 +239,12 @@
         unit = @"m";
     }
     NSString *describe = [NSString stringWithFormat:@"%@%@",NSLocalizedString(@"累计里程", nil),@": "];
-    NSString *distanceStr = [NSString stringWithFormat:@"%.1g",value];
+    NSString *distanceStr = @"";
+    if (ISInteger(value)) {
+        distanceStr = [NSString stringWithFormat:@"%d",(int)value];
+    } else {
+        distanceStr = [NSString stringWithFormat:@"%.2f",value];
+    }
     NSString *symbol = @" ≈ ";
     NSString *numberStr = [NSString stringWithFormat:@"%d",Rounded(number)];
     NSString *unti2 = NSLocalizedString(@"圈", nil);

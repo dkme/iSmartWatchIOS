@@ -413,7 +413,7 @@
             if (dis_mile < 0.005) {
                 dis_mile = 0;
             }
-            text = [NSString stringWithFormat:@"%.1g",dis_mile];
+            text = (ISInteger(dis_mile) ? [NSString stringWithFormat:@"%d",(int)dis_mile] : [NSString stringWithFormat:@"%.2f",dis_mile]);
             unit = @"m";
         }
     }
