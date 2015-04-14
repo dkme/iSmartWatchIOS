@@ -51,84 +51,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSDetailsVC.m"
-            timestampString = "447844654.843886"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "-setupUI"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSGiftVC.m"
-            timestampString = "447646948.701889"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "-loadDataFromServer"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[WMSGiftVC loadDataFromServer]"
-                  moduleName = "WMSPlusdot"
-                  urlString = "file:///Users/Dai/Desktop/iSmartWatchIOS/WMSPlusdot/WMSPlusdot/%E5%A5%BD%E7%A4%BC%E5%85%91%E6%8D%A2%E8%A7%86%E5%9B%BE/WMSGiftVC.m"
-                  timestampString = "447736337.302008"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "220"
-                  endingLineNumber = "220"
-                  offsetFromSymbolStart = "2">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__31-[WMSGiftVC loadDataFromServer]_block_invoke"
-                  moduleName = "WMSPlusdot"
-                  urlString = "file:///Users/Dai/Desktop/iSmartWatchIOS/WMSPlusdot/WMSPlusdot/%E5%A5%BD%E7%A4%BC%E5%85%91%E6%8D%A2%E8%A7%86%E5%9B%BE/WMSGiftVC.m"
-                  timestampString = "447736337.302293"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "222"
-                  endingLineNumber = "222"
-                  offsetFromSymbolStart = "4">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/&#x597d;&#x793c;&#x5151;&#x6362;&#x89c6;&#x56fe;/WMSGiftVC.m"
-            timestampString = "447757099.768999"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "WMSRequestTool.m"
             timestampString = "447757164.080531"
             startingColumnNumber = "9223372036854775807"
@@ -142,15 +64,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSRightViewController.m"
-            timestampString = "447905718.308403"
+            timestampString = "450693220.681634"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
+            startingLineNumber = "276"
+            endingLineNumber = "276"
             landmarkName = "-setRemindWay:"
             landmarkType = "5">
          </BreakpointContent>
@@ -158,7 +80,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GGIAnnulusView.m"
@@ -174,7 +96,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
@@ -190,7 +112,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
@@ -203,13 +125,13 @@
             landmarkType = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__68-[WMSBindingAccessoryViewController handleSuccessConnectPeripheral:]_block_invoke"
                   moduleName = "WMSPlusdot"
                   urlString = "file:///Users/Dai/Documents/Plusdot%20Project/WMSPlusdot/WMSPlusdot/WMSBindingAccessoryViewController.m"
-                  timestampString = "450607021.853684"
+                  timestampString = "450686146.009162"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "225"
@@ -217,13 +139,13 @@
                   offsetFromSymbolStart = "50">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__68-[WMSBindingAccessoryViewController handleSuccessConnectPeripheral:]_block_invoke_2"
                   moduleName = "WMSPlusdot"
                   urlString = "file:///Users/Dai/Documents/Plusdot%20Project/WMSPlusdot/WMSPlusdot/WMSBindingAccessoryViewController.m"
-                  timestampString = "450607021.853847"
+                  timestampString = "450686146.009345"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "226"
@@ -236,7 +158,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
@@ -252,7 +174,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
@@ -268,7 +190,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
@@ -284,7 +206,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSBindingAccessoryViewController.m"
@@ -294,6 +216,22 @@
             startingLineNumber = "108"
             endingLineNumber = "108"
             landmarkName = "-sendBindingCMD"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSPlusdot/WMSSportHistoryViewController.m"
+            timestampString = "450688327.86119"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
+            landmarkName = "-setBottomLabelDistance:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

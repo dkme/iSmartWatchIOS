@@ -328,13 +328,11 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
             if (!isPaired) {
                 [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
             }else{}
-//            [self checkDeviceBattery:^{
-//                [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
-//            }];
             [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
         }];
     }];
 }
+
 
 #pragma mark - DFU
 - (void)peripheralDidStartDFU:(NSNotification *)notification

@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LGBluetooth.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "LGBluetooth.h"
 #import "WMSMyTimers.h"
+#import "BLEUtils.h"
 
 @class WMSSettingProfile;
 @class WMSDeviceProfile;
@@ -62,26 +63,6 @@ typedef NS_ENUM(NSInteger, BindingResult) {
     BindingResultPaired     = 0x02,
 };
 
-
-//通讯命令字
-typedef NS_ENUM(Byte, CMDType) {
-    CMDSetCurrentDate = 0x01,
-    CMDSetPersonInfo = 0x02,
-    CMDSetAlarmClock = 0x03,
-    CMDSetTarger = 0x04,
-    CMDSetRemind = 0x05,
-    CMDSetBinding = 0x07,
-    CMDSetSportRemind = 0x08,
-    CMDSetAntiLost = 0x09,
-    
-    CMDGetDeviceInfo = 0x0A,
-    CMDGetDeviceTime = 0x0B,
-    CMDGETDeviceMac = 0xA1,
-    
-    CMDSwitchControlMode = 0xF2,
-    CMDSwitchUpdateMode = 0x30,
-    CMDResetDevice = 0xF4,
-};
 //蓝牙状态
 typedef NS_ENUM(NSInteger, WMSBleState) {
     WMSBleStateUnknown = 0,
@@ -97,18 +78,6 @@ typedef NS_ENUM(NSInteger, SwitchToUpdateResult) {
     SwitchToUpdateResultLowBattery = 0x01,
     SwitchToUpdateResultUnsupported = 0x02,
 };
-
-#define KEY_TIMEOUT_USERINFO_CHARACT    @"KEY_TIMEOUT_USERINFO_CHARACT"
-#define KEY_TIMEOUT_USERINFO_VALUE      @"KEY_TIMEOUT_USERINFO_VALUE"
-
-static const NSUInteger MAX_TIMEOUT_COUNT = 5;
-static const NSUInteger SUBSCRIBE_CHARACTERISTICS_INTERVAL = 2;
-static const NSUInteger WRITEVALUE_CHARACTERISTICS_INTERVAL = 2;
-
-static const int PACKET_LENGTH = 16;
-static const int DATA_LENGTH = 13;
-#define COMPANG_LOGO    0xA6
-#define DEVICE_TYPE     0x27
 
 
 //Block
@@ -136,6 +105,8 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
 @property (nonatomic, readonly) WMSDeviceProfile *deviceProfile;
 @property (nonatomic, readonly) WMSRemindProfile *remindProfile;
 
+@property (nonatomic, readonly) WMSMyTimers *myTimers;
+
 - (id)init;
 
 - (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
@@ -147,12 +118,7 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
 
 - (void)disconnect;
 
-/**
- 发送数据
- */
-//- (void)sendDataToPeripheral:(NSData *)data
-//                  completion:(WMSBleSendDataCallback)aCallBack;//废弃的
-
+#warning 待一条命令返回后，才能发送下一条命令
 /*
  绑定配件
  */
@@ -171,12 +137,13 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
  */
 - (void)switchToUpdateModeCompletion:(WMSBleSwitchToUpdateModeCallback)aCallBack;
 
-/**
- .........
- */
-- (void)resetDevice;//discarded
-
 #pragma mark - Private
 - (void)disconnectWithReason:(NSString *)reason;
+/*
+ * 添加定时器，在发送数据超时后，重新发送
+ * @param charact 重发所用的特性
+ * @param data 重发的数据
+ */
+- (void)addTimerWithTimeInterval:(NSTimeInterval)interval handleCharacteristic:(LGCharacteristic *)charact handleData:(NSData *)data timeID:(TimeID)ID;
 
 @end

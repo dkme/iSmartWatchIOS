@@ -15,8 +15,6 @@
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSMyAccountViewController.h"
 #import "WMSMyAccessoryViewController.h"
-#import "WMSGiftVC.h"
-#import "WMSEnergyBeanVC.h"
 #import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
 #import "WMSClockListVC.h"

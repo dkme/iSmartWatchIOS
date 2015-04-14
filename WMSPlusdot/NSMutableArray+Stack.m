@@ -25,4 +25,17 @@
     return aObject;
 }
 
+- (void)push:(id)anObject
+{
+    [[self class] push:anObject toArray:self];
+}
+- (void)pop
+{
+    [[self class] popFromArray:self];
+}
+- (void)clear
+{
+    [self removeAllObjects];
+}
+
 @end

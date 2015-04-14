@@ -14,10 +14,14 @@
  压入一个对象到数值中
  */
 + (void)push:(id)anObject toArray:(NSMutableArray *)aArray;
+- (void)push:(id)anObject;
 
 /**
  从数值中pop出一个对象
  */
 + (id)popFromArray:(NSMutableArray *)aArray;
+- (void)pop;
+
+- (void)clear;
 
 @end

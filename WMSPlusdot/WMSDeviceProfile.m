@@ -9,41 +9,13 @@
 #import "WMSDeviceProfile.h"
 #import "WMSBleControl.h"
 #import "NSMutableArray+Stack.h"
+#import "DataPackage.h"
 
-enum {
-    TimeIDReadDeviceInfo = 300,
-    TimeIDReadDeviceTime,
-    TimeIDReadDeviceMac,
-    TimeIDPrepareSyncSportData,
-    TimeIDStartSyncSportData,
-    TimeIDEndSyncSportData,
-    
-    TimeIDPrepareSyncSleepData,
-    TimeIDAgainPrepareSyncSleepData,
-    TimeIDStartSyncSleepData,
-    TimeIDEndSyncSleepData,
-};
-
-enum {
-    CMDPrepareSyncSportData = 0x13,
-    CMDStartSyncSportData = 0x14,
-    CMDEndSyncSportData = 0x15,
-    
-    CMDPrepareSyncSleepData = 0x16,
-    CMDAgainPrepareSyncSleepData = 0x19,
-    CMDStartSyncSleepData = 0x17,
-    CMDEndSyncSleepData = 0x18,
-    
-    CMDReadDeviceRemoteData = 0xF0,
-};
-
-static const int HOUR_NUMBER = 24;
-static const int STARTED_NUMBER = 50;
+static const int HOUR_NUMBER            = 24;
+static const int STARTED_NUMBER         = 50;
 
 @interface WMSDeviceProfile ()
 {
-    Byte packet[PACKET_LENGTH];
-    
     //同步数据
     int _totals_SportData;
     UInt16 _year_SportData;
@@ -98,6 +70,11 @@ static const int STARTED_NUMBER = 50;
 @implementation WMSDeviceProfile
 
 #pragma mark - Getter
+- (WMSMyTimers *)myTimers
+{
+    return self.bleControl.myTimers;
+}
+
 - (NSMutableArray *)stackReadDeviceInfo
 {
     if (!_stackReadDeviceInfo) {
@@ -155,8 +132,6 @@ static const int STARTED_NUMBER = 50;
 }
 - (void)setup
 {
-    _myTimers = [[WMSMyTimers alloc] init];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
 }
 - (void)dealloc
@@ -170,66 +145,23 @@ static const int STARTED_NUMBER = 50;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-//对包的处理
-- (Byte *)packet
-{
-    return packet;
-}
-- (void)resetPacket
-{
-    memset(packet, 0, PACKET_LENGTH);
-    packet[0] = COMPANG_LOGO;
-    packet[1] = DEVICE_TYPE;
-}
-- (void)setPacketCMD:(CMDType)cmd
-{
-    packet[2] = cmd;
-}
-- (void)setPacketData:(Byte[DATA_LENGTH])data length:(int)dataLength
-{
-    const int i = 3;
-    int size = DATA_LENGTH;
-    if (dataLength < DATA_LENGTH) {
-        size = dataLength;
-    }
-    for (int j = 0; j < size; j++) {
-        packet[i+j] = data[j];
-    }
-}
-- (void)setPacketCMD:(CMDType)cmd andData:(Byte *)data dataLength:(int)length
-{
-    [self resetPacket];
-    [self setPacketCMD:cmd];
-    [self setPacketData:data length:length];
-}
-
-
-
 #pragma mark - Public Methods
 - (void)readDeviceInfoWithCompletion:(readDeviceInfoCallBack)aCallBack
 {
     if (![self.bleControl isConnected]) {
         return ;
     }
-    
-    Byte package[DATA_LENGTH] = {0};
-    
-    [self setPacketCMD:CMDGetDeviceInfo andData:package dataLength:DATA_LENGTH];
-    
     if (aCallBack) {
         [NSMutableArray push:aCallBack toArray:self.stackReadDeviceInfo];
     }
     
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDGetDeviceInfo data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDReadDeviceInfo];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDReadDeviceInfo];
 }
 
 - (void)readDeviceTimeWithCompletion:(readDeviceTimeCallBack)aCallBack
@@ -237,25 +169,17 @@ static const int STARTED_NUMBER = 50;
     if (![self.bleControl isConnected]) {
         return ;
     }
-    
-    Byte package[DATA_LENGTH] = {0};
-    
-    [self setPacketCMD:CMDGetDeviceTime andData:package dataLength:DATA_LENGTH];
-    
     if (aCallBack) {
         [NSMutableArray push:aCallBack toArray:self.stackReadDeviceTime];
     }
     
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDGetDeviceTime data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDReadDeviceTime];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDReadDeviceTime];
 }
 
 - (void)syncDeviceSportDataWithCompletion:(syncDeviceSportDataCallBack)aCallBack
@@ -300,7 +224,6 @@ static const int STARTED_NUMBER = 50;
     }
     
     if (aCallBack) {
-        //[NSMutableArray push:aCallBack toArray:self.stackReadDeviceRemoteData];
         self.readDeviceRemoteDataBlock = aCallBack;
     }
 }
@@ -310,58 +233,20 @@ static const int STARTED_NUMBER = 50;
     if (!self.bleControl.isConnected) {
         return ;
     }
-    Byte package[DATA_LENGTH] = {0};
-    
-    [self setPacketCMD:CMDGETDeviceMac andData:package dataLength:DATA_LENGTH];
-    
     if (aCallback) {
         [NSMutableArray push:aCallback toArray:self.stackReadDeviceMac];
     }
     
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDGETDeviceMac data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDReadDeviceMac];
-}
-
-
-#pragma mark - Time out
-- (void)writeValueToCharactTimeout:(NSTimer *)timer
-{
-    [self.myTimers addTriggerCountToTimer:timer];
-    
-    int triggerCount = [self.myTimers triggerCountForTimer:timer];
-    if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
-        
-        DEBUGLog(@"写入超时，主动断开 %@, timeID[%d]",NSStringFromClass([self class]),[self.myTimers getTimerID:timer]);
-        NSString *reason = [NSString stringWithFormat:@"写入超时[TimerID:%d]，app主动断开",[self.myTimers getTimerID:timer]];
-        [self.myTimers deleteAllTimers];
-        //[self.bleControl disconnect];
-        [self.bleControl disconnectWithReason:reason];
-        return;
-    }
-    
-    //重发时，蓝牙若为连接状态，则重新发送；否则清除所有Timer
-    if (self.bleControl.isConnected) {
-        LGCharacteristic *charact = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_CHARACT];
-        NSData *value = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_VALUE];
-        
-        //__block LGCharacteristic *blockCharact = charact;
-        
-        [charact writeValue:value completion:nil];
-    } else {
-        [self.myTimers deleteAllTimers];
-    }
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDReadDeviceMac];
 }
 
 #pragma mark - Handle
-//Notification
 - (void)handleDidGetNotifyValue:(NSNotification *)notification
 {
     NSError *error = notification.object;
@@ -448,8 +333,8 @@ static const int STARTED_NUMBER = 50;
             }
             //回复，不用超时重传
             Byte pg[DATA_LENGTH] = {0};
-            [self setPacketCMD:CMDReadDeviceRemoteData andData:pg dataLength:DATA_LENGTH];
-            NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+            DataPackage *package = [DataPackage packageWithCMD:CMDReadDeviceRemoteData data:pg];
+            NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
             [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
             return;
         }
@@ -680,12 +565,6 @@ DEBUGLog(@"---->>>PrepareSync date:%d-%d-%d,total:%d",_year_SleepData,_month_Sle
         
         _arrActualLength_SleepData += len/3;
         
-//        DEBUGLog(@"---->>>len=%d---serial=%d----started_minutes,started_status,durations:(%d,%d,%d),(%d,%d,%d),(%d,%d,%d)\n",
-//                 len,currentSerial,
-//                 started0_minutes,started0_status,durations0,
-//                 started1_minutes,started1_status,durations1,
-//                 started2_minutes,started2_status,durations2);
-        
         if (_totals_SleepData <= currentSerial) {//数据同步完了
             _totals_SleepData = 0;
             [self endSyncSleepData];
@@ -732,44 +611,28 @@ DEBUGLog(@"---->>>PrepareSync date:%d-%d-%d,total:%d",_year_SleepData,_month_Sle
     if (![self.bleControl isConnected]) {
         return ;
     }
-    
-    Byte package[DATA_LENGTH] = {0};
-    
-    [self setPacketCMD:CMDPrepareSyncSportData andData:package dataLength:DATA_LENGTH];
-    
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDPrepareSyncSportData data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDPrepareSyncSportData];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDPrepareSyncSportData];
 }
 - (void)startSyncSportData:(UInt16)serial//Serial从1开始
 {
     if (![self.bleControl isConnected]) {
         return ;
     }
-    
-    Byte package[DATA_LENGTH] = {0};
-    package[0] = serial & 0xFF;
-    package[1] = (serial & 0xFF00) >> 8;
-    
-    [self setPacketCMD:CMDStartSyncSportData andData:package dataLength:DATA_LENGTH];
-    
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    data[0] = serial & 0xFF;
+    data[1] = (serial & 0xFF00) >> 8;
+    DataPackage *package = [DataPackage packageWithCMD:CMDStartSyncSportData data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDStartSyncSportData];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDStartSyncSportData];
     
 }
 - (void)endSyncSportData
@@ -778,24 +641,17 @@ DEBUGLog(@"---->>>PrepareSync date:%d-%d-%d,total:%d",_year_SleepData,_month_Sle
         return ;
     }
     
-    Byte package[DATA_LENGTH] = {0};
-    package[0] = _year_SportData & 0xFF;
-    package[1] = (_year_SportData & 0xFF00) >> 8;
-    package[2] = _month_SportData;
-    package[3] = _day_SportData;
-    
-    [self setPacketCMD:CMDEndSyncSportData andData:package dataLength:DATA_LENGTH];
-    
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    data[0] = _year_SportData & 0xFF;
+    data[1] = (_year_SportData & 0xFF00) >> 8;
+    data[2] = _month_SportData;
+    data[3] = _day_SportData;
+    DataPackage *package = [DataPackage packageWithCMD:CMDEndSyncSportData data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDEndSyncSportData];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDEndSyncSportData];
 }
 
 #pragma mark - 同步睡眠数据整个流程
@@ -805,20 +661,13 @@ DEBUGLog(@"---->>>PrepareSync date:%d-%d-%d,total:%d",_year_SleepData,_month_Sle
         return ;
     }
     
-    Byte package[DATA_LENGTH] = {0};
-    
-    [self setPacketCMD:CMDPrepareSyncSleepData andData:package dataLength:DATA_LENGTH];
-    
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDPrepareSyncSleepData data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDPrepareSyncSleepData];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDPrepareSyncSleepData];
 }
 - (void)againPrepareSyncSleepData
 {
@@ -826,20 +675,13 @@ DEBUGLog(@"---->>>PrepareSync date:%d-%d-%d,total:%d",_year_SleepData,_month_Sle
         return ;
     }
     
-    Byte package[DATA_LENGTH] = {0};
-    
-    [self setPacketCMD:CMDAgainPrepareSyncSleepData andData:package dataLength:DATA_LENGTH];
-    
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDAgainPrepareSyncSleepData data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {DEBUGLog(@"响应");}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDAgainPrepareSyncSleepData];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDAgainPrepareSyncSleepData];
 }
 - (void)startSyncSleepData:(UInt16)serial
 {
@@ -847,22 +689,15 @@ DEBUGLog(@"---->>>PrepareSync date:%d-%d-%d,total:%d",_year_SleepData,_month_Sle
         return ;
     }
     
-    Byte package[DATA_LENGTH] = {0};
-    package[0] = serial & 0xFF;
-    package[1] = (serial & 0xFF00) >> 8;
-    
-    [self setPacketCMD:CMDStartSyncSleepData andData:package dataLength:DATA_LENGTH];
-    
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    data[0] = serial & 0xFF;
+    data[1] = (serial & 0xFF00) >> 8;
+    DataPackage *package = [DataPackage packageWithCMD:CMDStartSyncSleepData data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDStartSyncSleepData];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDStartSyncSleepData];
 }
 - (void)endSyncSleepData
 {
@@ -870,24 +705,17 @@ DEBUGLog(@"---->>>PrepareSync date:%d-%d-%d,total:%d",_year_SleepData,_month_Sle
         return ;
     }
     
-    Byte package[DATA_LENGTH] = {0};
-    package[0] = _year_SleepData & 0xFF;
-    package[1] = (_year_SleepData & 0xFF00) >> 8;
-    package[2] = _month_SleepData;
-    package[3] = _day_SleepData;
-    
-    [self setPacketCMD:CMDEndSyncSleepData andData:package dataLength:DATA_LENGTH];
-    
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
+    Byte data[DATA_LENGTH] = {0};
+    data[0] = _year_SleepData & 0xFF;
+    data[1] = (_year_SleepData & 0xFF00) >> 8;
+    data[2] = _month_SleepData;
+    data[3] = _day_SleepData;
+    DataPackage *package = [DataPackage packageWithCMD:CMDEndSyncSleepData data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
     
     [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
     
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.rwCharact,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDEndSyncSleepData];
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDEndSyncSleepData];
 }
 
 @end

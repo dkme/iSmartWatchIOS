@@ -11,33 +11,25 @@
 #import "WMSDeviceProfile.h"
 #import "WMSRemindProfile.h"
 #import "NSMutableArray+Stack.h"
+#import "DataPackage.h"
 
-static const NSUInteger CONNECT_PERIPHERAL_INTERVAL = 60;
-static const NSUInteger DISCOVER_SERVICES_INTERVAL = 30;
-static const NSUInteger DISCOVER_CHARACTERISTICS_INTERVAL = 10;
+static const NSUInteger CONNECT_PERIPHERAL_INTERVAL             = 60;
+static const NSUInteger DISCOVER_SERVICES_INTERVAL              = 30;
+static const NSUInteger DISCOVER_CHARACTERISTICS_INTERVAL       = 10;
 
+NSString * const WMSBleControlPeripheralDidConnect      = @"com.guogee.ios.PeripheralDidConnect";
+NSString * const WMSBleControlPeripheralConnectFailed   = @"com.guogee.ios.PeripheralConnectFailed";
 
-//timeID
-enum {
-    TimeIDSubscribeNotifyCharact = 100,
-    TimeIDBindSetting,
-    TimeIDSwitchControlMode,
-    TimeIDSwitchUpdateMode,
-};
-
-NSString * const WMSBleControlPeripheralDidConnect = @"com.guogee.ios.PeripheralDidConnect";
-NSString * const WMSBleControlPeripheralConnectFailed = @"com.guogee.ios.PeripheralConnectFailed";
-
-NSString * const WMSBleControlPeripheralDidDisConnect =
+NSString * const WMSBleControlPeripheralDidDisConnect   =
     @"LGPeripheralDidDisconnect";
-NSString * const WMSBleControlBluetoothStateUpdated =
+NSString * const WMSBleControlBluetoothStateUpdated     =
     @"LGCentralManagerStateUpdatedNotification";
-NSString * const WMSBleControlScanFinish =
+NSString * const WMSBleControlScanFinish                =
     @"LGCentralManagerScanPeripheralFinishNotification";
 
-#define CUSTOM_SERVICE_UUID             @"0A60"
-#define CUSTOM_CHARACTERISTIC1_UUID     @"0A66"
-#define CUSTOM_CHARACTERISTIC2_UUID     @"0A67"
+#define CUSTOM_SERVICE_UUID                                     @"0A60"
+#define CUSTOM_CHARACTERISTIC1_UUID                             @"0A66"
+#define CUSTOM_CHARACTERISTIC2_UUID                             @"0A67"
 
 @interface WMSBleControl ()
 
@@ -46,7 +38,7 @@ NSString * const WMSBleControlScanFinish =
 
 @property (nonatomic, strong) NSArray *specificServiceArray;
 @property (nonatomic, strong) NSMutableArray *characteristicArray;
-@property (nonatomic, strong) WMSMyTimers *myTimers;
+//@property (nonatomic, strong) WMSMyTimers *myTimers;
 
 //Block
 @property (nonatomic, copy) WMSBleControlScanedPeripheralCallback scanedBlock;
@@ -63,8 +55,6 @@ NSString * const WMSBleControlScanFinish =
 @implementation WMSBleControl
 {
     NSUInteger findCharacteristicCount;
-    
-    Byte packet[PACKET_LENGTH];
 }
 
 #pragma mark - Getter
@@ -162,7 +152,7 @@ NSString * const WMSBleControlScanFinish =
 - (void)dealloc
 {
     [self.myTimers deleteAllTimers];
-    [self setMyTimers:nil];
+    _myTimers = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -263,59 +253,70 @@ NSString * const WMSBleControlScanFinish =
 {
     [self disconnectWithReason:@"用户自己去断开的"];
 }
-- (void)disconnectWithReason:(NSString *)reason
+
+#pragma mark - Peripheral operation
+- (void)bindSettingCMD:(BindSettingCMD)cmd
+            completion:(WMSBleBindSettingCallBack)aCallBack
 {
-    if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
-        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
-            [self disConnectedClearup];
-            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
-        }];
-        DEBUGLog(@"is connected");
-        return ;
+    if (self.isConnected == NO) {
+        return;
     }
-    if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
-        CBPeripheral *p = self.connectingPeripheral.cbPeripheral;
-        if (p) {
-            [self.centralManager.manager cancelPeripheralConnection:p];
-            [self disConnectedClearup];
-        }
-        DEBUGLog(@"is Connecting %@",p);
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackBindSetting];
     }
+    //send
+    Byte data[DATA_LENGTH] = {0};
+    data[0] = cmd;
+    DataPackage *package = [DataPackage packageWithCMD:CMDSetBinding data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
+    
+    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.readWriteCharacteristic handleData:sendData timeID:TimeIDBindSetting];
 }
 
-#pragma mark - 对包的处理
-- (Byte *)packet
+- (void)switchToControlMode:(ControlMode)controlMode
+                openOrClose:(BOOL)status
+                 completion:(WMSBleSwitchToControlModeCallback)aCallBack
 {
-    return packet;
-}
-- (void)resetPacket
-{
-    memset(packet, 0, PACKET_LENGTH);
-    packet[0] = COMPANG_LOGO;
-    packet[1] = DEVICE_TYPE;
-}
-- (void)setPacketCMD:(CMDType)cmd
-{
-    packet[2] = cmd;
-}
-- (void)setPacketData:(Byte[DATA_LENGTH])data length:(int)dataLength
-{
-    const int i = 3;
-    int size = DATA_LENGTH;
-    if (dataLength < DATA_LENGTH) {
-        size = dataLength;
+    if (self.isConnected == NO) {
+        return;
     }
-    for (int j = 0; j < size; j++) {
-        packet[i+j] = data[j];
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSwitchControlMode];
     }
-}
-- (void)setPacketCMD:(CMDType)cmd andData:(Byte *)data dataLength:(int)length
-{
-    [self resetPacket];
-    [self setPacketCMD:cmd];
-    [self setPacketData:data length:length];
+    //send
+    Byte data[DATA_LENGTH] = {0};
+    data[0] = (Byte)controlMode;
+    data[1] = status;
+    DataPackage *package = [DataPackage packageWithCMD:CMDSwitchControlMode data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
+    
+    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.readWriteCharacteristic handleData:sendData timeID:TimeIDSwitchControlMode];
 }
 
+- (void)switchToUpdateModeCompletion:(WMSBleSwitchToUpdateModeCallback)aCallBack
+{
+    if (self.isConnected == NO) {
+        return;
+    }
+    if (aCallBack) {
+        [NSMutableArray push:aCallBack toArray:self.stackSwitchUpdateMode];
+    }
+    //send
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDSwitchUpdateMode data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
+    
+    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
+    
+    [self addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.readWriteCharacteristic handleData:sendData timeID:TimeIDSwitchUpdateMode];
+}
+
+
+#pragma mark -
 #pragma mark - Private Methods
 - (void)discoverCharacteristics:(NSArray *)services forPeripheral:(LGPeripheral *)peripheral
 {
@@ -500,135 +501,6 @@ NSString * const WMSBleControlScanFinish =
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:peripheral userInfo:nil];
 }
 
-#pragma mark - Peripheral operation
-//- (void)sendDataToPeripheral:(NSData *)data
-//                  completion:(WMSBleSendDataCallback)aCallBack
-//{
-//    //self.sendDataBlock = aCallBack;
-//    if (aCallBack) {
-//        [self push:aCallBack toArray:self.sendDataOperationStack];
-//    }
-//
-//    //不确定是写响应还是写无响应
-//    [self.readWriteCharacteristic writeValue:data completion:^(NSError *error) {
-//        ;
-//    }];
-//
-//    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-//                                     target:self
-//                                   selector:@selector(writeValueToCharactTimeout:)
-//                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:_readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:data}
-//                                    repeats:YES
-//                                     timeID:TimeIDSubscribeNotifyCharact];
-//}
-
-
-- (void)bindSettingCMD:(BindSettingCMD)cmd
-            completion:(WMSBleBindSettingCallBack)aCallBack
-{
-    if (self.isConnected == NO) {
-        return;
-    }
-    Byte package[DATA_LENGTH] = {0};
-    package[0] = cmd;
-    [self setPacketCMD:CMDSetBinding andData:package dataLength:DATA_LENGTH];
-    if (aCallBack) {
-        [NSMutableArray push:aCallBack toArray:self.stackBindSetting];
-    }
-    //send
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
-    
-    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
-    
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDBindSetting];
-}
-
-- (void)switchToControlMode:(ControlMode)controlMode
-                openOrClose:(BOOL)status
-                 completion:(WMSBleSwitchToControlModeCallback)aCallBack
-{
-    if (self.isConnected == NO) {
-        return;
-    }
-    
-    Byte package[DATA_LENGTH] = {0};
-    package[0] = (Byte)controlMode;
-    package[1] = status;
-    
-    [self setPacketCMD:CMDSwitchControlMode andData:package dataLength:DATA_LENGTH];
-    
-    if (aCallBack) {
-        [NSMutableArray push:aCallBack toArray:self.stackSwitchControlMode];
-    }
-    
-    //send
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
-    
-    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
-    
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDSwitchControlMode];
-}
-
-- (void)switchToUpdateModeCompletion:(WMSBleSwitchToUpdateModeCallback)aCallBack
-{
-    if (self.isConnected == NO) {
-        return;
-    }
-    
-    Byte package[DATA_LENGTH] = {0};
-    
-    [self setPacketCMD:CMDSwitchUpdateMode andData:package dataLength:DATA_LENGTH];
-    
-    if (aCallBack) {
-        [NSMutableArray push:aCallBack toArray:self.stackSwitchUpdateMode];
-    }
-    
-    //send
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
-    
-    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
-    
-    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-                                     target:self
-                                   selector:@selector(writeValueToCharactTimeout:)
-                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-                                    repeats:YES
-                                     timeID:TimeIDSwitchUpdateMode];
-}
-
-- (void)resetDevice
-{
-    if (self.isConnected == NO) {
-        return;
-    }
-    
-    Byte package[DATA_LENGTH] = {0};
-    package[0] = 0xFF;
-    
-    [self setPacketCMD:CMDResetDevice andData:package dataLength:DATA_LENGTH];
-    
-    //send
-    NSData *sendData = [NSData dataWithBytes:[self packet] length:PACKET_LENGTH];
-    
-    [self.readWriteCharacteristic writeValue:sendData completion:^(NSError *error) {}];
-    
-//    [self.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
-//                                     target:self
-//                                   selector:@selector(writeValueToCharactTimeout:)
-//                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:self.readWriteCharacteristic,KEY_TIMEOUT_USERINFO_VALUE:sendData}
-//                                    repeats:YES
-//                                     timeID:TimeIDSwitchUpdateMode];
-}
 
 #pragma mark - Time out
 //超时处理
@@ -686,8 +558,8 @@ NSString * const WMSBleControlScanFinish =
     if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
         
         DEBUGLog(@"写入超时，主动断开 %@, timeID[%d]",NSStringFromClass([self class]),[self.myTimers getTimerID:timer]);
-        [self.myTimers deleteAllTimers];
         NSString *reason = [NSString stringWithFormat:@"写入超时[TimerID:%d]，app主动断开",[self.myTimers getTimerID:timer]];
+        [self.myTimers deleteAllTimers];
         [self disconnectWithReason:reason];
         return;
     }
@@ -796,6 +668,40 @@ NSString * const WMSBleControlScanFinish =
         }
         
     }
+}
+
+
+#pragma mark -
+#pragma mark - Private Handle
+- (void)disconnectWithReason:(NSString *)reason
+{
+    if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
+        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
+            [self disConnectedClearup];
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
+        }];
+        DEBUGLog(@"is connected");
+        return ;
+    }
+    if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
+        CBPeripheral *p = self.connectingPeripheral.cbPeripheral;
+        if (p) {
+            [self.centralManager.manager cancelPeripheralConnection:p];
+            [self disConnectedClearup];
+        }
+        DEBUGLog(@"is Connecting %@",p);
+    }
+}
+
+- (void)addTimerWithTimeInterval:(NSTimeInterval)interval handleCharacteristic:(LGCharacteristic *)charact handleData:(NSData *)data timeID:(TimeID)ID
+{
+    [self.myTimers addTimerWithTimeInterval:interval
+                                     target:self
+                                   selector:@selector(writeValueToCharactTimeout:)
+                                   userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:charact,
+                                              KEY_TIMEOUT_USERINFO_VALUE:data}
+                                    repeats:YES
+                                     timeID:ID];
 }
 
 @end

@@ -135,21 +135,6 @@ typedef void (^finishRemind)(BOOL success);
                  completion:(setRemindEventsAndModeCallBack)aCallBack;
 
 /**
- 设置其他提醒
- */
-- (void)setOtherRemind:(OtherRemindType)remindType
-            completion:(setOtherRemindCallBack)aCallBack;//弃用
-
-/**
- 开起低电量提醒
- */
-- (void)setStartLowBatteryRemindCompletion:(setStartLowBatteryRemind)aCallBack;//弃用
-/**
- 停止低电量提醒
- */
-- (void)setStopLowBatteryRemindCompletion:(setStopLowBatteryRemind)aCallBack;//弃用
-
-/**
  开始提醒
  */
 - (void)startRemind:(OtherRemindType)remindType
@@ -177,9 +162,6 @@ typedef void (^finishRemind)(BOOL success);
 /**
  防丢提醒
  */
-- (void)setAntiLostStatus:(BOOL)openOrClose
-                 distance:(NSUInteger)distance
-               completion:(setAntiLostCallBack)aCallBack;//弃用
 - (void)setAntiLostStatus:(BOOL)openOrClose
                  distance:(NSUInteger)distance
              timeInterval:(NSUInteger)interval

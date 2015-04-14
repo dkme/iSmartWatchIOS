@@ -237,16 +237,6 @@
     BOOL b = [writeData writeToFile:FilePath(FILE_SETTINGS) atomically:YES];
     DEBUGLog(@"保存数据%@",b?@"成功":@"失败");
 }
-
-- (BOOL)antiLostStatus
-{
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
-    id obj = [readData objectForKey:@"antiLost"];
-    if (obj == nil) {
-        return 1;
-    }
-    return [obj boolValue];
-}
 - (BOOL)lowBatteryStatus
 {
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
@@ -255,19 +245,6 @@
         return 1;//默认为打开状态
     }
     return [obj boolValue];
-}
-- (void)setAntiLost:(BOOL)openOrClose
-{
-    //设置防丢成功，保存设置
-    [self.bleControl.settingProfile setAntiLostStatus:openOrClose distance:ANTI_LOST_DISTANCE completion:^(BOOL success)
-     {
-         DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
-         [self showOperationSuccessTip:NSLocalizedString(@"防丢设置成功", nil)];
-         NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
-         NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
-         [writeData setObject:@(openOrClose) forKey:@"antiLost"];
-         [writeData writeToFile:FilePath(FILE_REMIND) atomically:YES];
-     }];
 }
 - (void)setLowBattery:(BOOL)openOrClose
 {
@@ -367,7 +344,6 @@
 {
     RemindEventsType eventsType = [self remindEventsType];
     RemindMode mode = [self readRemindWay];
-    BOOL antiLostStatus = [self antiLostStatus];
     _configIndex ++;
     switch (_configIndex) {
         case 1:
@@ -382,14 +358,6 @@
         }
         case 2:
         {
-            [self.bleControl.settingProfile setAntiLostStatus:antiLostStatus distance:ANTI_LOST_DISTANCE completion:^(BOOL success)
-            {
-                if (success) {
-                    if (aCallBack) {
-                        aCallBack();
-                    }
-                }
-            }];
             break;
         }
         default:
@@ -959,45 +927,8 @@
         [self setLowBattery:sw.on];
         return;
     }
-    if ([switchCell.myLabelText.text
-         isEqualToString:NSLocalizedString(@"防丢", nil)])
-    {
-        [self setAntiLost:sw.on];
-        return;
-    }
-    
     
     NSIndexPath *atIndex = [self.tableView indexPathForCell:switchCell];
-    
-//    NSDictionary *readData = [self readSettingItemData];
-//    NSArray *values = [readData objectsForKeys:self.settingItemArray notFoundMarker:@"aa"];
-//    NSUInteger events[7] = {RemindEventsTypeCall,RemindEventsTypeSMS,RemindEventsTypeEmail,RemindEventsTypeWeixin,RemindEventsTypeQQ,RemindEventsTypeFacebook,RemindEventsTypeTwitter};
-//    NSUInteger eventsType = 0x00;
-//    NSUInteger type = 0;
-//    for (int i=0; i<[values count]; i++) {
-//        NSIndexPath *indexPathObj = [self.cellIndexPathArray objectAtIndex:i];
-//        if (atIndex.section == indexPathObj.section && atIndex.row == indexPathObj.row)
-//        {
-//            type = events[i];
-//        } else {
-//            BOOL openOrClose = [[values objectAtIndex:i] boolValue];
-//            if (openOrClose) {
-//                eventsType = (eventsType | events[i]);
-//            }
-//        }
-//    }
-//    if ([sw isOn]) {
-//        eventsType = (eventsType | type);
-//    }
-//    DEBUGLog(@"eventsType:0x%X",(int)eventsType);
-//    [self.bleControl.settingProfile setRemindEventsType:eventsType completion:^(BOOL success)
-//     {
-//         if (success) {
-//             [self showOperationSuccessTip:NSLocalizedString(@"提醒设置成功", nil)];
-//             NSString *key = [self keyForIndexpath:atIndex];
-//             [self savaSettingItemForKey:key object:@([sw isOn])];
-//         }
-//     }];
     NSString *key = [self keyForIndexpath:atIndex];
     [self savaSettingItemForKey:key object:@([sw isOn])];
 }
