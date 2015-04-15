@@ -237,6 +237,7 @@
     BOOL b = [writeData writeToFile:FilePath(FILE_SETTINGS) atomically:YES];
     DEBUGLog(@"保存数据%@",b?@"成功":@"失败");
 }
+
 - (BOOL)lowBatteryStatus
 {
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
@@ -356,12 +357,13 @@
              }];
             break;
         }
-        case 2:
+        default:
         {
+            if (aCallBack) {
+                aCallBack();
+            }else{}
             break;
         }
-        default:
-            break;
     }
 }
 

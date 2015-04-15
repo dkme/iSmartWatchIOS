@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSSmartClockViewController.m"
-            timestampString = "448946787.710444"
+            timestampString = "450773753.641096"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
+            startingLineNumber = "386"
+            endingLineNumber = "386"
             landmarkName = "-pickerView:widthForComponent:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,22 +58,6 @@
             startingLineNumber = "173"
             endingLineNumber = "173"
             landmarkName = "+requestGiftBagListWithUserKey:completion:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/WMSRightViewController.m"
-            timestampString = "450693220.681634"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
-            landmarkName = "-setRemindWay:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -232,6 +216,22 @@
             startingLineNumber = "215"
             endingLineNumber = "215"
             landmarkName = "-setBottomLabelDistance:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WMSPlusdot/WMSRightViewController.m"
+            timestampString = "450774851.354369"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
+            landmarkName = "-listeningCall"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

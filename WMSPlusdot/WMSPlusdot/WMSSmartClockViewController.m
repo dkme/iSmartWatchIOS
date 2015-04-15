@@ -33,6 +33,7 @@
 
 #define DAY_HOURS                           24
 #define DAY_MINUTES                         60
+#define CLOCK_DEFAULT_ID                    1
 
 @interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,WMSSwitchCellDelegage,UIAlertViewDelegate>
 @property (strong,nonatomic) WMSInputView *myInputView;
@@ -220,7 +221,7 @@
             repeats[i] = b;
         }
     }
-    [bleControl.settingProfile setAlarmClockWithId:0 withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
+    [bleControl.settingProfile setAlarmClockWithId:CLOCK_DEFAULT_ID withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
      {
          DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
          [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
