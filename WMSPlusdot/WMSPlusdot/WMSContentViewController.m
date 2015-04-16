@@ -617,22 +617,10 @@
     _syncDataCount = 0;
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
-//        [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
-//            DEBUGLog(@"startSyncSportData");;
-//            [self startSyncSportData];
-//        }];
         self.isNeedUpdate = NO;
     } else {
         self.isNeedUpdate = YES;
     }
-//    [[WMSAppDelegate appDelegate] connectedConfigure:^{
-//        if (self.isVisible) {
-//            [self startSyncSportData];
-//            self.isNeedUpdate = NO;
-//        } else {
-//            self.isNeedUpdate = YES;
-//        }
-//    }];
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {

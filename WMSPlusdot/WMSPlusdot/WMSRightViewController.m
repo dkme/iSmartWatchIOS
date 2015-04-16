@@ -237,16 +237,6 @@
     BOOL b = [writeData writeToFile:FilePath(FILE_SETTINGS) atomically:YES];
     DEBUGLog(@"保存数据%@",b?@"成功":@"失败");
 }
-
-- (BOOL)antiLostStatus
-{
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
-    id obj = [readData objectForKey:@"antiLost"];
-    if (obj == nil) {
-        return 1;
-    }
-    return [obj boolValue];
-}
 - (BOOL)lowBatteryStatus
 {
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
@@ -255,19 +245,6 @@
         return 1;//默认为打开状态
     }
     return [obj boolValue];
-}
-- (void)setAntiLost:(BOOL)openOrClose
-{
-    //设置防丢成功，保存设置
-    [self.bleControl.settingProfile setAntiLostStatus:openOrClose distance:ANTI_LOST_DISTANCE completion:^(BOOL success)
-     {
-         DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
-         [self showOperationSuccessTip:NSLocalizedString(@"防丢设置成功", nil)];
-         NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
-         NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
-         [writeData setObject:@(openOrClose) forKey:@"antiLost"];
-         [writeData writeToFile:FilePath(FILE_REMIND) atomically:YES];
-     }];
 }
 - (void)setLowBattery:(BOOL)openOrClose
 {
@@ -337,11 +314,7 @@
     BOOL isFirst = [userDefaults boolForKey:@"firstConnected"];
     if (isFirst == NO) {
         //配置设置项
-        //[self showHUDAtViewCenter:NSLocalizedString(@"正在配置设置项，请稍等...", nil)];
         [self startFirstConnectedConfig:^{
-            //配置成功
-            //[self hideHUDAtViewCenter];
-            //[self showTip:NSLocalizedString(@"设置项配置成功", nil)];
             DEBUGLog(@"配置完成");
             [userDefaults setBool:YES forKey:@"firstConnected"];
         }];
@@ -367,7 +340,6 @@
 {
     RemindEventsType eventsType = [self remindEventsType];
     RemindMode mode = [self readRemindWay];
-    BOOL antiLostStatus = [self antiLostStatus];
     _configIndex ++;
     switch (_configIndex) {
         case 1:
@@ -380,20 +352,13 @@
              }];
             break;
         }
-        case 2:
+        default:
         {
-            [self.bleControl.settingProfile setAntiLostStatus:antiLostStatus distance:ANTI_LOST_DISTANCE completion:^(BOOL success)
-            {
-                if (success) {
-                    if (aCallBack) {
-                        aCallBack();
-                    }
-                }
-            }];
+            if (aCallBack) {
+                aCallBack();
+            }else{}
             break;
         }
-        default:
-            break;
     }
 }
 
@@ -552,7 +517,7 @@
 
     float battery = [[UIDevice currentDevice] batteryLevel];
     [self batteryOperation:battery];
-    
+
     [self listeningKeys];
     
     self.pickerController.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
@@ -955,12 +920,6 @@
          isEqualToString:NSLocalizedString(@"Battery", nil)])
     {
         [self setLowBattery:sw.on];
-        return;
-    }
-    if ([switchCell.myLabelText.text
-         isEqualToString:NSLocalizedString(@"防丢", nil)])
-    {
-        [self setAntiLost:sw.on];
         return;
     }
     

@@ -178,11 +178,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WMSPlusdot/WMSSmartClockViewController.m"
-            timestampString = "449400089.434133"
+            timestampString = "450845685.023071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "-syncAction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -241,77 +241,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/WMSContentViewController.m"
-            timestampString = "450605641.941574"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "616"
-            endingLineNumber = "616"
-            landmarkName = "-handleSuccessConnectPeripheral:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "WMSSettingProfile.m"
-            timestampString = "450602282.742766"
+            timestampString = "450699203.2067"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
-            landmarkName = "-setCurrentDate:completion:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSSettingProfile.m"
-            timestampString = "450602402.891414"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "821"
-            endingLineNumber = "821"
+            startingLineNumber = "521"
+            endingLineNumber = "521"
             landmarkName = "-handleDidGetNotifyValue:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/WMSAppDelegate.m"
-            timestampString = "450603371.721017"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "-connectedConfigure:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WMSPlusdot/WMSAppDelegate.m"
-            timestampString = "450605072.171379"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
-            landmarkName = "-connectedConfigure:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

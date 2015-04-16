@@ -284,42 +284,6 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
             break;
     }
 }
-
-- (void)connectedConfigure:(void(^)(void))callBack
-{
-    if (![WMSMyAccessory isBindAccessory]) {
-        return ;
-    }
-    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
-        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
-            if (!isPaired) {
-                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
-            }else{}
-            [self checkDeviceBattery:^{
-                if (callBack) {
-                    callBack();
-                }else{}
-            }];
-        }];
-    }];
-}
-
-- (void)connectedConfigure
-{
-    if (![WMSMyAccessory isBindAccessory]) {
-        return ;
-    }
-    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
-        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
-            if (!isPaired) {
-                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
-            }else{}
-            [self checkDeviceBattery:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
-            }];
-        }];
-    }];
-}
 - (void)scanAndConnectPeripheral:(LGPeripheral *)peripheral
 {
     switch ([self.wmsBleControl bleState]) {
@@ -352,13 +316,35 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
          }];
     }
 }
+- (void)connectedConfigure
+{
+    if (![WMSMyAccessory isBindAccessory]) {
+        return ;
+    }
+    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
+        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+            if (!isPaired) {
+                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
+            }else{}
+            [self checkDeviceBattery:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
+            }];
+        }];
+    }];
+}
 - (void)checkDeviceBattery:(void(^)(void))callBack
 {
     static int checkCount = 0;
     if (checkCount >= 1) {
+        if (callBack) {
+            callBack();
+        }else{};
         return ;
     }
     if ([WMSDeviceModel deviceModel].version < FIRMWARE_ADD_BATTERY_INFO) {
+        if (callBack) {
+            callBack();
+        }else{};
         return ;
     }
     [WMSDeviceModel readDeviceBatteryInfo:self.wmsBleControl completion:^(float voltage) {

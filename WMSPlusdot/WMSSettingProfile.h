@@ -80,10 +80,10 @@ typedef void (^finishRemind)(BOOL success);
 /**
  描述:设置个人信息
  参数:birthday   出生日期字符串
-     format     日期的格式
-     weight     单位kg
-     height     单位cm
-     stride     单位cm
+ format     日期的格式
+ weight     单位kg
+ height     单位cm
+ stride     单位cm
  */
 - (void)setPersonInfoWithWeight:(UInt16)weight
                      withHeight:(Byte)height
@@ -97,13 +97,13 @@ typedef void (^finishRemind)(BOOL success);
 /**
  描述:设置闹钟时间
  参数:no  闹钟编号，取值1-10
-     repeat 重复状态
+ repeat 重复状态
  */
 - (void)setAlarmClockWithId:(Byte)no
                    withHour:(Byte)hour
                  withMinute:(Byte)minute
                  withStatus:(BOOL)openOrClose
-                  withRepeat:(Byte *)repeat
+                 withRepeat:(Byte *)repeat
                  withLength:(NSUInteger)length
            withSnoozeMinute:(Byte)snoozeMinute
              withCompletion:(setAlarmClockCallBack)aCallBack;
@@ -135,21 +135,6 @@ typedef void (^finishRemind)(BOOL success);
                  completion:(setRemindEventsAndModeCallBack)aCallBack;
 
 /**
- 设置其他提醒
- */
-- (void)setOtherRemind:(OtherRemindType)remindType
-            completion:(setOtherRemindCallBack)aCallBack;//弃用
-
-/**
- 开起低电量提醒
- */
-- (void)setStartLowBatteryRemindCompletion:(setStartLowBatteryRemind)aCallBack;//弃用
-/**
- 停止低电量提醒
- */
-- (void)setStopLowBatteryRemindCompletion:(setStopLowBatteryRemind)aCallBack;//弃用
-
-/**
  开始提醒
  */
 - (void)startRemind:(OtherRemindType)remindType
@@ -158,7 +143,7 @@ typedef void (^finishRemind)(BOOL success);
  结束提醒
  */
 - (void)finishRemind:(OtherRemindType)remindType
-         completion:(finishRemind)aCallBack;
+          completion:(finishRemind)aCallBack;
 
 
 
@@ -177,9 +162,6 @@ typedef void (^finishRemind)(BOOL success);
 /**
  防丢提醒
  */
-- (void)setAntiLostStatus:(BOOL)openOrClose
-                 distance:(NSUInteger)distance
-               completion:(setAntiLostCallBack)aCallBack;//弃用
 - (void)setAntiLostStatus:(BOOL)openOrClose
                  distance:(NSUInteger)distance
              timeInterval:(NSUInteger)interval

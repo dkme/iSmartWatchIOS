@@ -52,7 +52,6 @@
 
 @property (nonatomic, assign) BOOL isShowBindVC;
 
-- (void)scanAndConnectPeripheral;
 
 - (void)syncData;
 

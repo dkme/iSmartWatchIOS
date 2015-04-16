@@ -28,7 +28,4 @@ extern NSString *const AlreadyConfiguredBLEDevice;//Already configured devices
 
 + (WMSAppDelegate *)appDelegate;
 
-- (void)connectedConfigure:(void(^)(void))callBack;
-//- (void)checkDeviceBattery;
-
 @end

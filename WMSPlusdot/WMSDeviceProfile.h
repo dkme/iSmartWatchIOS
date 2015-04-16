@@ -89,10 +89,6 @@ typedef void (^readDeviceBatteryInfoCallBack)(BatteryType type,BatteryStatus sta
  */
 - (void)syncDeviceSleepDataWithCompletion:(syncDeviceSleepDataCallBack)aCallBack;
 
-/**
- 寻找手机
- */
-//- (void)aa;
 
 /**
  读取遥控模式下的数据

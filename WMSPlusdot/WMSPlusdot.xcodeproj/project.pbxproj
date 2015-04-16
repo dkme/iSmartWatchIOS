@@ -314,6 +314,7 @@
 		23A1532A1A36EFAA0026D741 /* WMSUpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A153281A36EFAA0026D741 /* WMSUpdateVC.xib */; };
 		23A1532D1A36F4630026D741 /* zq_public_green_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 23A1532B1A36F4630026D741 /* zq_public_green_btn_a.png */; };
 		23A1532E1A36F4630026D741 /* zq_public_green_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 23A1532C1A36F4630026D741 /* zq_public_green_btn_b.png */; };
+		23A6DF451ADD1AAE00BB06CF /* DataPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A6DF431ADD1AAE00BB06CF /* DataPackage.m */; };
 		23AB54EA1AC946C200400E41 /* GGIAnnulusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB54E91AC946C200400E41 /* GGIAnnulusView.m */; };
 		23AB54EF1AC9475700400E41 /* WMSBleControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB54EC1AC9475700400E41 /* WMSBleControl.m */; };
 		23AB54F01AC9475700400E41 /* WMSDeviceProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB54EE1AC9475700400E41 /* WMSDeviceProfile.m */; };
@@ -811,6 +812,9 @@
 		23A153281A36EFAA0026D741 /* WMSUpdateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSUpdateVC.xib; sourceTree = "<group>"; };
 		23A1532B1A36F4630026D741 /* zq_public_green_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zq_public_green_btn_a.png; sourceTree = "<group>"; };
 		23A1532C1A36F4630026D741 /* zq_public_green_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zq_public_green_btn_b.png; sourceTree = "<group>"; };
+		23A6DF421ADD1AAE00BB06CF /* DataPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPackage.h; sourceTree = "<group>"; };
+		23A6DF431ADD1AAE00BB06CF /* DataPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPackage.m; sourceTree = "<group>"; };
+		23A6DF441ADD1AAE00BB06CF /* BLEUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEUtils.h; sourceTree = "<group>"; };
 		23AB54E81AC946C200400E41 /* GGIAnnulusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGIAnnulusView.h; sourceTree = "<group>"; };
 		23AB54E91AC946C200400E41 /* GGIAnnulusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGIAnnulusView.m; sourceTree = "<group>"; };
 		23AB54EB1AC9475700400E41 /* WMSBleControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBleControl.h; sourceTree = "<group>"; };
@@ -2152,6 +2156,9 @@
 				2331838A19B70D9D005B2BA0 /* WMSRemindProfile.h */,
 				2331838B19B70D9D005B2BA0 /* WMSRemindProfile.m */,
 				2321B78319B95E8E00278677 /* WMSBluetooth.h */,
+				23A6DF421ADD1AAE00BB06CF /* DataPackage.h */,
+				23A6DF431ADD1AAE00BB06CF /* DataPackage.m */,
+				23A6DF441ADD1AAE00BB06CF /* BLEUtils.h */,
 			);
 			name = BleProfile;
 			sourceTree = "<group>";
@@ -2617,6 +2624,7 @@
 				2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */,
 				23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */,
 				237241071A8C96A9009791AD /* UIWebView+AFNetworking.m in Sources */,
+				23A6DF451ADD1AAE00BB06CF /* DataPackage.m in Sources */,
 				23472E9E1A8B5AA300ED3CA4 /* GiftBag.m in Sources */,
 				23A153291A36EFAA0026D741 /* WMSUpdateVC.m in Sources */,
 				2333AB051A64C28600DBA846 /* UIImage+Color.m in Sources */,
@@ -2779,7 +2787,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12026afe-8a46-46da-bc65-4fece77804f6";
+				PROVISIONING_PROFILE = "0c564c45-df37-4d18-bcee-1453b5617eee";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2887,7 +2895,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12026afe-8a46-46da-bc65-4fece77804f6";
+				PROVISIONING_PROFILE = "0c564c45-df37-4d18-bcee-1453b5617eee";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2905,7 +2913,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12026afe-8a46-46da-bc65-4fece77804f6";
+				PROVISIONING_PROFILE = "0c564c45-df37-4d18-bcee-1453b5617eee";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
