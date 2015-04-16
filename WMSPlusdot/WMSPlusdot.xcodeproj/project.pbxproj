@@ -2006,10 +2006,10 @@
 				2331834A19B6EBEA005B2BA0 /* WMSSettingProfile.m */,
 				2331838A19B70D9D005B2BA0 /* WMSRemindProfile.h */,
 				2331838B19B70D9D005B2BA0 /* WMSRemindProfile.m */,
+				2321B78319B95E8E00278677 /* WMSBluetooth.h */,
 				23A6DF291ADCA95300BB06CF /* DataPackage.h */,
 				23A6DF2A1ADCA95300BB06CF /* DataPackage.m */,
 				23A6DF301ADD091000BB06CF /* BLEUtils.h */,
-				2321B78319B95E8E00278677 /* WMSBluetooth.h */,
 			);
 			name = BleProfile;
 			sourceTree = "<group>";
@@ -2104,6 +2104,7 @@
 				232846B919A43668001C148D /* Sources */,
 				232846BA19A43668001C148D /* Frameworks */,
 				232846BB19A43668001C148D /* Resources */,
+				23A6DF461ADF91F400BB06CF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2345,6 +2346,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		23A6DF461ADF91F400BB06CF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "REV=`date +%y%m%d`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion ${REV}\" \"${TARGET_BUILD_DIR}\"/${INFOPLIST_PATH}";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		232846B919A43668001C148D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -2584,7 +2601,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8c6efff6-6915-48d9-a431-4b68af0972e8";
+				PROVISIONING_PROFILE = "dca7999a-74e5-409c-88ad-41fa3924c9a5";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2690,7 +2707,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8c6efff6-6915-48d9-a431-4b68af0972e8";
+				PROVISIONING_PROFILE = "dca7999a-74e5-409c-88ad-41fa3924c9a5";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2708,7 +2725,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8c6efff6-6915-48d9-a431-4b68af0972e8";
+				PROVISIONING_PROFILE = "dca7999a-74e5-409c-88ad-41fa3924c9a5";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

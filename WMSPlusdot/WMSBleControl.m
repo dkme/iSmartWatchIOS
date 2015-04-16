@@ -555,7 +555,7 @@ NSString * const WMSBleControlScanFinish                =
     [self.myTimers addTriggerCountToTimer:timer];
     
     int triggerCount = [self.myTimers triggerCountForTimer:timer];
-    if (triggerCount >= MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
+    if (triggerCount > MAX_TIMEOUT_COUNT) {//超时次数过多，断开连接
         
         DEBUGLog(@"写入超时，主动断开 %@, timeID[%d]",NSStringFromClass([self class]),[self.myTimers getTimerID:timer]);
         NSString *reason = [NSString stringWithFormat:@"写入超时[TimerID:%d]，app主动断开",[self.myTimers getTimerID:timer]];
@@ -569,7 +569,8 @@ NSString * const WMSBleControlScanFinish                =
         LGCharacteristic *charact = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_CHARACT];
         NSData *value = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_VALUE];
         
-        [charact writeValue:value completion:nil];
+        [charact writeValue:value completion:^(NSError *error){}];
+        DEBUGLog(@"timeID[%d]----第%d次重发",[self.myTimers getTimerID:timer],triggerCount);
     } else {
         [self.myTimers deleteAllTimers];
     }
