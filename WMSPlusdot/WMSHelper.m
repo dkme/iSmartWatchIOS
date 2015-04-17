@@ -36,7 +36,8 @@
 + (NSUInteger)readTodayTargetSteps
 {
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_TARGET)];
-    NSString *key = [NSDate stringFromDate:[NSDate systemDate] format:@"yyyy-MM-dd"];
+    //NSString *key = [NSDate stringFromDate:[NSDate systemDate] format:@"yyyy-MM-dd"];
+    NSString *key = @"TargetSteps";
     NSNumber *value = [readData objectForKey:key];
     NSUInteger target = 0;
     if (readData==nil || value==nil) {
@@ -49,7 +50,8 @@
 
 + (BOOL)savaTodayTargetSteps:(NSUInteger)steps
 {
-    NSString *key = [NSDate stringFromDate:[NSDate systemDate] format:@"yyyy-MM-dd"];
+    //NSString *key = [NSDate stringFromDate:[NSDate systemDate] format:@"yyyy-MM-dd"];
+    NSString *key = @"TargetSteps";
     NSDictionary *writeData = @{key:@(steps)};
     return [writeData writeToFile:FilePath(FILE_TARGET) atomically:YES];
 }
