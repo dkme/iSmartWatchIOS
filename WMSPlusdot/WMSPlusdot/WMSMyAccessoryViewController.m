@@ -167,14 +167,12 @@ NSString* const WMSUnBindAccessorySuccess =
 - (void)showUnBindTip:(BOOL)success
 {
     if (success) {
-        WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-        [bleControl disconnect];
-        [self showTip:NSLocalizedString(@"解绑成功", nil)];
         [self reset];
-        [self.tableView reloadData];
         [WMSMyAccessory unBindAccessory];
         [CacheClass cleanCacheData];
         [[NSNotificationCenter defaultCenter] postNotificationName:WMSUnBindAccessorySuccess object:nil userInfo:nil];
+        [self.tableView reloadData];
+        [self showTip:NSLocalizedString(@"解绑成功", nil)];
     } else {
         [self showTip:NSLocalizedString(@"解绑失败", nil)];
     }
@@ -241,7 +239,9 @@ NSString* const WMSUnBindAccessorySuccess =
             switch (result) {
                 case BindingResultSuccess:
                 {
-                    [self showUnBindTip:YES];
+                    [bleControl disconnect:^(BOOL success) {
+                        [self showUnBindTip:success];
+                    }];
                     break;
                 }
                 default:

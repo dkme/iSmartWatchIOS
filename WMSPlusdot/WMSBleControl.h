@@ -117,8 +117,8 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
 - (void)connect:(LGPeripheral *)peripheral;
 
 - (void)disconnect;
+- (void)disconnect:(void(^)(BOOL success))aCallback;
 
-#warning 待一条命令返回后，才能发送下一条命令
 /*
  绑定配件
  */

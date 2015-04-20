@@ -253,6 +253,32 @@ NSString * const WMSBleControlScanFinish                =
 {
     [self disconnectWithReason:@"用户自己去断开的"];
 }
+- (void)disconnect:(void(^)(BOOL success))aCallback
+{
+    NSString *reason = @"用户自己去断开的";
+    //disconnect
+    if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
+        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
+            [self disConnectedClearup];
+            if (aCallback) {
+                aCallback( (!error ? YES : NO) );
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
+        }];
+        return ;
+    }
+    if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
+        CBPeripheral *p = self.connectingPeripheral.cbPeripheral;
+        if (p) {
+            [self.centralManager.manager cancelPeripheralConnection:p];
+            [self disConnectedClearup];
+        }
+        if (aCallback) {
+            aCallback(YES);
+        }
+    }
+}
 
 #pragma mark - Peripheral operation
 - (void)bindSettingCMD:(BindSettingCMD)cmd
