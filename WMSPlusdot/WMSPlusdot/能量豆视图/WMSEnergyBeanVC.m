@@ -191,6 +191,32 @@ enum {
         [self setMyBean:beans];
     }
     
+    //从数据库中查询数据
+    [self.listData removeAllObjects];
+    NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:[NSDate systemDate]];
+    if (results.count > 0) {
+        WMSSportModel *model = results[0];
+        
+        NSUInteger unExchangeSteps = 0;
+        if (model.sportSteps >= _exchangedSteps) {
+            unExchangeSteps = model.sportSteps-_exchangedSteps;
+        } else {
+            _exchangedSteps = 0;
+            [CacheClass cacheMyExchangedSteps:_exchangedSteps date:[NSDate systemDate] mac:[WMSMyAccessory macForBindAccessory]];
+        }
+        if (_targetSteps == 0) {
+            [self.tableView reloadData];
+            return ;
+        }
+        NSUInteger showSteps = (unExchangeSteps/_targetSteps)*_targetSteps;
+        if (showSteps >= _targetSteps) {
+            [self.listData addObject:@(showSteps)];
+        }else{}
+    }else{}
+    if (self.listData.count > 0) {
+        [self updateBottomButtonTitle];
+    }else{}
+    
     [self.tableView reloadData];
 }
 - (void)updateBottomButtonTitle
@@ -260,8 +286,9 @@ enum {
         WMSSportModel *model = results[0];
         sportSteps = model.sportSteps;
     }else{}
-    [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:beans secretKey:SECRET_KEY stepNumber:(int)sportSteps state:_postState type:1 completion:^(BOOL result, int beans) {
+    [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:0 secretKey:SECRET_KEY stepNumber:(int)sportSteps state:_postState type:1 completion:^(BOOL result, int beans) {
         if (result) {
+            _currentBeans = beans, _exchangedSteps += steps;
             [self setMyBean:beans];
             [CacheClass cacheMyBeans:beans mac:[WMSMyAccessory macForBindAccessory]];
             while (self.listData.count) {
