@@ -22,7 +22,6 @@
 
 #import "WMSMyAccessory.h"
 #import "WMSHelper.h"
-#import "CacheClass.h"
 
 #define SECTION_NUMBER      1
 #define CELL_HIGHT          207
@@ -169,7 +168,6 @@ NSString* const WMSUnBindAccessorySuccess =
     if (success) {
         [self reset];
         [WMSMyAccessory unBindAccessory];
-        [CacheClass cleanCacheData];
         [[NSNotificationCenter defaultCenter] postNotificationName:WMSUnBindAccessorySuccess object:nil userInfo:nil];
         [self.tableView reloadData];
         [self showTip:NSLocalizedString(@"解绑成功", nil)];

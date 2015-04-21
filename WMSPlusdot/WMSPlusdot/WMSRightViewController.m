@@ -18,7 +18,6 @@
 
 #import "WMSSwitchCell.h"
 #import "MBProgressHUD.h"
-#import "CRToast.h"
 
 #import "WMSRightVCHelper.h"
 #import "WMSPostNotificationHelper.h"
