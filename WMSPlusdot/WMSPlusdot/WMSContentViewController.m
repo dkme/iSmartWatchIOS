@@ -350,12 +350,10 @@
 - (void)updateView
 {
     WMSSportModel *model = nil;
-    if (self.bleControl && [self.bleControl isConnected]) {
-        //从数据库中查询数据
-        NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:self.showDate];
-        if (results.count > 0) {
-            model = results[0];
-        }
+    //从数据库中查询数据
+    NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:self.showDate];
+    if (results.count > 0) {
+        model = results[0];
     }
     
     NSUInteger target = model ? model.targetSteps : DEFAULT_TARGET_STEPS;
