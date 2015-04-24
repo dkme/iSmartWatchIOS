@@ -40,6 +40,7 @@
 #import "WMSHelper.h"
 #import "WMSPostNotificationHelper.h"
 #import "WMSHTTPRequest.h"
+#import "CacheClass.h"
 
 @interface WMSContentViewController ()<WMSSyncDataViewDelegate>
 @property (strong, nonatomic) WMSSyncDataView *syncDataView;
@@ -380,12 +381,10 @@
 - (void)updateView
 {
     WMSSportModel *model = nil;
-    if (self.bleControl && [self.bleControl isConnected]) {
-        //从数据库中查询数据
-        NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:self.showDate];
-        if (results.count > 0) {
-            model = results[0];
-        }
+    //从数据库中查询数据
+    NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:self.showDate];
+    if (results.count > 0) {
+        model = results[0];
     }
     
     NSUInteger target = model ? model.targetSteps : DEFAULT_TARGET_STEPS;
@@ -405,6 +404,7 @@
         if (model.sportSteps > 0) {
             isHaveData = YES;
         }else{}
+        [CacheClass cacheFirstSyncDataResult:isHaveData];
         [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_FIRST_SYNC_DATA object:nil userInfo:@{@"type":@(1),@"isHaveData":@(isHaveData)}];//1表示运动
     }else{}
 }
@@ -541,7 +541,7 @@
     NSUInteger distances = stride * steps;//单位为cm
     NSUInteger calorie = Rounded(Calorie(weight,steps));
     NSUInteger targetSteps = [self targetSteps];
-    
+
     WMSSportModel *sportModel = [[WMSSportModel alloc] initWithSportDate:date sportTargetSteps:targetSteps sportSteps:steps sportMinute:durations sportDistance:distances sportCalorie:calorie perHourData:perHourData dataLength:dataLength];
     NSArray *results = [[WMSSportDatabase sportDatabase] querySportData:date];
     if (results && results.count>0) {//若数据库中已存在该日期的数据，则更新数据库

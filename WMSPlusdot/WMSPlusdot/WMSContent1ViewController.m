@@ -423,13 +423,10 @@
 - (void)updateView
 {
     WMSSleepModel *model = nil;
-    
-    if (self.bleControl && [self.bleControl isConnected]) {
-        //从数据库中查询数据
-        NSArray *results = [[WMSSleepDatabase sleepDatabase] querySleepData:self.showDate];
-        if (results.count > 0) {
-            model = results[0];
-        }
+    //从数据库中查询数据
+    NSArray *results = [[WMSSleepDatabase sleepDatabase] querySleepData:self.showDate];
+    if (results.count > 0) {
+        model = results[0];
     }
     
     if (model) {

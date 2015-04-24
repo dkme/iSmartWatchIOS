@@ -16,6 +16,9 @@
 + (void)cacheMyExchangedSteps:(int)steps date:(NSDate *)date mac:(NSString *)mac;
 + (NSDictionary *)cachedExchangedStepsAndDateForMac:(NSString *)mac;//@"date"表示日期,@"steps"表示步数
 
++ (void)cacheFirstSyncDataResult:(BOOL)hasData;//第一次同步是否有数据
++ (BOOL)cacheIsHasData;
+
 + (void)cleanCacheData;
 
 @end

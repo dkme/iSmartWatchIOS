@@ -290,12 +290,8 @@
 		23AB54EF1AC9475700400E41 /* WMSBleControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB54EC1AC9475700400E41 /* WMSBleControl.m */; };
 		23AB54F01AC9475700400E41 /* WMSDeviceProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB54EE1AC9475700400E41 /* WMSDeviceProfile.m */; };
 		23AB54F31AC94A1B00400E41 /* WMSSyncDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AB54F21AC94A1B00400E41 /* WMSSyncDataView.m */; };
-		23AD5F561AB0003800DB32BB /* skin_intro_page.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AD5F501AB0003800DB32BB /* skin_intro_page.png */; };
-		23AD5F571AB0003800DB32BB /* skin_intro_page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AD5F511AB0003800DB32BB /* skin_intro_page@2x.png */; };
 		23AD5F581AB0003800DB32BB /* skin_setting_target@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AD5F521AB0003800DB32BB /* skin_setting_target@2x.png */; };
 		23AD5F591AB0003800DB32BB /* skin_setting_target-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AD5F531AB0003800DB32BB /* skin_setting_target-568h@2x.png */; };
-		23AD5F5A1AB0003800DB32BB /* skin_sport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AD5F541AB0003800DB32BB /* skin_sport@2x.png */; };
-		23AD5F5B1AB0003800DB32BB /* skin_sport-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23AD5F551AB0003800DB32BB /* skin_sport-568h@2x.png */; };
 		23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */; };
 		23B0094019D4FFEF008424FA /* WMSSportHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */; };
 		23B0094619D50100008424FA /* PNLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0094319D50100008424FA /* PNLineChartView.m */; };
@@ -308,6 +304,10 @@
 		23C74B0419A72F0B00C589A1 /* main_wakeup_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */; };
 		23C74B0719A733FA00C589A1 /* main_clock_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */; };
 		23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */; };
+		23CAD74F1AE74C6C00C2D4E8 /* skin_intro_page.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAD74D1AE74C6C00C2D4E8 /* skin_intro_page.png */; };
+		23CAD7501AE74C6C00C2D4E8 /* skin_intro_page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAD74E1AE74C6C00C2D4E8 /* skin_intro_page@2x.png */; };
+		23CAD7531AE74C9900C2D4E8 /* skin_sport-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAD7511AE74C9900C2D4E8 /* skin_sport-568h@2x.png */; };
+		23CAD7541AE74C9900C2D4E8 /* skin_sport@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 23CAD7521AE74C9900C2D4E8 /* skin_sport@2x.png */; };
 		23CB0B791A1358140057E0A8 /* UIDatePicker+Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB0B781A1358140057E0A8 /* UIDatePicker+Time.m */; };
 		23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0C19C92C9D00DC915A /* MBProgressHUD.m */; };
 		23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0F19C9942D00DC915A /* WMSSleepModel.m */; };
@@ -764,12 +764,8 @@
 		23AB54EE1AC9475700400E41 /* WMSDeviceProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSDeviceProfile.m; sourceTree = "<group>"; };
 		23AB54F11AC94A1B00400E41 /* WMSSyncDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncDataView.h; sourceTree = "<group>"; };
 		23AB54F21AC94A1B00400E41 /* WMSSyncDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncDataView.m; sourceTree = "<group>"; };
-		23AD5F501AB0003800DB32BB /* skin_intro_page.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skin_intro_page.png; sourceTree = "<group>"; };
-		23AD5F511AB0003800DB32BB /* skin_intro_page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_intro_page@2x.png"; sourceTree = "<group>"; };
 		23AD5F521AB0003800DB32BB /* skin_setting_target@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_setting_target@2x.png"; sourceTree = "<group>"; };
 		23AD5F531AB0003800DB32BB /* skin_setting_target-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_setting_target-568h@2x.png"; sourceTree = "<group>"; };
-		23AD5F541AB0003800DB32BB /* skin_sport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_sport@2x.png"; sourceTree = "<group>"; };
-		23AD5F551AB0003800DB32BB /* skin_sport-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_sport-568h@2x.png"; sourceTree = "<group>"; };
 		23B0093C19D4FFEF008424FA /* WMSSportHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportHistoryViewController.h; sourceTree = "<group>"; };
 		23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportHistoryViewController.m; sourceTree = "<group>"; };
 		23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSSportHistoryViewController.xib; sourceTree = "<group>"; };
@@ -786,6 +782,10 @@
 		23C74B0319A72F0B00C589A1 /* main_wakeup_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_wakeup_icon.png; sourceTree = "<group>"; };
 		23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_clock_btn_a.png; sourceTree = "<group>"; };
 		23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_clock_btn_b.png; sourceTree = "<group>"; };
+		23CAD74D1AE74C6C00C2D4E8 /* skin_intro_page.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skin_intro_page.png; sourceTree = "<group>"; };
+		23CAD74E1AE74C6C00C2D4E8 /* skin_intro_page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_intro_page@2x.png"; sourceTree = "<group>"; };
+		23CAD7511AE74C9900C2D4E8 /* skin_sport-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_sport-568h@2x.png"; sourceTree = "<group>"; };
+		23CAD7521AE74C9900C2D4E8 /* skin_sport@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_sport@2x.png"; sourceTree = "<group>"; };
 		23CB0B771A1358140057E0A8 /* UIDatePicker+Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDatePicker+Time.h"; sourceTree = "<group>"; };
 		23CB0B781A1358140057E0A8 /* UIDatePicker+Time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDatePicker+Time.m"; sourceTree = "<group>"; };
 		23CB9F0B19C92C9D00DC915A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -2044,12 +2044,12 @@
 		23D87B611AAE931700FD8984 /* Skin */ = {
 			isa = PBXGroup;
 			children = (
-				23AD5F501AB0003800DB32BB /* skin_intro_page.png */,
-				23AD5F511AB0003800DB32BB /* skin_intro_page@2x.png */,
+				23CAD74D1AE74C6C00C2D4E8 /* skin_intro_page.png */,
+				23CAD74E1AE74C6C00C2D4E8 /* skin_intro_page@2x.png */,
 				23AD5F521AB0003800DB32BB /* skin_setting_target@2x.png */,
 				23AD5F531AB0003800DB32BB /* skin_setting_target-568h@2x.png */,
-				23AD5F541AB0003800DB32BB /* skin_sport@2x.png */,
-				23AD5F551AB0003800DB32BB /* skin_sport-568h@2x.png */,
+				23CAD7521AE74C9900C2D4E8 /* skin_sport@2x.png */,
+				23CAD7511AE74C9900C2D4E8 /* skin_sport-568h@2x.png */,
 			);
 			name = Skin;
 			sourceTree = "<group>";
@@ -2226,9 +2226,7 @@
 				2326A41019A593E20098657B /* main_history_btn_b.png in Resources */,
 				234BF1FB19B05991005D71A0 /* select_man.png in Resources */,
 				23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */,
-				23AD5F571AB0003800DB32BB /* skin_intro_page@2x.png in Resources */,
 				2326A40A19A5916A0098657B /* main_ico_burn.png in Resources */,
-				23AD5F5B1AB0003800DB32BB /* skin_sport-568h@2x.png in Resources */,
 				234B6C151A81B13000FF46CB /* WMSDetailsVC.xib in Resources */,
 				23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */,
 				231972581A35B942002E8A0F /* zq_light_list_bottom_b.png in Resources */,
@@ -2237,7 +2235,6 @@
 				238370EE1AB826480022F8CF /* flashing_off@2x.png in Resources */,
 				2335119619A479DA00FBCC81 /* signup_arrow_b.png in Resources */,
 				230298CB19A83281009D4306 /* target_progress_btn.png in Resources */,
-				23AD5F561AB0003800DB32BB /* skin_intro_page.png in Resources */,
 				238370D01AB671AF0022F8CF /* login_btn_b.png in Resources */,
 				23A1532A1A36EFAA0026D741 /* WMSUpdateVC.xib in Resources */,
 				23AD5F591AB0003800DB32BB /* skin_setting_target-568h@2x.png in Resources */,
@@ -2249,6 +2246,7 @@
 				2319724E1A35B8CA002E8A0F /* zq_light_list_middle_a.png in Resources */,
 				236D14551A83105500EE6FF4 /* plusdot_successful.png in Resources */,
 				23114A4819D120D600FA594C /* unselect_man.png in Resources */,
+				23CAD74F1AE74C6C00C2D4E8 /* skin_intro_page.png in Resources */,
 				238370EC1AB826480022F8CF /* flashing_auto@2x.png in Resources */,
 				2368A8211A8460EE003DFAAC /* WMSBeanCell.xib in Resources */,
 				230298DA19A87F0A009D4306 /* link_connect_success_icon.png in Resources */,
@@ -2260,6 +2258,7 @@
 				2335119519A479DA00FBCC81 /* signup_arrow_a.png in Resources */,
 				2326A40F19A593E20098657B /* main_history_btn_a.png in Resources */,
 				238370F01AB826480022F8CF /* flashing_on@2x.png in Resources */,
+				23CAD7541AE74C9900C2D4E8 /* skin_sport@2x.png in Resources */,
 				2347C82D1A63A4C9007A0446 /* WMSClockCell.xib in Resources */,
 				237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */,
 				230298CA19A83281009D4306 /* target_progress_bg.png in Resources */,
@@ -2304,6 +2303,7 @@
 				23C74AFE19A72E9E00C589A1 /* main_deepsleep_icon.png in Resources */,
 				23C74B0419A72F0B00C589A1 /* main_wakeup_icon.png in Resources */,
 				2326A41719A59E200098657B /* WMSLeftViewController.xib in Resources */,
+				23CAD7501AE74C6C00C2D4E8 /* skin_intro_page@2x.png in Resources */,
 				2316508319AB15510066C301 /* WMSLeftViewCell.xib in Resources */,
 				2326A42419A5C4010098657B /* Localizable.strings in Resources */,
 				23445CE41A6CA6180094DC57 /* add_clock.png in Resources */,
@@ -2341,6 +2341,7 @@
 				231972541A35B92F002E8A0F /* zq_light_list_middle_b.png in Resources */,
 				230298D719A87F0A009D4306 /* link_bg.png in Resources */,
 				233511B619A4C3E500FBCC81 /* main_date_next_b.png in Resources */,
+				23CAD7531AE74C9900C2D4E8 /* skin_sport-568h@2x.png in Resources */,
 				237545DC19AF229C00685CD1 /* WMSActivityRemindViewController.xib in Resources */,
 				2326A43B19A5C6970098657B /* main_menu_target_icon_b.png in Resources */,
 				236D145D1A835A1A00EE6FF4 /* plusdot_set_share.png in Resources */,
@@ -2359,7 +2360,6 @@
 				233511AD19A4C00600FBCC81 /* main_setting_icon_a.png in Resources */,
 				238370ED1AB826480022F8CF /* flashing_off.png in Resources */,
 				238370EA1AB826480022F8CF /* switch_camera_h@2x.png in Resources */,
-				23AD5F5A1AB0003800DB32BB /* skin_sport@2x.png in Resources */,
 				23E35B8B1A4BB13B00FDA20D /* WMSAntiLostVC.xib in Resources */,
 				2326A43319A5C6970098657B /* main_menu_binding_icon_b.png in Resources */,
 				238370D41AB673CC0022F8CF /* sava_info_btn_b.png in Resources */,
@@ -2652,7 +2652,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12026afe-8a46-46da-bc65-4fece77804f6";
+				PROVISIONING_PROFILE = "bdc11db9-9275-4b0f-8955-a8a15c3e8c9e";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2760,7 +2760,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12026afe-8a46-46da-bc65-4fece77804f6";
+				PROVISIONING_PROFILE = "bdc11db9-9275-4b0f-8955-a8a15c3e8c9e";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2772,13 +2772,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: an liu (4E8WUK78VW)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "12026afe-8a46-46da-bc65-4fece77804f6";
+				PROVISIONING_PROFILE = "bdc11db9-9275-4b0f-8955-a8a15c3e8c9e";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

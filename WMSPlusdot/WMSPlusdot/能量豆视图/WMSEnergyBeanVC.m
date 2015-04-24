@@ -79,6 +79,8 @@ enum {
     navBar.barStyle = UIBarStyleDefault;
     navBar.translucent = NO;
     
+    _postState = ![CacheClass cacheIsHasData];
+    
     [self reloadData];
 }
 - (void)didReceiveMemoryWarning {
@@ -104,7 +106,7 @@ enum {
     } else {
         _exchangedSteps = 0;
     }
-    _postState = NO;
+    //_postState = NO;
 }
 - (void)setupUI
 {
@@ -284,7 +286,7 @@ enum {
     NSUInteger sportSteps = 0;
     if (results.count > 0) {
         WMSSportModel *model = results[0];
-        sportSteps = model.sportSteps;
+        sportSteps = model.sportSteps / _targetSteps * _targetSteps;//保证传入的步数，是目标步数的整数倍
     }else{}
     [WMSRequestTool requestGetBeanWithUserKey:[WMSMyAccessory macForBindAccessory] beanNumber:0 secretKey:SECRET_KEY stepNumber:(int)sportSteps state:_postState type:1 completion:^(BOOL result, int beans) {
         if (result) {

@@ -11,6 +11,7 @@
 enum {
     CacheKeyID1 = 100,
     CacheKeyID2,
+    CacheKeyID3,
 };
 
 @implementation CacheClass
@@ -46,6 +47,15 @@ static inline id getCachedData(int keyID)
 {
     NSDictionary *data = getCachedData(CacheKeyID2);
     return [data objectForKey:mac];
+}
+
++ (void)cacheFirstSyncDataResult:(BOOL)hasData
+{
+    cacheData(CacheKeyID3, @(hasData));
+}
++ (BOOL)cacheIsHasData
+{
+    return [getCachedData(CacheKeyID3) boolValue];
 }
 
 + (void)cleanCacheData

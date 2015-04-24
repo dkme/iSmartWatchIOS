@@ -489,7 +489,7 @@
                     if ([self isDetectedNewVersion]==DetectResultCanUpdate) {
                         [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
                     } else {
-                        [self checkAppUpdate];
+//                        [self checkAppUpdate];
                     }
                     break;
                 }
