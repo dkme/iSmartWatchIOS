@@ -26,6 +26,18 @@ typedef NS_ENUM(NSUInteger, RemoteDataType) {
     RemoteDataTypeTakephoto = 0x02,
 };
 
+//电池类型
+typedef NS_ENUM(NSUInteger, BatteryType) {
+    BatteryTypeRechargeable = 0x00,
+    BatteryTypeCR2032Button,
+    BatteryTypeCR2430Button,
+};
+//电池状态
+typedef NS_ENUM(NSUInteger, BatteryStatus) {
+    BatteryStatusNormal = 0x00,
+    BatteryStatusCharging,
+};
+
 
 //Block
 typedef void(^readDeviceInfoCallBack)(NSUInteger energy,NSUInteger version,NSUInteger todaySteps,NSUInteger todaySportDurations,DeviceWorkStatus workStatus, NSUInteger deviceID,BOOL isPaired);
@@ -47,7 +59,8 @@ typedef void (^syncDeviceSleepDataCallBack)(NSString *sleepDate,NSUInteger sleep
 
 typedef void (^readDeviceRemoteDataCallBack)(RemoteDataType dataType);
 
-typedef void(^readDeviceMacCallBack)(NSString *mac);
+typedef void (^readDeviceMacCallBack)(NSString *mac);
+typedef void (^readDeviceBatteryInfoCallBack)(BatteryType type,BatteryStatus status,float voltage,float percentage);
 
 @interface WMSDeviceProfile : NSObject
 
@@ -85,5 +98,10 @@ typedef void(^readDeviceMacCallBack)(NSString *mac);
  读取设备的mac地址
  */
 - (void)readDeviceMac:(readDeviceMacCallBack)aCallback;
+
+/*
+ *  读取设备的电压
+ */
+- (void)readDeviceBatteryInfo:(readDeviceBatteryInfoCallBack)aCallback;
 
 @end

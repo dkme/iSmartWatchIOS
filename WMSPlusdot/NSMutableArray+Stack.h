@@ -20,7 +20,7 @@
  从数值中pop出一个对象
  */
 + (id)popFromArray:(NSMutableArray *)aArray;
-- (void)pop;
+- (id)pop;
 
 - (void)clear;
 

@@ -29,9 +29,9 @@
 {
     [[self class] push:anObject toArray:self];
 }
-- (void)pop
+- (id)pop
 {
-    [[self class] popFromArray:self];
+    return [[self class] popFromArray:self];
 }
 - (void)clear
 {

@@ -10,6 +10,7 @@
 #import "WMSBleControl.h"
 #import "NSMutableArray+Stack.h"
 #import "DataPackage.h"
+#import "BLEUtils.h"
 
 static const int HOUR_NUMBER            = 24;
 static const int STARTED_NUMBER         = 50;
@@ -65,6 +66,7 @@ static const int STARTED_NUMBER         = 50;
 @property (nonatomic, strong) NSMutableArray *stackSyncSleepData;
 @property (nonatomic, strong) NSMutableArray *stackReadDeviceRemoteData;
 @property (nonatomic, strong) NSMutableArray *stackReadDeviceMac;
+@property (nonatomic, strong) NSMutableArray *stackReadBatteryInfo;
 @end
 
 @implementation WMSDeviceProfile
@@ -116,6 +118,13 @@ static const int STARTED_NUMBER         = 50;
         _stackReadDeviceMac = [NSMutableArray new];
     }
     return _stackReadDeviceMac;
+}
+- (NSMutableArray *)stackReadBatteryInfo
+{
+    if (!_stackReadBatteryInfo) {
+        _stackReadBatteryInfo = [NSMutableArray new];
+    }
+    return _stackReadBatteryInfo;
 }
 
 #pragma mark - Init
@@ -246,6 +255,23 @@ static const int STARTED_NUMBER         = 50;
     [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDReadDeviceMac];
 }
 
+- (void)readDeviceBatteryInfo:(readDeviceBatteryInfoCallBack)aCallback
+{
+    if (!self.bleControl.isConnected) {
+        return ;
+    }
+    if (aCallback) {
+        [self.stackReadBatteryInfo push:aCallback];
+    }
+    Byte data[DATA_LENGTH] = {0};
+    DataPackage *package = [DataPackage packageWithCMD:CMDReadDeviceBatteryInfo data:data];
+    NSData *sendData = [NSData dataWithBytes:[package packet] length:PACKET_LENGTH];
+    
+    [self.rwCharact writeValue:sendData completion:^(NSError *error) {}];
+
+    [self.bleControl addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:self.rwCharact handleData:sendData timeID:TimeIDReadDeviceBatteryInfo];
+}
+
 #pragma mark - Handle
 - (void)handleDidGetNotifyValue:(NSNotification *)notification
 {
@@ -355,6 +381,23 @@ static const int STARTED_NUMBER         = 50;
                     callBack(mac);
                 }
                 callBack = nil;
+            }
+            return;
+        }
+        
+        if (cmd == CMDReadDeviceBatteryInfo) {
+            if ([self.myTimers isValidForTimeID:TimeIDReadDeviceBatteryInfo]) {
+                [self.myTimers deleteTimerForTimeID:TimeIDReadDeviceBatteryInfo];
+                
+                readDeviceBatteryInfoCallBack callBack = [self.stackReadBatteryInfo pop];
+                if (callBack) {
+                    UInt8 batt_type = package[3];
+                    UInt16 batt_vol = package[4] + ((UInt16)package[5] << 8);//mv
+                    UInt8 batt_stat = package[6];
+                    UInt8 batt_level = package[7];
+                    callBack(batt_type,batt_stat,batt_vol/1000.0,batt_level/100.0);
+                    callBack = nil;
+                }
             }
             return;
         }

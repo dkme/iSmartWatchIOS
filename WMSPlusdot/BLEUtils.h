@@ -22,6 +22,7 @@ typedef NS_ENUM(Byte, CMDType) {
     CMDGetDeviceInfo = 0x0A,
     CMDGetDeviceTime = 0x0B,
     CMDGETDeviceMac = 0xA1,
+    CMDReadDeviceBatteryInfo = 0x0D,
     
     CMDSwitchControlMode = 0xF2,
     CMDSwitchUpdateMode = 0x30,
@@ -38,6 +39,7 @@ typedef NS_ENUM(Byte, CMDType) {
     CMDEndSyncSleepData = 0x18,
     
     CMDReadDeviceRemoteData = 0xF0,
+    
     
     //SettingProfile
     CMDStartSendOtherRemind = 0x20,
@@ -67,6 +69,7 @@ typedef NS_ENUM(int, TimeID) {
     TimeIDAgainPrepareSyncSleepData,
     TimeIDStartSyncSleepData,
     TimeIDEndSyncSleepData,
+    TimeIDReadDeviceBatteryInfo,
     
     //SettingProfile
     TimeIDSetCurrentDate = 300,
