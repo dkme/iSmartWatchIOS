@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WMSRightVCHelper.h"
 
 @interface WMSRightViewController : UITableViewController
 
-- (void)resetFirstConnectedConfig;
+//- (void)resetFirstConnectedConfig;
 
 @end

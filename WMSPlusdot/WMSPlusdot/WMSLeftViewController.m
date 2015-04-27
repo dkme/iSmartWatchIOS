@@ -118,7 +118,7 @@
 {
     if (!_titleArray) {
         NSArray *items = @[NSLocalizedString(@"My sport",nil),
-                           //NSLocalizedString(@"My sleep",nil),
+                           NSLocalizedString(@"My sleep",nil),
                            NSLocalizedString(@"Target setting",nil),
                            NSLocalizedString(@"Bound watch",nil)
                            ];
@@ -131,7 +131,7 @@
 {
     if (!_imageNameArray) {
         _imageNameArray = @[@"main_menu_sport_icon_a.png",
-                            //@"main_menu_sleep_icon_a.png",
+                            @"main_menu_sleep_icon_a.png",
                             @"main_menu_target_icon_a.png",
                             @"main_menu_binding_icon_a.png",
                             ];
@@ -142,7 +142,7 @@
 {
     if (!_seletedImageNameArray) {
         _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
-                                   //@"main_menu_sleep_icon_b.png",
+                                   @"main_menu_sleep_icon_b.png",
                                    @"main_menu_target_icon_b.png",
                                    @"main_menu_binding_icon_b.png",
                                    ];
@@ -155,7 +155,7 @@
     if (!_specifyContentVCClassArray) {
         _specifyContentVCClassArray = @[
                                         [WMSContentViewController class],
-                                        //[WMSContent1ViewController class],
+                                        [WMSContent1ViewController class],
                                         [WMSContent2ViewController class],
                                         [WMSMyAccessoryViewController class],
                                         ];
@@ -173,7 +173,7 @@
                            vc,
                            Null_Object,
                            Null_Object,
-                           //Null_Object,
+                           Null_Object,
                            nil];
     }
     return _contentVCArray;

@@ -19,15 +19,12 @@
 #import "WMSSwitchCell.h"
 #import "MBProgressHUD.h"
 
-#import "WMSRightVCHelper.h"
 #import "WMSPostNotificationHelper.h"
 #import "WMSMyAccessory.h"
 #import "WMSConstants.h"
 #import "WMSSoundOperation.h"
 
 #import "GGDeviceTool.h"
-#import "WMSDeviceModel.h"
-#import "WMSDeviceModel+Configure.h"
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
@@ -106,7 +103,7 @@
 {
     if (!_section4TitleArray) {
         _section4TitleArray = @[NSLocalizedString(@"防丢",nil),
-//                                NSLocalizedString(@"Smart alarm clock", nil)
+                                //                                NSLocalizedString(@"Smart alarm clock", nil)
                                 ];
     }
     return _section4TitleArray;
@@ -174,17 +171,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [UIDevice currentDevice].batteryMonitoringEnabled = YES;
-    [self.view setBackgroundColor:[UIColor clearColor]];
     
-    self.tableView.scrollEnabled = NO;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.tintColor = UICOLOR_DEFAULT;
     self.sideMenuViewController.delegate = self;
-    self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     
-    _soundOperation = [[WMSSoundOperation alloc] init];
+    [self.view setBackgroundColor:[UIColor clearColor]];
+    [UIDevice currentDevice].batteryMonitoringEnabled = YES;
+    
+    [self setupProperty];
+    [self setupTableView];
+    
     [self listeningCall];
     [self registerForNotifications];
 }
@@ -199,6 +194,21 @@
     [self unregisterFromNotifications];
 }
 
+#pragma mark - Setup
+- (void)setupProperty
+{
+    self.bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    _soundOperation = [[WMSSoundOperation alloc] init];
+    
+}
+- (void)setupTableView
+{
+    self.tableView.scrollEnabled = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.tintColor = UICOLOR_DEFAULT;
+}
+
+#pragma mark - Helper
 //根据cell的indexPath，得出该cell表示的设置项在字典中的key
 - (NSString *)keyForIndexpath:(NSIndexPath *)indexPath
 {
@@ -217,177 +227,22 @@
     }
     return self.settingItemArray[index];
 }
-
-///
-- (NSDictionary *)readSettingItemData
+//#pragma mark - 电量
+- (void)batteryOperation:(float)battery
 {
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_SETTINGS)];
-    NSMutableDictionary *mutiDic = [NSMutableDictionary dictionaryWithDictionary:readData];
-    if (readData == nil) {
-        for (int i=0; i<[self.settingItemArray count]; i++) {
-            [mutiDic setObject:@(1) forKey:self.settingItemArray[i]];//默认设置项都为打开状态
-        }
+    if ([UIDevice currentDevice].batteryState == UIDeviceBatteryStateCharging) {
+        return ;
     }
-    return mutiDic;
-}
-- (void)savaSettingItemForKey:(NSString *)key object:(NSObject *)object
-{
-    NSDictionary *readData = [self readSettingItemData];
-    NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
-    [writeData setObject:object forKey:key];
-    BOOL b = [writeData writeToFile:FilePath(FILE_SETTINGS) atomically:YES];
-    DEBUGLog(@"保存数据%@",b?@"成功":@"失败");
-}
-
-- (BOOL)lowBatteryStatus
-{
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
-    id obj = [readData objectForKey:@"battery"];
-    if (obj == nil) {
-        return 1;//默认为打开状态
-    }
-    return [obj boolValue];
-}
-- (void)setLowBattery:(BOOL)openOrClose
-{
-    //[self showOperationSuccessTip:NSLocalizedString(@"提醒设置成功", nil)];
-    //直接保存
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
-    NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
-    [writeData setObject:@(openOrClose) forKey:@"battery"];
-    [writeData writeToFile:FilePath(FILE_REMIND) atomically:YES];
-}
-
-//0：不提醒，1：震动，2：响铃，3：震动+响铃
-- (int)readRemindWay
-{
-    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND_WAY)];
-    int way = [[readData objectForKey:@"remindWay"] intValue];
-    if (readData == nil || way == 0) {
-        return 2;//默认“响铃”
-    }
-    return way;
-}
-- (void)savaRemindWay:(int)way
-{
-    NSDictionary *writeData = @{@"remindWay":@(way)};
-    [writeData writeToFile:FilePath(FILE_REMIND_WAY) atomically:YES];
-}
-
-- (void)setRemindWay:(int)way
-{
-    RemindMode mode = way;//way与RemindMode一一对应
-    RemindEventsType type = [self remindEventsType];
-    [self.bleControl.settingProfile setRemindEventsType:type mode:mode completion:^(BOOL success)
-     {
-         DEBUGLog(@"提醒方式设置%@",success?@"成功":@"失败");
-         [self savaRemindWay:way];
-         [self showOperationSuccessTip:NSLocalizedString(@"提醒方式设置成功", nil)];
-     }];
-}
-
-- (RemindEventsType)remindEventsType
-{
-    NSDictionary *readData = [self readSettingItemData];
-    DEBUGLog(@"readData:%@",readData);
-    NSArray *values = [readData objectsForKeys:self.settingItemArray notFoundMarker:@"aa"];
-    
-    NSUInteger events[7] = {RemindEventsTypeCall,RemindEventsTypeSMS,RemindEventsTypeEmail,RemindEventsTypeWeixin,RemindEventsTypeQQ,RemindEventsTypeFacebook,RemindEventsTypeTwitter};
-    RemindEventsType eventsType = 0x00;
-    for (int i=0; i<[values count]; i++) {
-        BOOL openOrClose = [[values objectAtIndex:i] boolValue];
-        if (openOrClose) {
-            eventsType = (eventsType | events[i]);
-        }
-    }
-    return eventsType;
-}
-
-#pragma mark - 第一次连接成功后，对设置项的配置
-- (void)resetFirstConnectedConfig
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setBool:NO forKey:@"firstConnected"];
-}
-
-- (void)firstConnectedConfig
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL isFirst = [userDefaults boolForKey:@"firstConnected"];
-    if (isFirst == NO) {
-        //配置设置项
-        //[self showHUDAtViewCenter:NSLocalizedString(@"正在配置设置项，请稍等...", nil)];
-        [self startFirstConnectedConfig:^{
-            //配置成功
-            //[self hideHUDAtViewCenter];
-            //[self showTip:NSLocalizedString(@"设置项配置成功", nil)];
-            DEBUGLog(@"配置完成");
-            [userDefaults setBool:YES forKey:@"firstConnected"];
-        }];
-    }
-}
-
-- (void)startFirstConnectedConfig:(void(^)(void))aCallBack
-{
-    RemindEventsType eventsType = [self remindEventsType];
-    _configIndex = 0;
-    [self.bleControl.settingProfile setRemindEventsType:eventsType completion:^(BOOL success)
-     {
-         if (success) {
-             [self continueFirstConnectedConfig:^{
-                 if (aCallBack) {
-                     aCallBack();
-                 }
-             }];
-         }
-     }];
-}
-- (void)continueFirstConnectedConfig:(void(^)(void))aCallBack
-{
-    RemindEventsType eventsType = [self remindEventsType];
-    RemindMode mode = [self readRemindWay];
-    _configIndex ++;
-    switch (_configIndex) {
-        case 1:
-        {
-            [self.bleControl.settingProfile setRemindEventsType:eventsType mode:mode completion:^(BOOL success)
-             {
-                 if (success) {
-                     [self continueFirstConnectedConfig:aCallBack];
-                 }
-             }];
-            break;
-        }
-        default:
-        {
-            if (aCallBack) {
-                aCallBack();
-            }else{}
-            break;
+    if ([WMSRightVCHelper isSendLowBatteryRemind:battery]) {
+        if ([WMSRightVCHelper lowBatteryRemind]) {
+            [WMSRightVCHelper startLowBatteryRemind:self.bleControl.settingProfile completion:^{
+                [WMSPostNotificationHelper postLowBatteryLocalNotification];
+            }];
         }
     }
 }
 
-#pragma mark - 监听按键
-- (void)listeningKeys
-{
-    [self.bleControl.deviceProfile readDeviceRemoteDataWithCompletion:^(RemoteDataType dataType)
-     {
-         DEBUGLog(@"监听到的按键dataType:0x%X",(int)dataType);
-         if (RemoteDataTypeTakephoto == dataType) {
-             [self.pickerController takePhoto];
-         }
-         else if (RemoteDataTypeFindPhone == dataType) {
-             [_soundOperation playAlarmWithDuration:PLAY_ALERT_DURATION andVibrateWithTimeInterval:PLAY_VIBRATE_TIMEINTERVAL completion:nil];
-             
-             [WMSPostNotificationHelper postSeachPhoneLocalNotification];
-             //开启闪烁
-             //[[GGDeviceTool sharedInstance] startWebcamFlicker];
-         }
-     }];
-}
-
-#pragma mark - 监听来电
+#pragma mark - 监听来电/按键
 - (void)listeningCall
 {
     __weak __typeof(&*self) weakSelf = self;
@@ -434,6 +289,24 @@
     };
 }
 
+//#pragma mark - 监听按键
+- (void)listeningKeys
+{
+    [self.bleControl.deviceProfile readDeviceRemoteDataWithCompletion:^(RemoteDataType dataType)
+     {
+         DEBUGLog(@"监听到的按键dataType:0x%X",(int)dataType);
+         if (RemoteDataTypeTakephoto == dataType) {
+             [self.pickerController takePhoto];
+         }
+         else if (RemoteDataTypeFindPhone == dataType) {
+             [_soundOperation playAlarmWithDuration:PLAY_ALERT_DURATION andVibrateWithTimeInterval:PLAY_VIBRATE_TIMEINTERVAL completion:nil];
+             
+             [WMSPostNotificationHelper postSeachPhoneLocalNotification];
+             //开启闪烁
+             //[[GGDeviceTool sharedInstance] startWebcamFlicker];
+         }
+     }];
+}
 #pragma mark - 遥控拍照
 - (void)switchToRemoteMode
 {
@@ -475,39 +348,8 @@
     picker.delegate = nil;
     picker.navigationBar.barStyle = UIBarStyleDefault;
     picker.navigationBar.translucent = NO;
-
+    
     [self.pickerController presentViewController:picker animated:YES completion:nil];
-}
-
-#pragma mark - 电量
-- (void)batteryOperation:(float)battery
-{
-    if ([UIDevice currentDevice].batteryState == UIDeviceBatteryStateCharging) {
-        return ;
-    }
-    if ([WMSRightVCHelper isSendLowBatteryRemind:battery]) {
-        if ([self lowBatteryStatus]) {
-            [WMSRightVCHelper startLowBatteryRemind:self.bleControl.settingProfile completion:^{
-                [WMSPostNotificationHelper postLowBatteryLocalNotification];
-            }];
-        }
-    }
-}
-
-- (void)checkDeviceBattery
-{
-    double version = [WMSDeviceModel deviceModel].version;
-    double voltage = [WMSDeviceModel deviceModel].version;
-    if (version < FIRMWARE_ADD_BATTERY_INFO) {
-        return ;
-    }
-    if (voltage <= 0.0) {
-        [WMSDeviceModel readDeviceBatteryInfo:self.bleControl completion:^(float voltage) {
-            if (voltage <= WATCH_LOW_VOLTAGE) {
-                //配置提醒方式
-            }
-        }];
-    }
 }
 
 #pragma mark - Notification
@@ -535,23 +377,20 @@
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     if (_isVisible || _isNeedConfig) {
-        [self firstConnectedConfig];
+        [WMSRightVCHelper startFirstConnectedConfig:self.bleControl.settingProfile completion:nil];
     }
     [self.tableView reloadData];
-
+    
     float battery = [[UIDevice currentDevice] batteryLevel];
     [self batteryOperation:battery];
     
     [self listeningKeys];
     
     self.pickerController.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
-    
-    
 }
 
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
-    //[self.tableView reloadData];
     DEBUGLog(@"self.pickerController:%@",self.pickerController);
     [self hideHUDAtViewCenter];
     self.pickerController.textLabel.text = NSLocalizedString(@"正在尝试重新连接...", nil);
@@ -561,8 +400,7 @@
 {
     //进行初始化配置
     _isNeedConfig = YES;
-    [self resetFirstConnectedConfig];
-    //[self firstConnectedConfig];
+    [WMSRightVCHelper resetFirstConnectedConfig];
 }
 
 #pragma mark - RESideMenuDelegate
@@ -587,7 +425,7 @@
     if ( [self class] == [menuViewController class] ) {
         _isVisible = YES;
         if ([self.bleControl isConnected]) {
-            [self firstConnectedConfig];
+            [WMSRightVCHelper startFirstConnectedConfig:self.bleControl.settingProfile completion:nil];
         }
         AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
         if ([WMSMyAccessory isBindAccessory]) {
@@ -630,8 +468,8 @@
     switch (section) {
         case 0:
             return self.section1TitleArray.count;
-//        case 1:
-//            return self.section2TitleArray.count;
+            //        case 1:
+            //            return self.section2TitleArray.count;
         case 2-1:
             return self.section3TitleArray.count;
         case 3-1:
@@ -662,52 +500,51 @@
             cell.myLabelText.font = Font_DINCondensed(18);
             
             if ([self.bleControl isConnected]) {
-                NSDictionary *readData = [self readSettingItemData];
+                NSDictionary *readData = [WMSRightVCHelper loadSettingItemData];
                 NSString *key = [self keyForIndexpath:indexPath];
                 if (key) {
                     cell.mySwitch.on = [[readData objectForKey:key] boolValue];
-                    //DEBUGLog(@"status:%d",cell.mySwitch.on);
                 }
             } else {
                 cell.mySwitch.on = NO;
             }
             
             if (indexPath.row == 3-2) {//电池
-                cell.mySwitch.on = [self.bleControl isConnected] ? [self lowBatteryStatus] : NO;
+                cell.mySwitch.on = [self.bleControl isConnected] ? [WMSRightVCHelper lowBatteryRemind] : NO;
             }
             
             cell.delegate = self;
             
             return cell;
         }
-//        case 1:
-//        {
-//            NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
-//            UINib *cellNib = [UINib nibWithNibName:@"WMSSwitchCell" bundle:nil];
-//            [self.tableView registerNib:cellNib forCellReuseIdentifier:CellIdentifier];
-//            
-//            WMSSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            cell.backgroundColor = [UIColor clearColor];
-//            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
-//            
-//            cell.myLabelText.text = [self.section2TitleArray objectAtIndex:indexPath.row];
-//            cell.myLabelText.textColor = [UIColor whiteColor];
-//            cell.myLabelText.font = Font_DINCondensed(18);
-//            
-//            if ([self.bleControl isConnected]) {
-//                NSDictionary *readData = [self readSettingItemData];
-//                NSString *key = [self keyForIndexpath:indexPath];
-//                if (key) {
-//                    cell.mySwitch.on = [[readData objectForKey:key] boolValue];
-//                }
-//            } else {
-//                cell.mySwitch.on = NO;
-//            }
-//            cell.delegate = self;
-//            
-//            return cell;
-//        }
+            //        case 1:
+            //        {
+            //            NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
+            //            UINib *cellNib = [UINib nibWithNibName:@"WMSSwitchCell" bundle:nil];
+            //            [self.tableView registerNib:cellNib forCellReuseIdentifier:CellIdentifier];
+            //
+            //            WMSSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            //            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            //            cell.backgroundColor = [UIColor clearColor];
+            //            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
+            //
+            //            cell.myLabelText.text = [self.section2TitleArray objectAtIndex:indexPath.row];
+            //            cell.myLabelText.textColor = [UIColor whiteColor];
+            //            cell.myLabelText.font = Font_DINCondensed(18);
+            //
+            //            if ([self.bleControl isConnected]) {
+            //                NSDictionary *readData = [self readSettingItemData];
+            //                NSString *key = [self keyForIndexpath:indexPath];
+            //                if (key) {
+            //                    cell.mySwitch.on = [[readData objectForKey:key] boolValue];
+            //                }
+            //            } else {
+            //                cell.mySwitch.on = NO;
+            //            }
+            //            cell.delegate = self;
+            //
+            //            return cell;
+            //        }
         case 2-1:
         {
             NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
@@ -725,7 +562,7 @@
             cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.font = Font_DINCondensed(18);
             if ([self.bleControl isConnected]) {
-                if ([self readRemindWay] == indexPath.row + 1) {
+                if ([WMSRightVCHelper loadRemindWay] == indexPath.row + 1) {
                     cell.accessoryType = UITableViewCellAccessoryCheckmark;
                 } else {
                     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -771,7 +608,6 @@
             cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
             cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.font = Font_DINCondensed(18);
-            //cell.detailTextLabel.text = NSLocalizedString(@"拍摄的照片保存在照片库", nil);
             cell.detailTextLabel.textColor = [UIColor whiteColor];
             cell.detailTextLabel.font = Font_System(12);
             cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
@@ -809,7 +645,7 @@
     switch (section) {
         case 0:
             return SECTION0_HEADER_HEIGHT;
-        //case 1:
+            //case 1:
         case 2-1:
         {
             AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
@@ -875,14 +711,6 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-//    if (indexPath.section == 3-1 && indexPath.row == 0) {
-//        WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
-//        vc.title = self.section4TitleArray[indexPath.row];
-//        MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
-//        [self presentViewController:nav animated:YES completion:nil];
-//        return;
-//    }
-    
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
         return;
@@ -894,7 +722,7 @@
     }
     
     if (indexPath.section == 2-1) {
-        if ([self readRemindWay] != indexPath.row+1) {//当提醒方式改变时再去设置
+        if ([WMSRightVCHelper loadRemindWay] != indexPath.row+1) {//当提醒方式改变时再去设置
             for (int i=0; i<[self.section3TitleArray count]; i++) {
                 NSIndexPath *path = [NSIndexPath indexPathForRow:i inSection:indexPath.section];
                 UITableViewCell *cell=[self.tableView cellForRowAtIndexPath:path];
@@ -904,17 +732,13 @@
             [checkedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
             
             int way = (int)indexPath.row+1;
-            [self setRemindWay:way];
-            
-            if (indexPath.row+1 == 1 || indexPath.row+1 == 3) {//当设置成“震动”时，提醒用户
-                //当电压小于指定值时，不允许切换至“震动”
-                if ([WMSDeviceModel deviceModel].voltage <= WATCH_LOW_VOLTAGE) {
-                    //......
-                } else {
-                    //.........
-                    //什么提示...
+            [WMSRightVCHelper setRemindWay:way handle:self.bleControl.settingProfile completion:^(BOOL success) {
+                DEBUGLog(@"提醒方式设置%@",success?@"成功":@"失败");
+                if (success) {
+                    [WMSRightVCHelper savaRemindWay:way];
+                    [self showOperationSuccessTip:NSLocalizedString(@"提醒方式设置成功", nil)];
                 }
-            }
+            }];
         }
         return;
     }
@@ -955,13 +779,13 @@
     if ([switchCell.myLabelText.text
          isEqualToString:NSLocalizedString(@"Battery", nil)])
     {
-        [self setLowBattery:sw.on];
+        [WMSRightVCHelper setLowBatteryRemind:sw.on];
         return;
     }
     
     NSIndexPath *atIndex = [self.tableView indexPathForCell:switchCell];
     NSString *key = [self keyForIndexpath:atIndex];
-    [self savaSettingItemForKey:key object:@([sw isOn])];
+    [WMSRightVCHelper savaSettingItemForKey:key data:@(sw.on)];
 }
 
 @end
