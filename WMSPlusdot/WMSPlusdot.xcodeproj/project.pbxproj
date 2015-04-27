@@ -255,6 +255,7 @@
 		23A1532D1A36F4630026D741 /* zq_public_green_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 23A1532B1A36F4630026D741 /* zq_public_green_btn_a.png */; };
 		23A1532E1A36F4630026D741 /* zq_public_green_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 23A1532C1A36F4630026D741 /* zq_public_green_btn_b.png */; };
 		23A6DF2B1ADCA95300BB06CF /* DataPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A6DF2A1ADCA95300BB06CF /* DataPackage.m */; };
+		23A768711AEDDF97009ECC70 /* Audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 23A768701AEDDF97009ECC70 /* Audio.mp3 */; };
 		23ABD59F1A1DC0010062FC99 /* bind_success.png in Resources */ = {isa = PBXBuildFile; fileRef = 23ABD59E1A1DC0010062FC99 /* bind_success.png */; };
 		23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */; };
 		23B0094019D4FFEF008424FA /* WMSSportHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B0093E19D4FFEF008424FA /* WMSSportHistoryViewController.xib */; };
@@ -650,6 +651,7 @@
 		23A6DF291ADCA95300BB06CF /* DataPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPackage.h; sourceTree = "<group>"; };
 		23A6DF2A1ADCA95300BB06CF /* DataPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPackage.m; sourceTree = "<group>"; };
 		23A6DF301ADD091000BB06CF /* BLEUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEUtils.h; sourceTree = "<group>"; };
+		23A768701AEDDF97009ECC70 /* Audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Audio.mp3; sourceTree = "<group>"; };
 		23ABD59E1A1DC0010062FC99 /* bind_success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bind_success.png; sourceTree = "<group>"; };
 		23B0093C19D4FFEF008424FA /* WMSSportHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportHistoryViewController.h; sourceTree = "<group>"; };
 		23B0093D19D4FFEF008424FA /* WMSSportHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportHistoryViewController.m; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 			isa = PBXGroup;
 			children = (
 				234F81F81A4D565500332C03 /* sound_alarm.m4r */,
+				23A768701AEDDF97009ECC70 /* Audio.mp3 */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -2021,6 +2024,7 @@
 				2335119219A476EF00FBCC81 /* WMSSignupViewController.xib in Resources */,
 				239388671ABBA99F0018BDA1 /* flashing_auto.png in Resources */,
 				23A1532D1A36F4630026D741 /* zq_public_green_btn_a.png in Resources */,
+				23A768711AEDDF97009ECC70 /* Audio.mp3 in Resources */,
 				233511A519A4BD5200FBCC81 /* WMSContentViewController.xib in Resources */,
 				237545C319AED3D200685CD1 /* account_head.png in Resources */,
 				2393884A1ABBA8EE0018BDA1 /* WMSSmartClockViewController.xib in Resources */,
