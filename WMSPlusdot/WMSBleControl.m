@@ -12,6 +12,8 @@
 #import "WMSRemindProfile.h"
 #import "NSMutableArray+Stack.h"
 #import "DataPackage.h"
+#import "WMSDeviceModel.h"
+#import "WMSDeviceModel+Configure.h"
 
 static const NSUInteger CONNECT_PERIPHERAL_INTERVAL             = 60;
 static const NSUInteger DISCOVER_SERVICES_INTERVAL              = 30;
@@ -375,9 +377,10 @@ NSString * const WMSBleControlScanFinish                =
                 
                 //初始化Profile
                 [self connectedConfig:peripheral];
-                
-                //发送连接成功通知
-                [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
+                [self readPeripheralInfo:^{
+                    //发送连接成功通知
+                    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
+                }];
             }
         }];
     }
@@ -525,6 +528,20 @@ NSString * const WMSBleControlScanFinish                =
     //[peripheral disconnectWithCompletion:nil];
     [self disConnectedClearup];
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:peripheral userInfo:nil];
+}
+
+#pragma mark - 在此处统一读取设备信息
+- (void)readPeripheralInfo:(void(^)(void))aCallback
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.settingProfile setCurrentDate:[NSDate systemDate] completion:^(BOOL success) {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
+        [WMSDeviceModel readDevicedetailInfo:strongSelf completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+            if (aCallback) {
+                aCallback();
+            }
+        }];
+    }];
 }
 
 

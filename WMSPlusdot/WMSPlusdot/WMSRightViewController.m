@@ -26,6 +26,8 @@
 #import "WMSSoundOperation.h"
 
 #import "GGDeviceTool.h"
+#import "WMSDeviceModel.h"
+#import "WMSDeviceModel+Configure.h"
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
@@ -262,7 +264,7 @@
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND_WAY)];
     int way = [[readData objectForKey:@"remindWay"] intValue];
     if (readData == nil || way == 0) {
-        return 3;//默认“震动+响铃”
+        return 2;//默认“响铃”
     }
     return way;
 }
@@ -492,6 +494,22 @@
     }
 }
 
+- (void)checkDeviceBattery
+{
+    double version = [WMSDeviceModel deviceModel].version;
+    double voltage = [WMSDeviceModel deviceModel].version;
+    if (version < FIRMWARE_ADD_BATTERY_INFO) {
+        return ;
+    }
+    if (voltage <= 0.0) {
+        [WMSDeviceModel readDeviceBatteryInfo:self.bleControl completion:^(float voltage) {
+            if (voltage <= WATCH_LOW_VOLTAGE) {
+                //配置提醒方式
+            }
+        }];
+    }
+}
+
 #pragma mark - Notification
 - (void)registerForNotifications
 {
@@ -527,6 +545,8 @@
     [self listeningKeys];
     
     self.pickerController.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
+    
+    
 }
 
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
@@ -885,6 +905,16 @@
             
             int way = (int)indexPath.row+1;
             [self setRemindWay:way];
+            
+            if (indexPath.row+1 == 1 || indexPath.row+1 == 3) {//当设置成“震动”时，提醒用户
+                //当电压小于指定值时，不允许切换至“震动”
+                if ([WMSDeviceModel deviceModel].voltage <= WATCH_LOW_VOLTAGE) {
+                    //......
+                } else {
+                    //.........
+                    //什么提示...
+                }
+            }
         }
         return;
     }

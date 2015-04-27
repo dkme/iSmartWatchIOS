@@ -26,6 +26,7 @@
         _batteryEnergy = 0;
         _version = 0.0;
         _mac = nil;
+        _voltage = 0.0;
     }
     return self;
 }

@@ -1680,10 +1680,6 @@
 				2353790419CD655000269F67 /* WMSAlarmClockModel.m */,
 				236D486819D81C7900EFB5C8 /* WMSActivityModel.h */,
 				236D486919D81C7900EFB5C8 /* WMSActivityModel.m */,
-				2360CED019E6855000B10A0B /* WMSDeviceModel.h */,
-				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
-				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
-				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
 				2333AB061A64FE3400DBA846 /* WMSDataManager.h */,
 				2333AB071A64FE3400DBA846 /* WMSDataManager.m */,
 			);
@@ -1781,6 +1777,10 @@
 				23A6DF291ADCA95300BB06CF /* DataPackage.h */,
 				23A6DF2A1ADCA95300BB06CF /* DataPackage.m */,
 				23A6DF301ADD091000BB06CF /* BLEUtils.h */,
+				2360CED019E6855000B10A0B /* WMSDeviceModel.h */,
+				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
+				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
+				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
 			);
 			name = BleProfile;
 			sourceTree = "<group>";
