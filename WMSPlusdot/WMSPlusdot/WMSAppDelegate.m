@@ -33,7 +33,6 @@
 
 NSString *const WMSAppDelegateReSyncData = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncData";
-NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfiguredBLEDevice";
 
 @interface WMSAppDelegate ()<RESideMenuDelegate>
 @end
