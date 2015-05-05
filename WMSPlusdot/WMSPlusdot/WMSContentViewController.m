@@ -598,19 +598,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdatedBLEState:) name:WMSBleControlBluetoothStateUpdated object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAlreadyConfiguredDevice:) name:AlreadyConfiguredBLEDevice object:nil];
 }
 - (void)unregisterFromNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 #pragma mark - Handle
-- (void)handleAlreadyConfiguredDevice:(NSNotification *)notification
-{
-    if (self.isVisible) {
-        [self startSyncSportData];
-    }else{};
-}
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [self showTipView:NO];
@@ -618,6 +611,7 @@
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
         self.isNeedUpdate = NO;
+        [self startSyncSportData];
     } else {
         self.isNeedUpdate = YES;
     }

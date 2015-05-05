@@ -94,6 +94,15 @@ static const int            MAX_RSSI                = -75;
     [self scanPeripheral];
     [self.bindView.textView setText:NSLocalizedString(@"请将手表靠近手机", nil)];
 }
+- (void)prepareSendBindingCMD:(double)version
+{
+    if (version < FIRMWARE_TARGET_VERSION) {
+        self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
+    }
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
+    [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
+    [self sendBindingCMD];
+}
 - (void)sendBindingCMD
 {
     __weak __typeof(self) weakSelf = self;
@@ -217,32 +226,14 @@ static const int            MAX_RSSI                = -75;
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
 
-    [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
-        
-        [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
-            DEBUGLog(@"read version:%d",version);
-            
-            if (version >= FIRMWARE_CAN_READ_MAC) {
-                [WMSDeviceModel readDeviceMac:self.bleControl completion:^(NSString *mac) {
-                    if (version < FIRMWARE_TARGET_VERSION) {
-                        self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-                    }
-                    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
-                    [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
-                    [self sendBindingCMD];
-                }];
-            } else {
-                if (version < FIRMWARE_TARGET_VERSION) {
-                    self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-                }
-                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
-                [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
-                [self sendBindingCMD];
-            }
-            
+    double version = [WMSDeviceModel deviceModel].version;
+    if (version >= FIRMWARE_CAN_READ_MAC) {
+        [WMSDeviceModel readDeviceMac:self.bleControl completion:^(NSString *mac) {
+            [self prepareSendBindingCMD:version];
         }];
-        
-    }];
+    } else {
+        [self prepareSendBindingCMD:version];
+    }
 }
 - (void)handleDisConnectPeripheral:(NSNotification *)notification
 {

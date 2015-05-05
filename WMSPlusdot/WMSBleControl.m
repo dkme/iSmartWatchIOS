@@ -12,6 +12,8 @@
 #import "WMSRemindProfile.h"
 #import "NSMutableArray+Stack.h"
 #import "DataPackage.h"
+#import "WMSDeviceModel.h"
+#import "WMSDeviceModel+Configure.h"
 
 static const NSUInteger CONNECT_PERIPHERAL_INTERVAL             = 60;
 static const NSUInteger DISCOVER_SERVICES_INTERVAL              = 30;
@@ -253,6 +255,32 @@ NSString * const WMSBleControlScanFinish                =
 {
     [self disconnectWithReason:@"用户自己去断开的"];
 }
+- (void)disconnect:(void(^)(BOOL success))aCallback
+{
+    NSString *reason = @"用户自己去断开的";
+    //disconnect
+    if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
+        [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
+            [self disConnectedClearup];
+            if (aCallback) {
+                aCallback( (!error ? YES : NO) );
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
+        }];
+        return ;
+    }
+    if (self.isConnecting) {//self.connectedPeripheral为nil,则不能使用上面的方式“断开”连接
+        CBPeripheral *p = self.connectingPeripheral.cbPeripheral;
+        if (p) {
+            [self.centralManager.manager cancelPeripheralConnection:p];
+            [self disConnectedClearup];
+        }
+        if (aCallback) {
+            aCallback(YES);
+        }
+    }
+}
 
 #pragma mark - Peripheral operation
 - (void)bindSettingCMD:(BindSettingCMD)cmd
@@ -349,9 +377,10 @@ NSString * const WMSBleControlScanFinish                =
                 
                 //初始化Profile
                 [self connectedConfig:peripheral];
-                
-                //发送连接成功通知
-                [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
+                [self readPeripheralInfo:^{
+                    //发送连接成功通知
+                    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
+                }];
             }
         }];
     }
@@ -387,6 +416,10 @@ NSString * const WMSBleControlScanFinish                =
     [self setConnectingPeripheral:nil];
     
     [self subscribeNotifyCharacteristic];
+    
+    
+    
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
 }
 
 - (void)disConnectedClearup
@@ -495,6 +528,20 @@ NSString * const WMSBleControlScanFinish                =
     //[peripheral disconnectWithCompletion:nil];
     [self disConnectedClearup];
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:peripheral userInfo:nil];
+}
+
+#pragma mark - 在此处统一读取设备信息
+- (void)readPeripheralInfo:(void(^)(void))aCallback
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.settingProfile setCurrentDate:[NSDate systemDate] completion:^(BOOL success) {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
+        [WMSDeviceModel readDevicedetailInfo:strongSelf completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+            if (aCallback) {
+                aCallback();
+            }
+        }];
+    }];
 }
 
 

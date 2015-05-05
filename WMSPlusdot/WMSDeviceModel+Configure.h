@@ -27,7 +27,7 @@ typedef void(^readDeviceBatteryInfo)(float voltage);
            completion:(readDeviceMac)callback;
 
 + (void)setDeviceDate:(WMSBleControl *)bleControl
-               completion:(setDateCallBack)callback;
+           completion:(setDateCallBack)callback;
 
 + (void)readDeviceBatteryInfo:(WMSBleControl *)bleControl
                    completion:(readDeviceBatteryInfo)callback;

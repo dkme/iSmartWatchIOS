@@ -23,6 +23,7 @@
 #import "WMSMyAccessory.h"
 #import "WMSHelper.h"
 #import "CacheClass.h"
+#import "WMSRightVCHelper.h"
 
 #define SECTION_NUMBER      1
 #define CELL_HIGHT          207
@@ -138,8 +139,7 @@ NSString* const WMSUnBindAccessorySuccess =
 - (void)reset
 {
     //复位操作
-    WMSRightViewController *rightVC = (WMSRightViewController *)self.sideMenuViewController.rightMenuViewController;
-    [rightVC resetFirstConnectedConfig];
+    [WMSRightVCHelper resetFirstConnectedConfig];
     [WMSHelper clearCache];//清除缓存
 }
 

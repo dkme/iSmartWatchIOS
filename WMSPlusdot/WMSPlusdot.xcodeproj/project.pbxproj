@@ -157,6 +157,7 @@
 		233511B519A4C3E500FBCC81 /* main_date_next_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B319A4C3E500FBCC81 /* main_date_next_a.png */; };
 		233511B619A4C3E500FBCC81 /* main_date_next_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B419A4C3E500FBCC81 /* main_date_next_b.png */; };
 		233511B819A4C45500FBCC81 /* main_progress_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 233511B719A4C45500FBCC81 /* main_progress_bg.png */; };
+		23369C191AF8624200A15D50 /* Audio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 23369C181AF8624200A15D50 /* Audio.mp3 */; };
 		233A431C19F8F15900BD295B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233A431B19F8F15900BD295B /* AVFoundation.framework */; };
 		23445CE41A6CA6180094DC57 /* add_clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 23445CE31A6CA6180094DC57 /* add_clock.png */; };
 		23472E841A8AF8C500ED3CA4 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 23472E721A8AF8C500ED3CA4 /* AFHTTPRequestOperation.m */; };
@@ -555,6 +556,7 @@
 		233511B319A4C3E500FBCC81 /* main_date_next_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_date_next_a.png; sourceTree = "<group>"; };
 		233511B419A4C3E500FBCC81 /* main_date_next_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_date_next_b.png; sourceTree = "<group>"; };
 		233511B719A4C45500FBCC81 /* main_progress_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_progress_bg.png; sourceTree = "<group>"; };
+		23369C181AF8624200A15D50 /* Audio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Audio.mp3; sourceTree = "<group>"; };
 		233A431B19F8F15900BD295B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		233A431D19FA542900BD295B /* WMSAdaptiveMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAdaptiveMacro.h; sourceTree = "<group>"; };
 		23445CE31A6CA6180094DC57 /* add_clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_clock.png; sourceTree = "<group>"; };
@@ -1725,6 +1727,7 @@
 			isa = PBXGroup;
 			children = (
 				234F81F81A4D565500332C03 /* sound_alarm.m4r */,
+				23369C181AF8624200A15D50 /* Audio.mp3 */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -1923,10 +1926,6 @@
 				2353790419CD655000269F67 /* WMSAlarmClockModel.m */,
 				236D486819D81C7900EFB5C8 /* WMSActivityModel.h */,
 				236D486919D81C7900EFB5C8 /* WMSActivityModel.m */,
-				2360CED019E6855000B10A0B /* WMSDeviceModel.h */,
-				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
-				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
-				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
 				2333AB061A64FE3400DBA846 /* WMSDataManager.h */,
 				2333AB071A64FE3400DBA846 /* WMSDataManager.m */,
 				23472E961A8B374600ED3CA4 /* Activity.h */,
@@ -2037,6 +2036,10 @@
 				23A6DF421ADD1AAE00BB06CF /* DataPackage.h */,
 				23A6DF431ADD1AAE00BB06CF /* DataPackage.m */,
 				23A6DF441ADD1AAE00BB06CF /* BLEUtils.h */,
+				2360CED019E6855000B10A0B /* WMSDeviceModel.h */,
+				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
+				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
+				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
 			);
 			name = BleProfile;
 			sourceTree = "<group>";
@@ -2248,6 +2251,7 @@
 				23114A4819D120D600FA594C /* unselect_man.png in Resources */,
 				23CAD74F1AE74C6C00C2D4E8 /* skin_intro_page.png in Resources */,
 				238370EC1AB826480022F8CF /* flashing_auto@2x.png in Resources */,
+				23369C191AF8624200A15D50 /* Audio.mp3 in Resources */,
 				2368A8211A8460EE003DFAAC /* WMSBeanCell.xib in Resources */,
 				230298DA19A87F0A009D4306 /* link_connect_success_icon.png in Resources */,
 				231972521A35B8FC002E8A0F /* zq_light_list_top_a.png in Resources */,
@@ -2646,13 +2650,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: an liu (4E8WUK78VW)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d6fda4e9-ee5d-49bc-b47b-3dd3171842ee";
+				PROVISIONING_PROFILE = "69bb3d25-9cba-494e-ac45-23ee573174fc";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2760,7 +2764,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d6fda4e9-ee5d-49bc-b47b-3dd3171842ee";
+				PROVISIONING_PROFILE = "69bb3d25-9cba-494e-ac45-23ee573174fc";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2778,7 +2782,7 @@
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d6fda4e9-ee5d-49bc-b47b-3dd3171842ee";
+				PROVISIONING_PROFILE = "69bb3d25-9cba-494e-ac45-23ee573174fc";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

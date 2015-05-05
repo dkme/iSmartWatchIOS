@@ -63,7 +63,7 @@
                                 //NSLocalizedString(@"故障排除", nil),
                                 //NSLocalizedString(@"常见问题", nil),
                                 //NSLocalizedString(@"适配机型", nil),
-                                NSLocalizedString(@"APP版本", nil),
+                                //NSLocalizedString(@"APP版本", nil),
                                 NSLocalizedString(@"固件版本", nil),
                                 ];
     }
@@ -366,20 +366,21 @@
             cell.leftLabel.font = Font_System(15.0);
             cell.rightLabel.text = @"";
             cell.rightLabel.font = Font_System(12.0);
-            if (row == 3-3) {
-                if ([self isDetectedNewVersion]==DetectResultCanUpdate/* ||
-                    YES*/) {
-                    if ([self isExistBadgeOfView:cell] == NO) {
-                        JSCustomBadge *badge = [JSCustomBadge customBadgeWithString:@"New"];
-                        [self view:cell addBadge:badge];
-                    }
-                } else {
-                    [self removeBadgeFromView:cell];
-                    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-                    NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
-                    cell.rightLabel.text = currentVersion;//NSLocalizedString(@"已是最新版本", nil);
-                }
-            } else if (row == 4-3) {
+//            if (row == 3-3) {
+//                if ([self isDetectedNewVersion]==DetectResultCanUpdate/* ||
+//                    YES*/) {
+//                    if ([self isExistBadgeOfView:cell] == NO) {
+//                        JSCustomBadge *badge = [JSCustomBadge customBadgeWithString:@"New"];
+//                        [self view:cell addBadge:badge];
+//                    }
+//                } else {
+//                    [self removeBadgeFromView:cell];
+//                    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+//                    NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
+//                    cell.rightLabel.text = currentVersion;//NSLocalizedString(@"已是最新版本", nil);
+//                }
+//            }
+            /*else*/ if (row == 4-3-1) {
                 if (_isUpdateFirmware/* || YES*/) {
                     if ([self isExistBadgeOfView:cell] == NO) {
                         JSCustomBadge *badge = [JSCustomBadge customBadgeWithString:@"New"];

@@ -10,6 +10,6 @@
 
 @interface WMSRightViewController : UITableViewController
 
-- (void)resetFirstConnectedConfig;
+//- (void)resetFirstConnectedConfig;
 
 @end

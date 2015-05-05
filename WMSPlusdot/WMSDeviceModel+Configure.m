@@ -61,6 +61,7 @@
                    completion:(readDeviceBatteryInfo)callback
 {
     [bleControl.deviceProfile readDeviceBatteryInfo:^(BatteryType type, BatteryStatus status, float voltage, float percentage) {
+        [self deviceModel].voltage = voltage;
         if (callback) {
             callback(voltage);
         }

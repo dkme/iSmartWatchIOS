@@ -33,7 +33,6 @@
 
 NSString *const WMSAppDelegateReSyncData = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncData";
-NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfiguredBLEDevice";
 
 @interface WMSAppDelegate ()<RESideMenuDelegate>
 @end
@@ -119,20 +118,13 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     DEBUGLog(@"%s",__FUNCTION__);
-    [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
-    
-    if (_backgroundTimer && [_backgroundTimer isValid]) {
-        [_backgroundTimer invalidate];
-        _backgroundTimer = nil;
-    }
-    _backgroundTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(tik) userInfo:nil repeats:YES];
+    [self startCommunication];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     DEBUGLog(@"%s",__FUNCTION__);
-    [_backgroundTimer invalidate];
-    _backgroundTimer = nil;
+    [self stopCommunication];
     
     [self setupReSyncDataTimer];
 }
@@ -202,24 +194,39 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
 }
 
-#pragma mark - other methods
-- (void)tik
+#pragma mark - 后台保持与BLE设备通讯，以防断开
+- (void)startCommunication
 {
-    DEBUGLog(@"tick .....");
+    [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+    
+    if (_backgroundTimer && [_backgroundTimer isValid]) {
+        [_backgroundTimer invalidate];
+        _backgroundTimer = nil;
+    }
+    _backgroundTimer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(communication) userInfo:nil repeats:YES];
+}
+- (void)stopCommunication
+{
+    if (_backgroundTimer) {
+        if ([_backgroundTimer isValid]) {
+            [_backgroundTimer invalidate];
+            _backgroundTimer = nil;
+        }
+    }
+}
+- (void)communication
+{
+    DEBUGLog(@"communication .....");
     //发送一个命令，保持蓝牙连接
-    [self keepBLEConnection];
+    [self.wmsBleControl.deviceProfile readDeviceTimeWithCompletion:^(NSString *dateString, BOOL success) {
+        DEBUGLog(@"read device time %@",dateString);
+    }];
     
     if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 61.0) {
         [[GGAudioTool sharedInstance] playSilentSound];
         
         [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
     }
-}
-- (void)keepBLEConnection
-{
-    [_wmsBleControl.deviceProfile readDeviceTimeWithCompletion:^(NSString *dateString, BOOL success) {
-        DEBUGLog(@"read device time %@",dateString);
-    }];
 }
 
 #pragma mark -  Notifications
@@ -284,6 +291,7 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
             break;
     }
 }
+
 - (void)scanAndConnectPeripheral:(LGPeripheral *)peripheral
 {
     switch ([self.wmsBleControl bleState]) {
@@ -316,35 +324,28 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
          }];
     }
 }
+
 - (void)connectedConfigure
 {
     if (![WMSMyAccessory isBindAccessory]) {
         return ;
     }
-    [WMSDeviceModel setDeviceDate:self.wmsBleControl completion:^{
-        [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
-            if (!isPaired) {
-                [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
-            }else{}
-            [self checkDeviceBattery:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:AlreadyConfiguredBLEDevice object:nil userInfo:nil];
-            }];
-        }];
+    
+    [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
+        if (!isPaired) {
+            [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
+        }
     }];
+    [self checkDeviceBattery];
 }
-- (void)checkDeviceBattery:(void(^)(void))callBack
+
+- (void)checkDeviceBattery
 {
     static int checkCount = 0;
     if (checkCount >= 1) {
-        if (callBack) {
-            callBack();
-        }else{};
         return ;
     }
     if ([WMSDeviceModel deviceModel].version < FIRMWARE_ADD_BATTERY_INFO) {
-        if (callBack) {
-            callBack();
-        }else{};
         return ;
     }
     [WMSDeviceModel readDeviceBatteryInfo:self.wmsBleControl completion:^(float voltage) {
@@ -354,11 +355,9 @@ NSString *const AlreadyConfiguredBLEDevice = @"com.ios.plusdot.AlreadyConfigured
             [alert show];
             checkCount ++;
         }else{}
-        if (callBack) {
-            callBack();
-        }else{};
     }];
 }
+
 
 #pragma mark - DFU
 - (void)peripheralDidStartDFU:(NSNotification *)notification
