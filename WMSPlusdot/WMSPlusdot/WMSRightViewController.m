@@ -25,6 +25,8 @@
 #import "WMSSoundOperation.h"
 
 #import "GGDeviceTool.h"
+#import "WMSDeviceModel.h"
+#import "WMSDeviceModel+Configure.h"
 
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
@@ -241,6 +243,29 @@
         }
     }
 }
+//#pragma mark - 监测手表电量
+- (void)deviceIsLowBattery:(void(^)(BOOL isLow))aCallback
+{
+    double version = [WMSDeviceModel deviceModel].version;
+    double voltage = [WMSDeviceModel deviceModel].voltage;
+    if (version < FIRMWARE_ADD_BATTERY_INFO) {
+        if (aCallback) {
+            aCallback(NO);
+        }
+        return ;
+    }
+    if (voltage <= 0.0) {//表示还没读取设备电压
+        [WMSDeviceModel readDeviceBatteryInfo:self.bleControl completion:^(float voltage) {
+            if (aCallback) {
+                aCallback( (voltage<=WATCH_LOW_VOLTAGE) );
+            }
+        }];
+    } else {
+        if (aCallback) {
+            aCallback( (voltage<=WATCH_LOW_VOLTAGE) );
+        }
+    }
+}
 
 #pragma mark - 监听来电/按键
 - (void)listeningCall
@@ -379,14 +404,25 @@
     if (_isVisible || _isNeedConfig) {
         [WMSRightVCHelper startFirstConnectedConfig:self.bleControl.settingProfile completion:nil];
     }
-    [self.tableView reloadData];
-    
     float battery = [[UIDevice currentDevice] batteryLevel];
     [self batteryOperation:battery];
     
     [self listeningKeys];
     
     self.pickerController.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
+    
+    __weak __typeof(self) weakSelf = self;
+    [self deviceIsLowBattery:^(BOOL isLow) {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
+        if (isLow) {
+            //设置为响铃提醒
+            [WMSRightVCHelper setRemindWay:2 handle:strongSelf.bleControl.settingProfile completion:^(BOOL success) {
+                [strongSelf.tableView reloadData];
+            }];
+        } else {
+            [strongSelf.tableView reloadData];
+        }
+    }];
 }
 
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
@@ -723,6 +759,17 @@
     
     if (indexPath.section == 2-1) {
         if ([WMSRightVCHelper loadRemindWay] != indexPath.row+1) {//当提醒方式改变时再去设置
+            if (indexPath.row+1 == 1 || indexPath.row+1 == 3) {//当设置成“震动”时，提醒用户
+                //当电压小于指定值时，不允许切换至“震动”
+                if ([WMSDeviceModel deviceModel].voltage <= WATCH_LOW_VOLTAGE) {
+                    [WMSRightVCHelper showTipOfLowBatteryNotSetVibrationRemindWay];
+                    return ;
+                } else {
+                    //什么提示...
+                    [self showTip:NSLocalizedString(@"设置为“震动”模式，会缩减电池的寿命", nil)];
+                }
+            }
+            
             for (int i=0; i<[self.section3TitleArray count]; i++) {
                 NSIndexPath *path = [NSIndexPath indexPathForRow:i inSection:indexPath.section];
                 UITableViewCell *cell=[self.tableView cellForRowAtIndexPath:path];
@@ -763,7 +810,6 @@
         return;
     }
 }
-
 
 #pragma mark - WMSSwitchCellDelegage
 - (void)switchCell:(WMSSwitchCell *)switchCell didClickSwitch:(UISwitch *)sw

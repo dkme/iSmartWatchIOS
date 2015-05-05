@@ -30,12 +30,14 @@
 + (void)savaRemindWay:(int)way;
 + (void)setRemindWay:(int)way
               handle:(WMSSettingProfile *)handle
-          completion:(void(^)(BOOL))aCallBack;
+          completion:(void(^)(BOOL success))aCallBack;
 
 #pragma mark - 第一次连接成功后，对设置项的配置
 + (void)resetFirstConnectedConfig;
 + (void)startFirstConnectedConfig:(WMSSettingProfile *)handle
                        completion:(void(^)(void))aCallBack;
 
+#pragma mark - AlertView
++ (void)showTipOfLowBatteryNotSetVibrationRemindWay;
 
 @end

@@ -130,7 +130,7 @@
     [writeData writeToFile:FilePath(FILE_REMIND_WAY) atomically:YES];
 }
 
-+ (void)setRemindWay:(int)way handle:(WMSSettingProfile *)handle completion:(void(^)(BOOL))aCallBack
++ (void)setRemindWay:(int)way handle:(WMSSettingProfile *)handle completion:(void(^)(BOOL success))aCallBack
 {
     RemindMode mode = way;//way与RemindMode一一对应
     RemindEventsType type = [self __remindEventsType];
@@ -210,10 +210,11 @@
     }
 }
 
-
-- (void)dealloc
+#pragma mark - AlertView
++ (void)showTipOfLowBatteryNotSetVibrationRemindWay
 {
-    DEBUGLog(@"%s",__FUNCTION__);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"手表电量过低，不能设置为“震动”模式",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+    [alertView show];
 }
 
 @end
