@@ -387,9 +387,11 @@ static const int STARTED_NUMBER         = 50;
         
         if (cmd == CMDReadDeviceBatteryInfo) {
             if ([self.myTimers isValidForTimeID:TimeIDReadDeviceBatteryInfo]) {
-                [self.myTimers deleteTimerForTimeID:TimeIDReadDeviceBatteryInfo];
-                
+                [self.myTimers resetTriggerCountOfTimerID:TimeIDReadDeviceBatteryInfo];
                 readDeviceBatteryInfoCallBack callBack = [self.stackReadBatteryInfo pop];
+                if (![self.stackReadBatteryInfo isHasData]) {
+                    [self.myTimers deleteTimerForTimeID:TimeIDReadDeviceBatteryInfo];
+                }
                 if (callBack) {
                     UInt8 batt_type = package[3];
                     UInt16 batt_vol = package[4] + ((UInt16)package[5] << 8);//mv

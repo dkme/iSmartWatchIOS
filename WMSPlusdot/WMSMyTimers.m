@@ -101,6 +101,10 @@
     
     return count;
 }
+- (void)resetTriggerCountOfTimerID:(int)ID
+{
+    [self.timerTriggerCountDic setObject:@(0) forKey:@(ID)];
+}
 
 - (void)deleteTimerTriggerCountForTimeID:(int)ID
 {

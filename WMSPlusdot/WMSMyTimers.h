@@ -22,5 +22,6 @@
 
 - (void)addTriggerCountToTimer:(NSTimer *)timer;
 - (int)triggerCountForTimer:(NSTimer *)timer;
+- (void)resetTriggerCountOfTimerID:(int)ID;//重置定时器的触发次数
 
 @end

@@ -410,13 +410,17 @@
     [self listeningKeys];
     
     self.pickerController.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
-    
+
     __weak __typeof(self) weakSelf = self;
     [self deviceIsLowBattery:^(BOOL isLow) {
         __strong __typeof(weakSelf) strongSelf = weakSelf;
         if (isLow) {
             //设置为响铃提醒
-            [WMSRightVCHelper setRemindWay:2 handle:strongSelf.bleControl.settingProfile completion:^(BOOL success) {
+            int way = 2;//响铃
+            [WMSRightVCHelper setRemindWay:way handle:strongSelf.bleControl.settingProfile completion:^(BOOL success) {
+                if (success) {
+                    [WMSRightVCHelper savaRemindWay:way];
+                }
                 [strongSelf.tableView reloadData];
             }];
         } else {
@@ -553,34 +557,6 @@
             
             return cell;
         }
-            //        case 1:
-            //        {
-            //            NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
-            //            UINib *cellNib = [UINib nibWithNibName:@"WMSSwitchCell" bundle:nil];
-            //            [self.tableView registerNib:cellNib forCellReuseIdentifier:CellIdentifier];
-            //
-            //            WMSSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            //            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            //            cell.backgroundColor = [UIColor clearColor];
-            //            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
-            //
-            //            cell.myLabelText.text = [self.section2TitleArray objectAtIndex:indexPath.row];
-            //            cell.myLabelText.textColor = [UIColor whiteColor];
-            //            cell.myLabelText.font = Font_DINCondensed(18);
-            //
-            //            if ([self.bleControl isConnected]) {
-            //                NSDictionary *readData = [self readSettingItemData];
-            //                NSString *key = [self keyForIndexpath:indexPath];
-            //                if (key) {
-            //                    cell.mySwitch.on = [[readData objectForKey:key] boolValue];
-            //                }
-            //            } else {
-            //                cell.mySwitch.on = NO;
-            //            }
-            //            cell.delegate = self;
-            //
-            //            return cell;
-            //        }
         case 2-1:
         {
             NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
@@ -759,6 +735,7 @@
     
     if (indexPath.section == 2-1) {
         if ([WMSRightVCHelper loadRemindWay] != indexPath.row+1) {//当提醒方式改变时再去设置
+            BOOL isShowWarning = NO;
             if (indexPath.row+1 == 1 || indexPath.row+1 == 3) {//当设置成“震动”时，提醒用户
                 //当电压小于指定值时，不允许切换至“震动”
                 if ([WMSDeviceModel deviceModel].voltage <= WATCH_LOW_VOLTAGE) {
@@ -766,7 +743,7 @@
                     return ;
                 } else {
                     //什么提示...
-                    [self showTip:NSLocalizedString(@"设置为“震动”模式，会缩减电池的寿命", nil)];
+                    isShowWarning = YES;
                 }
             }
             
@@ -784,6 +761,10 @@
                 if (success) {
                     [WMSRightVCHelper savaRemindWay:way];
                     [self showOperationSuccessTip:NSLocalizedString(@"提醒方式设置成功", nil)];
+                    if (isShowWarning) {
+                        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showWarningWhenRemindWayIsVibration) object:nil];
+                        [self performSelector:@selector(showWarningWhenRemindWayIsVibration) withObject:nil afterDelay:1.0];
+                    }
                 }
             }];
         }
@@ -809,6 +790,12 @@
         [self switchToRemoteMode];
         return;
     }
+}
+
+#warning 在设置为“震动”方式时，提醒用户
+- (void)showWarningWhenRemindWayIsVibration
+{
+    [self showTip:NSLocalizedString(@"设置为“震动”模式，会加快电池的损耗", nil)];
 }
 
 #pragma mark - WMSSwitchCellDelegage

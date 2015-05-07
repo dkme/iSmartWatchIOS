@@ -33,6 +33,16 @@
 {
     return [[self class] popFromArray:self];
 }
+
++ (BOOL)isHasDataOfArray:(NSMutableArray *)aArray
+{
+    return (aArray.count > 0 ? YES : NO);
+}
+- (BOOL)isHasData
+{
+    return (self.count > 0 ? YES : NO);
+}
+
 - (void)clear
 {
     [self removeAllObjects];

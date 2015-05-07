@@ -677,35 +677,44 @@ NSString * const WMSBleControlScanFinish                =
         
         if (cmd == CMDSetBinding) {
             if ([self.myTimers isValidForTimeID:TimeIDBindSetting]) {//成功
-                [self.myTimers deleteTimerForTimeID:TimeIDBindSetting];
-                
+                [self.myTimers resetTriggerCountOfTimerID:TimeIDBindSetting];
                 WMSBleBindSettingCallBack callBack = [NSMutableArray popFromArray:self.stackBindSetting];
+                if (![self.stackBindSetting isHasData]) {
+                    [self.myTimers deleteTimerForTimeID:TimeIDBindSetting];
+                }
                 NSInteger result = package[3];
                 if (callBack) {
                     callBack(result);
+                    callBack = nil;
                 }
             }
             return;
         }
         if (cmd == CMDSwitchControlMode) {
             if ([self.myTimers isValidForTimeID:TimeIDSwitchControlMode]) {//成功
-                [self.myTimers deleteTimerForTimeID:TimeIDSwitchControlMode];
-            
+                [self.myTimers resetTriggerCountOfTimerID:TimeIDSwitchControlMode];
                 WMSBleSwitchToControlModeCallback callBack = [NSMutableArray popFromArray:self.stackSwitchControlMode];
+                if (![self.stackSwitchControlMode isHasData]) {
+                    [self.myTimers deleteTimerForTimeID:TimeIDSwitchControlMode];
+                }
                 if (callBack) {
                     callBack(YES,nil);
+                    callBack = nil;
                 }
             }
             return;
         }
         if (cmd == CMDSwitchUpdateMode) {
             if ([self.myTimers isValidForTimeID:TimeIDSwitchUpdateMode]) {//成功
-                [self.myTimers deleteTimerForTimeID:TimeIDSwitchUpdateMode];
-                
-                Byte result = package[3];
+                [self.myTimers resetTriggerCountOfTimerID:TimeIDSwitchUpdateMode];
                 WMSBleSwitchToUpdateModeCallback callBack = [NSMutableArray popFromArray:self.stackSwitchUpdateMode];
+                if (![self.stackSwitchUpdateMode isHasData]) {
+                    [self.myTimers deleteTimerForTimeID:TimeIDSwitchUpdateMode];
+                }
+                Byte result = package[3];
                 if (callBack) {
                     callBack(result,nil);
+                    callBack = nil;
                 }
             }
             return;
