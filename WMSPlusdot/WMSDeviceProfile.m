@@ -13,6 +13,7 @@
 #import "BLEUtils.h"
 
 static const int HOUR_NUMBER            = 24;
+static const int ARRAY_LENGTH            = 100;
 static const int STARTED_NUMBER         = 50;
 
 @interface WMSDeviceProfile ()
@@ -26,7 +27,7 @@ static const int STARTED_NUMBER         = 50;
     NSUInteger _todaySteps_SportData;
     NSUInteger _todaySportDurations_SportData;
     NSUInteger _surplusDays_SportData;
-    UInt16 _perHourData_SportData[HOUR_NUMBER];
+    UInt16 _perHourData_SportData[ARRAY_LENGTH];
     int _index_SportData;
     
     
@@ -454,7 +455,7 @@ DEBUGLog(@"---->PrepareSync date:%d-%d-%d,total:%d",_year_SportData,_month_Sport
             return;
         }
         [self.myTimers deleteTimerForTimeID:TimeIDStartSyncSportData];
-        
+
         Byte len = package[3];
         UInt16 currentSerial = package[4] + ((UInt16)package[5] << 8);
         UInt16 data0 = package[6] + ((UInt16)package[7] << 8);
@@ -473,7 +474,7 @@ DEBUGLog(@"---->PrepareSync date:%d-%d-%d,total:%d",_year_SportData,_month_Sport
         _perHourData_SportData[_index_SportData] = data4;
         _index_SportData++;
         DEBUGLog(@"---->len=%d---serial=%d----data:%d,%d,%d,%d,%d\n",len,currentSerial,data0,data1,data2,data3,data4);
-        
+
         if (_totals_SportData <= currentSerial) {//数据同步完了
             _totals_SportData = 0;
             [self endSyncSportData];

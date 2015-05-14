@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>400E0033-AC43-4277-873F-8E6B2DB8CE15</string>
 	<key>IDESourceControlProjectName</key>
-	<string>WMSPlusdot</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>4A5AB630EA99246C562A6F4C9AE1F541B094667F</key>
 		<string>https://github.com/dkme/iSmartWatchIOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>WMSPlusdot/WMSPlusdot.xcodeproj</string>
+	<string>WMSPlusdot/WMSPlusdot.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>4A5AB630EA99246C562A6F4C9AE1F541B094667F</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>4A5AB630EA99246C562A6F4C9AE1F541B094667F</string>
 			<key>IDESourceControlWCCName</key>
-			<string>MyGit</string>
+			<string>plusdot%20project</string>
 		</dict>
 	</array>
 </dict>

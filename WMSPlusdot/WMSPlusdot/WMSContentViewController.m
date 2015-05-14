@@ -498,8 +498,12 @@
      {
          DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
          
+         int steps = 0;
+         for (int i=0; i<dataLength; i++) {
+             steps += PerHourData[i];
+         }
          //保存数据
-         [self savaSportDate:[NSDate dateFromString:sportdate format:@"yyyy-MM-dd"] steps:todaySteps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
+         [self savaSportDate:[NSDate dateFromString:sportdate format:@"yyyy-MM-dd"] steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
          
          if (surplusDays <= 1) {//同步完成
              [self stopSyncSportData];
@@ -515,9 +519,13 @@
      {
          DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
          
+         int steps = 0;
+         for (int i=0; i<dataLength; i++) {
+             steps += PerHourData[i];
+         }
          NSDate *date = [NSDate dateFromString:sportdate format:@"yyyy-MM-dd"];
          //保存数据
-         [self savaSportDate:date steps:todaySteps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
+         [self savaSportDate:date steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
          
          if (surplusDays <= 1) {//同步完成
              [self stopSyncSportData];
