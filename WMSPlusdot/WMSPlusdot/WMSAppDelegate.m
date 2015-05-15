@@ -69,6 +69,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         sideMenu.contentViewShadowRadius = 3;
         sideMenu.contentViewShadowEnabled = NO;
         sideMenu.panGestureEnabled = YES;
+        sideMenu.parallaxEnabled = NO;
         
         WMSContentViewController *contentVC = [[WMSContentViewController alloc] init];
         WMSLeftViewController *leftVC = [[WMSLeftViewController alloc] init];
