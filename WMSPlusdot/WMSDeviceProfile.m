@@ -12,6 +12,7 @@
 #import "DataPackage.h"
 
 static const int HOUR_NUMBER            = 24;
+static const int ARRAY_LENGTH           = 100;
 static const int STARTED_NUMBER         = 50;
 
 @interface WMSDeviceProfile ()
@@ -25,7 +26,7 @@ static const int STARTED_NUMBER         = 50;
     NSUInteger _todaySteps_SportData;
     NSUInteger _todaySportDurations_SportData;
     NSUInteger _surplusDays_SportData;
-    UInt16 _perHourData_SportData[HOUR_NUMBER];
+    UInt16 _perHourData_SportData[ARRAY_LENGTH];
     int _index_SportData;
     
     
