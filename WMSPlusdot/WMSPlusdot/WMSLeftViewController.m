@@ -195,11 +195,11 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.view setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:self.userInfoView];
-    [self.view addSubview:self.tableView];
-    [self.view addSubview:self.buttonSetting];
-    
-    [self reloadView];
+//    [self.view addSubview:self.userInfoView];
+//    [self.view addSubview:self.tableView];
+//    [self.view addSubview:self.buttonSetting];
+//    
+//    [self reloadView];
 }
 - (void)dealloc
 {
