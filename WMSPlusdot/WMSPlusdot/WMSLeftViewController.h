@@ -12,11 +12,18 @@
 
 @property (strong, nonatomic) NSMutableArray *contentVCArray;
 
-- (void)setUserImage:(UIImage *)image;
-
-- (void)setUserNickname:(NSString *)nickname;
-
 - (void)skipToViewControllerForIndex:(NSUInteger)index;
 
+
+@property (weak, nonatomic) IBOutlet UILabel *nickNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *tempLabel;
+@property (weak, nonatomic) IBOutlet UILabel *humidityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weatherLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *userPhoto;
+@property (weak, nonatomic) IBOutlet UIImageView *weatherIcon;
+
+@property (weak, nonatomic) IBOutlet UITableView *menuTableView;
 
 @end

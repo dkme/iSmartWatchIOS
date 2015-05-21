@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol WMSMyAccountViewControllerDelegate;
 
 @interface WMSMyAccountViewController : UIViewController
 
@@ -27,5 +28,14 @@
 
 @property (nonatomic, assign) BOOL isModifyAccount;
 @property (nonatomic, assign) BOOL isNewUser;//若是从注册界面进入该界面，设置为YES，否则为NO
+
+@property (nonatomic, weak) id<WMSMyAccountViewControllerDelegate> delegate;
+
+@end
+
+@protocol WMSMyAccountViewControllerDelegate <NSObject>
+
+@optional
+- (void)accountViewControllerDidClose:(WMSMyAccountViewController *)viewController;
 
 @end

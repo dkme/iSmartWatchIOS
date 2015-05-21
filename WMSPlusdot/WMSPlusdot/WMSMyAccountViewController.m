@@ -449,12 +449,12 @@ static const int WeightMaxValue         =220;
 
 #pragma mark - Action
 - (void)backAction:(id)sender
-{
-    WMSLeftViewController *leftVC = (WMSLeftViewController *)((RESideMenu *)self.presentingViewController).leftMenuViewController;
-    [leftVC setUserImage:myImage];
-    [leftVC setUserNickname:myName];
-    
+{    
     [self savaInfoAction:nil];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(accountViewControllerDidClose:)]) {
+        [self.delegate accountViewControllerDidClose:self];
+    }
 }
 
 - (void)buttonManClicked:(id)sender

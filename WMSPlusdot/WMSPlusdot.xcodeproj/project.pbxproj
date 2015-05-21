@@ -288,7 +288,10 @@
 		23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84FE71A709E12006BBAEA /* UILabel+Attribute.m */; };
 		23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84FEB1A70CB30006BBAEA /* WMSSportVCHelper.m */; };
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
+		E8D4F41322CC9FA9822FC6B6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E57208459FF67BC2938C56 /* libPods.a */; };
 		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
+		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
+		F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -706,7 +709,14 @@
 		23E84FEB1A70CB30006BBAEA /* WMSSportVCHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSportVCHelper.m; sourceTree = "<group>"; };
 		23FB8B5719CA7C9100E7D77C /* WMSSleepDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSleepDatabase.h; sourceTree = "<group>"; };
 		23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSleepDatabase.m; sourceTree = "<group>"; };
+		3CA1CD2CE03B4DFE43C7D967 /* Pods.ad hoc distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods.ad hoc distribution.xcconfig"; path = "Pods/Target Support Files/Pods/Pods.ad hoc distribution.xcconfig"; sourceTree = "<group>"; };
+		729B38BE1C4761341585F47D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		90E57208459FF67BC2938C56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E70B1D0CCF52BF4041DAEA77 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F41930CD19F16B1400E7B0B5 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTimeViewController.h; sourceTree = "<group>"; };
+		F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
+		F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -729,6 +739,7 @@
 				232846C319A43668001C148D /* CoreGraphics.framework in Frameworks */,
 				232846C519A43668001C148D /* UIKit.framework in Frameworks */,
 				232846C119A43668001C148D /* Foundation.framework in Frameworks */,
+				E8D4F41322CC9FA9822FC6B6 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,6 +756,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		200CD4DB49D5DD38F429869D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E70B1D0CCF52BF4041DAEA77 /* Pods.debug.xcconfig */,
+				729B38BE1C4761341585F47D /* Pods.release.xcconfig */,
+				3CA1CD2CE03B4DFE43C7D967 /* Pods.ad hoc distribution.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		230298C519A83250009D4306 /* 设置目标视图 Icon */ = {
 			isa = PBXGroup;
 			children = (
@@ -1152,6 +1173,7 @@
 				232846DF19A43668001C148D /* WMSPlusdotTests */,
 				232846BE19A43668001C148D /* Products */,
 				232846BF19A43668001C148D /* Frameworks */,
+				200CD4DB49D5DD38F429869D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1183,6 +1205,7 @@
 				232846C219A43668001C148D /* CoreGraphics.framework */,
 				232846C419A43668001C148D /* UIKit.framework */,
 				232846D919A43668001C148D /* XCTest.framework */,
+				90E57208459FF67BC2938C56 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1349,6 +1372,7 @@
 				230298DC19A88CF6009D4306 /* 我的睡眠视图 */,
 				230298DD19A88D10009D4306 /* 设置目标视图 */,
 				2316961119C705AF00E3CA24 /* 我的配件视图 */,
+				F78B2BC51B0DB6DA00F5B0D4 /* 校对时间视图 */,
 				2316508919AB47310066C301 /* 个人信息视图 */,
 				231972301A3533AF002E8A0F /* 设置视图 */,
 				23E35B861A4BB10B00FDA20D /* 防丢视图 */,
@@ -1865,6 +1889,16 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		F78B2BC51B0DB6DA00F5B0D4 /* 校对时间视图 */ = {
+			isa = PBXGroup;
+			children = (
+				F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */,
+				F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */,
+				F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */,
+			);
+			name = "校对时间视图";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1872,10 +1906,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 232846E919A43668001C148D /* Build configuration list for PBXNativeTarget "WMSPlusdot" */;
 			buildPhases = (
+				F5D86787F4B657C2AB2E9D21 /* Check Pods Manifest.lock */,
 				232846B919A43668001C148D /* Sources */,
 				232846BA19A43668001C148D /* Frameworks */,
 				232846BB19A43668001C148D /* Resources */,
 				23A6DF461ADF91F400BB06CF /* ShellScript */,
+				AC9FC4E69A6668E6F11AC196 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1984,6 +2020,7 @@
 				233511B219A4C3D300FBCC81 /* main_date_prev_b.png in Resources */,
 				2326A43719A5C6970098657B /* main_menu_sleep_icon_b.png in Resources */,
 				239F51D61A2D963E0058F6DE /* WMSGuideVC.xib in Resources */,
+				F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */,
 				2393886B1ABBA99F0018BDA1 /* flashing_on.png in Resources */,
 				2335119519A479DA00FBCC81 /* signup_arrow_a.png in Resources */,
 				23876EA91A52479800F1F15C /* intro_page3.png in Resources */,
@@ -2126,6 +2163,36 @@
 			shellPath = /bin/sh;
 			shellScript = "REV=`date +%y%m%d`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion ${REV}\" \"${TARGET_BUILD_DIR}\"/${INFOPLIST_PATH}";
 		};
+		AC9FC4E69A6668E6F11AC196 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F5D86787F4B657C2AB2E9D21 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2179,6 +2246,7 @@
 				2331838919B6FE2D005B2BA0 /* WMSDeviceProfile.m in Sources */,
 				230298D019A87DBF009D4306 /* WMSBindingAccessoryViewController.m in Sources */,
 				2328CD2F19CFFEE50085AD77 /* UIImage+QuartzProc.m in Sources */,
+				F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */,
 				2333AAFF1A64B3C700DBA846 /* MyNavigationController.m in Sources */,
 				231972481A358DDA002E8A0F /* JSCustomBadge.m in Sources */,
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
@@ -2330,6 +2398,7 @@
 		};
 		230BAD5C19F53DB700D75550 /* ad hoc distribution */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CA1CD2CE03B4DFE43C7D967 /* Pods.ad hoc distribution.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2441,6 +2510,7 @@
 		};
 		232846EA19A43668001C148D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E70B1D0CCF52BF4041DAEA77 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2459,6 +2529,7 @@
 		};
 		232846EB19A43668001C148D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 729B38BE1C4761341585F47D /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

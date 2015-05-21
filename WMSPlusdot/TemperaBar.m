@@ -14,7 +14,6 @@
 #define START_ANGLE                     (-42.0f)
 #define END_ANGLE                       (222.0f)
 #define CONTROL_CIRCLE_RADIUS           (109.5f)
-//#define Tempera_CIRCLE_RADIUS            (66.0f)
 
 #define DEGREES_TO_RADIANS(_degrees)    ((M_PI * (_degrees))/180)
 #define RADIANS_TO_DEGREES(_radians)    ((_radians)*180)/M_PI
@@ -97,9 +96,6 @@
 
 - (float)angleOfProgress:(float)progress
 {
-//    progress = MAX(progress, 0);
-//    progress = MIN(progress, 1.0f);
-    
     return _progress*(_endAngle - _startAngle)+_startAngle;
 }
 
@@ -134,17 +130,13 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     CGPoint ptCurr=[[touches anyObject] locationInView:(UIView *)_delegate];
-    //float newProgress = [self progressOfPosition:ptCurr];
     
-    /* 判断是否发生跳跃 */
-    //if ((newProgress > _progress && (newProgress - _progress) < 0.5)|| (newProgress < _progress && (_progress - newProgress) < 0.5)) {
-        _progress = [self progressOfPosition:ptCurr];
-        self.center = [self positionOfProgress:_progress];
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(circleSlide:withProgress:)]) {
-            [_delegate circleSlide:self withProgress:_progress];
-        }
-    //}
+    _progress = [self progressOfPosition:ptCurr];
+    self.center = [self positionOfProgress:_progress];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(circleSlide:withProgress:)]) {
+        [_delegate circleSlide:self withProgress:_progress];
+    }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -178,32 +170,21 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-//有做修改
         [self setUserInteractionEnabled:YES];
         _backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"target_progress_bg.png"]];
         CGRect fm = _backgroundView.bounds;
         fm.size = (CGSize){fm.size.width/2,fm.size.height/2};
-        //[_backgroundView setFrame:_backgroundView.bounds];
         [_backgroundView setFrame:fm];
         [_backgroundView setBounds:(CGRect){0,0,fm.size}];
-        //DEBUGLog(@"ImageView:%f,%f,%f,%f",_backgroundView.frame.origin.x,_backgroundView.frame.origin.y,_backgroundView.frame.size.width,_backgroundView.frame.size.height);
-        
+
         frame.size.width = _backgroundView.bounds.size.width;
         frame.size.height = _backgroundView.bounds.size.height;
         [self setFrame:frame];
-        //DEBUGLog(@"frame:%f,%f,%f,%f",frame.origin.x,frame.origin.y,frame.size.width,frame.size.height);
         [self setBackgroundColor:[UIColor clearColor]];
-        //[self setBackgroundColor:[UIColor redColor]];
         [self addSubview:_backgroundView];
         
         //control 圆点
         CGPoint pt = _backgroundView.center;
-        
-//        _circleSlide = [[CircleSlide alloc] initWithImage:[UIImage imageNamed:@"zq_light_color_control.png"]
-//                               rotatePoint:CGPointMake(CIRCLE_X, CIRCLE_Y)
-//                                    radius:CONTROL_CIRCLE_RADIUS
-//                                startAngle:DEGREES_TO_RADIANS(START_ANGLE)
-//                                  endAngle:DEGREES_TO_RADIANS(END_ANGLE)];
 
         _circleSlide = [[CircleSlide alloc] initWithImage:[UIImage imageNamed:@"target_progress_btn.png"]
                                               rotatePoint:pt
@@ -214,12 +195,7 @@
         _circleSlide.bounds = (CGRect){bounds.origin,bounds.size.width/2,bounds.size.height/2};
         _circleSlide.delegate = self;
         [self addSubview:_circleSlide];
-
         
-        //content
-//        _contentImage = [UIImage imageNamed:@"TemperaBar.bundle/vol_full.png"];
-//        _contentView = [[UIImageView alloc] initWithFrame:_backgroundView.bounds];
-//        [self addSubview:_contentView];
         _progress = 1;
     }
     return self;
@@ -244,54 +220,27 @@
     _contentImage = nil;
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    OBShapedButton *bt = [[OBShapedButton alloc]init];
-    CGPoint ptCurr=[[touches anyObject] locationInView:self];
-    if ([bt isAlphaVisibleAtPoint:ptCurr forImage:_backgroundView.image]) {
-        //[_circleSlide touchesMoved:touches withEvent:event];
-        _isInside = YES;
-    }
-}
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    OBShapedButton *bt = [[OBShapedButton alloc]init];
-    CGPoint ptCurr=[[touches anyObject] locationInView:self];
-    if ([bt isAlphaVisibleAtPoint:ptCurr forImage:_backgroundView.image]) {
-        //[_circleSlide touchesMoved:touches withEvent:event];
-    }
-}
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    OBShapedButton *bt = [[OBShapedButton alloc]init];
-    CGPoint ptCurr=[[touches anyObject] locationInView:self];
-    if ([bt isAlphaVisibleAtPoint:ptCurr forImage:_backgroundView.image]||_isInside) {
-        //[self finishSlide];
-    }
-    _isInside = NO;
-}
-
-- (void)drawRect:(CGRect)rect
-{    
-//    CGContextRef context = CGBitmapContextCreate(NULL, self.bounds.size.width, self.bounds.size.height, 8, 4 * self.bounds.size.width, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedFirst);
+//- (void)drawRect:(CGRect)rect
+//{    
+////    CGContextRef context = CGBitmapContextCreate(NULL, self.bounds.size.width, self.bounds.size.height, 8, 4 * self.bounds.size.width, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedFirst);
+////    
+////    float endAngle = (END_ANGLE-START_ANGLE)*_progress+START_ANGLE;
+////    endAngle = (_progress == 0)?(endAngle+0.1):endAngle;
+////    
+////    CGContextAddArc(context, CIRCLE_X, CIRCLE_Y, Tempera_CIRCLE_RADIUS, DEGREES_TO_RADIANS(START_ANGLE), DEGREES_TO_RADIANS(endAngle), YES);
+////    CGContextAddArc(context, CIRCLE_X, CIRCLE_Y, 0, DEGREES_TO_RADIANS(0), DEGREES_TO_RADIANS(0), YES);
+////    CGContextClosePath(context);
+////    CGContextClip(context);
+////    CGContextDrawImage(context, self.bounds, _contentImage.CGImage);
+////    CGImageRef imageMasked = CGBitmapContextCreateImage(context);
+////    CGContextRelease(context);
+////    UIImage *newImage = [UIImage imageWithCGImage:imageMasked];
+////    CGImageRelease(imageMasked);
+////    
+////    [_contentView setImage:newImage];
 //    
-//    float endAngle = (END_ANGLE-START_ANGLE)*_progress+START_ANGLE;
-//    endAngle = (_progress == 0)?(endAngle+0.1):endAngle;
-//    
-//    CGContextAddArc(context, CIRCLE_X, CIRCLE_Y, Tempera_CIRCLE_RADIUS, DEGREES_TO_RADIANS(START_ANGLE), DEGREES_TO_RADIANS(endAngle), YES);
-//    CGContextAddArc(context, CIRCLE_X, CIRCLE_Y, 0, DEGREES_TO_RADIANS(0), DEGREES_TO_RADIANS(0), YES);
-//    CGContextClosePath(context);
-//    CGContextClip(context);
-//    CGContextDrawImage(context, self.bounds, _contentImage.CGImage);
-//    CGImageRef imageMasked = CGBitmapContextCreateImage(context);
-//    CGContextRelease(context);
-//    UIImage *newImage = [UIImage imageWithCGImage:imageMasked];
-//    CGImageRelease(imageMasked);
-//    
-//    [_contentView setImage:newImage];
-    
-    [_circleSlide setProgress:_progress];
-}
+//    [_circleSlide setProgress:_progress];
+//}
 
 - (NSInteger)currentTempera
 {
@@ -303,16 +252,15 @@
     if (currentTempera >= _minimumTempera && currentTempera <= _maximumTempera) {
         _progress = 1.0f - (float)(currentTempera - _minimumTempera)/(_maximumTempera - _minimumTempera);
         _currentTempera = currentTempera;
-        [self setNeedsDisplay];
+        [_circleSlide setProgress:_progress];
     }
 }
 
 #pragma mark - CircleSlideDelegate
 - (void)circleSlide:(CircleSlide *)circleSlide withProgress:(float)progress
 {
-    //[self sendActionsForControlEvents:UIControlEventValueChanged];
     _progress = progress;
-    [self setNeedsDisplay];
+    [_circleSlide setProgress:_progress];
     
     NSInteger Tempera = (_maximumTempera - _minimumTempera)*(1-_progress);
     
