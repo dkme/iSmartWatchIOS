@@ -8,6 +8,8 @@
 
 #import "CheckTimeViewController.h"
 #import "WMSAppDelegate.h"
+#import "WMSTestView.h"
+
 
 @interface CheckTimeViewController ()
 
@@ -20,6 +22,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self setupNavBar];
+    [self setupDialView];
     
     self.view.backgroundColor = UICOLOR_DEFAULT;
 }
@@ -40,6 +43,22 @@
 {
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithImageName:@"main_menu_icon_a.png" highImageName:@"main_menu_icon_b.png" target:self action:@selector(clickLeftBarButtonItem:)];
     self.title = NSLocalizedString(@"校对时间", nil);
+}
+- (void)setupDialView
+{
+//    self.dialView.backgroundColor = [UIColor clearColor];
+//    self.dialView.backgroundImage.image = [UIImage imageNamed:@"Dial"];
+//    self.dialView.backgroundColor = [UIColor redColor];
+    
+    DialView *aa = [[DialView alloc] initWithFrame:CGRectMake(65, 100, 190, 190)];
+    aa.backgroundColor = [UIColor yellowColor];
+    aa.userInteractionEnabled = YES;
+    [self.view addSubview:aa];
+    
+//    WMSTestView *test = [[WMSTestView alloc] initWithFrame:CGRectMake(20, 60+190+20, 200, 200)];
+//    test.backgroundColor = [UIColor redColor];
+//    test.userInteractionEnabled = YES;
+//    [self.view addSubview:test];
 }
 
 

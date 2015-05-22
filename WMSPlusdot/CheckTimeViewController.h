@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DialView.h"
 
 @interface CheckTimeViewController : UIViewController
+
+@property (weak, nonatomic) IBOutlet DialView *dialView;
 
 @end

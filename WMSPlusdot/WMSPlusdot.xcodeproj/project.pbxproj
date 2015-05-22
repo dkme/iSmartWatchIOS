@@ -292,6 +292,8 @@
 		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
 		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
 		F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */; };
+		F7A822691B0EBF570083F76A /* DialView.m in Sources */ = {isa = PBXBuildFile; fileRef = F7A822681B0EBF570083F76A /* DialView.m */; };
+		F7A822701B0F15C60083F76A /* WMSTestView.m in Sources */ = {isa = PBXBuildFile; fileRef = F7A8226F1B0F15C60083F76A /* WMSTestView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -717,6 +719,10 @@
 		F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTimeViewController.h; sourceTree = "<group>"; };
 		F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
 		F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
+		F7A822671B0EBF570083F76A /* DialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialView.h; sourceTree = "<group>"; };
+		F7A822681B0EBF570083F76A /* DialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialView.m; sourceTree = "<group>"; };
+		F7A8226E1B0F15C60083F76A /* WMSTestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSTestView.h; sourceTree = "<group>"; };
+		F7A8226F1B0F15C60083F76A /* WMSTestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSTestView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1895,6 +1901,10 @@
 				F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */,
 				F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */,
 				F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */,
+				F7A822671B0EBF570083F76A /* DialView.h */,
+				F7A822681B0EBF570083F76A /* DialView.m */,
+				F7A8226E1B0F15C60083F76A /* WMSTestView.h */,
+				F7A8226F1B0F15C60083F76A /* WMSTestView.m */,
 			);
 			name = "校对时间视图";
 			sourceTree = "<group>";
@@ -2242,6 +2252,7 @@
 				23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */,
 				2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */,
 				23305D9A19C7CFAF00F9EEE6 /* WMSMyAccessory.m in Sources */,
+				F7A822691B0EBF570083F76A /* DialView.m in Sources */,
 				230FDC6919D659EB00AE98FF /* PNBarChartView.m in Sources */,
 				2331838919B6FE2D005B2BA0 /* WMSDeviceProfile.m in Sources */,
 				230298D019A87DBF009D4306 /* WMSBindingAccessoryViewController.m in Sources */,
@@ -2271,6 +2282,7 @@
 				23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */,
 				23A153291A36EFAA0026D741 /* WMSUpdateVC.m in Sources */,
 				2333AB051A64C28600DBA846 /* UIImage+Color.m in Sources */,
+				F7A822701B0F15C60083F76A /* WMSTestView.m in Sources */,
 				2316508219AB15510066C301 /* WMSLeftViewCell.m in Sources */,
 				23D7CF0719B5C57D00DFA678 /* WMSBleControl.m in Sources */,
 				2335119F19A4B85700FBCC81 /* RESideMenu.m in Sources */,
