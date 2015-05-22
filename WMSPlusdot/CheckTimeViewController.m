@@ -46,19 +46,17 @@
 }
 - (void)setupDialView
 {
-//    self.dialView.backgroundColor = [UIColor clearColor];
-//    self.dialView.backgroundImage.image = [UIImage imageNamed:@"Dial"];
-//    self.dialView.backgroundColor = [UIColor redColor];
+    self.dialView.image = [UIImage imageNamed:@"Dial"];
     
-    DialView *aa = [[DialView alloc] initWithFrame:CGRectMake(65, 100, 190, 190)];
-    aa.backgroundColor = [UIColor yellowColor];
-    aa.userInteractionEnabled = YES;
-    [self.view addSubview:aa];
-    
-//    WMSTestView *test = [[WMSTestView alloc] initWithFrame:CGRectMake(20, 60+190+20, 200, 200)];
-//    test.backgroundColor = [UIColor redColor];
-//    test.userInteractionEnabled = YES;
-//    [self.view addSubview:test];
+//    DialView *aa = [[DialView alloc] initWithFrame:CGRectMake(65, 100, 190, 190)];
+//    aa.backgroundColor = [UIColor yellowColor];
+//    aa.userInteractionEnabled = YES;
+//    [self.view addSubview:aa];
+//    
+////    WMSTestView *test = [[WMSTestView alloc] initWithFrame:CGRectMake(20, 60+190+20, 200, 200)];
+////    test.backgroundColor = [UIColor redColor];
+////    test.userInteractionEnabled = YES;
+////    [self.view addSubview:test];
 }
 
 

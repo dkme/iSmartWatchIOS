@@ -229,7 +229,7 @@ float TIMER_INVAL=0.05;
     
     if(currentRotateDirection==ANTICLOCK)
     {
-//        angle=-angle ;
+        angle=-angle ;
     }
     
     [self rotate:angle];
@@ -256,12 +256,12 @@ float TIMER_INVAL=0.05;
 /*覆盖touch event的事件处理*/
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self stopRotate];
+//    [self stopRotate];
     touchStartPoint = [self getLocationFromTouches:touches];
     
-    toucheBeginTime = [NSDate date] ;
+//    toucheBeginTime = [NSDate date] ;
     
-    NSLog(@"............fdsa;jdfl;jsdl;afj;a");
+//    NSLog(@"............fdsa;jdfl;jsdl;afj;a");
 }
 
 
@@ -275,27 +275,30 @@ float TIMER_INVAL=0.05;
     {
         [self dragRotate:touchStartPoint end:touchEndPoint];
         
-        touchStartPoint = touchEndPoint ;
+//        touchStartPoint = touchEndPoint ;
     }
-    NSLog(@"............fdsa;jdfl;jsdl;afj;ahdsofhjklhsdafklhdsaflksad");
+//    NSLog(@"............fdsa;jdfl;jsdl;afj;ahdsofhjklhsdafklhdsaflksad");
 }
-
-
+//
+//
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    now = [NSDate date];
+//    now = [NSDate date];
 
-	[self touchesMoved:touches withEvent:nil];
+//	[self touchesMoved:touches withEvent:nil];
 //    [self startRotate];
+    
+    touchEndPoint = [self getLocationFromTouches:touches];
+    touchStartPoint = touchEndPoint;
 }
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    now = [NSDate date];
-
-    [self touchesMoved:touches withEvent:nil];
-//	[self startRotate];
-}
+//
+//- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    now = [NSDate date];
+//
+//    [self touchesMoved:touches withEvent:nil];
+////	[self startRotate];
+//}
 
 
 
