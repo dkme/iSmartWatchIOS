@@ -68,7 +68,7 @@
 //固定尺寸
 #define MBProgressHUD_MinSize   CGSizeMake(250, 120)
 
-
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;//用于block中
 
 
 

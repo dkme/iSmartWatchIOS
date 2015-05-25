@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CheckTimeViewController">
             <connections>
-                <outlet property="dialView" destination="IoS-Gj-304" id="dGF-Xt-Q5p"/>
+                <outlet property="turntableView" destination="IoS-Gj-304" id="Wnt-mD-Efk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,9 +22,9 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IoS-Gj-304" customClass="DialView">
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IoS-Gj-304" customClass="TurntableView">
                     <rect key="frame" x="65" y="285" width="190" height="190"/>
-                    <color key="backgroundColor" red="0.17604539280000001" green="1" blue="0.32484397069999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>

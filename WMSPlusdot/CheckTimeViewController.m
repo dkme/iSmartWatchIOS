@@ -8,10 +8,9 @@
 
 #import "CheckTimeViewController.h"
 #import "WMSAppDelegate.h"
-#import "WMSTestView.h"
+#import "Masonry.h"
 
-
-@interface CheckTimeViewController ()
+@interface CheckTimeViewController ()<TurntableViewDelegate>
 
 @end
 
@@ -22,7 +21,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self setupNavBar];
-    [self setupDialView];
+    [self setupTurntableView];
     
     self.view.backgroundColor = UICOLOR_DEFAULT;
 }
@@ -44,19 +43,22 @@
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithImageName:@"main_menu_icon_a.png" highImageName:@"main_menu_icon_b.png" target:self action:@selector(clickLeftBarButtonItem:)];
     self.title = NSLocalizedString(@"校对时间", nil);
 }
-- (void)setupDialView
-{
-    self.dialView.image = [UIImage imageNamed:@"Dial"];
+- (void)setupTurntableView
+{    
+    WS(weakSelf);
     
-//    DialView *aa = [[DialView alloc] initWithFrame:CGRectMake(65, 100, 190, 190)];
-//    aa.backgroundColor = [UIColor yellowColor];
-//    aa.userInteractionEnabled = YES;
-//    [self.view addSubview:aa];
-//    
-////    WMSTestView *test = [[WMSTestView alloc] initWithFrame:CGRectMake(20, 60+190+20, 200, 200)];
-////    test.backgroundColor = [UIColor redColor];
-////    test.userInteractionEnabled = YES;
-////    [self.view addSubview:test];
+    UIImageView *presentView = [[UIImageView alloc] init];
+    presentView.image = [UIImage imageNamed:@"Turntable"];
+    CGSize sz = self.turntableView.frame.size;
+    
+    [self.turntableView addSubview:presentView];
+    self.turntableView.delegate = self;
+    
+    //在做autoLayout之前 一定要先将view添加到superview上 否则会报错
+    [presentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(weakSelf.turntableView);
+        make.size.mas_equalTo(sz);
+    }];
 }
 
 
@@ -64,6 +66,12 @@
 - (void)clickLeftBarButtonItem:(id)action
 {
     [self.sideMenuViewController presentLeftMenuViewController];
+}
+
+#pragma mark - TurntableViewDelegate
+- (void)turntableViewDidRotate:(TurntableView *)turntableView byRotateDirection:(RotateDirection)direction
+{
+    DEBUGLog(@"RotateDirection：%d", direction);
 }
 
 @end

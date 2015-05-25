@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DialView.h"
+#import "TurntableView.h"
 
 @interface CheckTimeViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet DialView *dialView;
+@property (weak, nonatomic) IBOutlet TurntableView *turntableView;
 
 @end
