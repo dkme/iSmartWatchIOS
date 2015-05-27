@@ -70,11 +70,11 @@ static inline NSError* ERROR(NSInteger code,NSString *localizedDescription)
                     act.endDate = [NSDate dateFromString:dicObj[@"actenddate"] format:@"yyyy-MM-dd"];
                     act.consumeBeans = [dicObj[@"actbeanbag"] intValue];
                     
-//                    NSString *logoURL = [URL_GIFT_AND_BEANS stringByAppendingPathComponent:API_ACTIVITY_LOGO];
-//                    logoURL = [logoURL stringByAppendingPathComponent:dicObj[@"actlogo"]];
+                    NSString *logoURL = [URL_GIFT_AND_BEANS stringByAppendingPathComponent:API_ACTIVITY_LOGO];
+                    logoURL = [logoURL stringByAppendingPathComponent:dicObj[@"actlogo"]];
 //                    logoURL = [logoURL stringByAppendingString:@".jpg"];
-//                    act.logo = logoURL;
-                    act.logo = dicObj[@"actlogo"];
+                    act.logo = logoURL;
+//                    act.logo = dicObj[@"actlogo"];
                     [list addObject:act];
                 }
                 aCallback(YES,list,nil);
@@ -178,11 +178,11 @@ static inline NSError* ERROR(NSInteger code,NSString *localizedDescription)
                         bag.userKey = dicObj0[@"gbuserkey"];
                         bag.exchangeCode = dicObj0[@"gbcode"];
                         bag.getDate = dicObj0[@"gbdate"];
-//                        NSString *logoURL = [URL_GIFT_AND_BEANS stringByAppendingPathComponent:API_ACTIVITY_LOGO];
-//                        logoURL = [logoURL stringByAppendingPathComponent:dicObj1[@"actlogo"]];
+                        NSString *logoURL = [URL_GIFT_AND_BEANS stringByAppendingPathComponent:API_ACTIVITY_LOGO];
+                        logoURL = [logoURL stringByAppendingPathComponent:dicObj1[@"actlogo"]];
 //                        logoURL = [logoURL stringByAppendingString:@".jpg"];
-//                        bag.logo = logoURL;
-                        bag.logo = dicObj1[@"actlogo"];
+                        bag.logo = logoURL;
+//                        bag.logo = dicObj1[@"actlogo"];
                         bag.gameName = dicObj1[@"actgamename"];
                         bag.memo = dicObj1[@"actgiftbagmemo"];
                         bag.expiryDate = [NSDate dateFromString:dicObj1[@"actenddate"] format:@"yyyy-MM-dd"];
