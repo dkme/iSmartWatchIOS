@@ -11,3 +11,13 @@
 #define URL_APP_INFO                        @"http://itunes.apple.com/lookup?id＝930839162"
 
 
+#define URL_WEATHER_API_PREFIX              @"http://api.openweathermap.org/data/2.5/weather"
+#define URL_WEATHER_API                     @"http://api.openweathermap.org/data/2.5/weather"
+//#define URL_WEATHER_CITYNAME_API            [URL_WEATHER_API_PREFIX stringByAppendingString:@""]
+
+
+
+
+
+
+

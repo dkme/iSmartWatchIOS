@@ -86,7 +86,7 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="weather-fine" translatesAutoresizingMaskIntoConstraints="NO" id="Jek-aF-8sz">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jek-aF-8sz">
                     <rect key="frame" x="185" y="127" width="25" height="25"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="l2K-ke-jAi"/>
@@ -154,6 +154,5 @@
         <image name="main_menu_setting_icon_a.png" width="60" height="60"/>
         <image name="main_menu_setting_icon_b.png" width="60" height="60"/>
         <image name="seat" width="10" height="14"/>
-        <image name="weather-fine" width="25" height="25"/>
     </resources>
 </document>

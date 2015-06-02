@@ -290,9 +290,12 @@
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
 		E8D4F41322CC9FA9822FC6B6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E57208459FF67BC2938C56 /* libPods.a */; };
 		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
+		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
+		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
 		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
 		F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */; };
+		F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -715,11 +718,17 @@
 		90E57208459FF67BC2938C56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B1D0CCF52BF4041DAEA77 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F41930CD19F16B1400E7B0B5 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
+		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
 		F783EF5C1B130392008124BE /* TurntableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableView.h; sourceTree = "<group>"; };
 		F783EF5D1B130392008124BE /* TurntableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TurntableView.m; sourceTree = "<group>"; };
+		F78A58331B1C072000DBC3D7 /* RequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestClass.h; sourceTree = "<group>"; };
+		F78A58341B1C072000DBC3D7 /* RequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestClass.m; sourceTree = "<group>"; };
 		F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTimeViewController.h; sourceTree = "<group>"; };
 		F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
 		F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
+		F7CF059E1B1DA0FB00038C9A /* WMSLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLocationManager.h; sourceTree = "<group>"; };
+		F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1415,6 +1424,8 @@
 				235427671A3E906E008E5CFD /* WMSPostNotificationHelper.m */,
 				23087B701AAD79E20023350B /* FormatClass.h */,
 				23087B711AAD79E20023350B /* FormatClass.m */,
+				F7CF059E1B1DA0FB00038C9A /* WMSLocationManager.h */,
+				F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -1567,6 +1578,8 @@
 			children = (
 				2388E5C019ED25A8005864D4 /* WMSHTTPRequest.h */,
 				2388E5C119ED25A9005864D4 /* WMSHTTPRequest.m */,
+				F78A58331B1C072000DBC3D7 /* RequestClass.h */,
+				F78A58341B1C072000DBC3D7 /* RequestClass.m */,
 			);
 			name = HTTP;
 			sourceTree = "<group>";
@@ -1709,6 +1722,7 @@
 				236D486919D81C7900EFB5C8 /* WMSActivityModel.m */,
 				2333AB061A64FE3400DBA846 /* WMSDataManager.h */,
 				2333AB071A64FE3400DBA846 /* WMSDataManager.m */,
+				F72385B11B1C370000AC3CD5 /* 天气 */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1890,6 +1904,15 @@
 				232846F419A43D0D001C148D /* Images */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		F72385B11B1C370000AC3CD5 /* 天气 */ = {
+			isa = PBXGroup;
+			children = (
+				F72385B21B1C3C5E00AC3CD5 /* Condition.h */,
+				F72385B31B1C3C5E00AC3CD5 /* Condition.m */,
+			);
+			name = "天气";
 			sourceTree = "<group>";
 		};
 		F78B2BC51B0DB6DA00F5B0D4 /* 校对时间视图 */ = {
@@ -2222,11 +2245,13 @@
 				2326A45019A605660098657B /* WMSSwitchCell.m in Sources */,
 				2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */,
 				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
+				F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */,
 				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
 				238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */,
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
 				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
 				23D7CF0119B5C49C00DFA678 /* LGPeripheral.m in Sources */,
+				F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */,
 				232471BD1A51065D00F70565 /* WMSInputView.m in Sources */,
 				2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */,
 				2323BE0E1A68E84900FCA216 /* WMSDeviceModel+Configure.m in Sources */,
@@ -2290,6 +2315,7 @@
 				23A153241A369F790026D741 /* WMSWebVC.m in Sources */,
 				23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */,
 				239109321A3A90C900333A2A /* WMSUpdateVCHelper.m in Sources */,
+				F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
 				2311611919B1A2BE0012B066 /* NSDate+Formatter.m in Sources */,

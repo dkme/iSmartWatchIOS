@@ -23,10 +23,13 @@
 #import "WMSLeftViewCell.h"
 
 #import "WMSPersonModel.h"
+#import "Condition.h"
 
 #import "WMSConstants.h"
 #import "WMSUserInfoHelper.h"
 #import "WMSAppConfig.h"
+#import "RequestClass.h"
+#import "WMSLocationManager.h"
 
 #define Null_Object     @"Null_Object"
 
@@ -135,6 +138,9 @@
     [self setupTableView];
     [self setupUserPhoto];
     
+    [self findCurrentLocation];
+    
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -174,6 +180,48 @@
     [self.userPhoto setBackgroundImage:model.image forState:UIControlStateNormal];
     [self.nickNameLabel setText:model.name];
 }
+
+#pragma mark - Weather
+- (void)findCurrentLocation
+{
+    __block WMSLocationManager *manager = [WMSLocationManager sharedManager];
+    WeakObj(manager, weakManager);
+    [manager findCurrentLocation:^(BOOL isSuccess, float lat, float lon) {
+        if (isSuccess) {
+            StrongObj(weakManager, strongManager);
+            if (strongManager) {
+                [self requestWeatherOfCity:strongManager.currentCityName];
+                
+                self.cityLabel.text = strongManager.currentCityName;
+            }
+        } else {
+            //TODO 提示定位失败
+        }
+    }];
+}
+
+- (void)requestWeatherOfCity:(NSString *)cityName
+{
+    [RequestClass requestWeatherOfCityName:cityName completion:^(BOOL isSuccess, id data, NSError *error) {
+        if (isSuccess) {
+            DEBUGLog(@"data:%@", data);
+            [self updateWeather:data];
+        } else {
+            DEBUGLog(@"error code:%d", (int)error.code);
+        }
+    }];
+}
+
+- (void)updateWeather:(Condition *)weather
+{
+    self.tempLabel.text = [NSString stringWithFormat:@"%d°", weather.temperature.intValue];
+    self.humidityLabel.text = [NSString stringWithFormat:@"%d%%", weather.humidity.intValue];
+    self.weatherIcon.image = [UIImage imageNamed:weather.imageName];
+    self.weatherLabel.text = weather.weatherName;
+}
+
+
+
 
 #pragma mark - Action
 - (IBAction)clickUserPhoto:(id)sender {
