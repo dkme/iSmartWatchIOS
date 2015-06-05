@@ -296,6 +296,15 @@
 		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
 		F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */; };
 		F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */; };
+		F7CF05A91B1F04DF00038C9A /* production.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05A71B1F04DF00038C9A /* production.c */; };
+		F7CF05AD1B1F0B7700038C9A /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05AB1B1F0B7700038C9A /* parse.c */; };
+		F7CF05B01B204F6D00038C9A /* binding.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05AE1B204F6D00038C9A /* binding.c */; };
+		F7CF05B61B205AD600038C9A /* reading.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05B41B205AD600038C9A /* reading.c */; };
+		F7CF05BF1B217E2600038C9A /* testing.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05BD1B217E2600038C9A /* testing.c */; };
+		F7CF05C21B21822500038C9A /* setting.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C01B21822500038C9A /* setting.c */; };
+		F7CF05C51B21911D00038C9A /* update.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C31B21911D00038C9A /* update.c */; };
+		F7CF05C81B2195D500038C9A /* sync.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C61B2195D500038C9A /* sync.c */; };
+		F7CF05CB1B21961400038C9A /* control.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C91B21961400038C9A /* control.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -729,6 +738,25 @@
 		F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
 		F7CF059E1B1DA0FB00038C9A /* WMSLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLocationManager.h; sourceTree = "<group>"; };
 		F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationManager.m; sourceTree = "<group>"; };
+		F7CF05A71B1F04DF00038C9A /* production.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = production.c; sourceTree = "<group>"; };
+		F7CF05A81B1F04DF00038C9A /* production.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = production.h; sourceTree = "<group>"; };
+		F7CF05AA1B1F066A00038C9A /* dataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dataType.h; sourceTree = "<group>"; };
+		F7CF05AB1B1F0B7700038C9A /* parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parse.c; sourceTree = "<group>"; };
+		F7CF05AC1B1F0B7700038C9A /* parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parse.h; sourceTree = "<group>"; };
+		F7CF05AE1B204F6D00038C9A /* binding.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = binding.c; sourceTree = "<group>"; };
+		F7CF05AF1B204F6D00038C9A /* binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = binding.h; sourceTree = "<group>"; };
+		F7CF05B41B205AD600038C9A /* reading.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reading.c; sourceTree = "<group>"; };
+		F7CF05B51B205AD600038C9A /* reading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reading.h; sourceTree = "<group>"; };
+		F7CF05BD1B217E2600038C9A /* testing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testing.c; sourceTree = "<group>"; };
+		F7CF05BE1B217E2600038C9A /* testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testing.h; sourceTree = "<group>"; };
+		F7CF05C01B21822500038C9A /* setting.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = setting.c; sourceTree = "<group>"; };
+		F7CF05C11B21822500038C9A /* setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setting.h; sourceTree = "<group>"; };
+		F7CF05C31B21911D00038C9A /* update.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = update.c; sourceTree = "<group>"; };
+		F7CF05C41B21911D00038C9A /* update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = update.h; sourceTree = "<group>"; };
+		F7CF05C61B2195D500038C9A /* sync.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sync.c; sourceTree = "<group>"; };
+		F7CF05C71B2195D500038C9A /* sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sync.h; sourceTree = "<group>"; };
+		F7CF05C91B21961400038C9A /* control.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = control.c; sourceTree = "<group>"; };
+		F7CF05CA1B21961400038C9A /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1774,6 +1802,7 @@
 		23D7CEC419B571F900DFA678 /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
+				F7CF05A61B1F043300038C9A /* protocol-c */,
 				2331CD9E19B84A8D00719976 /* MyTimer */,
 				23D7CF0419B5C55300DFA678 /* BleProfile */,
 				23D7CEF019B5C45400DFA678 /* LGBluetooth */,
@@ -1925,6 +1954,32 @@
 				F783EF5D1B130392008124BE /* TurntableView.m */,
 			);
 			name = "校对时间视图";
+			sourceTree = "<group>";
+		};
+		F7CF05A61B1F043300038C9A /* protocol-c */ = {
+			isa = PBXGroup;
+			children = (
+				F7CF05C31B21911D00038C9A /* update.c */,
+				F7CF05C41B21911D00038C9A /* update.h */,
+				F7CF05C01B21822500038C9A /* setting.c */,
+				F7CF05C11B21822500038C9A /* setting.h */,
+				F7CF05AE1B204F6D00038C9A /* binding.c */,
+				F7CF05AF1B204F6D00038C9A /* binding.h */,
+				F7CF05B41B205AD600038C9A /* reading.c */,
+				F7CF05B51B205AD600038C9A /* reading.h */,
+				F7CF05BD1B217E2600038C9A /* testing.c */,
+				F7CF05BE1B217E2600038C9A /* testing.h */,
+				F7CF05C61B2195D500038C9A /* sync.c */,
+				F7CF05C71B2195D500038C9A /* sync.h */,
+				F7CF05C91B21961400038C9A /* control.c */,
+				F7CF05CA1B21961400038C9A /* control.h */,
+				F7CF05AB1B1F0B7700038C9A /* parse.c */,
+				F7CF05AC1B1F0B7700038C9A /* parse.h */,
+				F7CF05A71B1F04DF00038C9A /* production.c */,
+				F7CF05A81B1F04DF00038C9A /* production.h */,
+				F7CF05AA1B1F066A00038C9A /* dataType.h */,
+			);
+			name = "protocol-c";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2228,6 +2283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7CF05C21B21822500038C9A /* setting.c in Sources */,
 				237545CD19AF00CF00685CD1 /* TemperaBar.m in Sources */,
 				239682291A4AB7F000AA4D9F /* UIColor+RGBValues.m in Sources */,
 				2331834B19B6EBEA005B2BA0 /* WMSSettingProfile.m in Sources */,
@@ -2283,8 +2339,10 @@
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
 				2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */,
 				234F81F71A4D42D100332C03 /* WMSSoundOperation.m in Sources */,
+				F7CF05B01B204F6D00038C9A /* binding.c in Sources */,
 				2319723F1A354535002E8A0F /* WMSAppConfig.m in Sources */,
 				232846F219A43825001C148D /* WMSLoginViewController.m in Sources */,
+				F7CF05C81B2195D500038C9A /* sync.c in Sources */,
 				238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */,
 				236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */,
 				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,
@@ -2296,6 +2354,9 @@
 				23D7CEFF19B5C49C00DFA678 /* LGCentralManager.m in Sources */,
 				230FDC6A19D659EB00AE98FF /* PNBar.m in Sources */,
 				239F51CC1A2D6B410058F6DE /* WMSGuideVC.m in Sources */,
+				F7CF05C51B21911D00038C9A /* update.c in Sources */,
+				F7CF05CB1B21961400038C9A /* control.c in Sources */,
+				F7CF05A91B1F04DF00038C9A /* production.c in Sources */,
 				239388491ABBA8EE0018BDA1 /* WMSSmartClockViewController.m in Sources */,
 				2353790219CD5F6000269F67 /* WMSMyActivityRemind.m in Sources */,
 				2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */,
@@ -2317,6 +2378,7 @@
 				239109321A3A90C900333A2A /* WMSUpdateVCHelper.m in Sources */,
 				F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
+				F7CF05AD1B1F0B7700038C9A /* parse.c in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
 				2311611919B1A2BE0012B066 /* NSDate+Formatter.m in Sources */,
 				2323BE081A68B0E900FCA216 /* FileOperations.m in Sources */,
@@ -2324,7 +2386,9 @@
 				230298C319A82FDC009D4306 /* WMSContent2ViewController.m in Sources */,
 				2393884E1ABBA9720018BDA1 /* WMSRightViewController.m in Sources */,
 				237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */,
+				F7CF05B61B205AD600038C9A /* reading.c in Sources */,
 				23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */,
+				F7CF05BF1B217E2600038C9A /* testing.c in Sources */,
 				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,
 				23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */,
 				2333AB081A64FE3400DBA846 /* WMSDataManager.m in Sources */,
