@@ -8,6 +8,11 @@
 
 #include "setting.h"
 #include "production.h"
+#include <string.h>
+
+int mySetupPackage(BLE_UInt8 cmd, BLE_UInt8 key, BLE_UInt8 value_len, BLE_SInt8 *value, BLE_SInt8 **package);
+
+
 
 int setTime(BLE_UInt16 year, BLE_UInt8 month, BLE_UInt8 day, BLE_UInt8 hour, BLE_UInt8 minute, BLE_UInt8 second, BLE_UInt8 weekDay, BLE_UInt8 **package)
 {
@@ -96,17 +101,17 @@ int setRemindEvent(RemindEvents event, BLE_UInt8 **package)
     return setupPackage(CMD_setting, SetRemindEvent, 3, value, package);
 }
 
-int setWeather(WeatherType weather, BLE_UInt8 temp, BLE_UInt8 tempUnit, BLE_UInt8 humidity, BLE_UInt8 **package)
+int setWeather(WeatherType weather, BLE_SInt8 temp, TempUnit tempUnit, BLE_UInt8 humidity, BLE_SInt8 **package)
 {
-    BLE_UInt8 value[5] = {0};
+    BLE_SInt8 value[5] = {0};
     value[0] = weather;
     value[1] = temp;
     value[2] = tempUnit;
     value[3] = humidity;
-    return setupPackage(CMD_setting, SetWeather, 5, value, package);
+    return mySetupPackage(CMD_setting, SetWeather, 5, value, package);
 }
 
-int adjustTime(BLE_UInt8 direction, BLE_UInt8 **package)
+int adjustTime(ROTATE_DIRECTION direction, BLE_UInt8 **package)
 {
     BLE_UInt8 value[1] = {0};
     value[0] = direction;
@@ -126,4 +131,23 @@ int setAlarmClock(BLE_UInt8 clockID, BLE_UInt8 hour, BLE_UInt8 minute, BLE_UInt8
 }
 
 
+///private
+int mySetupPackage(BLE_UInt8 cmd, BLE_UInt8 key, BLE_UInt8 value_len, BLE_SInt8 *value, BLE_SInt8 **package)
+{
+    memset(*package, 0, PACKAGE_LENGTH);
+    *(*package+0) = cmd;
+    *(*package+1) = (PROTOCOL_VERSION & 0x0F);
+    *(*package+2) = key;
+    *(*package+3) = 0;
+    *(*package+4) = value_len;
+    
+    if (value_len == 0) {
+        return HANDLE_FAIL;
+    }
+    
+    for (int j=0; j<value_len; j++) {
+        *(*package+(j+5)) = value[j];
+    }
+    return HANDLE_OK;
+}
 

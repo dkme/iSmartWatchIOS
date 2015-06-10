@@ -45,6 +45,16 @@ typedef enum {
     WeatherTypeHeavySnow,
 } WeatherType;
 
+typedef enum {
+    TempUnitCentigrade = 0,
+    TempUnitFahrenheit,
+} TempUnit;
+
+typedef enum {
+    DIRECTION_clockwise           = 0,
+    DIRECTION_anticlockwise       = 1,
+} ROTATE_DIRECTION;
+
 
 
 /**说明
@@ -83,10 +93,10 @@ int setRemindEvent(RemindEvents event, BLE_UInt8 **package);
 /**
  tempUnit       0 摄氏温度, 1 华氏温度
  */
-int setWeather(WeatherType weather, BLE_UInt8 temp, BLE_UInt8 tempUnit, BLE_UInt8 humidity, BLE_UInt8 **package);
+int setWeather(WeatherType weather, BLE_SInt8 temp, TempUnit tempUnit, BLE_UInt8 humidity, BLE_SInt8 **package);
 
 //0 顺时针, 1 逆时针
-int adjustTime(BLE_UInt8 direction, BLE_UInt8 **package);
+int adjustTime(ROTATE_DIRECTION direction, BLE_UInt8 **package);
 
 /**
  clockID    0~7

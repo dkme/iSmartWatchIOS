@@ -11,13 +11,9 @@
 
 
 typedef unsigned char               BLE_UInt8;
+typedef signed char                 BLE_SInt8;
 typedef unsigned short              BLE_UInt16;
-
-#if __LP64__
 typedef unsigned int                BLE_UInt32;
-#else
-typedef unsigned long               BLE_UInt32;
-#endif  /*__LP64__*/
 
 
 //command列表
@@ -86,6 +82,7 @@ typedef enum {
 
 #define PROTOCOL_VERSION            2//协议版本号
 #define PACKAGE_LENGTH              20
+#define PACKAGE_SIZE                20
 
 #define HANDLE_OK                   0
 #define HANDLE_FAIL                 (-1)

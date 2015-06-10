@@ -16,8 +16,10 @@ int getControlCommand(BLE_UInt8 *package, BLE_UInt8 len, ControlKey *control, Bu
     if (s_pg.cmd != CMD_control) {
         return HANDLE_FAIL;
     }
-    if (s_pg.cmd != ControlClick && s_pg.cmd != ControlDoubleClick &&
-        s_pg.cmd != ControlLongPress) {
+    if (s_pg.key != ControlClick        &&
+        s_pg.key != ControlDoubleClick  &&
+        s_pg.key != ControlLongPress)
+    {
         return HANDLE_FAIL;
     }
     if (s_pg.value_len < 1) {

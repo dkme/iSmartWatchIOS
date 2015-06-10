@@ -33,25 +33,4 @@ typedef struct {
 struct_parse_package parse(BLE_UInt8 *package, BLE_UInt8 len);
 
 
-
-
-
-/**
- package    数据包
- len        包的长度,目前固定长度为20
- 
- 其他参数都为传出参数
- 
- @return    0表示正确，-1表示错误
- */
-
-//int parsePackage(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 **result);
-
-
-
-int parseUpdateFirmware(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *status, BLE_UInt8 *errorCode);
-
-
-
-
 #endif /* defined(__WMSPlusdot__parse__) */
