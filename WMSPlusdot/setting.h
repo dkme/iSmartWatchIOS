@@ -12,6 +12,11 @@
 #include <stdio.h>
 #include "dataType.h"
 
+typedef enum {
+    GenderTypeWoman = 0,
+    GenderTypeMan,
+    GenderTypeOther,
+} GenderType;
 
 typedef enum {
     RemindWayNot = 0,
@@ -63,11 +68,10 @@ typedef enum {
  @return    -1错误，0正确
  */
 
-int updateFirmware(BLE_UInt8 **package);
 
 int setTime(BLE_UInt16 year, BLE_UInt8 month, BLE_UInt8 day, BLE_UInt8 hour, BLE_UInt8 minute, BLE_UInt8 second, BLE_UInt8 weekDay, BLE_UInt8 **package);
 
-int setUserInfo(BLE_UInt8 sex, BLE_UInt8 age, BLE_UInt16 height, BLE_UInt16 weight, BLE_UInt8 **package);
+int setUserInfo(GenderType sex, BLE_UInt8 age, BLE_UInt16 height, BLE_UInt16 weight, BLE_UInt8 **package);
 
 int setTarget(BLE_UInt32 target, BLE_UInt8 **package);
 
@@ -90,9 +94,7 @@ int setStopRemind(RemindEvents event, BLE_UInt8 **package);
 //该接口仅供ios使用
 int setRemindEvent(RemindEvents event, BLE_UInt8 **package);
 
-/**
- tempUnit       0 摄氏温度, 1 华氏温度
- */
+
 int setWeather(WeatherType weather, BLE_SInt8 temp, TempUnit tempUnit, BLE_UInt8 humidity, BLE_SInt8 **package);
 
 //0 顺时针, 1 逆时针
@@ -108,6 +110,7 @@ int adjustTime(ROTATE_DIRECTION direction, BLE_UInt8 **package);
  */
 int setAlarmClock(BLE_UInt8 clockID, BLE_UInt8 hour, BLE_UInt8 minute, BLE_UInt8 dayFlags, BLE_UInt8 openOrClose, BLE_UInt8 interval, BLE_UInt8 **package);
 
-
+///openOrClose，0-关闭，1-打开
+int setSearchDevice(BLE_UInt8 openOrClose, BLE_UInt8 **package);
 
 #endif /* defined(__WMSPlusdot__setting__) */

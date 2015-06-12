@@ -14,6 +14,7 @@ typedef unsigned char               BLE_UInt8;
 typedef signed char                 BLE_SInt8;
 typedef unsigned short              BLE_UInt16;
 typedef unsigned int                BLE_UInt32;
+//typedef unsigned char               BLE_BOOL;///0-no，1-yes
 
 
 //command列表
@@ -52,6 +53,7 @@ typedef enum {
     SetAlarmClock6,
     SetAlarmClock7,
     SetAlarmClock8,
+    SetSearchDevice,
 } SettingKey;
 
 typedef enum {
@@ -64,6 +66,11 @@ typedef enum {
     ReadDeviceMacAddress,
     ReadDeviceBatteryInfo,
     ReadDeviceTime,
+    ReadDeviceFirmName,
+    ReadDeviceProductModel,
+    ReadDeviceHardwareVersion,
+    ReadDeviceSoftwareVersion,
+    ReadDevicePower,
 } ReadDeviceInfoKey;
 
 typedef enum {

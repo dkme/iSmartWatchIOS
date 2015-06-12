@@ -30,7 +30,7 @@ int setTime(BLE_UInt16 year, BLE_UInt8 month, BLE_UInt8 day, BLE_UInt8 hour, BLE
 
 
 
-int setUserInfo(BLE_UInt8 sex, BLE_UInt8 age, BLE_UInt16 height, BLE_UInt16 weight, BLE_UInt8 **package)
+int setUserInfo(GenderType sex, BLE_UInt8 age, BLE_UInt16 height, BLE_UInt16 weight, BLE_UInt8 **package)
 {
     BLE_UInt8 value[7] = {0};
     value[0] = sex;
@@ -129,6 +129,14 @@ int setAlarmClock(BLE_UInt8 clockID, BLE_UInt8 hour, BLE_UInt8 minute, BLE_UInt8
     value[5] = interval;
     return setupPackage(CMD_setting, SetAlarmClock1+clockID, 7, value, package);
 }
+
+int setSearchDevice(BLE_UInt8 openOrClose, BLE_UInt8 **package)
+{
+    BLE_UInt8 value[1] = {0};
+    value[0] = openOrClose;
+    return setupPackage(CMD_setting, SetSearchDevice, 1, value, package);
+}
+
 
 
 ///private
