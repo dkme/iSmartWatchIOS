@@ -328,6 +328,9 @@
 		23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84FEB1A70CB30006BBAEA /* WMSSportVCHelper.m */; };
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
 		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
+		F7E9A00B1B2ADFE6001C0CDD /* WMSAboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E9A0091B2ADFE6001C0CDD /* WMSAboutVC.m */; };
+		F7E9A00C1B2ADFE6001C0CDD /* WMSAboutVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7E9A00A1B2ADFE6001C0CDD /* WMSAboutVC.xib */; };
+		F7E9A00E1B2AE0E7001C0CDD /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E9A00D1B2AE0E7001C0CDD /* app_icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -824,6 +827,10 @@
 		23FB8B5719CA7C9100E7D77C /* WMSSleepDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSleepDatabase.h; sourceTree = "<group>"; };
 		23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSleepDatabase.m; sourceTree = "<group>"; };
 		F41930CD19F16B1400E7B0B5 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		F7E9A0081B2ADFE6001C0CDD /* WMSAboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAboutVC.h; sourceTree = "<group>"; };
+		F7E9A0091B2ADFE6001C0CDD /* WMSAboutVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSAboutVC.m; sourceTree = "<group>"; };
+		F7E9A00A1B2ADFE6001C0CDD /* WMSAboutVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSAboutVC.xib; sourceTree = "<group>"; };
+		F7E9A00D1B2AE0E7001C0CDD /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1132,6 +1139,10 @@
 				23A153281A36EFAA0026D741 /* WMSUpdateVC.xib */,
 				239109301A3A90C900333A2A /* WMSUpdateVCHelper.h */,
 				239109311A3A90C900333A2A /* WMSUpdateVCHelper.m */,
+				F7E9A0081B2ADFE6001C0CDD /* WMSAboutVC.h */,
+				F7E9A0091B2ADFE6001C0CDD /* WMSAboutVC.m */,
+				F7E9A00A1B2ADFE6001C0CDD /* WMSAboutVC.xib */,
+				F7E9A00D1B2AE0E7001C0CDD /* app_icon.png */,
 			);
 			name = "设置视图";
 			path = WMSPlusdot;
@@ -2256,6 +2267,7 @@
 				23CAD74F1AE74C6C00C2D4E8 /* skin_intro_page.png in Resources */,
 				238370EC1AB826480022F8CF /* flashing_auto@2x.png in Resources */,
 				23369C191AF8624200A15D50 /* Audio.mp3 in Resources */,
+				F7E9A00E1B2AE0E7001C0CDD /* app_icon.png in Resources */,
 				2368A8211A8460EE003DFAAC /* WMSBeanCell.xib in Resources */,
 				230298DA19A87F0A009D4306 /* link_connect_success_icon.png in Resources */,
 				231972521A35B8FC002E8A0F /* zq_light_list_top_a.png in Resources */,
@@ -2302,6 +2314,7 @@
 				2326A43819A5C6970098657B /* main_menu_sport_icon_a.png in Resources */,
 				23114A4F19D1640800FA594C /* zq_sync_btn.png in Resources */,
 				238370EB1AB826480022F8CF /* flashing_auto.png in Resources */,
+				F7E9A00C1B2ADFE6001C0CDD /* WMSAboutVC.xib in Resources */,
 				232471BF1A51067F00F70565 /* WMSInputView.xib in Resources */,
 				2335119219A476EF00FBCC81 /* WMSSignupViewController.xib in Resources */,
 				23A1532D1A36F4630026D741 /* zq_public_green_btn_a.png in Resources */,
@@ -2546,6 +2559,7 @@
 				237241051A8C96A9009791AD /* UIProgressView+AFNetworking.m in Sources */,
 				23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */,
 				2347C82C1A63A4C9007A0446 /* WMSClockCell.m in Sources */,
+				F7E9A00B1B2ADFE6001C0CDD /* WMSAboutVC.m in Sources */,
 				232846CD19A43668001C148D /* main.m in Sources */,
 				230FDC6219D6548F00AE98FF /* WMSSleepHistoryViewController.m in Sources */,
 				2316961519C7062500E3CA24 /* WMSMyAccessoryViewController.m in Sources */,

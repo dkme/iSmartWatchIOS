@@ -13,6 +13,7 @@
 #import "WMSUpdateVC.h"
 #import "UIViewController+Tip.h"
 #import "UIViewController+Update.h"
+#import "WMSAboutVC.h"
 
 #import "WMSNavBarView.h"
 #import "JSCustomBadge.h"
@@ -65,6 +66,7 @@
                                 //NSLocalizedString(@"适配机型", nil),
                                 //NSLocalizedString(@"APP版本", nil),
                                 NSLocalizedString(@"固件版本", nil),
+                                @"关于",
                                 ];
     }
     return _section1TitleArray;
@@ -477,27 +479,10 @@
         case 1:
         {
             switch (row) {
-//                case 0:
-//                {
-//                    WMSWebVC *vc = [[WMSWebVC alloc] init];
-//                    vc.navBarTitle = self.section1TitleArray[row];
-//                    vc.strRequestURL = @"http://www.lepao.com/faq-mobile.html";
-//                    //[self.navigationController pushViewController:vc animated:YES];
-//                    break;
-//                }
-                case 3-3:
-                {
-                    if ([self isDetectedNewVersion]==DetectResultCanUpdate) {
-                        [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
-                    } else {
-//                        [self checkAppUpdate];
-                    }
-                    break;
-                }
-                case 4-3:
+                case 0:
                 {
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    if ([self isExistBadgeOfView:cell] /*||YES*/) {
+                    if ([self isExistBadgeOfView:cell]/* ||YES*/) {
                         //........
                         _updateVC = [[WMSUpdateVC alloc] init];
                         _updateVC.title = self.section1TitleArray[row];
@@ -506,6 +491,12 @@
                         [self.navigationController pushViewController:_updateVC animated:YES];
                     }
                     break;
+                }
+                case 1:
+                {
+                    WMSAboutVC *aboutVC = [[WMSAboutVC alloc] init];
+                    aboutVC.title = self.section1TitleArray[row];
+                    [self.navigationController pushViewController:aboutVC animated:YES];
                 }
                     
                 default:
