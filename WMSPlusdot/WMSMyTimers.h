@@ -10,7 +10,6 @@
 
 @interface WMSMyTimers : NSObject
 
-- (id)init;
 - (void)addTimerWithTimeInterval:(NSTimeInterval)interval target:(id)aTarget selector:(SEL)aSelector userInfo:(id)userInfo repeats:(BOOL)yesOrNo timeID:(int)ID;
 - (void)deleteTimerForTimeID:(int)ID;
 - (void)deleteTimerForTimer:(NSTimer *)timer;
