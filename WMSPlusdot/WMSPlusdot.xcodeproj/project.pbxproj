@@ -126,7 +126,6 @@
 		2330D7111A5FB9A500494859 /* WMSClockListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2330D70F1A5FB9A500494859 /* WMSClockListVC.xib */; };
 		2331834B19B6EBEA005B2BA0 /* WMSSettingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2331834A19B6EBEA005B2BA0 /* WMSSettingProfile.m */; };
 		2331838919B6FE2D005B2BA0 /* WMSDeviceProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2331838819B6FE2D005B2BA0 /* WMSDeviceProfile.m */; };
-		2331838C19B70D9D005B2BA0 /* WMSRemindProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2331838B19B70D9D005B2BA0 /* WMSRemindProfile.m */; };
 		2331CDA119B84AB500719976 /* WMSMyTimers.m in Sources */ = {isa = PBXBuildFile; fileRef = 2331CDA019B84AB500719976 /* WMSMyTimers.m */; };
 		2333AAFF1A64B3C700DBA846 /* MyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2333AAFE1A64B3C700DBA846 /* MyNavigationController.m */; };
 		2333AB021A64B57000DBA846 /* UIBarButtonItem+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 2333AB011A64B57000DBA846 /* UIBarButtonItem+Extension.m */; };
@@ -305,6 +304,10 @@
 		F7CF05C51B21911D00038C9A /* update.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C31B21911D00038C9A /* update.c */; };
 		F7CF05C81B2195D500038C9A /* sync.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C61B2195D500038C9A /* sync.c */; };
 		F7CF05CB1B21961400038C9A /* control.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C91B21961400038C9A /* control.c */; };
+		F7E99FED1B26978A001C0CDD /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FEB1B26978A001C0CDD /* TestViewController.m */; };
+		F7E99FEE1B26978A001C0CDD /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7E99FEC1B26978A001C0CDD /* TestViewController.xib */; };
+		F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */; };
+		F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF31B281704001C0CDD /* WMSStackManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -483,8 +486,6 @@
 		2331834A19B6EBEA005B2BA0 /* WMSSettingProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSettingProfile.m; sourceTree = "<group>"; };
 		2331838719B6FE2D005B2BA0 /* WMSDeviceProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSDeviceProfile.h; sourceTree = "<group>"; };
 		2331838819B6FE2D005B2BA0 /* WMSDeviceProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSDeviceProfile.m; sourceTree = "<group>"; };
-		2331838A19B70D9D005B2BA0 /* WMSRemindProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSRemindProfile.h; sourceTree = "<group>"; };
-		2331838B19B70D9D005B2BA0 /* WMSRemindProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSRemindProfile.m; sourceTree = "<group>"; };
 		2331CD9F19B84AB500719976 /* WMSMyTimers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSMyTimers.h; sourceTree = "<group>"; };
 		2331CDA019B84AB500719976 /* WMSMyTimers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSMyTimers.m; sourceTree = "<group>"; };
 		2333AAFD1A64B3C700DBA846 /* MyNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNavigationController.h; sourceTree = "<group>"; };
@@ -757,6 +758,13 @@
 		F7CF05C71B2195D500038C9A /* sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sync.h; sourceTree = "<group>"; };
 		F7CF05C91B21961400038C9A /* control.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = control.c; sourceTree = "<group>"; };
 		F7CF05CA1B21961400038C9A /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
+		F7E99FEA1B26978A001C0CDD /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		F7E99FEB1B26978A001C0CDD /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		F7E99FEC1B26978A001C0CDD /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		F7E99FEF1B26F8D3001C0CDD /* WMSSyncProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncProfile.h; sourceTree = "<group>"; };
+		F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncProfile.m; sourceTree = "<group>"; };
+		F7E99FF21B281704001C0CDD /* WMSStackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSStackManager.h; sourceTree = "<group>"; };
+		F7E99FF31B281704001C0CDD /* WMSStackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSStackManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1419,6 +1427,9 @@
 				2316508A19AB489A0066C301 /* 智能闹钟视图 */,
 				2383D44C1A723F23006217CC /* 相机视图 */,
 				2333AAFC1A64B32300DBA846 /* MyNavigationController */,
+				F7E99FEA1B26978A001C0CDD /* TestViewController.h */,
+				F7E99FEB1B26978A001C0CDD /* TestViewController.m */,
+				F7E99FEC1B26978A001C0CDD /* TestViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1841,8 +1852,8 @@
 				2331838819B6FE2D005B2BA0 /* WMSDeviceProfile.m */,
 				2331834919B6EBEA005B2BA0 /* WMSSettingProfile.h */,
 				2331834A19B6EBEA005B2BA0 /* WMSSettingProfile.m */,
-				2331838A19B70D9D005B2BA0 /* WMSRemindProfile.h */,
-				2331838B19B70D9D005B2BA0 /* WMSRemindProfile.m */,
+				F7E99FEF1B26F8D3001C0CDD /* WMSSyncProfile.h */,
+				F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */,
 				2321B78319B95E8E00278677 /* WMSBluetooth.h */,
 				23A6DF291ADCA95300BB06CF /* DataPackage.h */,
 				23A6DF2A1ADCA95300BB06CF /* DataPackage.m */,
@@ -1851,6 +1862,8 @@
 				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
 				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
 				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
+				F7E99FF21B281704001C0CDD /* WMSStackManager.h */,
+				F7E99FF31B281704001C0CDD /* WMSStackManager.m */,
 			);
 			name = BleProfile;
 			sourceTree = "<group>";
@@ -2190,6 +2203,7 @@
 				23876EC81A529DC200F1F15C /* intro_enter.png in Resources */,
 				23A1532E1A36F4630026D741 /* zq_public_green_btn_b.png in Resources */,
 				2326A45119A605660098657B /* WMSSwitchCell.xib in Resources */,
+				F7E99FEE1B26978A001C0CDD /* TestViewController.xib in Resources */,
 				231972541A35B92F002E8A0F /* zq_light_list_middle_b.png in Resources */,
 				230298D719A87F0A009D4306 /* link_bg.png in Resources */,
 				233511B619A4C3E500FBCC81 /* main_date_next_b.png in Resources */,
@@ -2301,10 +2315,12 @@
 				2326A45019A605660098657B /* WMSSwitchCell.m in Sources */,
 				2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */,
 				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
+				F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */,
 				F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */,
 				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
 				238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */,
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
+				F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */,
 				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
 				23D7CF0119B5C49C00DFA678 /* LGPeripheral.m in Sources */,
 				F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */,
@@ -2325,7 +2341,6 @@
 				231972341A3533FD002E8A0F /* WMSSettingVC.m in Sources */,
 				236D95BB1A67ACFC00037DD8 /* WMSFilter.m in Sources */,
 				F783EF5E1B130392008124BE /* TurntableView.m in Sources */,
-				2331838C19B70D9D005B2BA0 /* WMSRemindProfile.m in Sources */,
 				23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */,
 				2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */,
 				23305D9A19C7CFAF00F9EEE6 /* WMSMyAccessory.m in Sources */,
@@ -2397,6 +2412,7 @@
 				2323BE091A68B0E900FCA216 /* BLEOperations.m in Sources */,
 				23E35B8A1A4BB13B00FDA20D /* WMSAntiLostVC.m in Sources */,
 				2333AB021A64B57000DBA846 /* UIBarButtonItem+Extension.m in Sources */,
+				F7E99FED1B26978A001C0CDD /* TestViewController.m in Sources */,
 				23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */,
 				2347C82C1A63A4C9007A0446 /* WMSClockCell.m in Sources */,
 				232846CD19A43668001C148D /* main.m in Sources */,

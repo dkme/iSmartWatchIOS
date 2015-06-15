@@ -19,6 +19,7 @@
 #import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
 #import "WMSClockListVC.h"
+#import "TestViewController.h"
 
 #import "WMSLeftViewCell.h"
 
@@ -56,6 +57,7 @@
                            NSLocalizedString(@"Target setting",nil),
                            NSLocalizedString(@"Bound watch",nil),
                            NSLocalizedString(@"校对时间", nil),
+                           @"test",
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
         _titleArray = mutiArr;
@@ -70,6 +72,7 @@
                             @"main_menu_target_icon_a.png",
                             @"main_menu_binding_icon_a.png",
                             @"main_menu_checkTime_icon_a.png",
+                            @"",
                             ];
     }
     return _imageNameArray;
@@ -82,6 +85,7 @@
                                    @"main_menu_target_icon_b.png",
                                    @"main_menu_binding_icon_b.png",
                                    @"main_menu_checkTime_icon_b.png",
+                                   @"",
                                    ];
     }
     return _seletedImageNameArray;
@@ -95,6 +99,7 @@
                                         [WMSContent2ViewController class],
                                         [WMSMyAccessoryViewController class],
                                         [CheckTimeViewController class],
+                                        [TestViewController class],
                                         ];
     }
     return _specifyContentVCClassArray;
@@ -108,6 +113,7 @@
         UIViewController *vc = ((MyNavigationController *)self.sideMenuViewController.contentViewController).topViewController;
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
+                           Null_Object,
                            Null_Object,
                            Null_Object,
                            Null_Object,

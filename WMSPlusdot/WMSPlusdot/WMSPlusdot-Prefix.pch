@@ -25,12 +25,18 @@
 #endif
 
 #ifdef DEBUG
-    #define DEBUGLog(...) NSLog(__VA_ARGS__)
-    #define DEBUGLog_METHOD NSLog(@"%s", __func__)
+    #define DEBUGLog(...)               NSLog(__VA_ARGS__)
+    #define DEBUGLog_METHOD             NSLog(@"%s", __func__)
+    #define DEBUGLog_DETAIL(s, ...)     NSLog(@"%@[LINE:%d] %@", self, __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+//NSLog(s,...)  NSLog(@"DFU--->%@[LINE:%d] %@", self,__LINE__,[NSString stringWithFormat:(s), ##__VA_ARGS__])
 #else
     #define DEBUGLog(...)
     #define DEBUGLog_METHOD
+    #define DEBUGLog_DETAIL(...)
 #endif
+
+
+
 
 //方法
 #define UIColorFromRGBAlpha(rgbValue,a) ( [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:a] )

@@ -11,6 +11,8 @@
 #import "LGBluetooth.h"
 #import "WMSMyTimers.h"
 #import "BLEUtils.h"
+#import "WMSStackManager.h"
+#import "update.h"
 
 @class WMSSettingProfile;
 @class WMSDeviceProfile;
@@ -43,24 +45,30 @@ extern NSString * const WMSBleControlPeripheralDidDisConnect;
 extern NSString * const WMSBleControlBluetoothStateUpdated;
 
 
-//
+///点击手表按键时的通知
+extern NSString * const OperationDeviceButtonNotification;
+
+
+///指定的服务与特性
+#define SERVICE_BATTERY_UUID                                    @"180F"
+#define CHARACTERISTIC_BATTERY_UUID                             @"2A19"
+
+#define SERVICE_LOSE_UUID                                       @"1803"
+#define CHARACTERISTIC_LOSE_UUID                                @"2A06"
+
+#define SERVICE_LOOK_UUID                                       @"1802"
+#define CHARACTERISTIC_LOOK_UUID                                @"2A06"
+
+#define SERVICE_SERIAL_PORT_UUID                                @"6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHARACTERISTIC_SERIAL_PORT_READ_UUID                    @"6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHARACTERISTIC_SERIAL_PORT_WRITE_UUID                   @"6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
+
+
+///待定
 typedef NS_ENUM(NSUInteger, ControlMode) {
     ControlModeRemote = 0x01,
     ControlModePlayMusic = 0x02,
     ControlModeNormal = 0xFF,
-};
-
-typedef NS_ENUM(NSUInteger, BindSettingCMD) {
-    bindSettingCMDBind = 0x01,
-    bindSettingCMDUnbind = 0x02,
-    
-    BindSettingCMDMandatoryBind = 0x03,
-    BindSettingCMDMandatoryUnBind = 0x04,
-};
-typedef NS_ENUM(NSInteger, BindingResult) {
-    BindingResultSuccess    = 0x00,
-    BindingResultTimeout    = 0x01,
-    BindingResultPaired     = 0x02,
 };
 
 //蓝牙状态
@@ -72,30 +80,18 @@ typedef NS_ENUM(NSInteger, WMSBleState) {
     WMSBleStatePoweredOff,
     WMSBleStatePoweredOn,
 };
-//切换升级模式的返回结果
-typedef NS_ENUM(NSInteger, SwitchToUpdateResult) {
-    SwitchToUpdateResultSuccess = 0x00,
-    SwitchToUpdateResultLowBattery = 0x01,
-    SwitchToUpdateResultUnsupported = 0x02,
-};
 
 
 //Block
 typedef void (^WMSBleControlScanedPeripheralCallback)(NSArray *peripherals);
 
-typedef void (^WMSBleSwitchToControlModeCallback)(BOOL success,NSString *failReason);
-typedef void (^WMSBleSwitchToUpdateModeCallback)(SwitchToUpdateResult result,NSString *failReason);
-
-typedef void (^WMSBleSendDataCallback)(BOOL success);
-
-typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
+typedef void(^bindDeviceCallback)(BOOL isSuccess);
+typedef void(^switchModeCallback)(BOOL isSuccess, RequestUpdateFirmwareErrorCode errCode);
 
 
 @interface WMSBleControl : NSObject
 
 @property (nonatomic, readonly) LGPeripheral *connectedPeripheral;
-@property (nonatomic, readonly) LGCharacteristic *readWriteCharacteristic;
-@property (nonatomic, readonly) LGCharacteristic *notifyCharacteristic;
 @property (nonatomic, readonly) BOOL isScanning;
 @property (nonatomic, readonly) BOOL isConnecting;
 @property (nonatomic, readonly) BOOL isConnected;
@@ -103,11 +99,9 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
 
 @property (nonatomic, readonly) WMSSettingProfile *settingProfile;
 @property (nonatomic, readonly) WMSDeviceProfile *deviceProfile;
-@property (nonatomic, readonly) WMSRemindProfile *remindProfile;
 
-@property (nonatomic, readonly) WMSMyTimers *myTimers;
+@property (nonatomic, readonly) WMSStackManager *stackManager;
 
-- (id)init;
 
 - (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
                           completion:(WMSBleControlScanedPeripheralCallback)aCallback;
@@ -119,31 +113,49 @@ typedef void (^WMSBleBindSettingCallBack)(BindingResult result);
 - (void)disconnect;
 - (void)disconnect:(void(^)(BOOL success))aCallback;
 
-/*
- 绑定配件
- */
-- (void)bindSettingCMD:(BindSettingCMD)cmd
-            completion:(WMSBleBindSettingCallBack)aCallBack;
+#pragma mark - Public handle
+///在连接成功后，监听按键，然后以通知的形式发送出去（可以一对多）
 
-/**
- 模式控制
- */
-- (void)switchToControlMode:(ControlMode)controlMode
-                openOrClose:(BOOL)status
-                 completion:(WMSBleSwitchToControlModeCallback)aCallBack;
+///绑定设备
+- (void)bindDevice:(bindDeviceCallback)aCallback;
 
-/**
- 切换到升级模式
- */
-- (void)switchToUpdateModeCompletion:(WMSBleSwitchToUpdateModeCallback)aCallBack;
+///解绑设备
+- (void)unbindDevice:(bindDeviceCallback)aCallback;
+
+///切换到升级模式
+- (void)switchToUpdateMode:(switchModeCallback)aCallback;
+
+
+
 
 #pragma mark - Private
 - (void)disconnectWithReason:(NSString *)reason;
+
+- (LGCharacteristic *)findCharactWithUUID:(NSString *)UUIDStr;
+
 /*
  * 添加定时器，在发送数据超时后，重新发送
  * @param charact 重发所用的特性
  * @param data 重发的数据
  */
 - (void)addTimerWithTimeInterval:(NSTimeInterval)interval handleCharacteristic:(LGCharacteristic *)charact handleData:(NSData *)data timeID:(TimeID)ID;
+
+/**
+ * 向指定的characteristic中，写入数据
+ * @param bytes 写入的数据
+ * @param length 写入数据的长度
+ * @param characteristic 指定的特性
+ * @param response 写的方式，是否写响应
+ * @param aCallback 回调
+ * @param timeID 每个写操作都有唯一的timeID
+ * #warning 当aCallback为nil时，不会启动time，所以timeID无效
+ */
+- (void)writeBytes:(const void *)bytes length:(NSUInteger)length toCharacteristic:(LGCharacteristic *)characteristic response:(BOOL)response callbackHandle:(id)aCallback withTimeID:(int)timeID;
+
+/**
+ * 订阅指定的characteristic
+ * @param enable 是否使能通知
+ */
+- (void)characteristic:(LGCharacteristic *)characteristic enableNotify:(BOOL)enable withTimeID:(int)timeID;
 
 @end
