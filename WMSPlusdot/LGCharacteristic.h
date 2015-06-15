@@ -30,6 +30,8 @@ typedef void (^LGCharacteristicWriteCallback) (NSError *error);
 
 //我修改的
 extern NSString * const LGCharacteristicDidNotifyValueNotification;
+extern NSString * const KLGNotifyValue;
+extern NSString * const KLGNotifyCharacteristic;
 //----
 
 /**
