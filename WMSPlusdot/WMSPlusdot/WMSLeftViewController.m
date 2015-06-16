@@ -19,7 +19,7 @@
 #import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
 #import "WMSClockListVC.h"
-#import "TestViewController.h"
+#import "WMSLocationViewController.h"
 
 #import "WMSLeftViewCell.h"
 
@@ -31,19 +31,34 @@
 #import "WMSAppConfig.h"
 #import "RequestClass.h"
 #import "WMSLocationManager.h"
+#import "UILabel+Attribute.h"
 
 #define Null_Object     @"Null_Object"
 
 #define SECTION_NUMBER  1
 #define CELL_HEIGHT     46
 
-@interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate,WMSMyAccountViewControllerDelegate>
+#define WEATHER_INFO_KEY                        @"WMSLeftViewController.WEATHER_INFO_KEY"
+#define WEATHER_INFO_CITY_KEY                   @"WMSLeftViewController.WEATHER_INFO_CITY_KEY"
+#define WEATHER_INFO_TEMP_KEY                   @"WMSLeftViewController.WEATHER_INFO_TEMP_KEY"
+#define WEATHER_INFO_HUMIDITY_KEY               @"WMSLeftViewController.WEATHER_INFO_HUMIDITY_KEY"
+#define WEATHER_INFO_DESCRIPTION_KEY            @"WMSLeftViewController.WEATHER_INFO_DESCRIPTION_KEY"
+
+#define DEFAULT_CITY                            @"深圳"
+
+static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1小时
+
+@interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate,WMSMyAccountViewControllerDelegate,WMSLocationViewControllerDelegate>
 
 @property (strong, nonatomic) NSArray *titleArray;
 @property (strong, nonatomic) NSArray *imageNameArray;
 @property (strong, nonatomic) NSArray *seletedImageNameArray;
 
 @property (strong, nonatomic) NSArray *specifyContentVCClassArray;
+
+@property (strong, nonatomic) NSTimer *refreshWeatherTimer;
+@property (strong, nonatomic) Condition *condition;
+
 @end
 
 @implementation WMSLeftViewController
@@ -57,7 +72,6 @@
                            NSLocalizedString(@"Target setting",nil),
                            NSLocalizedString(@"Bound watch",nil),
                            NSLocalizedString(@"校对时间", nil),
-                           @"test",
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
         _titleArray = mutiArr;
@@ -72,7 +86,6 @@
                             @"main_menu_target_icon_a.png",
                             @"main_menu_binding_icon_a.png",
                             @"main_menu_checkTime_icon_a.png",
-                            @"",
                             ];
     }
     return _imageNameArray;
@@ -85,7 +98,6 @@
                                    @"main_menu_target_icon_b.png",
                                    @"main_menu_binding_icon_b.png",
                                    @"main_menu_checkTime_icon_b.png",
-                                   @"",
                                    ];
     }
     return _seletedImageNameArray;
@@ -99,7 +111,6 @@
                                         [WMSContent2ViewController class],
                                         [WMSMyAccessoryViewController class],
                                         [CheckTimeViewController class],
-                                        [TestViewController class],
                                         ];
     }
     return _specifyContentVCClassArray;
@@ -113,7 +124,6 @@
         UIViewController *vc = ((MyNavigationController *)self.sideMenuViewController.contentViewController).topViewController;
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
-                           Null_Object,
                            Null_Object,
                            Null_Object,
                            Null_Object,
@@ -143,10 +153,11 @@
     [self loadUserInfo];
     [self setupTableView];
     [self setupUserPhoto];
+    [self setupCityLabel];
     
-    [self findCurrentLocation];
+    [self loadDefaultWeatherInfo];
     
-    
+    [self registerForNotifications];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -155,7 +166,9 @@
 }
 - (void)dealloc
 {
-    DEBUGLog(@"LeftViewController dealloc");
+    DEBUGLog_METHOD;
+    [_refreshWeatherTimer invalidate];
+    [self unregisterFromNotifications];
 }
 
 #pragma mark - Setup
@@ -174,34 +187,78 @@
 {
     [self.userPhoto setClipsToBounds:YES];
     [self.userPhoto.layer setCornerRadius:self.userPhoto.bounds.size.width/2];
-    [self.userPhoto.layer setBorderWidth:1];
+    [self.userPhoto.layer setBorderWidth:0];
     [self.userPhoto.layer setBorderColor:[UIColor clearColor].CGColor];
     [self.userPhoto.layer setBackgroundColor:[UIColor whiteColor].CGColor];
+}
+- (void)setupCityLabel
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCityLabel:)];
+    [self.cityLabel addGestureRecognizer:tapGesture];
 }
 
 - (void)loadUserInfo
 {
     WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
-    
-    [self.userPhoto setBackgroundImage:model.image forState:UIControlStateNormal];
+    if (model.image) {
+        [self.userPhoto setBackgroundImage:model.image forState:UIControlStateNormal];
+    }
     [self.nickNameLabel setText:model.name];
 }
 
 #pragma mark - Weather
+- (void)loadDefaultWeatherInfo
+{
+    NSDictionary *data = [[NSUserDefaults standardUserDefaults] objectForKey:WEATHER_INFO_KEY];
+    if (!data) {
+        [self findCurrentLocation];
+    } else {
+        Condition *weather = [[Condition alloc] init];
+        weather.locationName = data[WEATHER_INFO_CITY_KEY];
+        weather.temperature = data[WEATHER_INFO_TEMP_KEY];
+        weather.humidity = data[WEATHER_INFO_HUMIDITY_KEY];
+        weather.conditionDescription = data[WEATHER_INFO_DESCRIPTION_KEY];
+        
+        [self updateWeather:weather];
+    }
+    if (!self.refreshWeatherTimer) {
+        _refreshWeatherTimer = [NSTimer scheduledTimerWithTimeInterval:REFRESH_WEATHER_TIMER_INTERVAL target:self selector:@selector(refreshWeather:) userInfo:nil repeats:YES];
+    }
+}
+- (void)savaWeatherInfo
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *data = @{
+                           WEATHER_INFO_CITY_KEY        : self.condition.locationName,
+                           WEATHER_INFO_TEMP_KEY        : self.condition.temperature,
+                           WEATHER_INFO_HUMIDITY_KEY    : self.condition.humidity,
+                           WEATHER_INFO_DESCRIPTION_KEY : self.condition.conditionDescription,
+                           };
+    [userDefaults setObject:data forKey:WEATHER_INFO_KEY];
+}
+
 - (void)findCurrentLocation
 {
-    __block WMSLocationManager *manager = [WMSLocationManager sharedManager];
+    WMSLocationManager *manager = [WMSLocationManager sharedManager];
     WeakObj(manager, weakManager);
-    [manager findCurrentLocation:^(BOOL isSuccess, float lat, float lon) {
+    [manager findCurrentLocation:^(BOOL isSuccess, float lat, float lon, NSError *error) {
         if (isSuccess) {
             StrongObj(weakManager, strongManager);
             if (strongManager) {
                 [self requestWeatherOfCity:strongManager.currentCityName];
-                
-                self.cityLabel.text = strongManager.currentCityName;
             }
         } else {
-            //TODO 提示定位失败
+            //提示定位失败
+            NSString *txt = NSLocalizedString(DEFAULT_CITY, nil);
+            txt = [txt stringByAppendingString:NSLocalizedString(@"/(定位失败)", nil)];
+            
+            NSArray *attrisArr = @[
+                                   @{NSFontAttributeName:self.cityLabel.font},
+                                   @{NSFontAttributeName:Font_DINCondensed(12.0)},
+                                   ];
+            [self.cityLabel setSegmentsText:txt separateMark:@"/" attributes:attrisArr];
+            
+            [self requestWeatherOfCity:DEFAULT_CITY];
         }
     }];
 }
@@ -211,7 +268,9 @@
     [RequestClass requestWeatherOfCityName:cityName completion:^(BOOL isSuccess, id data, NSError *error) {
         if (isSuccess) {
             DEBUGLog(@"data:%@", data);
+            ((Condition *)data).locationName = cityName;
             [self updateWeather:data];
+            [self updateWeatherOnWatch];
         } else {
             DEBUGLog(@"error code:%d", (int)error.code);
         }
@@ -220,13 +279,26 @@
 
 - (void)updateWeather:(Condition *)weather
 {
+    self.condition = weather;
+    
+    self.cityLabel.text = weather.locationName;
     self.tempLabel.text = [NSString stringWithFormat:@"%d°", weather.temperature.intValue];
     self.humidityLabel.text = [NSString stringWithFormat:@"%d%%", weather.humidity.intValue];
     self.weatherIcon.image = [UIImage imageNamed:weather.imageName];
     self.weatherLabel.text = weather.weatherName;
 }
 
+///更新手表上的天气
+- (void)updateWeatherOnWatch
+{
+    
+}
 
+- (void)refreshWeather:(NSTimer *)timer
+{
+    NSString *city = self.condition.locationName;
+    [self requestWeatherOfCity:city];
+}
 
 
 #pragma mark - Action
@@ -245,10 +317,40 @@
     [self presentViewController:nav animated:YES completion:nil];
 }
 
+- (void)clickedCityLabel:(id)sender
+{
+    DEBUGLog(@"%s", __func__);
+    WMSLocationViewController *vc = [[WMSLocationViewController alloc] init];
+    vc.delegate = self;
+    MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+
+#pragma mark -  Notifications
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+}
+- (void)unregisterFromNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)handleAppWillTerminate:(NSNotification *)notification
+{
+    [self savaWeatherInfo];
+}
+
 #pragma mark - WMSMyAccountViewControllerDelegate
 - (void)accountViewControllerDidClose:(WMSMyAccountViewController *)viewController
 {
     [self loadUserInfo];
+}
+
+#pragma mark - WMSLocationViewControllerDelegate
+- (void)locationViewController:(WMSLocationViewController *)vc didGetLocation:(NSString *)locationName
+{
+    [self requestWeatherOfCity:locationName];
 }
 
 

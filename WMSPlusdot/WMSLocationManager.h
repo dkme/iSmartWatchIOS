@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-typedef void(^completionCallback)(BOOL isSuccess, float lat, float lon);
+@protocol WMSLocationManagerDelegate;
+
+typedef void(^completionCallback)(BOOL isSuccess, float lat, float lon, NSError *error);
 
 @interface WMSLocationManager : NSObject <CLLocationManagerDelegate>
 
@@ -17,8 +19,23 @@ typedef void(^completionCallback)(BOOL isSuccess, float lat, float lon);
 
 @property (nonatomic, strong, readonly) NSString *currentCityName;
 
+@property (nonatomic, weak) id<WMSLocationManagerDelegate> delegate;
+
 + (instancetype)sharedManager;
 
 - (void)findCurrentLocation:(completionCallback)aCallback;
+
+- (void)stopFindLocation;
+
+- (void)showAlertView;
+
+@end
+
+
+@protocol WMSLocationManagerDelegate <NSObject>
+
+@optional
+- (void)locationManagerdidCanPosition:(WMSLocationManager *)manager;
+
 
 @end

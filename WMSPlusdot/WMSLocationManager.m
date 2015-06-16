@@ -8,7 +8,7 @@
 
 #import "WMSLocationManager.h"
 
-@interface WMSLocationManager ()
+@interface WMSLocationManager () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
@@ -16,6 +16,8 @@
 
 @property (nonatomic, copy) completionCallback findCallback;
 
+@property (nonatomic, assign) int handleCount;
+@property (nonatomic, assign) BOOL isEnterSetting;
 
 @end
 
@@ -35,27 +37,9 @@
     if (self = [super init]) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
-        // 判断定位操作是否被允许
-        
-//        if([CLLocationManager locationServicesEnabled]) {
-//            
-//            
-//            
-//        }else {
-//            
-//            //提示用户无法进行定位操作
-//            
-//            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:
-//                                      
-//                                      @"提示" message:@"定位不成功 ,请确认开启定位" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-//            
-//            [alertView show];
-//            
-//        }
         if (IS_IOS8) {
             [self.locationManager requestAlwaysAuthorization];
         }
-        
     }
     return self;
 }
@@ -66,11 +50,29 @@
 }
 
 - (void)findCurrentLocation:(completionCallback)aCallback {
+    self.handleCount = 0;
     if (aCallback) {
         self.isFirstUpdate = YES;
         self.findCallback = aCallback;
         [self.locationManager startUpdatingLocation];
     }
+}
+
+- (void)stopFindLocation
+{
+    self.findCallback = nil;
+    [self.locationManager stopUpdatingLocation];
+}
+
+- (void)showAlertView
+{
+    UIAlertView *alertView = nil;
+    if (IS_IOS8) {
+        alertView = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"定位服务未开启", nil) message:NSLocalizedString(@"请在系统设置中开启定位服务", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"好",nil) otherButtonTitles:NSLocalizedString(@"设置",nil), nil];
+    } else {
+        alertView = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"定位服务未开启", nil) message:NSLocalizedString(@"请在系统“设置-隐私-定位服务”中开启定位服务",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"好",nil) otherButtonTitles:nil];
+    }
+    [alertView show];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -80,16 +82,14 @@
         self.isFirstUpdate = NO;
         return;
     }
-    static int handleCount = 0;
-    if (handleCount >= 1) {//取第一次的结果即可
+    if (self.handleCount >= 1) {//取第一次的结果即可
         return ;
     }
-    handleCount ++;
+    self.handleCount ++;
     
     CLLocation *location = [locations lastObject];
     
     // 获取当前所在的城市名
-    
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     
     //根据经纬度反向地理编译出地址信息
@@ -97,7 +97,6 @@
         if (array.count > 0) {
             CLPlacemark *placemark = [array objectAtIndex:0];
             //将获得的所有信息显示到label上
-            DEBUGLog(@"%@",placemark.name);
             //获取城市
             NSString *city = placemark.locality;
             if (!city) {
@@ -110,7 +109,7 @@
                 _currentLocation = location;
                 [manager stopUpdatingLocation];
                 if (self.findCallback) {
-                    self.findCallback(YES, location.coordinate.latitude, location.coordinate.longitude);
+                    self.findCallback(YES, location.coordinate.latitude, location.coordinate.longitude, nil);
                     self.findCallback = nil;
                 }
             }
@@ -119,10 +118,20 @@
         else if (error == nil && [array count] == 0)
         {
             DEBUGLog(@"No results were returned.");
+            [manager stopUpdatingLocation];
+            if (self.findCallback) {
+                self.findCallback(NO, 0, 0, nil);
+                self.findCallback = nil;
+            }
         }
         else if (error != nil)
         {
             DEBUGLog(@"An error occurred = %@", error);
+            [manager stopUpdatingLocation];
+            if (self.findCallback) {
+                self.findCallback(NO, 0, 0, error);
+                self.findCallback = nil;
+            }
         }
     }];
 }
@@ -130,12 +139,31 @@
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
 {
-    DEBUGLog(@"定位失败:%@", error.localizedDescription);
-    
     [manager stopUpdatingLocation];
     if (self.findCallback) {
-        self.findCallback(NO, 0, 0);
+        self.findCallback(NO, 0, 0, error);
         self.findCallback = nil;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status >= kCLAuthorizationStatusAuthorizedAlways && self.isEnterSetting) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(locationManagerdidCanPosition:)]) {
+            [self.delegate locationManagerdidCanPosition:self];
+        }
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+            self.isEnterSetting = YES;
+        }
     }
 }
 

@@ -308,6 +308,8 @@
 		F7E99FEE1B26978A001C0CDD /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7E99FEC1B26978A001C0CDD /* TestViewController.xib */; };
 		F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */; };
 		F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF31B281704001C0CDD /* WMSStackManager.m */; };
+		F7F6AD5D1B302BD300F3FC8E /* WMSLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7F6AD5B1B302BD300F3FC8E /* WMSLocationViewController.m */; };
+		F7F6AD5E1B302BD300F3FC8E /* WMSLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7F6AD5C1B302BD300F3FC8E /* WMSLocationViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -765,6 +767,9 @@
 		F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncProfile.m; sourceTree = "<group>"; };
 		F7E99FF21B281704001C0CDD /* WMSStackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSStackManager.h; sourceTree = "<group>"; };
 		F7E99FF31B281704001C0CDD /* WMSStackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSStackManager.m; sourceTree = "<group>"; };
+		F7F6AD5A1B302BD300F3FC8E /* WMSLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WMSLocationViewController.h; path = WMSPlusdot/WMSLocationViewController.h; sourceTree = "<group>"; };
+		F7F6AD5B1B302BD300F3FC8E /* WMSLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WMSLocationViewController.m; path = WMSPlusdot/WMSLocationViewController.m; sourceTree = "<group>"; };
+		F7F6AD5C1B302BD300F3FC8E /* WMSLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WMSLocationViewController.xib; path = WMSPlusdot/WMSLocationViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1426,6 +1431,7 @@
 				23E35B861A4BB10B00FDA20D /* 防丢视图 */,
 				2316508A19AB489A0066C301 /* 智能闹钟视图 */,
 				2383D44C1A723F23006217CC /* 相机视图 */,
+				F7F6AD5F1B302BFE00F3FC8E /* 定位城市视图 */,
 				2333AAFC1A64B32300DBA846 /* MyNavigationController */,
 				F7E99FEA1B26978A001C0CDD /* TestViewController.h */,
 				F7E99FEB1B26978A001C0CDD /* TestViewController.m */,
@@ -1995,6 +2001,16 @@
 			name = "protocol-c";
 			sourceTree = "<group>";
 		};
+		F7F6AD5F1B302BFE00F3FC8E /* 定位城市视图 */ = {
+			isa = PBXGroup;
+			children = (
+				F7F6AD5A1B302BD300F3FC8E /* WMSLocationViewController.h */,
+				F7F6AD5B1B302BD300F3FC8E /* WMSLocationViewController.m */,
+				F7F6AD5C1B302BD300F3FC8E /* WMSLocationViewController.xib */,
+			);
+			name = "定位城市视图";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2220,6 +2236,7 @@
 				232846F619A43DC1001C148D /* main_bg.png in Resources */,
 				234F81F91A4D565600332C03 /* sound_alarm.m4r in Resources */,
 				23ABD59F1A1DC0010062FC99 /* bind_success.png in Resources */,
+				F7F6AD5E1B302BD300F3FC8E /* WMSLocationViewController.xib in Resources */,
 				2319723C1A3540DE002E8A0F /* WMSDetailCell.xib in Resources */,
 				2326A43F19A5D71B0098657B /* main_menu_bg_b.png in Resources */,
 				233511AD19A4C00600FBCC81 /* main_setting_icon_a.png in Resources */,
@@ -2333,6 +2350,7 @@
 				23D7CF0219B5C49C00DFA678 /* LGService.m in Sources */,
 				237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */,
 				23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */,
+				F7F6AD5D1B302BD300F3FC8E /* WMSLocationViewController.m in Sources */,
 				2323BE061A68B0E900FCA216 /* DFUOperations.m in Sources */,
 				2335119E19A4B85700FBCC81 /* RECommonFunctions.m in Sources */,
 				23D7CEFE19B5C49C00DFA678 /* CBUUID+StringExtraction.m in Sources */,
