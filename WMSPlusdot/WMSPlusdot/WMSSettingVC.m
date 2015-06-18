@@ -179,10 +179,10 @@
     }
     [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
      {
-         DEBUGLog(@"firmware curVersion:%f, newVersion:%f",[WMSDeviceModel deviceModel].version,newVersion);
+         DEBUGLog(@"firmware curVersion:%f, newVersion:%f",[WMSDeviceModel deviceModel].firmwareVersion,newVersion);
          //DEBUGLog(@"describe:%@, url:%@",describe,strURL);
          //newVersion = 100.0;
-         if ([WMSDeviceModel deviceModel].version < newVersion) {
+         if ([WMSDeviceModel deviceModel].firmwareVersion < newVersion) {
              [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
               {
                   //do something
@@ -389,7 +389,7 @@
                     [self removeBadgeFromView:cell];
                     NSString *strVer = @"";
                     if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected) {
-                        double version = [WMSDeviceModel deviceModel].version;
+                        double version = [WMSDeviceModel deviceModel].firmwareVersion;
                         strVer = [NSString stringWithFormat:@"%.01f",version];
                     } else {
                         strVer = @"unknown";

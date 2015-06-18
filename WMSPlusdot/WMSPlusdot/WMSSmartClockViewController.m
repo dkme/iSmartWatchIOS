@@ -7,7 +7,6 @@
 //
 
 #import "WMSSmartClockViewController.h"
-//#import "WMSSelectValueViewController.h"
 #import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
 
@@ -33,7 +32,7 @@
 
 #define DAY_HOURS                           24
 #define DAY_MINUTES                         60
-#define CLOCK_DEFAULT_ID                    1
+#define CLOCK_DEFAULT_ID                    0
 
 @interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,WMSSwitchCellDelegage,UIAlertViewDelegate>
 @property (strong,nonatomic) WMSInputView *myInputView;
@@ -187,7 +186,6 @@
         _clockModel = [[WMSAlarmClockModel alloc] initWithStatus:NO startHour:[NSDate hourOfDate:date] startMinute:[NSDate minuteOfDate:date] snoozeMinute:DEFAULT_SNOOZE_MINUTE repeats:repeats];
     }
     _clock = [[WMSAlarmClockModel alloc] initWithClock:self.clockModel];
-//    [self setClockModel:_clock];
 }
 
 #pragma mark - Action
@@ -212,22 +210,13 @@
     }
     
     WMSAlarmClockModel *clock = self.clockModel;
-    NSArray *array = [WMSRemindHelper repeatsWithArray:clock.repeats];
-    Byte repeats[7] = {0};
-    NSUInteger length = 7;
-    for (int i=0; i<[array count]; i++) {
-        Byte b = (Byte)[array[i] intValue];
-        if (i < length) {
-            repeats[i] = b;
-        }
-    }
-    [bleControl.settingProfile setAlarmClockWithId:CLOCK_DEFAULT_ID withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
-     {
-         DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
-         [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
-         [WMSDataManager savaAlarmClocks:@[clock]];
-         _clock = clock;
-     }];
+    NSArray *repeats = [WMSRemindHelper repeatsWithArray:clock.repeats];
+    [bleControl.settingProfile setAlarmClock:clock.status ID:CLOCK_DEFAULT_ID hour:clock.startHour minute:clock.startMinute interval:clock.snoozeMinute repeats:repeats completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"设置闹钟%d", isSuccess);
+        [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
+        [WMSDataManager savaAlarmClocks:@[clock]];
+        _clock = clock;
+    }];
 }
 
 #pragma mark - UITableViewDataSource

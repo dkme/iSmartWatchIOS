@@ -190,8 +190,6 @@
 		237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545D319AF02AC00685CD1 /* UIImage+ColorAtPixel.m */; };
 		237545DB19AF229C00685CD1 /* WMSActivityRemindViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545D919AF229C00685CD1 /* WMSActivityRemindViewController.m */; };
 		237545DC19AF229C00685CD1 /* WMSActivityRemindViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237545DA19AF229C00685CD1 /* WMSActivityRemindViewController.xib */; };
-		237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 237545E019AF484600685CD1 /* WMSInputViewController.m */; };
-		237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 237545E119AF484600685CD1 /* WMSInputViewController.xib */; };
 		2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */ = {isa = PBXBuildFile; fileRef = 2378A3DF19FFA96900187836 /* UIViewController+Tip.m */; };
 		2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2378A3EC1A00F06100187836 /* AudioToolbox.framework */; };
 		237D2EFF1A5A35AD0002AB4F /* WMSWeekPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 237D2EFE1A5A35AD0002AB4F /* WMSWeekPicker.m */; };
@@ -583,9 +581,6 @@
 		237545D819AF229C00685CD1 /* WMSActivityRemindViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSActivityRemindViewController.h; sourceTree = "<group>"; };
 		237545D919AF229C00685CD1 /* WMSActivityRemindViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSActivityRemindViewController.m; sourceTree = "<group>"; };
 		237545DA19AF229C00685CD1 /* WMSActivityRemindViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSActivityRemindViewController.xib; sourceTree = "<group>"; };
-		237545DF19AF484600685CD1 /* WMSInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSInputViewController.h; sourceTree = "<group>"; };
-		237545E019AF484600685CD1 /* WMSInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSInputViewController.m; sourceTree = "<group>"; };
-		237545E119AF484600685CD1 /* WMSInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSInputViewController.xib; sourceTree = "<group>"; };
 		2378A3DB19FFA4A400187836 /* WMSConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSConstants.h; sourceTree = "<group>"; };
 		2378A3DE19FFA96900187836 /* UIViewController+Tip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Tip.h"; sourceTree = "<group>"; };
 		2378A3DF19FFA96900187836 /* UIViewController+Tip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Tip.m"; sourceTree = "<group>"; };
@@ -1530,9 +1525,6 @@
 				237545D819AF229C00685CD1 /* WMSActivityRemindViewController.h */,
 				237545D919AF229C00685CD1 /* WMSActivityRemindViewController.m */,
 				237545DA19AF229C00685CD1 /* WMSActivityRemindViewController.xib */,
-				237545DF19AF484600685CD1 /* WMSInputViewController.h */,
-				237545E019AF484600685CD1 /* WMSInputViewController.m */,
-				237545E119AF484600685CD1 /* WMSInputViewController.xib */,
 			);
 			name = "活动提醒视图";
 			sourceTree = "<group>";
@@ -2139,7 +2131,6 @@
 				2326A40F19A593E20098657B /* main_history_btn_a.png in Resources */,
 				2393886C1ABBA99F0018BDA1 /* flashing_on@2x.png in Resources */,
 				2347C82D1A63A4C9007A0446 /* WMSClockCell.xib in Resources */,
-				237545E319AF484600685CD1 /* WMSInputViewController.xib in Resources */,
 				230298CA19A83281009D4306 /* target_progress_bg.png in Resources */,
 				2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */,
 				2326A40319A58CCF0098657B /* main_circle_orange.png in Resources */,
@@ -2348,7 +2339,6 @@
 				23A6DF2B1ADCA95300BB06CF /* DataPackage.m in Sources */,
 				234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */,
 				23D7CF0219B5C49C00DFA678 /* LGService.m in Sources */,
-				237545E219AF484600685CD1 /* WMSInputViewController.m in Sources */,
 				23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */,
 				F7F6AD5D1B302BD300F3FC8E /* WMSLocationViewController.m in Sources */,
 				2323BE061A68B0E900FCA216 /* DFUOperations.m in Sources */,

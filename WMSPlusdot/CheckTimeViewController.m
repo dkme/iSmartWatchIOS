@@ -12,6 +12,8 @@
 
 @interface CheckTimeViewController ()<TurntableViewDelegate>
 
+@property (nonatomic, strong) WMSBleControl *bleControl;
+
 @end
 
 @implementation CheckTimeViewController
@@ -72,6 +74,12 @@
 - (void)turntableViewDidRotate:(TurntableView *)turntableView byRotateDirection:(RotateDirection)direction
 {
     DEBUGLog(@"RotateDirection：%d", direction);
+    if (!self.bleControl) {
+        _bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    }
+    [self.bleControl.settingProfile adjustTimeDirection:(ROTATE_DIRECTION)direction completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"调整时间%d", isSuccess);
+    }];
 }
 
 @end

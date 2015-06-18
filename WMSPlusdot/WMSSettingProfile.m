@@ -255,6 +255,24 @@
 }
 
 
+#pragma mark - Private
++ (NSUInteger)weatherTypeFromCondition:(NSString *)condition
+{
+    static NSDictionary *_weatherTypeMap = nil;
+    if (!_weatherTypeMap) {
+        _weatherTypeMap = @{
+                        @"clouds":@(WeatherTypeClear),
+                        @"clear":@(WeatherTypeClouds),
+                        @"light rain":@(WeatherTypeLightRain),
+                        @"moderate rain":@(WeatherTypeModerateRain),
+                        @"heavy rain":@(WeatherTypeHeavyRain),
+                        @"light snow":@(WeatherTypeLightSnow),
+                        @"moderate snow":@(WeatherTypeModerateSnow),
+                        @"heavy snow":@(WeatherTypeHeavySnow),
+                        };
+    }
+    return ((NSNumber *)_weatherTypeMap[condition]).unsignedIntegerValue;
+}
 
 #pragma mark - Handle
 - (void)handleDidGetNotifyValue:(NSNotification *)notification

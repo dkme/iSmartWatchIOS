@@ -19,18 +19,24 @@
 #pragma mark - 数据加载与保存
 //社交提醒设置项的加载与保存
 + (NSDictionary *)loadSettingItemData;
++ (NSObject *)loadSettingItemDataOfKey:(NSString *)key;
 + (void)savaSettingItemForKey:(NSString *)key data:(NSObject *)object;
 
 //低电量提醒设置项的加载与保存
 + (BOOL)lowBatteryRemind;
-+ (void)setLowBatteryRemind:(BOOL)openOrClose;
++ (void)savaLowBatteryRemind:(BOOL)openOrClose;
 
 //提醒方式设置项的加载与保存
-+ (int)loadRemindWay;//0：不提醒，1：震动，2：响铃，3：震动+响铃
++ (int)loadRemindWay;
 + (void)savaRemindWay:(int)way;
-+ (void)setRemindWay:(int)way
-              handle:(WMSSettingProfile *)handle
-          completion:(void(^)(BOOL success))aCallBack;
+//+ (void)setRemindWay:(int)way
+//              handle:(WMSSettingProfile *)handle
+//          completion:(void(^)(BOOL success))aCallBack;
+
+//防丢设置项的加载与保存
++ (BOOL)loadLost;
++ (void)savaLost:(BOOL)openOrClose;
+
 
 #pragma mark - 第一次连接成功后，对设置项的配置
 + (void)resetFirstConnectedConfig;

@@ -219,9 +219,9 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 {
     DEBUGLog(@"communication .....");
     //发送一个命令，保持蓝牙连接
-    [self.wmsBleControl.deviceProfile readDeviceTimeWithCompletion:^(NSString *dateString, BOOL success) {
-        DEBUGLog(@"read device time %@",dateString);
-    }];
+//    [self.wmsBleControl.deviceProfile readDeviceTimeWithCompletion:^(NSString *dateString, BOOL success) {
+//        DEBUGLog(@"read device time %@",dateString);
+//    }];
     
     if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 61.0) {
         [[GGAudioTool sharedInstance] playSilentSound];
@@ -332,11 +332,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         return ;
     }
     
-    [WMSDeviceModel readDevicedetailInfo:self.wmsBleControl completion:^(NSUInteger energy, NSUInteger version, DeviceWorkStatus workStatus, NSUInteger deviceID, BOOL isPaired) {
-        if (!isPaired) {
-            [self.wmsBleControl bindSettingCMD:BindSettingCMDMandatoryBind completion:nil];
-        }
-    }];
     [self checkDeviceBattery];
 }
 
@@ -346,17 +341,17 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     if (checkCount >= 1) {
         return ;
     }
-    if ([WMSDeviceModel deviceModel].version < FIRMWARE_ADD_BATTERY_INFO) {
-        return ;
-    }
-    [WMSDeviceModel readDeviceBatteryInfo:self.wmsBleControl completion:^(float voltage) {
-        DEBUGLog(@"device voltage:%f",voltage);
-        if (voltage <= WATCH_LOW_VOLTAGE) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"手表电量过低，请尽快更换电池！", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
-            [alert show];
-            checkCount ++;
-        }else{}
-    }];
+//    if ([WMSDeviceModel deviceModel].version < FIRMWARE_ADD_BATTERY_INFO) {
+//        return ;
+//    }
+//    [WMSDeviceModel readDeviceBatteryInfo:self.wmsBleControl completion:^(float voltage) {
+//        DEBUGLog(@"device voltage:%f",voltage);
+//        if (voltage <= WATCH_LOW_VOLTAGE) {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"手表电量过低，请尽快更换电池！", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
+//            [alert show];
+//            checkCount ++;
+//        }else{}
+//    }];
 }
 
 

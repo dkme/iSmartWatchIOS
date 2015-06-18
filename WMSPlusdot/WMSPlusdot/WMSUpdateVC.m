@@ -174,43 +174,43 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
     NSString *peipheralUUID = [bleControl.connectedPeripheral UUIDString];
     _peripheralIdentify = peipheralUUID;
     
-    [self updateState:NSLocalizedString(@"正在切换至升级模式...", nil)];
-    [bleControl switchToUpdateModeCompletion:^(SwitchToUpdateResult result, NSString *failReason)
-    {
-        switch (result)
-        {
-            case SwitchToUpdateResultSuccess:
-            {
-                [self updateState:NSLocalizedString(@"切换模式成功...", nil)];
-                DEBUGLog(@"success");
-                break;
-            }
-            case SwitchToUpdateResultLowBattery:
-            {
-                [self showTip:NSLocalizedString(@"您的手表电量过低，不能升级", nil)];
-                DEBUGLog(@"low battery");
-                return ;
-            }
-            case SwitchToUpdateResultUnsupported:
-            {
-                [self showTip:NSLocalizedString(@"您的手表不支持升级", nil)];
-                DEBUGLog(@"Unsupported");
-                return ;
-            }
-            default:
-                return ;
-        }
-        self.navBarView.buttonLeft.enabled = NO;
-        self.buttonUpdate.enabled = NO;
-        self.buttonUpdate.alpha = 0.7;
-        _isUpdating = YES;
-        [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
-        //发送通知
-        [self postNotificationForName:WMSUpdateVCStartDFU];
-        //4s后，会断开连接，此时再去扫描
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:peipheralUUID];
-        [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:6.0];
-    }];
+//    [self updateState:NSLocalizedString(@"正在切换至升级模式...", nil)];
+//    [bleControl switchToUpdateModeCompletion:^(SwitchToUpdateResult result, NSString *failReason)
+//    {
+//        switch (result)
+//        {
+//            case SwitchToUpdateResultSuccess:
+//            {
+//                [self updateState:NSLocalizedString(@"切换模式成功...", nil)];
+//                DEBUGLog(@"success");
+//                break;
+//            }
+//            case SwitchToUpdateResultLowBattery:
+//            {
+//                [self showTip:NSLocalizedString(@"您的手表电量过低，不能升级", nil)];
+//                DEBUGLog(@"low battery");
+//                return ;
+//            }
+//            case SwitchToUpdateResultUnsupported:
+//            {
+//                [self showTip:NSLocalizedString(@"您的手表不支持升级", nil)];
+//                DEBUGLog(@"Unsupported");
+//                return ;
+//            }
+//            default:
+//                return ;
+//        }
+//        self.navBarView.buttonLeft.enabled = NO;
+//        self.buttonUpdate.enabled = NO;
+//        self.buttonUpdate.alpha = 0.7;
+//        _isUpdating = YES;
+//        [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
+//        //发送通知
+//        [self postNotificationForName:WMSUpdateVCStartDFU];
+//        //4s后，会断开连接，此时再去扫描
+//        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:peipheralUUID];
+//        [self performSelector:@selector(scanPeipheral:) withObject:peipheralUUID afterDelay:6.0];
+//    }];
 }
 
 #pragma mark - DFU

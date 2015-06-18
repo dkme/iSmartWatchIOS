@@ -45,8 +45,16 @@ extern NSString * const WMSBleControlPeripheralDidDisConnect;
 extern NSString * const WMSBleControlBluetoothStateUpdated;
 
 
-///点击手表按键时的通知
+/**
+ * 点击手表按键时的通知
+ * userInfo中的key：
+ *                “operation” see OperationType
+ */
 extern NSString * const OperationDeviceButtonNotification;
+
+/**************OperationType****************/
+extern NSString * const OperationLookingIPhone;
+extern NSString * const OperationTakePhoto;
 
 
 ///指定的服务与特性

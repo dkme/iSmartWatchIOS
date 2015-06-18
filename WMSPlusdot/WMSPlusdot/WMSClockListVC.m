@@ -106,11 +106,11 @@
         }
     }
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    [bleControl.settingProfile setAlarmClockWithId:_clockID withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
-     {
-         DEBUGLog(@"设置闹钟[%d]%@",_clockID,success?@"成功":@"失败");
-         [self continueSettingClock];
-     }];
+//    [bleControl.settingProfile setAlarmClockWithId:_clockID withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
+//     {
+//         DEBUGLog(@"设置闹钟[%d]%@",_clockID,success?@"成功":@"失败");
+//         [self continueSettingClock];
+//     }];
 }
 - (void)continueSettingClock
 {
@@ -133,11 +133,11 @@
         }
     }
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-    [bleControl.settingProfile setAlarmClockWithId:_clockID withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
-     {
-         DEBUGLog(@"设置闹钟[%d]%@",_clockID,success?@"成功":@"失败");
-         [self continueSettingClock];
-     }];
+//    [bleControl.settingProfile setAlarmClockWithId:_clockID withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
+//     {
+//         DEBUGLog(@"设置闹钟[%d]%@",_clockID,success?@"成功":@"失败");
+//         [self continueSettingClock];
+//     }];
 }
 - (void)settingClockSuccess
 {

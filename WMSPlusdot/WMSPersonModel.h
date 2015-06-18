@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class WMSSettingProfile;
 
 @interface WMSPersonModel : NSObject<NSCoding>
 
@@ -35,6 +36,7 @@
 
 @property (nonatomic, assign) NSUInteger stride;//单位cm
 
+
 - (id)initWithName:(NSString *)name
              image:(UIImage *)image
           birthday:(NSDate *)birthday
@@ -43,5 +45,11 @@
      currentWeight:(NSUInteger)currentWeight
       targetWeight:(NSUInteger)targetWeight
             stride:(NSUInteger)stride;
+
+//只比较性别，年龄，身高，体重
+- (BOOL)isEqual:(id)object;
+
+- (void)syncInfoToWatchWithProfile:(WMSSettingProfile *)profile
+                        completion:(void(^)(BOOL isSuccess))aCallback;
 
 @end

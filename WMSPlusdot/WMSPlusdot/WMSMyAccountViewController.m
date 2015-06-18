@@ -65,6 +65,8 @@ static const int WeightMaxValue         =220;
 @property (strong, nonatomic) NSMutableArray *heightArray;
 @property (strong, nonatomic) NSMutableArray *weightArray;
 
+@property (nonatomic, strong) WMSPersonModel *oldPersonModel;
+
 //身高view，生日view，当前体重view，目标体重view，index分别为100，101，102，103
 @property (nonatomic) int clickedViewIndex;
 @end
@@ -214,6 +216,7 @@ static const int WeightMaxValue         =220;
     SetControllerKeepExtendedLayout();
     if (!self.isNewUser) {
         self.navigationItem.leftBarButtonItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
+//        self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTitle:NSLocalizedString(@"同步", nil) textColor:[UIColor whiteColor] font:Font_System(18.0) size:CGSizeMake(43.f, 30.f) target:self action:@selector(clickedSyncAction:)];
     } else {
         self.navigationItem.leftBarButtonItem = nil;
     }
@@ -292,6 +295,8 @@ static const int WeightMaxValue         =220;
     myBirthdayYear = [NSDate yearOfDate:birthday];
     myBirthdayMonth = [NSDate monthOfDate:birthday];
     myBirthdayDay = [NSDate dayOfDate:birthday];
+    
+    self.oldPersonModel = model;
 }
 //保存用户信息
 - (void)savaPersonInfoBirthday:(NSDate *)birthday stride:(NSUInteger)stride
@@ -299,6 +304,10 @@ static const int WeightMaxValue         =220;
     WMSPersonModel *personModel = [[WMSPersonModel alloc] initWithName:myName image:myImage birthday:birthday gender:mySex height:myHeight currentWeight:myCurrentWeight targetWeight:myTargetWeight stride:stride];
     
     [WMSUserInfoHelper savaPersonInfo:personModel];
+    
+    if (![personModel isEqual:self.oldPersonModel]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:USER_INFO_IS_NEED_SYNC_KEY];
+    }
 }
 
 
@@ -597,7 +606,26 @@ static const int WeightMaxValue         =220;
     }
 }
 
-
+- (void)clickedSyncAction:(id)sender
+{
+//    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+//    WMSPersonModel *model = [[WMSPersonModel alloc] init];
+//    model.name = myName;
+//    model.gender = mySex;
+//    model.height = myHeight;
+//    model.currentWeight = myCurrentWeight;
+//    model.targetWeight = myTargetWeight;
+//    
+//    NSString *strBirthday = [NSString stringWithFormat:@"%04d-%02d-%02d",
+//                             myBirthdayYear,myBirthdayMonth,myBirthdayDay];
+//    NSDate *birthday = [NSDate dateFromString:strBirthday format:@"yyyy-MM-dd"];
+//    model.birthday = birthday;
+//    
+//    [model syncInfoToWatchWithProfile:bleControl.settingProfile completion:^(BOOL isSuccess) {
+//        DEBUGLog_DETAIL(@"设置用户信息%d", isSuccess);
+//        
+//    }];
+}
 
 #pragma mark - UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -635,29 +663,29 @@ static const int WeightMaxValue         =220;
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
-        ;
-    } else if (buttonIndex == 1) {//保存数据，关闭视图
-        [alertView dismissWithClickedButtonIndex:0 animated:YES];
-        
-        WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
-        
-        NSString *strBirthday = [NSString stringWithFormat:@"%04d-%02d-%02d",
-                                myBirthdayYear,myBirthdayMonth,myBirthdayDay];
-        float floatStride = StrideWithGender(mySex, myHeight);
-        int stride = Rounded(floatStride);
-        
-        
-        [bleControl.settingProfile setPersonInfoWithWeight:myCurrentWeight withHeight:myHeight withGender:mySex withBirthday:strBirthday withDateFormat:@"yyyy-MM-dd" withStride:stride withMetric:LengthUnitTypeMetricSystem withCompletion:^(BOOL success)
-        {
-            DEBUGLog(@"设置个人信息%@",success?@"成功":@"失败");
-            
-            NSDate *birthday = [NSDate dateFromString:strBirthday format:@"yyyy-MM-dd"];
-            
-            [self savaPersonInfoBirthday:birthday stride:stride];
-        }];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    if (buttonIndex == 0) {
+//        ;
+//    } else if (buttonIndex == 1) {//保存数据，关闭视图
+//        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+//        
+//        WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+//        
+//        NSString *strBirthday = [NSString stringWithFormat:@"%04d-%02d-%02d",
+//                                myBirthdayYear,myBirthdayMonth,myBirthdayDay];
+//        float floatStride = StrideWithGender(mySex, myHeight);
+//        int stride = Rounded(floatStride);
+//        
+//        
+//        [bleControl.settingProfile setPersonInfoWithWeight:myCurrentWeight withHeight:myHeight withGender:mySex withBirthday:strBirthday withDateFormat:@"yyyy-MM-dd" withStride:stride withMetric:LengthUnitTypeMetricSystem withCompletion:^(BOOL success)
+//        {
+//            DEBUGLog(@"设置个人信息%@",success?@"成功":@"失败");
+//            
+//            NSDate *birthday = [NSDate dateFromString:strBirthday format:@"yyyy-MM-dd"];
+//            
+//            [self savaPersonInfoBirthday:birthday stride:stride];
+//        }];
+//    }
+//    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate

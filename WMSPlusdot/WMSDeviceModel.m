@@ -23,23 +23,26 @@
 - (id)init
 {
     if (self = [super init]) {
-        _batteryEnergy = 0;
-        _version = 0.0;
-        _mac = nil;
-        _voltage = 0.0;
+        
     }
     return self;
 }
 - (void)dealloc
 {
-    DEBUGLog(@"%s",__FUNCTION__);
+    DEBUGLog_METHOD;
 }
 
 - (void)resetDevice
 {
-    self.version = 0;
-    self.batteryEnergy = 0;
     self.mac = nil;
+    self.firmName = nil;
+    self.firmwareVersion = 0;
+    self.hardwareVersion = 0;
+    self.softwareVersion = 0;
+    self.power = 0;
+    self.batteryTypel = 0;
+    self.status = 0;
+    self.productModel = 0;
 }
 
 @end

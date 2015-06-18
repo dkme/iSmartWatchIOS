@@ -10,6 +10,11 @@
 
 @implementation Condition
 
+- (NSString *)condition
+{
+    return [[self class] matchConditionDescription:self.conditionDescription];
+}
+
 + (NSDictionary *)imageMap {
     static NSDictionary *_imageMap = nil;
     if (! _imageMap) {

@@ -7,7 +7,6 @@
 //
 
 #import "WMSActivityRemindViewController.h"
-//#import "WMSInputViewController.h"
 #import "UIViewController+Tip.h"
 #import "WMSAppDelegate.h"
 
@@ -223,9 +222,8 @@
     
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     //设置提醒成功
-    [bleControl.settingProfile setSportRemindWithStatus:model.status startHour:model.startHour startMinute:model.startMinute endHour:model.endHour endMinute:model.endMinute intervalMinute:model.intervalMinute repeats:repeats completion:^(BOOL success)
-    {
-        DEBUGLog(@"设置提醒%@",success?@"成功":@"失败");
+    [bleControl.settingProfile setSitting:model.status startHour:model.startHour endHour:model.endHour duration:model.intervalMinute repeats:repeats completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"设置久坐提醒%d", isSuccess);
         [self showTip:NSLocalizedString(@"设置活动提醒成功", nil)];
         [WMSDataManager savaActivityRemind:@[model]];
         _oldActivityModel = model;

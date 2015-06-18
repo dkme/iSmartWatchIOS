@@ -32,6 +32,7 @@
 #import "RequestClass.h"
 #import "WMSLocationManager.h"
 #import "UILabel+Attribute.h"
+//#import "BLEUtils.h"
 
 #define Null_Object     @"Null_Object"
 
@@ -291,7 +292,15 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
 ///更新手表上的天气
 - (void)updateWeatherOnWatch
 {
+    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
     
+    WeatherType type = [WMSSettingProfile weatherTypeFromCondition:self.condition.condition];
+    NSUInteger temp = self.condition.temperature.unsignedIntegerValue;
+    TempUnit unit = TempUnitCentigrade;
+    NSUInteger humidity = self.condition.humidity.unsignedIntegerValue;
+    [bleControl.settingProfile setWeatherType:type temp:temp tempUnit:unit humidity:humidity completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"设置天气成功");
+    }];
 }
 
 - (void)refreshWeather:(NSTimer *)timer

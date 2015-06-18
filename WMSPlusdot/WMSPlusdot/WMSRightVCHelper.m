@@ -31,23 +31,25 @@
 + (void)startLowBatteryRemind:(WMSSettingProfile *)setting
                    completion:(void(^)(void))aCallBack
 {
-    __weak __typeof(&*setting) weakSetting = setting;
-    [weakSetting startRemind:OtherRemindTypeLowBattery completion:^(BOOL success) {
-        DEBUGLog(@"开启低电量提醒成功");
-        __strong __typeof(&*setting) strongSetting = weakSetting;
-        if (strongSetting) {
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finishLowBatteryRemind:) object:strongSetting];
-            [self performSelector:@selector(finishLowBatteryRemind:) withObject:strongSetting afterDelay:LOW_BATTERY_REMIND_TIMEINTERVAL];
-            if (aCallBack) {
-                aCallBack();
+    WeakObj(setting, weakSetting);
+    [setting setRemind:YES event:RemindEventLowBattery completion:^(BOOL isSuccess) {
+        DEBUGLog(@"开启低电量提醒%d", isSuccess);
+        if (isSuccess) {
+            StrongObj(weakSetting, strongSetting);
+            if (strongSetting) {
+                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(finishLowBatteryRemind:) object:strongSetting];
+                [self performSelector:@selector(finishLowBatteryRemind:) withObject:strongSetting afterDelay:LOW_BATTERY_REMIND_TIMEINTERVAL];
+                if (aCallBack) {
+                    aCallBack();
+                }
             }
         }
     }];
 }
 + (void)finishLowBatteryRemind:(WMSSettingProfile *)setting
 {
-    [setting finishRemind:OtherRemindTypeLowBattery completion:^(BOOL success) {
-        DEBUGLog(@"停止低电量提醒成功");
+    [setting setRemind:NO event:RemindEventLowBattery completion:^(BOOL isSuccess) {
+        DEBUGLog(@"停止低电量提醒%d", isSuccess);
     }];
 }
 
@@ -55,28 +57,27 @@
 + (NSArray *)__settingItemArray//存放保存设置项字典的key
 {
     static NSArray *settingItemArray = nil;
-    static dispatch_once_t onceToken = 0;
-    dispatch_once(&onceToken, ^{
-        settingItemArray = @[@"Call",@"SMS",@"Email",@"WeiXin",@"QQ",@"Facebook",@"Twitter"];
-    });
+    if (!settingItemArray) {
+        settingItemArray = @[@"Phone",@"SMS",@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"];
+    }
     return settingItemArray;
 }
 
-+ (RemindEventsType)__remindEventsType
-{
-    NSDictionary *readData = [self loadSettingItemData];
-    NSArray *values = [readData objectsForKeys:self.__settingItemArray notFoundMarker:@""];
-    
-    NSUInteger events[7] = {RemindEventsTypeCall,RemindEventsTypeSMS,RemindEventsTypeEmail,RemindEventsTypeWeixin,RemindEventsTypeQQ,RemindEventsTypeFacebook,RemindEventsTypeTwitter};
-    RemindEventsType eventsType = 0x00;
-    for (int i=0; i<[values count]; i++) {
-        BOOL openOrClose = [[values objectAtIndex:i] boolValue];
-        if (openOrClose) {
-            eventsType = (eventsType | events[i]);
-        }
-    }
-    return eventsType;
-}
+//+ (RemindEventsType)__remindEventsType
+//{
+//    NSDictionary *readData = [self loadSettingItemData];
+//    NSArray *values = [readData objectsForKeys:self.__settingItemArray notFoundMarker:@""];
+//    
+//    NSUInteger events[7] = {RemindEventsTypeCall,RemindEventsTypeSMS,RemindEventsTypeEmail,RemindEventsTypeWeixin,RemindEventsTypeQQ,RemindEventsTypeFacebook,RemindEventsTypeTwitter};
+//    RemindEventsType eventsType = 0x00;
+//    for (int i=0; i<[values count]; i++) {
+//        BOOL openOrClose = [[values objectAtIndex:i] boolValue];
+//        if (openOrClose) {
+//            eventsType = (eventsType | events[i]);
+//        }
+//    }
+//    return eventsType;
+//}
 
 + (NSDictionary *)loadSettingItemData
 {
@@ -88,6 +89,11 @@
         }
     }
     return mutiDic;
+}
++ (NSObject *)loadSettingItemDataOfKey:(NSString *)key
+{
+    NSDictionary *dic = [self loadSettingItemData];
+    return dic[key];
 }
 
 + (void)savaSettingItemForKey:(NSString *)key data:(NSObject *)object
@@ -107,7 +113,7 @@
     }
     return [obj boolValue];
 }
-+ (void)setLowBatteryRemind:(BOOL)openOrClose
++ (void)savaLowBatteryRemind:(BOOL)openOrClose
 {
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND)];
     NSMutableDictionary *writeData = [NSMutableDictionary dictionaryWithDictionary:readData];
@@ -130,16 +136,32 @@
     [writeData writeToFile:FilePath(FILE_REMIND_WAY) atomically:YES];
 }
 
-+ (void)setRemindWay:(int)way handle:(WMSSettingProfile *)handle completion:(void(^)(BOOL success))aCallBack
+//+ (void)setRemindWay:(int)way handle:(WMSSettingProfile *)handle completion:(void(^)(BOOL success))aCallBack
+//{
+//    RemindMode mode = way;//way与RemindMode一一对应
+//    RemindEventsType type = [self __remindEventsType];
+//    [handle setRemindEventsType:type mode:mode completion:^(BOOL success)
+//     {
+//         if (aCallBack) {
+//             aCallBack(success);
+//         }
+//     }];
+//}
+
+//防丢设置项的加载与保存
++ (BOOL)loadLost
 {
-    RemindMode mode = way;//way与RemindMode一一对应
-    RemindEventsType type = [self __remindEventsType];
-    [handle setRemindEventsType:type mode:mode completion:^(BOOL success)
-     {
-         if (aCallBack) {
-             aCallBack(success);
-         }
-     }];
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FileDocumentPath(FILE_ANTILOST)];
+    BOOL on = [[readData objectForKey:@"on"] boolValue];
+    if (!readData) {
+        return YES;//默认为“打开”
+    }
+    return on;
+}
++ (void)savaLost:(BOOL)openOrClose
+{
+    NSDictionary *writeData = @{@"on":@(openOrClose)};
+    [writeData writeToFile:FileDocumentPath(FILE_ANTILOST) atomically:YES];
 }
 
 #pragma mark - 第一次连接成功后，对设置项的配置
@@ -155,7 +177,7 @@
     BOOL isFirst = [userDefaults boolForKey:@"firstConnected"];
     if (isFirst == NO) {
         //配置设置项
-        [self __startConfigWithHandle:handle completion:^{
+        [self __configWithIndex:0 handle:handle completion:^{
             DEBUGLog(@"配置完成");
             [userDefaults setBool:YES forKey:@"firstConnected"];
             if (aCallBack) {
@@ -165,50 +187,109 @@
     }
 }
 
-+ (void)__startConfigWithHandle:(WMSSettingProfile *)handle
-                     completion:(void(^)(void))aCallBack
++ (void)__configWithIndex:(int)index
+                   handle:(WMSSettingProfile *)handle
+               completion:(void(^)(void))aCallback
 {
-    RemindEventsType eventsType = [self __remindEventsType];
-    __weak __typeof(handle) weakHandle = handle;
-    [handle setRemindEventsType:eventsType completion:^(BOOL success)
-     {
-         if (success) {
-             __strong __typeof(weakHandle) strongHandle = weakHandle;
-             [self __continueConfigWithHandle:strongHandle configIndex:1 completion:aCallBack];
-         }
-     }];
-}
-
-+ (void)__continueConfigWithHandle:(WMSSettingProfile *)handle
-                       configIndex:(int)index
-                        completion:(void(^)(void))aCallBack
-{
-    RemindEventsType eventsType = [self __remindEventsType];
-    RemindMode mode = [self loadRemindWay];
+    WeakObj(handle, weakHandle);
     switch (index) {
-        case 1:
+        case 0:
         {
-            __weak __typeof(handle) weakHandle = handle;
-            [handle setRemindEventsType:eventsType mode:mode completion:^(BOOL success)
-             {
-                 if (success) {
-                     __strong __typeof(weakHandle) strongHandle = weakHandle;
-                     if (strongHandle) {
-                         [self __continueConfigWithHandle:strongHandle configIndex:index+1 completion:aCallBack];
-                     }
-                 }
-             }];
+            RemindEvents event = 0;
+            for (int i=RemindEventCall; i<RemindEventSkype; i++) {
+                event |= i;
+            }
+            [handle setRemindEvent:event completion:^(BOOL isSuccess) {
+                if (isSuccess) {
+                    StrongObj(weakHandle, strongHandle);
+                    [self __configWithIndex:index+1 handle:strongHandle completion:aCallback];
+                }
+            }];
             break;
         }
+        case 1:
+        {
+            RemindWay way = [self loadRemindWay];
+            [handle setRemindWay:way completion:^(BOOL isSuccess) {
+                if (isSuccess) {
+                    StrongObj(weakHandle, strongHandle);
+                    [self __configWithIndex:index+1 handle:strongHandle completion:aCallback];
+                }
+            }];
+            break;
+        }
+        case 2:
+        {
+            BOOL openOrClose = [self loadLost];
+            [handle setLost:openOrClose completion:^(BOOL isSuccess) {
+                if (isSuccess) {
+                    StrongObj(weakHandle, strongHandle);
+                    [self __configWithIndex:index+1 handle:strongHandle completion:aCallback];
+                }
+            }];
+            
+            break;
+        }
+            
         default:
         {
-            if (aCallBack) {
-                aCallBack();
+            if (aCallback) {
+                aCallback();
             }
             break;
         }
     }
 }
+
+//+ (void)__startConfigWithHandle:(WMSSettingProfile *)handle
+//                     completion:(void(^)(void))aCallBack
+//{
+//    RemindEvents event = 0;
+//    for (int i=RemindEventCall; i<RemindEventSkype; i++) {
+//        event |= i;
+//    }
+//    WeakObj(handle, weakHandle);
+//    [handle setRemindEvent:event completion:^(BOOL isSuccess) {
+//        if (isSuccess) {
+//            StrongObj(weakHandle, strongHandle);
+//            RemindWay way = [self loadRemindWay];
+//            [strongHandle setRemindWay:way completion:^(BOOL isSuccess) {
+//                if (aCallBack) {
+//                    aCallBack();
+//                }
+//            }];
+//        }
+//    }];
+//}
+
+//+ (void)__continueConfigWithHandle:(WMSSettingProfile *)handle
+//                       configIndex:(int)index
+//                        completion:(void(^)(void))aCallBack
+//{
+//    switch (index) {
+//        case 1:
+//        {
+//            __weak __typeof(handle) weakHandle = handle;
+//            [handle setRemindEventsType:eventsType mode:mode completion:^(BOOL success)
+//             {
+//                 if (success) {
+//                     __strong __typeof(weakHandle) strongHandle = weakHandle;
+//                     if (strongHandle) {
+//                         [self __continueConfigWithHandle:strongHandle configIndex:index+1 completion:aCallBack];
+//                     }
+//                 }
+//             }];
+//            break;
+//        }
+//        default:
+//        {
+//            if (aCallBack) {
+//                aCallBack();
+//            }
+//            break;
+//        }
+//    }
+//}
 
 #pragma mark - AlertView
 + (void)showTipOfLowBatteryNotSetVibrationRemindWay

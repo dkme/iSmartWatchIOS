@@ -163,14 +163,14 @@
     }
     BOOL on = self.cellSwitch.on;
     NSUInteger interval = _timeInterval;
-    [bleControl.settingProfile setAntiLostStatus:on distance:ANTI_LOST_DISTANCE timeInterval:interval completion:^(BOOL success)
-     {
-         DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
-         _oldStatus = on;
-         _oldTimeInterval = interval;
-         [self savaData];
-         [self showOperationSuccessTip:NSLocalizedString(@"设置防丢成功", nil)];
-     }];
+//    [bleControl.settingProfile setAntiLostStatus:on distance:ANTI_LOST_DISTANCE timeInterval:interval completion:^(BOOL success)
+//     {
+//         DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
+//         _oldStatus = on;
+//         _oldTimeInterval = interval;
+//         [self savaData];
+//         [self showOperationSuccessTip:NSLocalizedString(@"设置防丢成功", nil)];
+//     }];
 }
 
 - (void)switchBtnValueChanged:(id)sender

@@ -197,8 +197,8 @@
         //若已绑定手表
         if ([self.bleControl isConnected]) {
             [self showTipView:NO];
-            int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
-            [self.syncDataView setEnergy:batteryEnergy];
+//            int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
+//            [self.syncDataView setEnergy:batteryEnergy];
         } else {
             [self showTipView:YES];
         }
@@ -494,46 +494,46 @@
     [self.syncDataView startAnimating];
     [self.hud show:YES];
     
-    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
-     {
-         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
-         
-         int steps = 0;
-         for (int i=0; i<dataLength; i++) {
-             steps += PerHourData[i];
-         }
-         //保存数据
-         [self savaSportDate:[NSDate dateFromString:sportdate format:@"yyyy-MM-dd"] steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
-         
-         if (surplusDays <= 1) {//同步完成
-             [self stopSyncSportData];
-             return ;
-         }
-         
-         [self continueSyncSportData];
-     }];
+//    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
+//     {
+//         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
+//         
+//         int steps = 0;
+//         for (int i=0; i<dataLength; i++) {
+//             steps += PerHourData[i];
+//         }
+//         //保存数据
+//         [self savaSportDate:[NSDate dateFromString:sportdate format:@"yyyy-MM-dd"] steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
+//         
+//         if (surplusDays <= 1) {//同步完成
+//             [self stopSyncSportData];
+//             return ;
+//         }
+//         
+//         [self continueSyncSportData];
+//     }];
 }
 - (void)continueSyncSportData
 {
-    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
-     {
-         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
-         
-         int steps = 0;
-         for (int i=0; i<dataLength; i++) {
-             steps += PerHourData[i];
-         }
-         NSDate *date = [NSDate dateFromString:sportdate format:@"yyyy-MM-dd"];
-         //保存数据
-         [self savaSportDate:date steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
-         
-         if (surplusDays <= 1) {//同步完成
-             [self stopSyncSportData];
-             return ;
-         }
-         
-         [self continueSyncSportData];
-     }];
+//    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
+//     {
+//         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
+//         
+//         int steps = 0;
+//         for (int i=0; i<dataLength; i++) {
+//             steps += PerHourData[i];
+//         }
+//         NSDate *date = [NSDate dateFromString:sportdate format:@"yyyy-MM-dd"];
+//         //保存数据
+//         [self savaSportDate:date steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
+//         
+//         if (surplusDays <= 1) {//同步完成
+//             [self stopSyncSportData];
+//             return ;
+//         }
+//         
+//         [self continueSyncSportData];
+//     }];
 }
 - (void)stopSyncSportData
 {
@@ -564,6 +564,17 @@
 //    [self.everydaySportDataArray addObject:sportModel];
 }
 
+- (void)syncUserInfo
+{
+    BOOL isNeed = [[[NSUserDefaults standardUserDefaults] objectForKey:USER_INFO_IS_NEED_SYNC_KEY] boolValue];
+    if (isNeed) {
+        WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
+        [model syncInfoToWatchWithProfile:self.bleControl.settingProfile completion:^(BOOL isSuccess) {
+            DEBUGLog_DETAIL(@"更新用户信息%d", isSuccess);
+        }];
+    }
+    
+}
 
 #pragma mark - Action
 - (IBAction)showLeftViewAction:(id)sender {
@@ -631,6 +642,7 @@
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
     
+    [self syncUserInfo];
 #ifdef DEBUG
     static int i = 0;
     i++;

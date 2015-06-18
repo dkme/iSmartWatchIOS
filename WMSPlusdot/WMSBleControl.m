@@ -33,6 +33,9 @@ NSString * const WMSBleControlScanFinish                =
 
 NSString * const OperationDeviceButtonNotification = @"WMSBleControl.OperationDeviceButtonNotification";
 
+/**************OperationType****************/
+NSString * const OperationLookingIPhone = @"WMSBleControl.OperationType.OperationLookingIPhone";
+NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTakePhoto";
 
 
 @interface WMSBleControl ()
@@ -344,10 +347,10 @@ NSString * const OperationDeviceButtonNotification = @"WMSBleControl.OperationDe
                 
                 //初始化Profile
                 [self connectedConfig:peripheral];
-//                [self readPeripheralInfo:^{
+                [self readPeripheralInfo:^{
                     //发送连接成功通知
                     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
-//                }];
+                }];
             }
         }];
     }
@@ -454,7 +457,59 @@ NSString * const OperationDeviceButtonNotification = @"WMSBleControl.OperationDe
 #pragma mark - 在此处统一读取设备信息
 - (void)readPeripheralInfo:(void(^)(void))aCallback
 {
-    
+    WMSDeviceModel *model = [WMSDeviceModel deviceModel];
+    __block UInt8 bitFlags= 0x00;
+    [self.deviceProfile readDeviceMACAddress:^(NSString *MACAddress) {
+        model.mac = MACAddress;
+        bitFlags |= (0x01 << 0);
+        if (bitFlags == 0xFF) {
+            aCallback();
+        }
+    }];
+    [self.deviceProfile readDeviceFirmwareVersion:^(float version) {
+        model.firmwareVersion = version;
+        bitFlags |= (0x01 << 1);
+        if (bitFlags == 0xFF) {
+            aCallback();
+        }
+    }];
+    [self.deviceProfile readDeviceHardwareVersion:^(float version) {
+        model.hardwareVersion = version;
+        bitFlags |= (0x01 << 2);
+        if (bitFlags == 0xFF) {
+            aCallback();
+        }
+    }];
+    [self.deviceProfile readDeviceSoftwareVersion:^(float version) {
+        model.softwareVersion = version;
+        bitFlags |= (0x01 << 3);
+        if (bitFlags == 0xFF) {
+            aCallback();
+        }
+    }];
+    [self.deviceProfile readDeviceBatteryInfo:^(BatteryType type, BatteryStatus status) {
+        model.batteryTypel = type;
+        model.status = status;
+        bitFlags |= (0x01 << 4);
+        bitFlags |= (0x01 << 5);
+        if (bitFlags == 0xFF) {
+            aCallback();
+        }
+    }];
+    [self.deviceProfile readDeviceFirm:^(NSString *firmName) {
+        model.firmName = firmName;
+        bitFlags |= (0x01 << 6);
+        if (bitFlags == 0xFF) {
+            aCallback();
+        }
+    }];
+    [self.deviceProfile readDeviceProductModel:^(NSInteger m) {
+        model.productModel = m;
+        bitFlags |= (0x01 << 7);
+        if (bitFlags == 0xFF) {
+            aCallback();
+        }
+    }];
 }
 
 
@@ -593,7 +648,16 @@ NSString * const OperationDeviceButtonNotification = @"WMSBleControl.OperationDe
                 return ;
             }
             ///发送一个通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:nil userInfo:nil];
+            NSString *operation = nil;
+            if (ControlClick == control_key && ButtonTopRightCorner == type) {
+                operation = OperationTakePhoto;
+            }
+            if (ControlLongPress == control_key && ButtonLowerRightCorner == type) {
+                operation = OperationLookingIPhone;
+            }
+            if (operation) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:OperationDeviceButtonNotification object:self userInfo:@{@"operation":operation}];
+            }
             return ;
         }
         

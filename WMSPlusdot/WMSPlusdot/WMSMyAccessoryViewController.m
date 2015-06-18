@@ -231,19 +231,32 @@ NSString* const WMSUnBindAccessorySuccess =
 {
     if (buttonIndex == 0) {//destructive
         WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BindingResult result) {
-            DEBUGLog(@"解绑%d",result);
-            switch (result) {
-                case BindingResultSuccess:
-                {
-                    [bleControl disconnect:^(BOOL success) {
+//        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BindingResult result) {
+//            DEBUGLog(@"解绑%d",result);
+//            switch (result) {
+//                case BindingResultSuccess:
+//                {
+//                    [bleControl disconnect:^(BOOL success) {
+//                        [self showUnBindTip:success];
+//                    }];
+//                    break;
+//                }
+//                default:
+//                    [self showUnBindTip:NO];
+//                    break;
+//            }
+//        }];
+        WeakObj(bleControl, weakBleControl);
+        [bleControl unbindDevice:^(BOOL isSuccess) {
+            if (isSuccess) {
+                StrongObj(weakBleControl, strongBleControl);
+                if (strongBleControl) {
+                    [strongBleControl disconnect:^(BOOL success) {
                         [self showUnBindTip:success];
                     }];
-                    break;
                 }
-                default:
-                    [self showUnBindTip:NO];
-                    break;
+            } else {
+                [self showUnBindTip:NO];
             }
         }];
     }
