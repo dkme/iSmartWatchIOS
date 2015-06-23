@@ -26,30 +26,30 @@ int unbindWatch(BLE_UInt8 **package)
 
 /////////////////////////////////////////////////////
 
-int getBindingResult(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *result)
+BLE_UInt8 getBindingResult(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_binding, Binding)) {
-        return HANDLE_FAIL;
+        return OPERATION_FAIL;
     }
     if (s_pg.value_len < 1) {
-        return HANDLE_FAIL;
+        return OPERATION_FAIL;
     }
-    *result = s_pg.value[0];
-    return HANDLE_OK;
+    BLE_UInt8 result = s_pg.value[0];
+    return result;
 }
 
-int getUnbindingResult(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *result)
+BLE_UInt8 getUnbindingResult(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_binding, unBinding)) {
-        return HANDLE_FAIL;
+        return OPERATION_FAIL;
     }
     if (s_pg.value_len < 1) {
-        return HANDLE_FAIL;
+        return OPERATION_FAIL;
     }
-    *result = s_pg.value[0];
-    return HANDLE_OK;
+    BLE_UInt8 result = s_pg.value[0];
+    return result;
 }
 
 

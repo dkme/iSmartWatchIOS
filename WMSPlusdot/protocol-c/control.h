@@ -20,7 +20,14 @@ typedef enum {
     ButtonLowerLeftCorner,
 } ButtonType;
 
-int getControlCommand(BLE_UInt8 *package, BLE_UInt8 len, ControlKey *control, ButtonType *button);
+typedef struct {
+    ControlKey control;
+    ButtonType button;
+    
+    HANDLE_RESULT error;
+} Struct_Control;
+
+Struct_Control getControlCommand(BLE_UInt8 *package, BLE_UInt8 len);
 
 
 #endif /* defined(__WMSPlusdot__control__) */

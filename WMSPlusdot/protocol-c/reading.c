@@ -9,6 +9,7 @@
 #include "reading.h"
 #include "production.h"
 #include "parse.h"
+#include <string.h>
 
 int readDeviceHardwareVersion(BLE_UInt8 **package)
 {
@@ -52,135 +53,145 @@ int readDeviceTime(BLE_UInt8 **package)
 }
 
 
-////////////////////////////////////////////////
+/////////////////////////////////////////////////
 
-int getDeviceHardwareVersion(BLE_UInt8 *package, BLE_UInt8 len, float *version)
+float getDeviceHardwareVersion(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceHardwareVersion)) {
-        return HANDLE_FAIL;
+        return 0;
     }
     if (s_pg.value_len < 2) {
-        return HANDLE_FAIL;
+        return 0;
     }
-    *version = *version = s_pg.value[0] + s_pg.value[1] * 0.01;
-    return HANDLE_OK;
+    float version = s_pg.value[0] + s_pg.value[1] * 0.01;
+    return version;
 }
 
-int getDeviceFirmwareVersion(BLE_UInt8 *package, BLE_UInt8 len, float *version)
+float getDeviceFirmwareVersion(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceFirmwareVersion)) {
-        return HANDLE_FAIL;
+        return 0;
     }
     if (s_pg.value_len < 2) {
-        return HANDLE_FAIL;
+        return 0;
     }
-    *version = s_pg.value[0] + s_pg.value[1] * 0.01;
-    return HANDLE_OK;
+    float version = s_pg.value[0] + s_pg.value[1] * 0.01;
+    return version;
 }
 
-int getDeviceSoftwareVersion(BLE_UInt8 *package, BLE_UInt8 len, float *version)
+float getDeviceSoftwareVersion(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceSoftwareVersion)) {
-        return HANDLE_FAIL;
+        return 0;
     }
     if (s_pg.value_len < 2) {
-        return HANDLE_FAIL;
+        return 0;
     }
-    *version = s_pg.value[0] + s_pg.value[1] * 0.01;
-    return HANDLE_OK;
+    float version = s_pg.value[0] + s_pg.value[1] * 0.01;
+    return version;
 }
 
-int getDeviceFirm(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *firm)
+DeviceFirms getDeviceFirm(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceFirmName)) {
-        return HANDLE_FAIL;
+        return FIRM_Unknown;
     }
     if (s_pg.value_len < 2) {
-        return HANDLE_FAIL;
+        return FIRM_Unknown;
     }
-    *firm = s_pg.value[0];
-    return HANDLE_OK;
+    DeviceFirms firm = s_pg.value[0];
+    return firm;
 }
-int getDeviceProductModel(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *model)
+
+ProductModels getDeviceProductModel(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceProductModel)) {
-        return HANDLE_FAIL;
+        return MODEL_unknown;
     }
     if (s_pg.value_len < 2) {
-        return HANDLE_FAIL;
+        return MODEL_unknown;
     }
-    *model = s_pg.value[0];
-    return HANDLE_OK;
+    ProductModels model = s_pg.value[0];
+    return model;
 }
 
-
-int getDeviceMacAddress(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 **mac)
+Struct_MacAddress getDeviceMacAddress(BLE_UInt8 *package, BLE_UInt8 len)
 {
+    Struct_MacAddress result = {0};
+    memset(result.mac, 0, MAC_ADDRESS_LENGTH);
+    result.error = HANDLE_FAIL;
+    
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceMacAddress)) {
-        return HANDLE_FAIL;
+        return result;
     }
-    if (s_pg.value_len < 6) {
-        return HANDLE_FAIL;
+    if (s_pg.value_len < MAC_ADDRESS_LENGTH) {
+        return result;
     }
-    for (int i=0; i<6; i++) {
-        *(*mac + i) = s_pg.value[i];
+    for (int i=0; i<MAC_ADDRESS_LENGTH; i++) {
+        result.mac[i] = s_pg.value[i];
     }
-    return HANDLE_OK;
+    result.error = HANDLE_OK;
+    return result;
 }
 
-int getDeviceBatteryInfo(BLE_UInt8 *package, BLE_UInt8 len, BatteryType *type, BatteryStatus *status)
+Struct_BatteryInfo getDeviceBatteryInfo(BLE_UInt8 *package, BLE_UInt8 len)
 {
+    Struct_BatteryInfo result = {0};
+    result.error = HANDLE_FAIL;
+    
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceBatteryInfo)) {
-        return HANDLE_FAIL;
+        return result;
     }
     if (s_pg.value_len < 2) {
-        return HANDLE_FAIL;
+        return result;
     }
-    *type = s_pg.value[0];
-    *status = s_pg.value[1];
-    return HANDLE_OK;
+    result.type = s_pg.value[0];
+    result.status = s_pg.value[1];
+    result.error = HANDLE_OK;
+    return result;
 }
 
-int getDeviceTime(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt16 *year, BLE_UInt8 *month, BLE_UInt8 *day, BLE_UInt8 *hour, BLE_UInt8 *minute, BLE_UInt8 *second)
+Struct_Time getDeviceTime(BLE_UInt8 *package, BLE_UInt8 len)
 {
+    Struct_Time result = {0};
+    result.error = HANDLE_FAIL;
+    
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDeviceTime)) {
-        return HANDLE_FAIL;
+        return result;
     }
     if (s_pg.value_len < 7) {
-        return HANDLE_FAIL;
+        return result;
     }
-    *year = (s_pg.value[0] << 8) + s_pg.value[1];
-    *month = s_pg.value[2];
-    *day = s_pg.value[3];
-    *hour = s_pg.value[4];
-    *minute = s_pg.value[5];
-    *second = s_pg.value[6];
-    return HANDLE_OK;
+    result.year = (s_pg.value[0] << 8) + s_pg.value[1];
+    result.month = s_pg.value[2];
+    result.day = s_pg.value[3];
+    result.hour = s_pg.value[4];
+    result.minute = s_pg.value[5];
+    result.second = s_pg.value[6];
+    result.error = HANDLE_OK;
+    return result;
 }
 
-
-int getDevicePower(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *power)
+BLE_UInt8 getDevicePower(BLE_UInt8 *package, BLE_UInt8 len)
 {
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_readDeviceInfo, ReadDevicePower)) {
-        return HANDLE_FAIL;
+        return 0;
     }
     if (s_pg.value_len < 1) {
-        return HANDLE_FAIL;
+        return 0;
     }
-    *power = s_pg.value[0];
-    return HANDLE_OK;
+    BLE_UInt8 power = s_pg.value[0];
+    return power;
 }
-
-
 
 
 

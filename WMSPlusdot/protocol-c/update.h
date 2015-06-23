@@ -20,8 +20,14 @@ typedef enum {
 int updateFirmware(BLE_UInt8 **package);
 
 ///////////////////////////////////////////
+typedef struct {
+    BLE_UInt8 isSuccess;
+    RequestUpdateFirmwareErrorCode errorCode;
+    
+    HANDLE_RESULT error;
+} Struct_UpdateResult;
 
-int getResult(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *isSuccess, RequestUpdateFirmwareErrorCode *errorCode);
+Struct_UpdateResult getResult(BLE_UInt8 *package, BLE_UInt8 len);
 
 
 #endif /* defined(__WMSPlusdot__update__) */

@@ -25,11 +25,11 @@ int unbindWatch(BLE_UInt8 **package);
 #define OPERATION_FAIL              0x01
 
 /**
- result     为OPERATION_OK表示成功，OPERATION_FAIL表示失败
+ * @return 为OPERATION_OK表示成功，OPERATION_FAIL表示失败
  */
-int getBindingResult(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *result);
+BLE_UInt8 getBindingResult(BLE_UInt8 *package, BLE_UInt8 len);
 
-int getUnbindingResult(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *result);
+BLE_UInt8 getUnbindingResult(BLE_UInt8 *package, BLE_UInt8 len);
 
 
 

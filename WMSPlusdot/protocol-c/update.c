@@ -18,23 +18,30 @@ int updateFirmware(BLE_UInt8 **package)
 
 ///////////////////////////////////////////
 
-int getResult(BLE_UInt8 *package, BLE_UInt8 len, BLE_UInt8 *isSuccess, RequestUpdateFirmwareErrorCode *errorCode)
+Struct_UpdateResult getResult(BLE_UInt8 *package, BLE_UInt8 len)
 {
+    Struct_UpdateResult result = {0};
+    result.error = HANDLE_FAIL;
+    
     struct_parse_package s_pg = parse(package, len);
     if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_updateFirmware, UpdateFirmware)) {
-        return HANDLE_FAIL;
+        return result;
     }
     if (s_pg.value_len < 2) {
-        return HANDLE_FAIL;
+        return result;
     }
     if (s_pg.value[0] == 0x00) {
-        *isSuccess = 1;
-        *errorCode = 0;
+        result.isSuccess = 1;
+        result.errorCode = 0;
+        result.error = HANDLE_OK;
     } else if (s_pg.value[0] == 0x01) {
-        *isSuccess = 0;
-        *errorCode = s_pg.value[1];
-    } else {}
-    return HANDLE_OK;
+        result.isSuccess = 0;
+        result.errorCode = s_pg.value[1];
+        result.error = HANDLE_OK;
+    } else {
+        result.error = HANDLE_FAIL;
+    }
+    return result;
 }
 
 

@@ -10,22 +10,26 @@
 #include "parse.h"
 
 
-int getControlCommand(BLE_UInt8 *package, BLE_UInt8 len, ControlKey *control, ButtonType *button)
+Struct_Control getControlCommand(BLE_UInt8 *package, BLE_UInt8 len)
 {
+    Struct_Control result = {0};
+    result.error = HANDLE_FAIL;
+    
     struct_parse_package s_pg = parse(package, len);
     if (s_pg.cmd != CMD_control) {
-        return HANDLE_FAIL;
+        return result;
     }
     if (s_pg.key != ControlClick        &&
         s_pg.key != ControlDoubleClick  &&
         s_pg.key != ControlLongPress)
     {
-        return HANDLE_FAIL;
+        return result;
     }
     if (s_pg.value_len < 1) {
-        return HANDLE_FAIL;
+        return result;
     }
-    *control = s_pg.cmd;
-    *button = s_pg.value[0];
-    return HANDLE_OK;
+    result.control = s_pg.cmd;
+    result.button = s_pg.value[0];
+    result.error = HANDLE_OK;
+    return result;
 }

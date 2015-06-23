@@ -11,11 +11,7 @@
 #include <stdlib.h>
 
 static const int PACKAGE_MIN_LENGTH                         = 5;
-static const int VALUE_MAX_LENGTH                           = 20-5;
 
-
-
-//int parseUpdateFirmware(BLE_UInt8 *value, BLE_UInt8 value_len, BLE_UInt8 **result);
 
 struct_parse_package parse(BLE_UInt8 *package, BLE_UInt8 len)
 {
@@ -25,11 +21,10 @@ struct_parse_package parse(BLE_UInt8 *package, BLE_UInt8 len)
     }
     
     BLE_UInt8 cmd = package[0];
-    BLE_UInt8 version = package[1] & 0x0F;
+    BLE_UInt8 version = (package[1] & 0xF0) >> 4;
     
     BLE_UInt8 key = package[2];
     
-    //BLE_UInt16 key_header = (package[3]<<8) + package[4];
     BLE_UInt8 value_len = package[4];
     if (value_len > len - PACKAGE_MIN_LENGTH) {
         return s_pg;

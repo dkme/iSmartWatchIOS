@@ -91,8 +91,12 @@ typedef enum {
 #define PACKAGE_LENGTH              20
 #define PACKAGE_SIZE                20
 
-#define HANDLE_OK                   0
-#define HANDLE_FAIL                 (-1)
+typedef enum {
+    HANDLE_OK = 0,
+    HANDLE_FAIL,
+} HANDLE_RESULT;
+//#define HANDLE_OK                   0
+//#define HANDLE_FAIL                 (-1)
 
 
 
