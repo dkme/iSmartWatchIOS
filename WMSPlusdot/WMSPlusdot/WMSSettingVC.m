@@ -66,7 +66,7 @@
                                 //NSLocalizedString(@"适配机型", nil),
                                 //NSLocalizedString(@"APP版本", nil),
                                 NSLocalizedString(@"固件版本", nil),
-                                @"关于",
+                                //@"关于",
                                 ];
     }
     return _section1TitleArray;
