@@ -636,14 +636,9 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     struct_parse_package s_pg = parse(package, PACKAGE_SIZE);
     Byte cmd = s_pg.cmd;
     Byte key = s_pg.key;
-    
-    int handleRes = 0;//处理结果
-    
+
     if ([CHARACTERISTIC_SERIAL_PORT_READ_UUID isEqualToString:uuid]) {
         if (cmd == CMD_control) {
-            ControlKey control_key = 0;
-            ButtonType type = 0;
-//            int res = getControlCommand(package, PACKAGE_SIZE, &control_key, &type);
             Struct_Control res = getControlCommand(package, PACKAGE_SIZE);
             if (res.error != HANDLE_OK) {
                 return ;
@@ -653,7 +648,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
             if (ControlClick == res.control && ButtonTopRightCorner == res.button) {
                 operation = OperationTakePhoto;
             }
-            if (ControlLongPress == control_key && ButtonLowerRightCorner == type) {
+            if (ControlLongPress == res.control && ButtonLowerRightCorner == res.button) {
                 operation = OperationLookingIPhone;
             }
             if (operation) {

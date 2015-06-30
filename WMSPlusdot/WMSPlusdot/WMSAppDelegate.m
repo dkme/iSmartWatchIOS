@@ -100,6 +100,17 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationType type = UIUserNotificationTypeAlert |
+        UIUserNotificationTypeBadge |
+        UIUserNotificationTypeSound ;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
+    
+    ////////////////////////////////////////////////////
+    
     _wmsBleControl = [[WMSBleControl alloc] init];
     [WMSPostNotificationHelper cancelAllNotification];
     [self setupReSyncDataTimer];
