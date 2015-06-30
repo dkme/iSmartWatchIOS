@@ -184,9 +184,8 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
                 
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceFirmName):
             {
-                BLE_UInt8 firm = 0;
-                handleRes = getDeviceFirm(package, PACKAGE_SIZE, &firm);
-                if (handleRes == HANDLE_OK) {
+                DeviceFirms firm = getDeviceFirm(package, PACKAGE_SIZE);
+                if (firm != FIRM_Unknown) {
                     deviceFirmCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_FIRM_NAME];
                     if (aCallback) {
                         static NSDictionary *firmsMap = nil;
@@ -203,9 +202,8 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
                 
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceProductModel):
             {
-                BLE_UInt8 model = 0;
-                handleRes = getDeviceProductModel(package, PACKAGE_SIZE, &model);
-                if (handleRes == HANDLE_OK) {
+                ProductModels model = getDeviceProductModel(package, PACKAGE_SIZE);
+                if (model != MODEL_Unknown) {
                     deviceProductModelCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_PRODUCT_MODEL];
                     if (aCallback) {
                         aCallback(model);
@@ -215,9 +213,8 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
              
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceHardwareVersion):
             {
-                float version = 0;
-                handleRes = getDeviceHardwareVersion(package, PACKAGE_SIZE, &version);
-                if (handleRes == HANDLE_OK) {
+                float version = getDeviceHardwareVersion(package, PACKAGE_SIZE);
+                if (handleRes != 0) {
                     deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_HARDWARE_VERSION];
                     if (aCallback) {
                         aCallback(version);
@@ -228,9 +225,8 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
                 
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceFirmwareVersion):
             {
-                float version = 0;
-                handleRes = getDeviceFirmwareVersion(package, PACKAGE_SIZE, &version);
-                if (handleRes == HANDLE_OK) {
+                float version = getDeviceFirmwareVersion(package, PACKAGE_SIZE);
+                if (handleRes != 0) {
                     deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_FIRMWARE_VERSION];
                     if (aCallback) {
                         aCallback(version);
@@ -241,9 +237,8 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
                 
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceSoftwareVersion):
             {
-                float version = 0;
-                handleRes = getDeviceSoftwareVersion(package, PACKAGE_SIZE, &version);
-                if (handleRes == HANDLE_OK) {
+                float version = getDeviceSoftwareVersion(package, PACKAGE_SIZE);
+                if (handleRes != 0) {
                     deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_SOFTWARE_VERSION];
                     if (aCallback) {
                         aCallback(version);
@@ -254,16 +249,14 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
                 
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceMacAddress):
             {
-                BLE_UInt8 mac[6] = {0};
-                BLE_UInt8 *p = mac;
-                handleRes = getDeviceMacAddress(package, PACKAGE_SIZE, &p);
-                if (handleRes == HANDLE_OK) {
+                Struct_MacAddress res = getDeviceMacAddress(package, PACKAGE_SIZE);
+                if (res.error == HANDLE_OK) {
                     deviceMACAddressCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_MAC_ADDRESS];
                     if (aCallback) {
                         NSString *macAddress = @"";
-                        for (int i=0; i<6; i++) {
-                            macAddress = [macAddress stringByAppendingFormat:@"%02X", mac[i]];
-                            if (i < 5) {
+                        for (int i=0; i<MAC_ADDRESS_LENGTH; i++) {
+                            macAddress = [macAddress stringByAppendingFormat:@"%02X", res.mac[i]];
+                            if (i < MAC_ADDRESS_LENGTH-1) {
                                 macAddress = [macAddress stringByAppendingString:@":"];
                             }
                         }
@@ -275,13 +268,11 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
                 
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceBatteryInfo):
             {
-                BatteryType type = 0;
-                BatteryStatus status = 0;
-                handleRes = getDeviceBatteryInfo(package, PACKAGE_SIZE, &type, &status);
-                if (handleRes == HANDLE_OK) {
+                Struct_BatteryInfo res = getDeviceBatteryInfo(package, PACKAGE_SIZE);
+                if (res.error == HANDLE_OK) {
                     deviceBatteryInfoCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_BATTERY_INFO];
                     if (aCallback) {
-                        aCallback(type, status);
+                        aCallback(res.type, res.status);
                     }
                 }
             }
@@ -291,9 +282,8 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
     }///if
     else if ([CHARACTERISTIC_BATTERY_UUID isEqualToString:uuid])
     {
-        BLE_UInt8 power = 0;
-        handleRes = getDevicePower(package, PACKAGE_SIZE, &power);
-        if (handleRes == HANDLE_OK) {
+        BLE_UInt8 power = getDevicePower(package, PACKAGE_SIZE);
+        if (power != 0) {
             [[NSNotificationCenter defaultCenter] postNotificationName:DevicePowerChangedNotification object:@(power) userInfo:nil];
         }
     }

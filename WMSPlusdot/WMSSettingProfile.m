@@ -305,7 +305,7 @@
                 temp_value = TIME_ID_SETTING_ADJUST_DATE;
                 for (int i=0; i<items; i++) {
                     temp_key += i;
-                    if (temp_key > SetAlarmClock1 && temp_key <= SetAlarmClock8) {
+                    if (temp_key > SetAlarmClock) {
                         //temp_value保持不变
                     } else {
                         temp_value += i;
@@ -313,10 +313,6 @@
                     [temp_dic setObject:@(temp_value) forKey:@(temp_key)];
                 }
                 key_time_map = temp_dic;
-                ///@{
-                  ///@(SetTime)             : @(TIME_ID_SETTING_ADJUST_DATE),
-                  ///@(SetUserInfo)         : @(TIME_ID_SETTING_SET_USER_INFO),
-                  ///}
             }
             int timeID = [key_time_map[@(key)] intValue];
             settingCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:timeID];

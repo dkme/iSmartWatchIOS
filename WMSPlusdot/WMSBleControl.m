@@ -643,13 +643,14 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
         if (cmd == CMD_control) {
             ControlKey control_key = 0;
             ButtonType type = 0;
-            int res = getControlCommand(package, PACKAGE_SIZE, &control_key, &type);
-            if (res != HANDLE_OK) {
+//            int res = getControlCommand(package, PACKAGE_SIZE, &control_key, &type);
+            Struct_Control res = getControlCommand(package, PACKAGE_SIZE);
+            if (res.error != HANDLE_OK) {
                 return ;
             }
             ///发送一个通知
             NSString *operation = nil;
-            if (ControlClick == control_key && ButtonTopRightCorner == type) {
+            if (ControlClick == res.control && ButtonTopRightCorner == res.button) {
                 operation = OperationTakePhoto;
             }
             if (ControlLongPress == control_key && ButtonLowerRightCorner == type) {
@@ -665,39 +666,31 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
         switch (CMD_KEY(cmd, key)) {
             case CMD_KEY(CMD_binding, Binding):
             {
-                BLE_UInt8 result = 0;
-                handleRes = getBindingResult(package, PACKAGE_SIZE, &result);
-                if (handleRes == HANDLE_OK) {
-                    bindDeviceCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_BIND_DEVICE];
-                    if (aCallback) {
-                        BOOL isSuccess = (result == OPERATION_OK ? YES : NO);
-                        aCallback(isSuccess);
-                    }
+                BLE_UInt8 result = getBindingResult(package, PACKAGE_SIZE);
+                bindDeviceCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_BIND_DEVICE];
+                if (aCallback) {
+                    BOOL isSuccess = (result == OPERATION_OK ? YES : NO);
+                    aCallback(isSuccess);
                 }
                 break;
             }
             case CMD_KEY(CMD_binding, unBinding):
             {
-                BLE_UInt8 result = 0;
-                handleRes = getUnbindingResult(package, PACKAGE_SIZE, &result);
-                if (handleRes == HANDLE_OK) {
-                    bindDeviceCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_UNBIND_DEVICE];
-                    if (aCallback) {
-                        BOOL isSuccess = (result == OPERATION_OK ? YES : NO);
-                        aCallback(isSuccess);
-                    }
+                BLE_UInt8 result = getUnbindingResult(package, PACKAGE_SIZE);
+                bindDeviceCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_UNBIND_DEVICE];
+                if (aCallback) {
+                    BOOL isSuccess = (result == OPERATION_OK ? YES : NO);
+                    aCallback(isSuccess);
                 }
                 break;
             }
             case CMD_KEY(CMD_updateFirmware, UpdateFirmware):
             {
-                BLE_UInt8 isSuccess = 0;
-                RequestUpdateFirmwareErrorCode errCode = 0;
-                handleRes = getResult(package, PACKAGE_SIZE, &isSuccess, &errCode);
-                if (handleRes == HANDLE_OK) {
+                Struct_UpdateResult res =getResult(package, PACKAGE_SIZE);
+                if (res.error == HANDLE_OK) {
                     switchModeCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_SWITCH_MODE];
                     if (aCallback) {
-                        aCallback(isSuccess, errCode);
+                        aCallback(res.isSuccess, res.errorCode);
                     }
                 }
                 break;
