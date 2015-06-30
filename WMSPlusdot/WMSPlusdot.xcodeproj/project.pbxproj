@@ -287,21 +287,21 @@
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
 		E8D4F41322CC9FA9822FC6B6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E57208459FF67BC2938C56 /* libPods.a */; };
 		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
+		F70602CC1B423388006DEE8C /* binding.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602B91B423388006DEE8C /* binding.c */; };
+		F70602CD1B423388006DEE8C /* control.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602BB1B423388006DEE8C /* control.c */; };
+		F70602CE1B423388006DEE8C /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602BE1B423388006DEE8C /* parse.c */; };
+		F70602CF1B423388006DEE8C /* production.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602C01B423388006DEE8C /* production.c */; };
+		F70602D01B423388006DEE8C /* reading.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602C21B423388006DEE8C /* reading.c */; };
+		F70602D11B423388006DEE8C /* setting.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602C41B423388006DEE8C /* setting.c */; };
+		F70602D21B423388006DEE8C /* sync.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602C61B423388006DEE8C /* sync.c */; };
+		F70602D31B423388006DEE8C /* testing.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602C81B423388006DEE8C /* testing.c */; };
+		F70602D41B423388006DEE8C /* update.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602CA1B423388006DEE8C /* update.c */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
 		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
 		F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */; };
 		F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */; };
-		F7CF05A91B1F04DF00038C9A /* production.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05A71B1F04DF00038C9A /* production.c */; };
-		F7CF05AD1B1F0B7700038C9A /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05AB1B1F0B7700038C9A /* parse.c */; };
-		F7CF05B01B204F6D00038C9A /* binding.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05AE1B204F6D00038C9A /* binding.c */; };
-		F7CF05B61B205AD600038C9A /* reading.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05B41B205AD600038C9A /* reading.c */; };
-		F7CF05BF1B217E2600038C9A /* testing.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05BD1B217E2600038C9A /* testing.c */; };
-		F7CF05C21B21822500038C9A /* setting.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C01B21822500038C9A /* setting.c */; };
-		F7CF05C51B21911D00038C9A /* update.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C31B21911D00038C9A /* update.c */; };
-		F7CF05C81B2195D500038C9A /* sync.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C61B2195D500038C9A /* sync.c */; };
-		F7CF05CB1B21961400038C9A /* control.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CF05C91B21961400038C9A /* control.c */; };
 		F7E99FED1B26978A001C0CDD /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FEB1B26978A001C0CDD /* TestViewController.m */; };
 		F7E99FEE1B26978A001C0CDD /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7E99FEC1B26978A001C0CDD /* TestViewController.xib */; };
 		F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */; };
@@ -725,6 +725,25 @@
 		90E57208459FF67BC2938C56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B1D0CCF52BF4041DAEA77 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F41930CD19F16B1400E7B0B5 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		F70602B91B423388006DEE8C /* binding.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = binding.c; sourceTree = "<group>"; };
+		F70602BA1B423388006DEE8C /* binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = binding.h; sourceTree = "<group>"; };
+		F70602BB1B423388006DEE8C /* control.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = control.c; sourceTree = "<group>"; };
+		F70602BC1B423388006DEE8C /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
+		F70602BD1B423388006DEE8C /* dataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dataType.h; sourceTree = "<group>"; };
+		F70602BE1B423388006DEE8C /* parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parse.c; sourceTree = "<group>"; };
+		F70602BF1B423388006DEE8C /* parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parse.h; sourceTree = "<group>"; };
+		F70602C01B423388006DEE8C /* production.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = production.c; sourceTree = "<group>"; };
+		F70602C11B423388006DEE8C /* production.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = production.h; sourceTree = "<group>"; };
+		F70602C21B423388006DEE8C /* reading.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reading.c; sourceTree = "<group>"; };
+		F70602C31B423388006DEE8C /* reading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reading.h; sourceTree = "<group>"; };
+		F70602C41B423388006DEE8C /* setting.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = setting.c; sourceTree = "<group>"; };
+		F70602C51B423388006DEE8C /* setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setting.h; sourceTree = "<group>"; };
+		F70602C61B423388006DEE8C /* sync.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sync.c; sourceTree = "<group>"; };
+		F70602C71B423388006DEE8C /* sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sync.h; sourceTree = "<group>"; };
+		F70602C81B423388006DEE8C /* testing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testing.c; sourceTree = "<group>"; };
+		F70602C91B423388006DEE8C /* testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testing.h; sourceTree = "<group>"; };
+		F70602CA1B423388006DEE8C /* update.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = update.c; sourceTree = "<group>"; };
+		F70602CB1B423388006DEE8C /* update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = update.h; sourceTree = "<group>"; };
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
 		F783EF5C1B130392008124BE /* TurntableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableView.h; sourceTree = "<group>"; };
@@ -736,25 +755,6 @@
 		F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
 		F7CF059E1B1DA0FB00038C9A /* WMSLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLocationManager.h; sourceTree = "<group>"; };
 		F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationManager.m; sourceTree = "<group>"; };
-		F7CF05A71B1F04DF00038C9A /* production.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = production.c; sourceTree = "<group>"; };
-		F7CF05A81B1F04DF00038C9A /* production.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = production.h; sourceTree = "<group>"; };
-		F7CF05AA1B1F066A00038C9A /* dataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dataType.h; sourceTree = "<group>"; };
-		F7CF05AB1B1F0B7700038C9A /* parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parse.c; sourceTree = "<group>"; };
-		F7CF05AC1B1F0B7700038C9A /* parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parse.h; sourceTree = "<group>"; };
-		F7CF05AE1B204F6D00038C9A /* binding.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = binding.c; sourceTree = "<group>"; };
-		F7CF05AF1B204F6D00038C9A /* binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = binding.h; sourceTree = "<group>"; };
-		F7CF05B41B205AD600038C9A /* reading.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reading.c; sourceTree = "<group>"; };
-		F7CF05B51B205AD600038C9A /* reading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reading.h; sourceTree = "<group>"; };
-		F7CF05BD1B217E2600038C9A /* testing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testing.c; sourceTree = "<group>"; };
-		F7CF05BE1B217E2600038C9A /* testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testing.h; sourceTree = "<group>"; };
-		F7CF05C01B21822500038C9A /* setting.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = setting.c; sourceTree = "<group>"; };
-		F7CF05C11B21822500038C9A /* setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setting.h; sourceTree = "<group>"; };
-		F7CF05C31B21911D00038C9A /* update.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = update.c; sourceTree = "<group>"; };
-		F7CF05C41B21911D00038C9A /* update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = update.h; sourceTree = "<group>"; };
-		F7CF05C61B2195D500038C9A /* sync.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sync.c; sourceTree = "<group>"; };
-		F7CF05C71B2195D500038C9A /* sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sync.h; sourceTree = "<group>"; };
-		F7CF05C91B21961400038C9A /* control.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = control.c; sourceTree = "<group>"; };
-		F7CF05CA1B21961400038C9A /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
 		F7E99FEA1B26978A001C0CDD /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		F7E99FEB1B26978A001C0CDD /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		F7E99FEC1B26978A001C0CDD /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
@@ -1970,25 +1970,25 @@
 		F7CF05A61B1F043300038C9A /* protocol-c */ = {
 			isa = PBXGroup;
 			children = (
-				F7CF05C31B21911D00038C9A /* update.c */,
-				F7CF05C41B21911D00038C9A /* update.h */,
-				F7CF05C01B21822500038C9A /* setting.c */,
-				F7CF05C11B21822500038C9A /* setting.h */,
-				F7CF05AE1B204F6D00038C9A /* binding.c */,
-				F7CF05AF1B204F6D00038C9A /* binding.h */,
-				F7CF05B41B205AD600038C9A /* reading.c */,
-				F7CF05B51B205AD600038C9A /* reading.h */,
-				F7CF05BD1B217E2600038C9A /* testing.c */,
-				F7CF05BE1B217E2600038C9A /* testing.h */,
-				F7CF05C61B2195D500038C9A /* sync.c */,
-				F7CF05C71B2195D500038C9A /* sync.h */,
-				F7CF05C91B21961400038C9A /* control.c */,
-				F7CF05CA1B21961400038C9A /* control.h */,
-				F7CF05AB1B1F0B7700038C9A /* parse.c */,
-				F7CF05AC1B1F0B7700038C9A /* parse.h */,
-				F7CF05A71B1F04DF00038C9A /* production.c */,
-				F7CF05A81B1F04DF00038C9A /* production.h */,
-				F7CF05AA1B1F066A00038C9A /* dataType.h */,
+				F70602B91B423388006DEE8C /* binding.c */,
+				F70602BA1B423388006DEE8C /* binding.h */,
+				F70602BB1B423388006DEE8C /* control.c */,
+				F70602BC1B423388006DEE8C /* control.h */,
+				F70602BD1B423388006DEE8C /* dataType.h */,
+				F70602BE1B423388006DEE8C /* parse.c */,
+				F70602BF1B423388006DEE8C /* parse.h */,
+				F70602C01B423388006DEE8C /* production.c */,
+				F70602C11B423388006DEE8C /* production.h */,
+				F70602C21B423388006DEE8C /* reading.c */,
+				F70602C31B423388006DEE8C /* reading.h */,
+				F70602C41B423388006DEE8C /* setting.c */,
+				F70602C51B423388006DEE8C /* setting.h */,
+				F70602C61B423388006DEE8C /* sync.c */,
+				F70602C71B423388006DEE8C /* sync.h */,
+				F70602C81B423388006DEE8C /* testing.c */,
+				F70602C91B423388006DEE8C /* testing.h */,
+				F70602CA1B423388006DEE8C /* update.c */,
+				F70602CB1B423388006DEE8C /* update.h */,
 			);
 			name = "protocol-c";
 			sourceTree = "<group>";
@@ -2305,7 +2305,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7CF05C21B21822500038C9A /* setting.c in Sources */,
 				237545CD19AF00CF00685CD1 /* TemperaBar.m in Sources */,
 				239682291A4AB7F000AA4D9F /* UIColor+RGBValues.m in Sources */,
 				2331834B19B6EBEA005B2BA0 /* WMSSettingProfile.m in Sources */,
@@ -2361,25 +2360,25 @@
 				231972481A358DDA002E8A0F /* JSCustomBadge.m in Sources */,
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
 				2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */,
+				F70602CC1B423388006DEE8C /* binding.c in Sources */,
 				234F81F71A4D42D100332C03 /* WMSSoundOperation.m in Sources */,
-				F7CF05B01B204F6D00038C9A /* binding.c in Sources */,
 				2319723F1A354535002E8A0F /* WMSAppConfig.m in Sources */,
+				F70602CF1B423388006DEE8C /* production.c in Sources */,
 				232846F219A43825001C148D /* WMSLoginViewController.m in Sources */,
-				F7CF05C81B2195D500038C9A /* sync.c in Sources */,
+				F70602D21B423388006DEE8C /* sync.c in Sources */,
+				F70602CD1B423388006DEE8C /* control.c in Sources */,
 				238C63171A30698700CC71F1 /* UIViewController+Update.m in Sources */,
 				236032FB19FE3AE800A77B22 /* WMSRemindHelper.m in Sources */,
 				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,
 				235427681A3E906E008E5CFD /* WMSPostNotificationHelper.m in Sources */,
 				239388611ABBA99F0018BDA1 /* GGIViewController.m in Sources */,
 				23204A9F1A42F9E2005874CE /* WMSBindingView.m in Sources */,
+				F70602D31B423388006DEE8C /* testing.c in Sources */,
 				2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */,
 				23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */,
 				23D7CEFF19B5C49C00DFA678 /* LGCentralManager.m in Sources */,
 				230FDC6A19D659EB00AE98FF /* PNBar.m in Sources */,
 				239F51CC1A2D6B410058F6DE /* WMSGuideVC.m in Sources */,
-				F7CF05C51B21911D00038C9A /* update.c in Sources */,
-				F7CF05CB1B21961400038C9A /* control.c in Sources */,
-				F7CF05A91B1F04DF00038C9A /* production.c in Sources */,
 				239388491ABBA8EE0018BDA1 /* WMSSmartClockViewController.m in Sources */,
 				2353790219CD5F6000269F67 /* WMSMyActivityRemind.m in Sources */,
 				2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */,
@@ -2392,7 +2391,9 @@
 				23B0094719D50100008424FA /* PNPlot.m in Sources */,
 				239388601ABBA99F0018BDA1 /* CameraImageHelper.m in Sources */,
 				23D7CF0319B5C49C00DFA678 /* LGUtils.m in Sources */,
+				F70602D41B423388006DEE8C /* update.c in Sources */,
 				2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */,
+				F70602D11B423388006DEE8C /* setting.c in Sources */,
 				2319723B1A3540DE002E8A0F /* WMSDetailCell.m in Sources */,
 				231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */,
 				23204A9C1A42E71F005874CE /* GGDeviceTool.m in Sources */,
@@ -2401,17 +2402,16 @@
 				239109321A3A90C900333A2A /* WMSUpdateVCHelper.m in Sources */,
 				F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
-				F7CF05AD1B1F0B7700038C9A /* parse.c in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
 				2311611919B1A2BE0012B066 /* NSDate+Formatter.m in Sources */,
 				2323BE081A68B0E900FCA216 /* FileOperations.m in Sources */,
 				233511A419A4BD5200FBCC81 /* WMSContentViewController.m in Sources */,
 				230298C319A82FDC009D4306 /* WMSContent2ViewController.m in Sources */,
+				F70602D01B423388006DEE8C /* reading.c in Sources */,
 				2393884E1ABBA9720018BDA1 /* WMSRightViewController.m in Sources */,
 				237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */,
-				F7CF05B61B205AD600038C9A /* reading.c in Sources */,
+				F70602CE1B423388006DEE8C /* parse.c in Sources */,
 				23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */,
-				F7CF05BF1B217E2600038C9A /* testing.c in Sources */,
 				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,
 				23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */,
 				2333AB081A64FE3400DBA846 /* WMSDataManager.m in Sources */,
