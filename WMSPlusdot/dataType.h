@@ -79,6 +79,7 @@ typedef enum {
 typedef enum {
     TestLED = 0x01,
     TestMotor = 0x03,
+    TestDisplay,
 } TestKey;
 
 

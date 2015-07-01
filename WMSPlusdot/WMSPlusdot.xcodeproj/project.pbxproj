@@ -300,6 +300,7 @@
 		F70EF2141B424335002EDEF9 /* WMSLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2121B424334002EDEF9 /* WMSLocationViewController.m */; };
 		F70EF2151B424335002EDEF9 /* WMSLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F70EF2131B424335002EDEF9 /* WMSLocationViewController.xib */; };
 		F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2181B4244FC002EDEF9 /* HealthManager.m */; };
+		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
@@ -750,6 +751,8 @@
 		F70EF2131B424335002EDEF9 /* WMSLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSLocationViewController.xib; sourceTree = "<group>"; };
 		F70EF2171B4244FC002EDEF9 /* HealthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthManager.h; sourceTree = "<group>"; };
 		F70EF2181B4244FC002EDEF9 /* HealthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthManager.m; sourceTree = "<group>"; };
+		F70EF27E1B42A604002EDEF9 /* WMSTestingProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSTestingProfile.h; sourceTree = "<group>"; };
+		F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSTestingProfile.m; sourceTree = "<group>"; };
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
 		F783EF5C1B130392008124BE /* TurntableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableView.h; sourceTree = "<group>"; };
@@ -1853,6 +1856,8 @@
 				2331834A19B6EBEA005B2BA0 /* WMSSettingProfile.m */,
 				F7E99FEF1B26F8D3001C0CDD /* WMSSyncProfile.h */,
 				F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */,
+				F70EF27E1B42A604002EDEF9 /* WMSTestingProfile.h */,
+				F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */,
 				2321B78319B95E8E00278677 /* WMSBluetooth.h */,
 				23A6DF301ADD091000BB06CF /* BLEUtils.h */,
 				2360CED019E6855000B10A0B /* WMSDeviceModel.h */,
@@ -2430,6 +2435,7 @@
 				F70EF20F1B42430A002EDEF9 /* TestViewController.m in Sources */,
 				2333AB021A64B57000DBA846 /* UIBarButtonItem+Extension.m in Sources */,
 				23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */,
+				F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */,
 				2347C82C1A63A4C9007A0446 /* WMSClockCell.m in Sources */,
 				232846CD19A43668001C148D /* main.m in Sources */,
 				230FDC6219D6548F00AE98FF /* WMSSleepHistoryViewController.m in Sources */,

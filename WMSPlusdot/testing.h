@@ -11,12 +11,14 @@
 
 #include <stdio.h>
 #include "dataType.h"
+#include "control.h"
 
 typedef enum {
-    LEDPhone = 0x01,
-    LEDSMS,
-    LEDAlarmClock,
-    LEDLost,
+    LEDPhone = 0x01 << 0,
+    LEDSMS = 0x01 << 1,
+    LEDAlarmClock = 0x01 << 2,
+    LEDLost = 0x01 << 3,
+    LEDOther = 0x01 << 4,
 } LEDType;
 
 /**
@@ -24,8 +26,14 @@ typedef enum {
  */
 int testLED(LEDType led, BLE_UInt8 openOrClose, BLE_UInt8 **package);
 
-int testMotor(BLE_UInt8 **package);
+int testMotor(BLE_UInt8 openOrClose, BLE_UInt8 **package);
 
+int testDisplay(BLE_UInt8 openOrClose, BLE_UInt8 **package);
+
+
+////////////////////////////////
+
+Struct_Control getControl(BLE_UInt8 *package, BLE_UInt8 len);
 
 
 
