@@ -564,10 +564,10 @@
         return;
     }
     
-//    BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:self.bleControl.isConnected];
-//    if (result == NO) {
-//        return;
-//    }
+    BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:self.bleControl.isConnected];
+    if (result == NO) {
+        return;
+    }
     
     if (indexPath.section == 3-1) {
         if (indexPath.row == 0) {
