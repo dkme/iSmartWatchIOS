@@ -37,6 +37,7 @@ typedef void(^settingCallback)(BOOL isSuccess);
 
 ///设置防丢
 - (void)setLost:(BOOL)openOrClose
+       interval:(NSInteger)interval
      completion:(settingCallback)aCallback;
 
 ///设置久坐提醒

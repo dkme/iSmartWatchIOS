@@ -52,9 +52,10 @@ int setTarget(BLE_UInt32 target, BLE_UInt8 **package)
     return setupPackage(CMD_setting, SetTarget, 4, value, package);
 }
 
-int setLost(BLE_UInt8 openOrClose, BLE_UInt8 **package)
+int setLost(BLE_UInt8 openOrClose, BLE_UInt8 interval, BLE_UInt8 **package)
 {
     BLE_UInt8 value[2] = {0};
+    value[0] = interval;
     value[1] = openOrClose;
     return setupPackage(CMD_setting, SetLost, 2, value, package);
 }

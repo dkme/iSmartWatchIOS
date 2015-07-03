@@ -109,11 +109,12 @@
 }
 
 - (void)setLost:(BOOL)openOrClose
+       interval:(NSInteger)interval
      completion:(settingCallback)aCallback
 {
     BLE_UInt8 package[PACKAGE_SIZE] = {0};
     BLE_UInt8 *p = package;
-    int res = setLost(openOrClose, &p);
+    int res = setLost(openOrClose, interval, &p);
     if (res != HANDLE_OK) {
         return ;
     }

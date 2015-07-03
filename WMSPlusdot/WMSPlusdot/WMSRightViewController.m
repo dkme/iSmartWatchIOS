@@ -31,7 +31,7 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 
-#define SECTION_NUMBER                          5
+#define SECTION_NUMBER                          5-1
 #define SECTION0_HEADER_HEIGHT                  50.f
 #define SECTION_HEADER_HEIGHT                   40.f
 #define SECTION_HEADER_DEFAULT_HEIGHT           0.1f
@@ -75,7 +75,7 @@
         _section1TitleArray = @[
                                 NSLocalizedString(@"Phone",nil),
                                 NSLocalizedString(@"SMS",nil),
-                                NSLocalizedString(@"Email",nil),
+                                //NSLocalizedString(@"Email",nil),
                                 NSLocalizedString(@"Battery",nil),
                                 ];
     }
@@ -125,7 +125,7 @@
 {
     if (!_headerTitleArray) {
         _headerTitleArray = @[NSLocalizedString(@"Remind Setting",nil),
-                              NSLocalizedString(@"社交",nil),
+                              //NSLocalizedString(@"社交",nil),
                               NSLocalizedString(@"提醒方式",nil),
                               NSLocalizedString(@"其他",nil),
                               @"",
@@ -170,7 +170,7 @@
 }
 - (void)setupTableView
 {
-    self.tableView.scrollEnabled = YES;
+    self.tableView.scrollEnabled = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tintColor = UICOLOR_DEFAULT;
 }
@@ -410,13 +410,13 @@
     switch (section) {
         case 0:
             return self.section1TitleArray.count;
-        case 1:
-            return self.section2TitleArray.count;
-        case 2:
+//        case 1:
+//            return self.section2TitleArray.count;
+        case 2-1:
             return self.section3TitleArray.count;
-        case 3:
+        case 3-1:
             return self.section4TitleArray.count;
-        case 4:
+        case 4-1:
             return self.section5TitleArray.count;
         default:
             break;
@@ -427,9 +427,9 @@
 {
     switch (indexPath.section) {
         case 0:
-        case 1:
-        case 2:
-        case 3:
+//        case 1:
+        case 2-1:
+        //case 3-1:
         {
             NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
             UINib *cellNib = [UINib nibWithNibName:@"WMSSwitchCell" bundle:nil];
@@ -451,24 +451,24 @@
                     }
                 }
             }
-            else if (indexPath.section == 1)
-            {
-                text = [self.section2TitleArray objectAtIndex:indexPath.row];
-                NSString *key = [self settingKeyFromIndexPath:indexPath];
-                if (key) {
-                    on = [(NSNumber*)[WMSRightVCHelper loadSettingItemDataOfKey:key] boolValue];
-                }
-            }
-            else if (indexPath.section == 2)
+//            else if (indexPath.section == 1)
+//            {
+//                text = [self.section2TitleArray objectAtIndex:indexPath.row];
+//                NSString *key = [self settingKeyFromIndexPath:indexPath];
+//                if (key) {
+//                    on = [(NSNumber*)[WMSRightVCHelper loadSettingItemDataOfKey:key] boolValue];
+//                }
+//            }
+            else if (indexPath.section == 2-1)
             {
                 text = [self.section3TitleArray objectAtIndex:indexPath.row];
                 on = [WMSRightVCHelper loadRemindWay];
             }
-            else if (indexPath.section == 3)
-            {
-                text = [self.section4TitleArray objectAtIndex:indexPath.row];
-                on = [WMSRightVCHelper loadLost];
-            }
+//            else if (indexPath.section == 3-1)
+//            {
+//                text = [self.section4TitleArray objectAtIndex:indexPath.row];
+//                on = [WMSRightVCHelper loadLost];
+//            }
             
             if (![self.bleControl isConnected]) {
                 on = NO;
@@ -478,7 +478,8 @@
             
             return cell;
         }
-        case 4:
+        case 2:
+        case 4-1:
         {
             NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
             UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -490,7 +491,12 @@
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
             cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_b.png"]];
 
-            NSString *txt = self.section5TitleArray[indexPath.row];
+            NSString *txt = @"";
+            if (indexPath.section == 2) {
+                txt = self.section4TitleArray[indexPath.row];
+            } else {
+                txt = self.section5TitleArray[indexPath.row];
+            }
             cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
             cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.font = Font_DINCondensed(18);
@@ -515,12 +521,12 @@
     switch (section) {
         case 0:
             return SECTION0_HEADER_HEIGHT;
-        case 1:
-        case 2:
+//        case 1:
+        case 2-1:
             return SECTION_HEADER_HEIGHT;
-        case 3:
+        case 3-1:
             return SECTION_HEADER_HEIGHT;
-        case 4:
+        case 4-1:
             return SECTION_HEADER_DEFAULT_HEIGHT;
         default:
             break;
@@ -558,25 +564,25 @@
         return;
     }
     
-    BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:self.bleControl.isConnected];
-    if (result == NO) {
-        return;
-    }
+//    BOOL result = [self checkoutWithIsBind:[WMSMyAccessory isBindAccessory] isConnected:self.bleControl.isConnected];
+//    if (result == NO) {
+//        return;
+//    }
     
-//    if (indexPath.section == 3) {
-//        if (indexPath.row == 0) {
-//            WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
-//            vc.title = self.section4TitleArray[indexPath.row];
-//            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
-//            [self presentViewController:nav animated:YES completion:nil];
-//        }
+    if (indexPath.section == 3-1) {
+        if (indexPath.row == 0) {
+            WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
+            vc.title = self.section4TitleArray[indexPath.row];
+            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
+            [self presentViewController:nav animated:YES completion:nil];
+        }
 //        else if (indexPath.row == 1) {
 //            WMSClockListVC *VC = [[WMSClockListVC alloc] init];
 //            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:VC];
 //            [self presentViewController:nav animated:YES completion:nil];
 //        } else{};
-//        return ;
-//    }
+        return ;
+    }
     
     if (indexPath.section == 4 && indexPath.row == 0) {
         self.pickerController = [self openCamera];
@@ -604,7 +610,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:switchCell];
     if (indexPath.section == 0 && indexPath.row == self.section1TitleArray.count-1) {
         [WMSRightVCHelper savaLowBatteryRemind:sw.on];
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 2-1) {
         BOOL isShowWarning = NO;
         if (sw.on) {//当设置成“震动”时，提醒用户
             //当电压小于指定值时，不允许切换至“震动”
@@ -626,13 +632,13 @@
             }
         }];
     }
-    else if (indexPath.section == 3)
-    {
-        [self.bleControl.settingProfile setLost:sw.on completion:^(BOOL isSuccess) {
-            DEBUGLog_DETAIL(@"设置防丢%d", isSuccess);
-        }];
-
-    }
+//    else if (indexPath.section == 3-1)
+//    {
+//        [self.bleControl.settingProfile setLost:sw.on completion:^(BOOL isSuccess) {
+//            DEBUGLog_DETAIL(@"设置防丢%d", isSuccess);
+//        }];
+//
+//    }
     else
     {
         NSString *key = [self settingKeyFromIndexPath:indexPath];
@@ -650,15 +656,15 @@
 {
     static NSDictionary *map = nil;
     if (!map) {
-        NSArray *settingKeys = @[@"Phone",@"SMS",@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"];
+        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"*/];
         
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:7];
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:settingKeys.count];
         NSIndexPath *index = nil;
         
-        static int sections[2] = {0};
+        static int sections[1] = {0};
         sections[0] = (int)self.section1TitleArray.count-1;
-        sections[1] = (int)self.section2TitleArray.count;
-        for (int i=0; i<2; i++) {
+        //sections[1] = (int)self.section2TitleArray.count;
+        for (int i=0; i<( sizeof(sections)/sizeof(int) ); i++) {
             for (int j=0; j<sections[i]; j++) {
                 index = [NSIndexPath indexPathForRow:j inSection:i];
                 [indexPaths addObject:index];
@@ -674,9 +680,9 @@
 {
     static NSDictionary *map = nil;
     if (!map) {
-        NSArray *settingKeys = @[@"Phone",@"SMS",@"Email",@"QQ",@"Wechat",@"sina",@"Facebook",@"Twitter",@"WhatsApp",@"Skype"];
-        NSMutableArray *events = [NSMutableArray arrayWithCapacity:9];
-        for (int i=RemindEventCall; i<RemindEventSkype; i++) {
+        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"QQ",@"Wechat",@"sina",@"Facebook",@"Twitter",@"WhatsApp",@"Skype"*/];
+        NSMutableArray *events = [NSMutableArray arrayWithCapacity:settingKeys.count];
+        for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
             [events addObject:@(i)];
         }
         

@@ -75,7 +75,7 @@ int setUserInfo(GenderType sex, BLE_UInt8 age, BLE_UInt16 height, BLE_UInt16 wei
 
 int setTarget(BLE_UInt32 target, BLE_UInt8 **package);
 
-int setLost(BLE_UInt8 openOrClose, BLE_UInt8 **package);
+int setLost(BLE_UInt8 openOrClose, BLE_UInt8 interval, BLE_UInt8 **package);
 
 /**
  openOrClose    0-关闭，1-打开

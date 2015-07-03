@@ -1140,15 +1140,6 @@
 			name = Tool;
 			sourceTree = "<group>";
 		};
-		2321B78219B950ED00278677 /* NSMutableArray+Stack */ = {
-			isa = PBXGroup;
-			children = (
-				2321B77F19B9500900278677 /* NSMutableArray+Stack.h */,
-				2321B78019B9500900278677 /* NSMutableArray+Stack.m */,
-			);
-			name = "NSMutableArray+Stack";
-			sourceTree = "<group>";
-		};
 		23244D7D1A314640006C925C /* UIViewController+Update */ = {
 			isa = PBXGroup;
 			children = (
@@ -1343,15 +1334,6 @@
 				23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */,
 			);
 			name = "数据库";
-			sourceTree = "<group>";
-		};
-		2331CD9E19B84A8D00719976 /* MyTimer */ = {
-			isa = PBXGroup;
-			children = (
-				2331CD9F19B84AB500719976 /* WMSMyTimers.h */,
-				2331CDA019B84AB500719976 /* WMSMyTimers.m */,
-			);
-			name = MyTimer;
 			sourceTree = "<group>";
 		};
 		2333AAFC1A64B32300DBA846 /* MyNavigationController */ = {
@@ -1821,11 +1803,11 @@
 		23D7CEC419B571F900DFA678 /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
-				F7CF05A61B1F043300038C9A /* protocol-c */,
-				2331CD9E19B84A8D00719976 /* MyTimer */,
 				23D7CF0419B5C55300DFA678 /* BleProfile */,
+				F7CF05A61B1F043300038C9A /* protocol-c */,
 				23D7CEF019B5C45400DFA678 /* LGBluetooth */,
-				2321B78219B950ED00278677 /* NSMutableArray+Stack */,
+				F70EF3D81B4666CF002EDEF9 /* StackManager */,
+				F70EF3D91B466733002EDEF9 /* DeviceModel */,
 				23E84B8E1A4814A10061AD36 /* DFU */,
 			);
 			name = Bluetooth;
@@ -1866,12 +1848,6 @@
 				F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */,
 				2321B78319B95E8E00278677 /* WMSBluetooth.h */,
 				23A6DF301ADD091000BB06CF /* BLEUtils.h */,
-				2360CED019E6855000B10A0B /* WMSDeviceModel.h */,
-				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
-				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
-				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
-				F7E99FF21B281704001C0CDD /* WMSStackManager.h */,
-				F7E99FF31B281704001C0CDD /* WMSStackManager.m */,
 			);
 			name = BleProfile;
 			sourceTree = "<group>";
@@ -1963,6 +1939,30 @@
 				F70EF2181B4244FC002EDEF9 /* HealthManager.m */,
 			);
 			name = HealthKit;
+			sourceTree = "<group>";
+		};
+		F70EF3D81B4666CF002EDEF9 /* StackManager */ = {
+			isa = PBXGroup;
+			children = (
+				F7E99FF21B281704001C0CDD /* WMSStackManager.h */,
+				F7E99FF31B281704001C0CDD /* WMSStackManager.m */,
+				2331CD9F19B84AB500719976 /* WMSMyTimers.h */,
+				2331CDA019B84AB500719976 /* WMSMyTimers.m */,
+				2321B77F19B9500900278677 /* NSMutableArray+Stack.h */,
+				2321B78019B9500900278677 /* NSMutableArray+Stack.m */,
+			);
+			name = StackManager;
+			sourceTree = "<group>";
+		};
+		F70EF3D91B466733002EDEF9 /* DeviceModel */ = {
+			isa = PBXGroup;
+			children = (
+				2360CED019E6855000B10A0B /* WMSDeviceModel.h */,
+				2360CED119E6855000B10A0B /* WMSDeviceModel.m */,
+				2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */,
+				2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */,
+			);
+			name = DeviceModel;
 			sourceTree = "<group>";
 		};
 		F72385B11B1C370000AC3CD5 /* 天气 */ = {

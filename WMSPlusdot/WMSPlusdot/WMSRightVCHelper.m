@@ -196,7 +196,7 @@
         case 0:
         {
             RemindEvents event = 0;
-            for (int i=RemindEventCall; i<RemindEventSkype; i++) {
+            for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
                 event |= i;
             }
             [handle setRemindEvent:event completion:^(BOOL isSuccess) {
@@ -218,18 +218,18 @@
             }];
             break;
         }
-        case 2:
-        {
-            BOOL openOrClose = [self loadLost];
-            [handle setLost:openOrClose completion:^(BOOL isSuccess) {
-                if (isSuccess) {
-                    StrongObj(weakHandle, strongHandle);
-                    [self __configWithIndex:index+1 handle:strongHandle completion:aCallback];
-                }
-            }];
-            
-            break;
-        }
+//        case 2:
+//        {
+//            BOOL openOrClose = [self loadLost];
+//            [handle setLost:openOrClose completion:^(BOOL isSuccess) {
+//                if (isSuccess) {
+//                    StrongObj(weakHandle, strongHandle);
+//                    [self __configWithIndex:index+1 handle:strongHandle completion:aCallback];
+//                }
+//            }];
+//            
+//            break;
+//        }
             
         default:
         {
