@@ -31,19 +31,19 @@ typedef void(^readProfileCallback)(NSDate *birthday, SexTypes sex, double height
 
 - (void)authorizeHealthKit:(operationCompletedCallback)aCallback;
 
-/**
- * @param aCallback 之中的height，weight单位同下
- */
-- (void)readProfile:(readProfileCallback)aCallback;
-
-/**
- * @param height 单位为 m
- * @param weight 单位为 kg
- */
-- (void)saveUserHeight:(double)height
-                weight:(double)weight
-                  date:(NSDate *)date
-            completion:(operationCompletedCallback)aCallback;
+///**
+// * @param aCallback 之中的height，weight单位同下
+// */
+//- (void)readProfile:(readProfileCallback)aCallback;
+//
+///**
+// * @param height 单位为 m
+// * @param weight 单位为 kg
+// */
+//- (void)saveUserHeight:(double)height
+//                weight:(double)weight
+//                  date:(NSDate *)date
+//            completion:(operationCompletedCallback)aCallback;
 
 /**
  * @param distance 单位为 km
