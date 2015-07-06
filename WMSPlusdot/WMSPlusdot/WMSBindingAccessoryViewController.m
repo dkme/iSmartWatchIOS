@@ -96,35 +96,6 @@ static const int            MAX_RSSI                = -75;
 }
 - (void)sendBindingCMD
 {
-//    __weak __typeof(self) weakSelf = self;
-//    double version = [WMSDeviceModel deviceModel].version;
-//    BindSettingCMD bindCMD = bindSettingCMDBind;
-//    if (version >= FIRMWARE_TARGET_VERSION) {
-//        bindCMD = BindSettingCMDMandatoryBind;
-//    }
-//    [self.bleControl bindSettingCMD:bindCMD completion:^(BindingResult result)
-//     {
-//         __strong __typeof(weakSelf) strongSelf = weakSelf;
-//         if (!strongSelf) {
-//             return ;
-//         }
-//         
-//         if (result == BindingResultSuccess) {
-//             NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
-//             if (identify) {
-//                 NSString *mac = [WMSDeviceModel deviceModel].mac;
-//                 if (!mac) {
-//                     mac = @"";
-//                 }else{}
-//                 [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
-//                 [WMSMyAccessory setBindAccessoryMac:mac];
-//                 [strongSelf closeVC:YES];
-//             } else {}
-//         } else {
-//             [strongSelf closeVC:NO];
-//         }
-//     }];
-    
     WeakObj(self, weakSelf);
     [self.bleControl bindDevice:^(BOOL isSuccess) {
         if (isSuccess) {
@@ -140,7 +111,6 @@ static const int            MAX_RSSI                = -75;
                     [WMSMyAccessory setBindAccessoryMac:mac];
                     [strongSelf closeVC:YES];
                 }
-
             }
         }
     }];
@@ -238,38 +208,10 @@ static const int            MAX_RSSI                = -75;
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
-
-//    [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
-//        
-//        [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
-//            DEBUGLog(@"read version:%d",version);
-//            
-//            if (version >= FIRMWARE_CAN_READ_MAC) {
-//                [WMSDeviceModel readDeviceMac:self.bleControl completion:^(NSString *mac) {
-//                    if (version < FIRMWARE_TARGET_VERSION) {
-//                        self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-//                    }
-//                    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
-//                    [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
-//                    [self sendBindingCMD];
-//                }];
-//            } else {
-//                if (version < FIRMWARE_TARGET_VERSION) {
-//                    self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-//                }
-//                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
-//                [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
-//                [self sendBindingCMD];
-//            }
-//            
-//        }];
-//        
-//    }];
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
     [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
     [self sendBindingCMD];
-    
 }
 - (void)handleDisConnectPeripheral:(NSNotification *)notification
 {

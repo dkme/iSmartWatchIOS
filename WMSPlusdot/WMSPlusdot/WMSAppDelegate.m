@@ -28,6 +28,7 @@
 #import "WMSDeviceModel+Configure.h"
 
 #import "GGAudioTool.h"
+#import "WMSSoundOperation.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -35,6 +36,9 @@ NSString *const WMSAppDelegateReSyncData = @"com.ios.plusdot.WMSAppDelegateReSyn
 NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncData";
 
 @interface WMSAppDelegate ()<RESideMenuDelegate>
+
+@property (nonatomic, strong) WMSSoundOperation *soundOperation;
+
 @end
 
 @implementation WMSAppDelegate
@@ -271,6 +275,8 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         LGPeripheral *p = (LGPeripheral *)notification.object;
         [self scanAndConnectPeripheral:p];
     }
+    
+    
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
@@ -377,5 +383,30 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     //唤醒扫描
     [self scanAndConnectPeripheral:nil];
 }
+
+#pragma mark - Other
+///报警
+- (void)alarmWhenDisconnect
+{
+    NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FileDocumentPath(FILE_ANTILOST)];
+    BOOL status = [readData[@"on"] boolValue];
+    if (status || YES) {
+        NSTimeInterval interval = [readData[@"interval"] integerValue];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(playAlarmSound) object:nil];
+        [self performSelector:@selector(playAlarmSound) withObject:nil afterDelay:interval];
+    }
+}
+- (void)playAlarmSound
+{
+    if (!self.soundOperation) {
+        _soundOperation = [[WMSSoundOperation alloc] init];
+    }
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"sound_alarm" ofType:@"m4r"];
+    [self.soundOperation playSoundWithFile:filePath duration:-1];
+}
+
+
+
+
 
 @end

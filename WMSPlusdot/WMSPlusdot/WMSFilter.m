@@ -21,23 +21,14 @@ static const int MIN_RSSI       = -150;
         NSMutableArray *array = [NSMutableArray array];
         for (LGPeripheral *pObject in peripherals)
         {
+            NSString *name = pObject.cbPeripheral.name;
+            if (![WATCH_NAME isEqualToString:name]) {
+                break ;
+            }
             if (!pObject || pObject.RSSI < MIN_RSSI) {
                 break ;
             }
-            NSString *name = pObject.cbPeripheral.name;
-            BOOL flag = NO;
-            if (type == AccessoryGenerationONE) {
-                flag = [name isEqualToString:WATCH_NAME] ||
-                [name isEqualToString:WATCH_NAME2];
-            } else if (type == AccessoryGenerationTWO) {
-                flag = [name isEqualToString:WATCH_NAME_G2];
-            } else {
-                flag = NO;
-            }
-            if (flag)
-            {
-                [array addObject:pObject];
-            }
+            [array addObject:pObject];
         }
         return array;
     }
