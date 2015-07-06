@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+@class WMSBleControl;
+
+typedef void(^syncSportDataCallback)(NSDate *date, NSUInteger steps, NSUInteger distance, NSUInteger calories, NSUInteger durations, NSUInteger notSyncDays);
 
 @interface WMSSyncProfile : NSObject
+
+
+- (id)initWithBleControl:(WMSBleControl *)bleControl;
+
+///同步运动数据
+- (void)syncSportData:(syncSportDataCallback)aCallback;
 
 @end

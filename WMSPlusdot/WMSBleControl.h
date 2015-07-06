@@ -16,7 +16,7 @@
 
 @class WMSSettingProfile;
 @class WMSDeviceProfile;
-@class WMSRemindProfile;
+@class WMSSyncProfile;
 
 //Notification identifiers
 /*
@@ -64,20 +64,14 @@ extern NSString * const OperationTakePhoto;
 #define SERVICE_LOSE_UUID                                       @"1803"
 #define CHARACTERISTIC_LOSE_UUID                                @"2A06"
 
-#define SERVICE_LOOK_UUID                                       @"1802"
-#define CHARACTERISTIC_LOOK_UUID                                @"2A06"
+//#define SERVICE_LOOK_UUID                                       @"1802"
+//#define CHARACTERISTIC_LOOK_UUID                                @"2A06"
 
 #define SERVICE_SERIAL_PORT_UUID                                @"6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
 #define CHARACTERISTIC_SERIAL_PORT_READ_UUID                    @"6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
 #define CHARACTERISTIC_SERIAL_PORT_WRITE_UUID                   @"6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
 
 
-///待定
-typedef NS_ENUM(NSUInteger, ControlMode) {
-    ControlModeRemote = 0x01,
-    ControlModePlayMusic = 0x02,
-    ControlModeNormal = 0xFF,
-};
 
 //蓝牙状态
 typedef NS_ENUM(NSInteger, WMSBleState) {
@@ -105,8 +99,9 @@ typedef void(^switchModeCallback)(BOOL isSuccess, RequestUpdateFirmwareErrorCode
 @property (nonatomic, readonly) BOOL isConnected;
 @property (nonatomic, readonly) WMSBleState bleState;
 
-@property (nonatomic, readonly) WMSSettingProfile *settingProfile;
-@property (nonatomic, readonly) WMSDeviceProfile *deviceProfile;
+@property (nonatomic, readonly) WMSSettingProfile   *settingProfile;
+@property (nonatomic, readonly) WMSDeviceProfile    *deviceProfile;
+@property (nonatomic, readonly) WMSSyncProfile      *syncProfile;
 
 @property (nonatomic, readonly) WMSStackManager *stackManager;
 

@@ -92,7 +92,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
         _specificServiceUUIDs = @[
                                   SERVICE_BATTERY_UUID,
                                   SERVICE_LOSE_UUID,
-                                  SERVICE_LOOK_UUID,
+                                  //SERVICE_LOOK_UUID,
                                   SERVICE_SERIAL_PORT_UUID,
                                   ];
     }
@@ -104,7 +104,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
         _specificCharacteristicUUIDs = @[
                                          CHARACTERISTIC_BATTERY_UUID,
                                          CHARACTERISTIC_LOSE_UUID,
-                                         CHARACTERISTIC_LOOK_UUID,
+                                         //CHARACTERISTIC_LOOK_UUID,
                                          CHARACTERISTIC_SERIAL_PORT_READ_UUID,
                                          CHARACTERISTIC_SERIAL_PORT_WRITE_UUID,
                                          ];
@@ -166,7 +166,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     }
     NSMutableArray *scannedPeripheral = [NSMutableArray new];
     
-    NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID]];
+    NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_BATTERY_UUID]];
     NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
     [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options completion:^(NSArray *peripherals) {
         //排除重复的设备
@@ -223,8 +223,8 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
         } else {
             [self performSelector:@selector(discoverServicesTimeout:) withObject:peripheral afterDelay:DISCOVER_SERVICES_INTERVAL];
             
-            NSArray *serviceUUIDS = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID]];
-            [peripheral discoverServices:serviceUUIDS completion:^(NSArray *services, NSError *error)
+            //NSArray *serviceUUIDS = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID]];
+            [peripheral discoverServices:nil completion:^(NSArray *services, NSError *error)
             {
                 DEBUGLog(@"发现服务");
                 [NSObject cancelPreviousPerformRequestsWithTarget:self
@@ -369,6 +369,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     
     _settingProfile = [[WMSSettingProfile alloc] initWithBleControl:self];
     _deviceProfile = [[WMSDeviceProfile alloc] initWithBleControl:self];
+    _syncProfile = [[WMSSyncProfile alloc] initWithBleControl:self];
     
 
     [self characteristic:self.serialPortReadCharacteristic enableNotify:YES withTimeID:TimeIDEnableNotifyForSerialPortReadCharacteristic];
@@ -681,7 +682,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
             }
             case CMD_KEY(CMD_updateFirmware, UpdateFirmware):
             {
-                Struct_UpdateResult res =getResult(package, PACKAGE_SIZE);
+                Struct_UpdateResult res = getResult(package, PACKAGE_SIZE);
                 if (res.error == HANDLE_OK) {
                     switchModeCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_SWITCH_MODE];
                     if (aCallback) {

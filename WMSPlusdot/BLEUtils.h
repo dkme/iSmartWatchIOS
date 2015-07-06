@@ -41,6 +41,10 @@ typedef NS_ENUM(int, TimeID) {
     TIME_ID_SETTING_SET_WEATHER,
     TIME_ID_SETTING_ADJUST_TIME,
     TIME_ID_SETTING_ALARM_CLOCK,
+    
+    ///sync profile
+    TIME_ID_SYNC_SPORT_DATA,
+    TIME_ID_SYNC_SLEEP_DATA,
 };
 
 //超时设置

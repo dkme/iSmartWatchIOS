@@ -35,7 +35,7 @@
 - (void)setup
 {
     _serialPortWriteCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_WRITE_UUID];
-    _lookCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_LOOK_UUID];
+    //_lookCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_LOOK_UUID];
 }
 - (void)registerForNotifications
 {
