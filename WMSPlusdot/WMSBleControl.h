@@ -59,8 +59,8 @@ extern NSString * const OperationTakePhoto;
 
 
 ///指定的服务与特性
-#define SERVICE_BATTERY_UUID                                    @"180F"
-#define CHARACTERISTIC_BATTERY_UUID                             @"2A19"
+//#define SERVICE_BATTERY_UUID                                    @"180F"
+//#define CHARACTERISTIC_BATTERY_UUID                             @"2A19"
 
 #define SERVICE_LOSE_UUID                                       @"1803"
 #define CHARACTERISTIC_LOSE_UUID                                @"2A06"
@@ -143,7 +143,7 @@ typedef void(^switchModeCallback)(BOOL isSuccess, RequestUpdateFirmwareErrorCode
  * @param charact 重发所用的特性
  * @param data 重发的数据
  */
-- (void)addTimerWithTimeInterval:(NSTimeInterval)interval handleCharacteristic:(LGCharacteristic *)charact handleData:(NSData *)data timeID:(TimeID)ID;
+//- (void)addTimerWithTimeInterval:(NSTimeInterval)interval handleCharacteristic:(LGCharacteristic *)charact handleData:(NSData *)data timeID:(TimeID)ID;
 
 /**
  * 向指定的characteristic中，写入数据

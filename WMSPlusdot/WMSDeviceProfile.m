@@ -36,9 +36,9 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
 - (void)setup
 {
     _serialPortWriteCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_WRITE_UUID];
-    LGCharacteristic *batteryCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_BATTERY_UUID];
+    //LGCharacteristic *batteryCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_BATTERY_UUID];
     
-    [self.bleControl characteristic:batteryCharacteristic enableNotify:YES withTimeID:TimeIDEnableNotifyForBatteryCharacteristic];
+    //[self.bleControl characteristic:batteryCharacteristic enableNotify:YES withTimeID:TimeIDEnableNotifyForBatteryCharacteristic];
 }
 - (void)registerForNotifications
 {
@@ -280,13 +280,13 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
                 break;
         }///switch
     }///if
-    else if ([CHARACTERISTIC_BATTERY_UUID isEqualToString:uuid])
-    {
-        BLE_UInt8 power = getDevicePower(package, PACKAGE_SIZE);
-        if (power != 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:DevicePowerChangedNotification object:@(power) userInfo:nil];
-        }
-    }
+//    else if ([CHARACTERISTIC_BATTERY_UUID isEqualToString:uuid])
+//    {
+//        BLE_UInt8 power = getDevicePower(package, PACKAGE_SIZE);
+//        if (power != 0) {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:DevicePowerChangedNotification object:@(power) userInfo:nil];
+//        }
+//    }
 }
 
 @end

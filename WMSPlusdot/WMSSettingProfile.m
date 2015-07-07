@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) WMSBleControl *bleControl;
 @property (nonatomic, strong) LGCharacteristic *serialPortWriteCharacteristic;
-@property (nonatomic, strong) LGCharacteristic *lookCharacteristic;
+@property (nonatomic, strong) LGCharacteristic *lostCharacteristic;
 
 @end
 
@@ -35,7 +35,7 @@
 - (void)setup
 {
     _serialPortWriteCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_WRITE_UUID];
-    //_lookCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_LOOK_UUID];
+    _lostCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_LOSE_UUID];
 }
 - (void)registerForNotifications
 {
@@ -49,7 +49,7 @@
 {
     _bleControl = nil;
     _serialPortWriteCharacteristic = nil;
-    _lookCharacteristic = nil;
+    _lostCharacteristic = nil;
     
     [self unregisterFromNotifications];
 }
@@ -118,7 +118,13 @@
     if (res != HANDLE_OK) {
         return ;
     }
-    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SETTING_SET_LOST];
+    [self.lostCharacteristic writeValue:[NSData dataWithBytes:package length:PACKAGE_SIZE] completion:^(NSError *error) {
+        if (!error) {
+            if (aCallback) {
+                aCallback(YES);
+            }
+        }
+    }];///写响应，没写重发机制
 }
 
 - (void)setSitting:(BOOL)openOrClose
@@ -244,16 +250,16 @@
     [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SETTING_ALARM_CLOCK];
 }
 
-- (void)setSearchDevice:(BOOL)openOrClose
-{
-    BLE_UInt8 package[PACKAGE_SIZE] = {0};
-    BLE_UInt8 *p = package;
-    int res = setSearchDevice(openOrClose, &p);
-    if (res != HANDLE_OK) {
-        return ;
-    }
-    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.lookCharacteristic response:NO callbackHandle:nil withTimeID:-1];
-}
+//- (void)setSearchDevice:(BOOL)openOrClose
+//{
+//    BLE_UInt8 package[PACKAGE_SIZE] = {0};
+//    BLE_UInt8 *p = package;
+//    int res = setSearchDevice(openOrClose, &p);
+//    if (res != HANDLE_OK) {
+//        return ;
+//    }
+//    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.lookCharacteristic response:NO callbackHandle:nil withTimeID:-1];
+//}
 
 
 #pragma mark - Private

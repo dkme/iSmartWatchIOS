@@ -91,7 +91,7 @@ typedef void(^settingCallback)(BOOL isSuccess);
 
 ///设置寻找手表
 ///不用回调
-- (void)setSearchDevice:(BOOL)openOrClose;
+//- (void)setSearchDevice:(BOOL)openOrClose;
 
 ///获取天气类型
 + (NSUInteger)weatherTypeFromCondition:(NSString *)condition;

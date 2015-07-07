@@ -87,7 +87,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
 {
     if (!_specificServiceUUIDs) {
         _specificServiceUUIDs = @[
-                                  SERVICE_BATTERY_UUID,
+                                  //SERVICE_BATTERY_UUID,
                                   SERVICE_LOSE_UUID,
                                   //SERVICE_LOOK_UUID,
                                   SERVICE_SERIAL_PORT_UUID,
@@ -99,7 +99,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
 {
     if (!_specificCharacteristicUUIDs) {
         _specificCharacteristicUUIDs = @[
-                                         CHARACTERISTIC_BATTERY_UUID,
+                                         //CHARACTERISTIC_BATTERY_UUID,
                                          CHARACTERISTIC_LOSE_UUID,
                                          //CHARACTERISTIC_LOOK_UUID,
                                          CHARACTERISTIC_SERIAL_PORT_READ_UUID,
@@ -163,7 +163,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     }
     NSMutableArray *scannedPeripheral = [NSMutableArray new];
     
-    NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_BATTERY_UUID]];
+    NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_LOSE_UUID]];
     NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
     [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options completion:^(NSArray *peripherals) {
         //排除重复的设备
@@ -220,7 +220,6 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
         } else {
             [self performSelector:@selector(discoverServicesTimeout:) withObject:peripheral afterDelay:DISCOVER_SERVICES_INTERVAL];
             
-            //NSArray *serviceUUIDS = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID]];
             [peripheral discoverServices:nil completion:^(NSArray *services, NSError *error)
             {
                 DEBUGLog(@"发现服务");
@@ -576,9 +575,13 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     if (self.isConnected) {
         LGCharacteristic *charact = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_CHARACT];
         NSData *value = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_VALUE];
-        
+        BOOL isResponse = [[timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_IS_WRITE_RESPONSE] boolValue];
         #warning 这里写的方式要与最初的保持一致
-        [charact writeValue:value completion:nil];
+        if (isResponse) {
+            [charact writeValue:value completion:^(NSError *error) {}];
+        } else {
+            [charact writeValue:value completion:nil];
+        }
         DEBUGLog(@"timeID[%d]----第%d次重发",[self.stackManager.myTimers getTimerID:timer],triggerCount);
     } else {
         [self.stackManager.myTimers deleteAllTimers];
@@ -726,16 +729,16 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     return nil;
 }
 
-- (void)addTimerWithTimeInterval:(NSTimeInterval)interval handleCharacteristic:(LGCharacteristic *)charact handleData:(NSData *)data timeID:(TimeID)ID
-{
-    [self.stackManager.myTimers addTimerWithTimeInterval:interval
-                                                  target:self
-                                                selector:@selector(writeValueToCharactTimeout:)
-                                                userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:charact,
-                                                           KEY_TIMEOUT_USERINFO_VALUE:data}
-                                                 repeats:YES
-                                                  timeID:ID];
-}
+//- (void)addTimerWithTimeInterval:(NSTimeInterval)interval handleCharacteristic:(LGCharacteristic *)charact handleData:(NSData *)data timeID:(TimeID)ID
+//{
+//    [self.stackManager.myTimers addTimerWithTimeInterval:interval
+//                                                  target:self
+//                                                selector:@selector(writeValueToCharactTimeout:)
+//                                                userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:charact,
+//                                                           KEY_TIMEOUT_USERINFO_VALUE:data}
+//                                                 repeats:YES
+//                                                  timeID:ID];
+//}
 
 - (void)writeBytes:(const void *)bytes length:(NSUInteger)length toCharacteristic:(LGCharacteristic *)characteristic response:(BOOL)response callbackHandle:(id)aCallback withTimeID:(int)timeID
 {
@@ -747,7 +750,16 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     }
     if (aCallback) {
         [self.stackManager pushObj:aCallback toStackOfTimeID:timeID];
-        [self addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:characteristic handleData:sendData timeID:timeID];
+//        [self addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:characteristic handleData:sendData timeID:timeID];
+        [self.stackManager.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
+                                                      target:self
+                                                    selector:@selector(writeValueToCharactTimeout:)
+                                                    userInfo:@{KEY_TIMEOUT_USERINFO_CHARACT:characteristic,
+                                                               KEY_TIMEOUT_USERINFO_VALUE:sendData,
+                                                               KEY_TIMEOUT_USERINFO_IS_WRITE_RESPONSE:@(response),
+                                                               }
+                                                     repeats:YES
+                                                      timeID:timeID];
     }
 }
 
