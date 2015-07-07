@@ -17,6 +17,7 @@
 @property (nonatomic, strong) LGCharacteristic *serialPortWriteCharacteristic;
 
 @property (nonatomic, copy) monitorCallback monitorBlock;
+@property (nonatomic, copy) testSensorCallback testSensorBlock;
 
 @end
 
@@ -43,6 +44,15 @@
 - (void)unregisterFromNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (void)dealloc
+{
+    _bleControl = nil;
+    _serialPortWriteCharacteristic = nil;
+    _monitorBlock = nil;
+    _testSensorBlock = nil;
+    
+    [self unregisterFromNotifications];
 }
 
 
@@ -80,11 +90,29 @@
     [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:nil withTimeID:-1];
 }
 
+- (void)testMovementGear:(GEAR_TURN_DIRECTION)direction
+{
+    BLE_UInt8 package[PACKAGE_SIZE] = {0};
+    BLE_UInt8 *p = package;
+    int res = testMovementGear(direction, &p);
+    if (res != HANDLE_OK) {
+        return ;
+    }
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:nil withTimeID:-1];
+}
+
 - (void)monitorDeviceButton:(monitorCallback)aCallback
 {
     LGCharacteristic *serialPortReadCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_READ_UUID];
     [self.bleControl characteristic:serialPortReadCharacteristic enableNotify:YES withTimeID:TimeIDEnableNotifyForSerialPortReadCharacteristic];
     self.monitorBlock = aCallback;
+}
+
+- (void)testSensor:(testSensorCallback)aCallback
+{
+    LGCharacteristic *serialPortReadCharacteristic = [self.bleControl findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_READ_UUID];
+    [self.bleControl characteristic:serialPortReadCharacteristic enableNotify:YES withTimeID:TimeIDEnableNotifyForSerialPortReadCharacteristic];
+    self.testSensorBlock = aCallback;
 }
 
 #pragma mark - Handle
@@ -105,7 +133,7 @@
     [value getBytes:package length:PACKAGE_SIZE];
     struct_parse_package s_pg = parse(package, PACKAGE_SIZE);
     Byte cmd = s_pg.cmd;
-//    Byte key = s_pg.key;
+    Byte key = s_pg.key;
     
     if ([CHARACTERISTIC_SERIAL_PORT_READ_UUID isEqualToString:uuid]) {
         if (cmd == CMD_control) {
@@ -118,6 +146,12 @@
                 self.monitorBlock(res.control, res.button);
             }
             return ;
+        }
+        if (CMD_KEY(cmd, key) == CMD_KEY(CMD_test, TestSensor)) {
+            NSInteger value = getSensorValue(package, PACKAGE_SIZE);
+            if (self.testSensorBlock) {
+                self.testSensorBlock(value);
+            }
         }
     }
 }

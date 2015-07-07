@@ -7,12 +7,9 @@
 //
 
 #import "WMSBleControl.h"
-#import "WMSSettingProfile.h"
-#import "WMSDeviceProfile.h"
 #import "NSMutableArray+Stack.h"
 #import "WMSDeviceModel.h"
 #import "WMSDeviceModel+Configure.h"
-#import "WMSStackManager.h"
 #include "binding.h"
 #include "parse.h"
 #include "control.h"
@@ -365,12 +362,10 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     self.serialPortReadCharacteristic = [self findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_READ_UUID];
     self.serialPortWriteCharacteristic = [self findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_WRITE_UUID];
     
-    
-    
     _settingProfile = [[WMSSettingProfile alloc] initWithBleControl:self];
-    _deviceProfile = [[WMSDeviceProfile alloc] initWithBleControl:self];
-    _syncProfile = [[WMSSyncProfile alloc] initWithBleControl:self];
-    
+    _deviceProfile  = [[WMSDeviceProfile alloc] initWithBleControl:self];
+    _syncProfile    = [[WMSSyncProfile alloc] initWithBleControl:self];
+    _testingProfile = [[WMSTestingProfile alloc] initWithBleControl:self];
 
     [self characteristic:self.serialPortReadCharacteristic enableNotify:YES withTimeID:TimeIDEnableNotifyForSerialPortReadCharacteristic];
 }
@@ -381,16 +376,16 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     _serialPortReadCharacteristic = nil;
     _serialPortWriteCharacteristic = nil;
     
-    
     _settingProfile = nil;
     _deviceProfile = nil;
+    _syncProfile = nil;
+    _testingProfile = nil;
     
     _isConnecting = NO;
     findCharacteristicCount = 0;
     
     [self setScanedBlock:nil];
     [self setConnectingPeripheral:nil];
-    
     
     [self.characteristicArray removeAllObjects];
     [self.stackManager.myTimers deleteAllTimers];

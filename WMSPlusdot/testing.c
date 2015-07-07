@@ -33,6 +33,12 @@ int testDisplay(BLE_UInt8 openOrClose, BLE_UInt8 **package)
     return setupPackage(CMD_test, TestDisplay, 1, value, package);
 }
 
+int testMovementGear(GEAR_TURN_DIRECTION direction, BLE_UInt8 **package)
+{
+    BLE_UInt8 value[1] = {0};
+    value[0] = direction;
+    return setupPackage(CMD_test, TestMovementGear, 1, value, package);
+}
 
 ////////////////////////////////
 
@@ -60,7 +66,15 @@ Struct_Control getControl(BLE_UInt8 *package, BLE_UInt8 len)
     return result;
 }
 
-
-
-
+int getSensorValue(BLE_UInt8 *package, BLE_UInt8 len)
+{
+    struct_parse_package s_pg = parse(package, len);
+    if (CMD_KEY(s_pg.cmd, s_pg.key) != CMD_KEY(CMD_test, TestSensor)) {
+        return 0;
+    }
+    if (s_pg.value_len < 2) {
+        return 0;
+    }
+    return (s_pg.value[0] << 8) + s_pg.value[1];
+}
 

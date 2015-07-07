@@ -21,6 +21,11 @@ typedef enum {
     LEDOther = 0x01 << 4,
 } LEDType;
 
+typedef enum {
+    GEAR_TURN_anticlockwise = 0,
+    GEAR_TURN_clockwise,
+} GEAR_TURN_DIRECTION;
+
 /**
  openOrClose    0-关闭，1-打开
  */
@@ -30,11 +35,13 @@ int testMotor(BLE_UInt8 openOrClose, BLE_UInt8 **package);
 
 int testDisplay(BLE_UInt8 openOrClose, BLE_UInt8 **package);
 
+int testMovementGear(GEAR_TURN_DIRECTION direction, BLE_UInt8 **package);
 
 ////////////////////////////////
 
 Struct_Control getControl(BLE_UInt8 *package, BLE_UInt8 len);
 
-
+///@return 有效数据
+int getSensorValue(BLE_UInt8 *package, BLE_UInt8 len);
 
 #endif /* defined(__WMSPlusdot__testing__) */

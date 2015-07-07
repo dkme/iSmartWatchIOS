@@ -10,3 +10,4 @@
 #import "WMSSettingProfile.h"
 #import "WMSDeviceProfile.h"
 #import "WMSSyncProfile.h"
+#import "WMSTestingProfile.h"

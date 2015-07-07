@@ -13,6 +13,7 @@
 
 
 typedef void(^monitorCallback)(ControlKey control, ButtonType button);
+typedef void(^testSensorCallback)(NSInteger value);
 
 @interface WMSTestingProfile : NSObject
 
@@ -28,7 +29,13 @@ typedef void(^monitorCallback)(ControlKey control, ButtonType button);
 ///测试显示屏
 - (void)testDisplay:(BOOL)openOrClose;
 
+///测试机芯齿轮
+- (void)testMovementGear:(GEAR_TURN_DIRECTION)direction;
+
 ///监听按键
 - (void)monitorDeviceButton:(monitorCallback)aCallback;
+
+///测试传感器
+- (void)testSensor:(testSensorCallback)aCallback;
 
 @end

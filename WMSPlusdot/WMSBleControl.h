@@ -17,6 +17,7 @@
 @class WMSSettingProfile;
 @class WMSDeviceProfile;
 @class WMSSyncProfile;
+@class WMSTestingProfile;
 
 //Notification identifiers
 /*
@@ -102,6 +103,7 @@ typedef void(^switchModeCallback)(BOOL isSuccess, RequestUpdateFirmwareErrorCode
 @property (nonatomic, readonly) WMSSettingProfile   *settingProfile;
 @property (nonatomic, readonly) WMSDeviceProfile    *deviceProfile;
 @property (nonatomic, readonly) WMSSyncProfile      *syncProfile;
+@property (nonatomic, readonly) WMSTestingProfile   *testingProfile;
 
 @property (nonatomic, readonly) WMSStackManager *stackManager;
 
