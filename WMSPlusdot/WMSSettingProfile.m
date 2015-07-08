@@ -39,7 +39,7 @@
 }
 - (void)registerForNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:KLGCharacteristicDidNotifyValueNotification object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -301,7 +301,7 @@
     BLE_UInt8 cmd = s_pg.cmd;
     BLE_UInt8 key = s_pg.key;
     
-    if ([CHARACTERISTIC_SERIAL_PORT_READ_UUID isEqualToString:uuid]) {
+    if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         if (CMD_setting == cmd) {
             static NSDictionary *key_time_map = nil;
             if (!key_time_map) {                

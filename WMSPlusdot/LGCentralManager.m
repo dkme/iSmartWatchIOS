@@ -30,8 +30,8 @@
 #import "LGPeripheral.h"
 #import "LGUtils.h"
 
-NSString * const LGCentralManagerScanPeripheralFinishNotification = @"LGCentralManagerScanPeripheralFinishNotification";
-NSString * const LGCentralManagerStateUpdatedNotification =
+NSString * const KLGCentralManagerScanPeripheralFinishNotification = @"LGCentralManagerScanPeripheralFinishNotification";
+NSString * const KLGCentralManagerStateUpdatedNotification =
     @"LGCentralManagerStateUpdatedNotification";
 
 @interface LGCentralManager() <CBCentralManagerDelegate>
@@ -108,7 +108,7 @@ NSString * const LGCentralManagerStateUpdatedNotification =
 //    }
     self.scanBlock = nil;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:LGCentralManagerScanPeripheralFinishNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:KLGCentralManagerScanPeripheralFinishNotification
                                                         object:nil
                                                       userInfo:nil];
 }
@@ -255,7 +255,7 @@ NSString * const LGCentralManagerStateUpdatedNotification =
     dispatch_async(dispatch_get_main_queue(), ^{
         [self stateMessage];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:LGCentralManagerStateUpdatedNotification object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLGCentralManagerStateUpdatedNotification object:nil userInfo:nil];
     });
 }
 

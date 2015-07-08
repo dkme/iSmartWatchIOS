@@ -39,7 +39,7 @@
 }
 - (void)registerForNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:KLGCharacteristicDidNotifyValueNotification object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -135,7 +135,7 @@
     Byte cmd = s_pg.cmd;
     Byte key = s_pg.key;
     
-    if ([CHARACTERISTIC_SERIAL_PORT_READ_UUID isEqualToString:uuid]) {
+    if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         if (cmd == CMD_control) {
             Struct_Control res = getControlCommand(package, PACKAGE_SIZE);
             if (res.error != HANDLE_OK) {

@@ -30,7 +30,7 @@
 #endif
 #import "LGUtils.h"
 
-NSString * const LGCharacteristicDidNotifyValueNotification = @"LGCharacteristicDidNotifyValueNotification";
+NSString * const KLGCharacteristicDidNotifyValueNotification = @"LGCharacteristicDidNotifyValueNotification";
 NSString * const KLGNotifyValue = @"LGCharacteristic.KLGNotifyValue";
 NSString * const KLGNotifyCharacteristic = @"LGCharacteristic.KLGNotifyCharacteristic";
 
@@ -168,9 +168,10 @@ NSString * const KLGNotifyCharacteristic = @"LGCharacteristic.KLGNotifyCharacter
     }
 //我修改的
     if (self.cbCharacteristic.isNotifying) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:LGCharacteristicDidNotifyValueNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:KLGCharacteristicDidNotifyValueNotification
                                                             object:anError
-                                                          userInfo:@{KLGNotifyValue:aValue,
+                                                          userInfo:@{
+                                                                     KLGNotifyValue:aValue,
                                                                      KLGNotifyCharacteristic:self,
                                                                      }
          ];//anError可能为nil，不能传入userInfo中

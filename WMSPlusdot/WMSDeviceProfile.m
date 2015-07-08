@@ -42,7 +42,7 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
 }
 - (void)registerForNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:KLGCharacteristicDidNotifyValueNotification object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -177,9 +177,9 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
     BLE_UInt8 cmd = s_pg.cmd;
     BLE_UInt8 key = s_pg.key;
     
-    int handleRes = 0;//处理结果
+//    int handleRes = 0;//处理结果
     
-    if ([CHARACTERISTIC_SERIAL_PORT_READ_UUID isEqualToString:uuid]) {
+    if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         switch (CMD_KEY(cmd, key)) {
                 
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceFirmName):
@@ -214,11 +214,9 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceHardwareVersion):
             {
                 float version = getDeviceHardwareVersion(package, PACKAGE_SIZE);
-                if (handleRes != 0) {
-                    deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_HARDWARE_VERSION];
-                    if (aCallback) {
-                        aCallback(version);
-                    }
+                deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_HARDWARE_VERSION];
+                if (aCallback) {
+                    aCallback(version);
                 }
                 break;
             }
@@ -226,11 +224,9 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceFirmwareVersion):
             {
                 float version = getDeviceFirmwareVersion(package, PACKAGE_SIZE);
-                if (handleRes != 0) {
-                    deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_FIRMWARE_VERSION];
-                    if (aCallback) {
-                        aCallback(version);
-                    }
+                deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_FIRMWARE_VERSION];
+                if (aCallback) {
+                    aCallback(version);
                 }
                 break;
             }
@@ -238,11 +234,9 @@ NSString * const DevicePowerChangedNotification = @"WMSDeviceProfile.DevicePower
             case CMD_KEY(CMD_readDeviceInfo, ReadDeviceSoftwareVersion):
             {
                 float version = getDeviceSoftwareVersion(package, PACKAGE_SIZE);
-                if (handleRes != 0) {
-                    deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_SOFTWARE_VERSION];
-                    if (aCallback) {
-                        aCallback(version);
-                    }
+                deviceVersionCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_READ_DEVICE_SOFTWARE_VERSION];
+                if (aCallback) {
+                    aCallback(version);
                 }
                 break;
             }

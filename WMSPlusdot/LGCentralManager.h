@@ -26,8 +26,8 @@
 @class CBCentralManager;
 
 //我修改的
-extern NSString * const LGCentralManagerScanPeripheralFinishNotification;
-extern NSString * const LGCentralManagerStateUpdatedNotification;
+extern NSString * const KLGCentralManagerScanPeripheralFinishNotification;
+extern NSString * const KLGCentralManagerStateUpdatedNotification;
 //----
 
 typedef void (^LGCentralManagerDiscoverPeripheralsCallback) (NSArray *peripherals);

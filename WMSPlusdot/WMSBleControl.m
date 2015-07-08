@@ -18,21 +18,18 @@ static const NSUInteger CONNECT_PERIPHERAL_INTERVAL             = 60;
 static const NSUInteger DISCOVER_SERVICES_INTERVAL              = 30;
 static const NSUInteger DISCOVER_CHARACTERISTICS_INTERVAL       = 10;
 
-NSString * const WMSBleControlPeripheralDidConnect      = @"com.guogee.ios.PeripheralDidConnect";
-NSString * const WMSBleControlPeripheralConnectFailed   = @"com.guogee.ios.PeripheralConnectFailed";
+NSString * const WMSBleControlScanFinish                = @"LGCentralManagerScanPeripheralFinishNotification";///
 
-NSString * const WMSBleControlPeripheralDidDisConnect   =
-    @"LGPeripheralDidDisconnect";
-NSString * const WMSBleControlBluetoothStateUpdated     =
-    @"LGCentralManagerStateUpdatedNotification";
-NSString * const WMSBleControlScanFinish                =
-    @"LGCentralManagerScanPeripheralFinishNotification";
+NSString * const WMSBleControlPeripheralDidConnect      = @"com.guogee.WMSBleControl.WMSBleControlPeripheralDidConnect";
+NSString * const WMSBleControlPeripheralConnectFailed   = @"com.guogee.WMSBleControl.WMSBleControlPeripheralConnectFailed";
+NSString * const WMSBleControlPeripheralDidDisConnect   = @"com.guogee.WMSBleControl.WMSBleControlPeripheralDidDisConnect";
+NSString * const WMSBleControlBluetoothStateUpdated     = @"com.guogee.WMSBleControl.WMSBleControlBluetoothStateUpdated";
 
-NSString * const OperationDeviceButtonNotification = @"WMSBleControl.OperationDeviceButtonNotification";
 
+NSString * const OperationDeviceButtonNotification      = @"com.guogee.WMSBleControl.OperationDeviceButtonNotification";
 /**************OperationType****************/
-NSString * const OperationLookingIPhone = @"WMSBleControl.OperationType.OperationLookingIPhone";
-NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTakePhoto";
+NSString * const OperationLookingIPhone                 = @"com.guogee.WMSBleControl.OperationType.OperationLookingIPhone";
+NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleControl.OperationType.OperationTakePhoto";
 
 
 @interface WMSBleControl ()
@@ -146,8 +143,9 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
 - (void)registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePeripheralDidDisconnect:) name:kLGPeripheralDidDisconnect object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagerUpdatedState:) name:LGCentralManagerStateUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagerUpdatedState:) name:KLGCentralManagerStateUpdatedNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:KLGCharacteristicDidNotifyValueNotification object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -254,13 +252,15 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     NSString *reason = @"用户自己去断开的";
     //disconnect
     if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
+        WeakObj(self, weakSelf);
         [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
-            [self disConnectedClearup];
+            StrongObj(weakSelf, strongSelf);
+            [strongSelf disConnectedClearup];
             if (aCallback) {
                 aCallback( (!error ? YES : NO) );
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:strongSelf.connectedPeripheral userInfo:@{@"reason":reason}];
         }];
         return ;
     }
@@ -343,7 +343,8 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
                 
                 //初始化Profile
                 [self connectedConfig:peripheral];
-                [self readPeripheralInfo:^{
+                
+                [self readDeviceInfoWithIndex:0 completion:^{
                     //发送连接成功通知
                     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
                 }];
@@ -450,61 +451,47 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
 
 
 #pragma mark - 在此处统一读取设备信息
-- (void)readPeripheralInfo:(void(^)(void))aCallback
+- (void)readDeviceInfoWithIndex:(int)index
+                     completion:(void(^)(void))aCallback
 {
+    WeakObj(self, weakSelf);
     WMSDeviceModel *model = [WMSDeviceModel deviceModel];
-    __block UInt8 bitFlags= 0x00;
-    [self.deviceProfile readDeviceMACAddress:^(NSString *MACAddress) {
-        model.mac = MACAddress;
-        bitFlags |= (0x01 << 0);
-        if (bitFlags == 0xFF) {
-            aCallback();
+    switch (index) {
+        case 0:
+        {
+            [self.deviceProfile readDeviceFirmwareVersion:^(float version) {
+                model.firmwareVersion = version;
+                StrongObj(weakSelf, strongSelf);
+                [strongSelf readDeviceInfoWithIndex:index+1 completion:aCallback];
+            }];
+            break;
         }
-    }];
-    [self.deviceProfile readDeviceFirmwareVersion:^(float version) {
-        model.firmwareVersion = version;
-        bitFlags |= (0x01 << 1);
-        if (bitFlags == 0xFF) {
-            aCallback();
+        case 1:
+        {
+            [self.deviceProfile readDeviceSoftwareVersion:^(float version) {
+                model.softwareVersion = version;
+                StrongObj(weakSelf, strongSelf);
+                [strongSelf readDeviceInfoWithIndex:index+1 completion:aCallback];
+            }];
+            break;
         }
-    }];
-    [self.deviceProfile readDeviceHardwareVersion:^(float version) {
-        model.hardwareVersion = version;
-        bitFlags |= (0x01 << 2);
-        if (bitFlags == 0xFF) {
-            aCallback();
+        case 2:
+        {
+            [self.deviceProfile readDeviceMACAddress:^(NSString *MACAddress) {
+                model.mac = MACAddress;
+                StrongObj(weakSelf, strongSelf);
+                [strongSelf readDeviceInfoWithIndex:index+1 completion:aCallback];
+            }];
+            break;
         }
-    }];
-    [self.deviceProfile readDeviceSoftwareVersion:^(float version) {
-        model.softwareVersion = version;
-        bitFlags |= (0x01 << 3);
-        if (bitFlags == 0xFF) {
-            aCallback();
+        default:
+        {
+            if (aCallback) {
+                aCallback();
+            }
+            break;
         }
-    }];
-    [self.deviceProfile readDeviceBatteryInfo:^(BatteryType type, BatteryStatus status) {
-        model.batteryTypel = type;
-        model.status = status;
-        bitFlags |= (0x01 << 4);
-        bitFlags |= (0x01 << 5);
-        if (bitFlags == 0xFF) {
-            aCallback();
-        }
-    }];
-    [self.deviceProfile readDeviceFirm:^(NSString *firmName) {
-        model.firmName = firmName;
-        bitFlags |= (0x01 << 6);
-        if (bitFlags == 0xFF) {
-            aCallback();
-        }
-    }];
-    [self.deviceProfile readDeviceProductModel:^(NSInteger m) {
-        model.productModel = m;
-        bitFlags |= (0x01 << 7);
-        if (bitFlags == 0xFF) {
-            aCallback();
-        }
-    }];
+    }
 }
 
 
@@ -596,6 +583,8 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
 - (void)handlePeripheralDidDisconnect:(NSNotification *)notification
 {
     [self disConnectedClearup];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:notification.object userInfo:nil];
 }
 
 - (void)handleManagerUpdatedState:(NSNotification *)notification
@@ -615,6 +604,8 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
         default:
             break;
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlBluetoothStateUpdated object:nil userInfo:nil];
 }
 
 - (void)handleDidGetNotifyValue:(NSNotification *)notification
@@ -636,7 +627,7 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
     Byte cmd = s_pg.cmd;
     Byte key = s_pg.key;
 
-    if ([CHARACTERISTIC_SERIAL_PORT_READ_UUID isEqualToString:uuid]) {
+    if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         if (cmd == CMD_control) {
             Struct_Control res = getControlCommand(package, PACKAGE_SIZE);
             if (res.error != HANDLE_OK) {
@@ -701,9 +692,11 @@ NSString * const OperationTakePhoto = @"WMSBleControl.OperationType.OperationTak
 - (void)disconnectWithReason:(NSString *)reason
 {
     if (self.isConnected) {//若为YES,self.connectedPeripheral必不为nil
+        WeakObj(self, weakSelf);
         [self.connectedPeripheral disconnectWithCompletion:^(NSError *error) {
-            [self disConnectedClearup];
-            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:nil userInfo:@{@"reason":reason}];
+            StrongObj(weakSelf, strongSelf);
+            [strongSelf disConnectedClearup];
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidDisConnect object:strongSelf.connectedPeripheral userInfo:@{@"reason":reason}];
         }];
         DEBUGLog(@"is connected");
         return ;

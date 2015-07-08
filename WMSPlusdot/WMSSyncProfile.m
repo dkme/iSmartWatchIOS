@@ -38,7 +38,7 @@
 }
 - (void)registerForNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:LGCharacteristicDidNotifyValueNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidGetNotifyValue:) name:KLGCharacteristicDidNotifyValueNotification object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -85,7 +85,7 @@
     Byte cmd = s_pg.cmd;
     Byte key = s_pg.key;
     
-    if ([CHARACTERISTIC_SERIAL_PORT_READ_UUID isEqualToString:uuid]) {
+    if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         switch (CMD_KEY(cmd, key)) {
             case CMD_KEY(CMD_syncData, KEY_syncSportData):
             {
