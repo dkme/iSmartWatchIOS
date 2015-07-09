@@ -459,6 +459,14 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     switch (index) {
         case 0:
         {
+            [self.settingProfile adjustDate:[NSDate systemDate] completion:^(BOOL isSuccess) {
+                StrongObj(weakSelf, strongSelf);
+                [strongSelf readDeviceInfoWithIndex:index+1 completion:aCallback];
+            }];
+            break;
+        }
+        case 1:
+        {
             [self.deviceProfile readDeviceFirmwareVersion:^(float version) {
                 model.firmwareVersion = version;
                 StrongObj(weakSelf, strongSelf);
@@ -466,7 +474,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             }];
             break;
         }
-        case 1:
+        case 2:
         {
             [self.deviceProfile readDeviceSoftwareVersion:^(float version) {
                 model.softwareVersion = version;
@@ -475,7 +483,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             }];
             break;
         }
-        case 2:
+        case 3:
         {
             [self.deviceProfile readDeviceMACAddress:^(NSString *MACAddress) {
                 model.mac = MACAddress;

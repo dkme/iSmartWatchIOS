@@ -304,18 +304,17 @@
     if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         if (CMD_setting == cmd) {
             static NSDictionary *key_time_map = nil;
-            if (!key_time_map) {                
-                NSUInteger items = SetSearchDevice - SetTime;
-                NSMutableDictionary *temp_dic = [NSMutableDictionary dictionaryWithCapacity:items];
+            if (!key_time_map) {
+                NSUInteger count = SetSearchDevice - SetTime;
+                NSMutableDictionary *temp_dic = [NSMutableDictionary dictionaryWithCapacity:count];
                 int temp_key, temp_value;
-                temp_key = SetTime;
-                temp_value = TIME_ID_SETTING_ADJUST_DATE;
-                for (int i=0; i<items; i++) {
-                    temp_key += i;
+                temp_key = temp_value = 0;
+                for (int i=0; i<count; i++) {
+                    temp_key = SetTime + i;
                     if (temp_key > SetAlarmClock) {
                         //temp_value保持不变
                     } else {
-                        temp_value += i;
+                        temp_value =TIME_ID_SETTING_ADJUST_DATE + i;
                     }
                     [temp_dic setObject:@(temp_value) forKey:@(temp_key)];
                 }
