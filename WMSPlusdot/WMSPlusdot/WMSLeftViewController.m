@@ -283,8 +283,8 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
     self.condition = weather;
     
     self.cityLabel.text = weather.locationName;
-    self.tempLabel.text = [NSString stringWithFormat:@"%d°", weather.temperature.intValue];
-    self.humidityLabel.text = [NSString stringWithFormat:@"%d%%", weather.humidity.intValue];
+    self.tempLabel.text = [NSString stringWithFormat:@" %d°", weather.temperature.intValue];
+    self.humidityLabel.text = [NSString stringWithFormat:@" %d%%", weather.humidity.intValue];
     self.weatherIcon.image = [UIImage imageNamed:weather.imageName];
     self.weatherLabel.text = weather.weatherName;
 }

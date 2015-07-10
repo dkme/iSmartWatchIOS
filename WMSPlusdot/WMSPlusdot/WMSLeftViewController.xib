@@ -89,7 +89,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="weather-clear" translatesAutoresizingMaskIntoConstraints="NO" id="Jek-aF-8sz">
-                    <rect key="frame" x="170" y="130" width="25" height="25"/>
+                    <rect key="frame" x="170" y="127" width="25" height="25"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="BCY-i1-Zs2"/>
                         <constraint firstAttribute="height" constant="25" id="cDg-Ce-H4f"/>
@@ -168,7 +168,7 @@
                 <constraint firstItem="aet-5e-xlZ" firstAttribute="leading" secondItem="Mz6-uO-ygp" secondAttribute="leading" id="mXy-sh-fkP"/>
                 <constraint firstItem="aet-5e-xlZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="nJc-pF-bzY"/>
                 <constraint firstItem="9W0-nb-03Q" firstAttribute="top" secondItem="WCe-hS-Xyp" secondAttribute="bottom" constant="5" id="nPS-eN-rVN"/>
-                <constraint firstItem="Jek-aF-8sz" firstAttribute="centerY" secondItem="CHe-EI-Png" secondAttribute="centerY" id="oTj-h7-0Jc"/>
+                <constraint firstItem="Jek-aF-8sz" firstAttribute="centerY" secondItem="CHe-EI-Png" secondAttribute="centerY" constant="-2.5" id="oTj-h7-0Jc"/>
                 <constraint firstItem="wdp-lT-D40" firstAttribute="leading" secondItem="9W0-nb-03Q" secondAttribute="leading" id="qyX-lT-DQL"/>
                 <constraint firstItem="btT-6W-RIf" firstAttribute="leading" secondItem="CHe-EI-Png" secondAttribute="trailing" constant="2" id="rAV-SE-3TZ"/>
                 <constraint firstItem="CHe-EI-Png" firstAttribute="leading" secondItem="6ag-dr-jKM" secondAttribute="leading" id="tt9-Gm-xDZ"/>
