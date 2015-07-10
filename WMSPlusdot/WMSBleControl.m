@@ -388,6 +388,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     [self setConnectingPeripheral:nil];
     
     [self.characteristicArray removeAllObjects];
+    [self.stackManager clear];
     [self.stackManager.myTimers deleteAllTimers];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }

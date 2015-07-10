@@ -21,4 +21,7 @@
 ///从stack推出元素
 - (id)popObjFromStackOfTimeID:(int)timeID;
 
+///清空stack
+- (void)clear;
+
 @end

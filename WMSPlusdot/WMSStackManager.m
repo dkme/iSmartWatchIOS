@@ -70,6 +70,9 @@
     return nil;
 }
 
-
+- (void)clear
+{
+    [self.stackMap removeAllObjects];
+}
 
 @end
