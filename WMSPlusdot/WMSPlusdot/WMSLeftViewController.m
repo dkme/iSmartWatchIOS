@@ -221,7 +221,7 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
         weather.conditionDescription = data[WEATHER_INFO_DESCRIPTION_KEY];
         
         [self updateWeather:weather];
-        [self updateWeatherOnWatch];
+        //[self updateWeatherOnWatch];
     }
     if (!self.refreshWeatherTimer) {
         _refreshWeatherTimer = [NSTimer scheduledTimerWithTimeInterval:REFRESH_WEATHER_TIMER_INTERVAL target:self selector:@selector(refreshWeather:) userInfo:nil repeats:YES];
@@ -339,11 +339,18 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
 #pragma mark -  Notifications
 - (void)registerForNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
 }
 - (void)unregisterFromNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)handleSuccessConnectPeripheral:(NSNotification *)notification
+{
+    [self updateWeatherOnWatch];
 }
 
 - (void)handleAppWillTerminate:(NSNotification *)notification
