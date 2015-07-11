@@ -71,8 +71,8 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
         NSArray *items = @[NSLocalizedString(@"My sport",nil),
                            NSLocalizedString(@"My sleep",nil),
                            NSLocalizedString(@"Target setting",nil),
-                           NSLocalizedString(@"Bound watch",nil),
                            NSLocalizedString(@"校对时间", nil),
+                           NSLocalizedString(@"Bound watch",nil),
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
         _titleArray = mutiArr;
@@ -85,8 +85,8 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
         _imageNameArray = @[@"main_menu_sport_icon_a.png",
                             @"main_menu_sleep_icon_a.png",
                             @"main_menu_target_icon_a.png",
-                            @"main_menu_binding_icon_a.png",
                             @"main_menu_checkTime_icon_a.png",
+                            @"main_menu_binding_icon_a.png",
                             ];
     }
     return _imageNameArray;
@@ -97,8 +97,8 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
         _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
                                    @"main_menu_sleep_icon_b.png",
                                    @"main_menu_target_icon_b.png",
-                                   @"main_menu_binding_icon_b.png",
                                    @"main_menu_checkTime_icon_b.png",
+                                   @"main_menu_binding_icon_b.png",
                                    ];
     }
     return _seletedImageNameArray;
@@ -110,8 +110,8 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
                                         [WMSContentViewController class],
                                         [WMSContent1ViewController class],
                                         [WMSContent2ViewController class],
-                                        [WMSMyAccessoryViewController class],
                                         [CheckTimeViewController class],
+                                        [WMSMyAccessoryViewController class],
                                         ];
     }
     return _specifyContentVCClassArray;
