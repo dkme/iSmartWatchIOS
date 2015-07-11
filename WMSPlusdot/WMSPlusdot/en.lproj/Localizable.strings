@@ -322,4 +322,23 @@
 "手表电量过低，不能设置为“震动”模式" = "Low watch battery, please do not set to the “vibration” mode.";
 "手表电量过低，请尽快更换电池！" = "Low watch battery, please replace it A.S.A.P.";
 
+//天气
+"温度" = "Temp";
+"湿度" = "Humidity";
+"晴" = "Clear";
+"多云" = "Clouds";
+"小雨" = "Light rain";
+"中雨" = "Moderate rain";
+"大雨" = "Heavy rain";
+"小雪" = "Light snow";
+"中雪" = "Moderate snow";
+"大雪" = "Heavy snow";
+"我们需要通过您的地理位置信息获取您所在城市的天气信息" = "Your location is needed for the weather information";
+"定位城市" = "City positioning";
+"正在定位中..." = "Locating...";
+"搜索城市" = "Search the city";
+"输入城市名" = "Enter a city name";
+"定位失败，点击重试" = "Positioning failed，try again";
 
+"校对时间" = "Time-collating";
+"转动表盘以调整手表时间" = "Turn the dial to adjust the time";

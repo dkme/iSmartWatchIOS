@@ -74,7 +74,7 @@
     if (!_section1TitleArray) {
         _section1TitleArray = @[
                                 NSLocalizedString(@"Phone",nil),
-                                NSLocalizedString(@"SMS",nil),
+                                NSLocalizedString(@"Message",nil),
                                 //NSLocalizedString(@"Email",nil),
                                 NSLocalizedString(@"Battery",nil),
                                 ];
@@ -584,7 +584,7 @@
         return ;
     }
     
-    if (indexPath.section == 4 && indexPath.row == 0) {
+    if (indexPath.section == 4-1 && indexPath.row == 0) {
         self.pickerController = [self openCamera];
         return;
     }
@@ -606,27 +606,32 @@
         });
         return;
     }
+    
+    WeakObj(self, weakSelf);
     //当绑定手表，连接成功后，才能进行后面的操作
     NSIndexPath *indexPath = [self.tableView indexPathForCell:switchCell];
     if (indexPath.section == 0 && indexPath.row == self.section1TitleArray.count-1) {
         [WMSRightVCHelper savaLowBatteryRemind:sw.on];
+        [self showTip:NSLocalizedString(@"提醒设置成功", nil)];
     } else if (indexPath.section == 2-1) {
-        BOOL isShowWarning = NO;
-        if (sw.on) {//当设置成“震动”时，提醒用户
-            //当电压小于指定值时，不允许切换至“震动”
-            if ([WMSDeviceModel deviceModel].power <= WATCH_LOW_BATTERY) {
-                sw.on = (sw.on?NO:YES);
-                [WMSRightVCHelper showTipOfLowBatteryNotSetVibrationRemindWay];
-                return ;
-            } else {
-                //什么提示...
-                isShowWarning = YES;
-            }
-        }
+//        BOOL isShowWarning = NO;
+//        if (sw.on) {//当设置成“震动”时，提醒用户
+//            //当电压小于指定值时，不允许切换至“震动”
+//            if ([WMSDeviceModel deviceModel].power <= WATCH_LOW_BATTERY) {
+//                sw.on = (sw.on?NO:YES);
+//                [WMSRightVCHelper showTipOfLowBatteryNotSetVibrationRemindWay];
+//                return ;
+//            } else {
+//                //什么提示...
+//                isShowWarning = YES;
+//            }
+//        }
         //发送设置提醒方式的命令
         RemindWay way = sw.on ? RemindWayShake : RemindWayNot;
         [self.bleControl.settingProfile setRemindWay:way completion:^(BOOL isSuccess) {
             DEBUGLog_DETAIL(@"设置提醒方式%d", isSuccess);
+            StrongObj(weakSelf, strongSelf);
+            [strongSelf showTip:NSLocalizedString(@"提醒方式设置成功", nil)];
             if (isSuccess) {
                 [WMSRightVCHelper savaRemindWay:way];
             }
@@ -644,7 +649,9 @@
         NSString *key = [self settingKeyFromIndexPath:indexPath];
         RemindEvents event = [self eventFromIndexPath:indexPath];
         [self.bleControl.settingProfile setRemindEvent:event completion:^(BOOL isSuccess) {
-            DEBUGLog_DETAIL(@"设置提醒项%d", isSuccess);
+            DEBUGLog_DETAIL(@"设置提醒项成功");
+            StrongObj(weakSelf, strongSelf);
+            [strongSelf showTip:NSLocalizedString(@"提醒设置成功", nil)];
             if (isSuccess) {
                 [WMSRightVCHelper savaSettingItemForKey:key data:@(sw.on)];
             }
