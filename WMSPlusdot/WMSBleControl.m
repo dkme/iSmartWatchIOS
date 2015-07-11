@@ -359,8 +359,8 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     _isConnecting = NO;
     _connectedPeripheral = peripheral;
     
-    self.serialPortReadCharacteristic = [self findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_READ_UUID];
-    self.serialPortWriteCharacteristic = [self findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_WRITE_UUID];
+    _serialPortReadCharacteristic = [self findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_READ_UUID];
+    _serialPortWriteCharacteristic = [self findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_WRITE_UUID];
     
     _settingProfile = [[WMSSettingProfile alloc] initWithBleControl:self];
     _deviceProfile  = [[WMSDeviceProfile alloc] initWithBleControl:self];
@@ -373,8 +373,8 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
 - (void)disConnectedClearup
 {
     _connectedPeripheral = nil;
-    _serialPortReadCharacteristic = nil;
-    _serialPortWriteCharacteristic = nil;
+//    _serialPortReadCharacteristic = nil;
+//    _serialPortWriteCharacteristic = nil;
     
     _settingProfile = nil;
     _deviceProfile = nil;
