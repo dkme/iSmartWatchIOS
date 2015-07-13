@@ -268,8 +268,8 @@
     static NSDictionary *_weatherTypeMap = nil;
     if (!_weatherTypeMap) {
         _weatherTypeMap = @{
-                        @"clouds":@(WeatherTypeClear),
-                        @"clear":@(WeatherTypeClouds),
+                        @"clouds":@(WeatherTypeClouds),
+                        @"clear":@(WeatherTypeClear),
                         @"light rain":@(WeatherTypeLightRain),
                         @"moderate rain":@(WeatherTypeModerateRain),
                         @"heavy rain":@(WeatherTypeHeavyRain),
