@@ -177,7 +177,9 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
         if (oldObj) {
             [scannedPeripheral removeObject:oldObj];
         }
-        [scannedPeripheral addObject:newObj];
+        if (newObj) {
+            [scannedPeripheral addObject:newObj];
+        }
         if (aCallback) {
             aCallback(scannedPeripheral);
         }

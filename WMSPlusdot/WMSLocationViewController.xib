@@ -40,7 +40,7 @@
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="输入城市名" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fzn-Od-xaF">
                     <rect key="frame" x="0.0" y="127" width="507" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" keyboardType="alphabet" returnKeyType="done"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="1aT-eA-5K3"/>
                     </connections>

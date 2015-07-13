@@ -103,9 +103,9 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
                                              selector:@selector(stopScanForPeripherals)
                                                object:nil];
     //我修该的
-//    if (self.scanBlock) {
-//        self.scanBlock(self.peripherals);
-//    }
+    if (self.scanBlock) {
+        self.scanBlock(self.peripherals);
+    }
     self.scanBlock = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:KLGCentralManagerScanPeripheralFinishNotification
@@ -203,11 +203,6 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
     if (!wrapper) {
         wrapper = [[LGPeripheral alloc] initWithPeripheral:aPeripheral];
         [self.scannedPeripherals addObject:wrapper];
-        
-        //我修改的
-        if (self.scanBlock) {
-            self.scanBlock(self.scannedPeripherals);
-        }
     }
     return wrapper;
 }
@@ -273,6 +268,11 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
             lgPeripheral.RSSI = (lgPeripheral.RSSI + [RSSI integerValue]) / 2;
         }
         lgPeripheral.advertisingData = advertisementData;
+        
+        //我修改的
+        if (self.scanBlock) {
+            self.scanBlock(self.scannedPeripherals);
+        }
     });
 }
 

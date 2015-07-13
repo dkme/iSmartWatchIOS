@@ -299,7 +299,6 @@
 		F70EF2151B424335002EDEF9 /* WMSLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F70EF2131B424335002EDEF9 /* WMSLocationViewController.xib */; };
 		F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2181B4244FC002EDEF9 /* HealthManager.m */; };
 		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
-		F70EF3D71B46643A002EDEF9 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F70EF3D61B46643A002EDEF9 /* HealthKit.framework */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
 		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
@@ -750,7 +749,6 @@
 		F70EF27E1B42A604002EDEF9 /* WMSTestingProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSTestingProfile.h; sourceTree = "<group>"; };
 		F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSTestingProfile.m; sourceTree = "<group>"; };
 		F70EF3D51B46643A002EDEF9 /* WMSPlusdot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WMSPlusdot.entitlements; sourceTree = "<group>"; };
-		F70EF3D61B46643A002EDEF9 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
 		F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
@@ -786,7 +784,6 @@
 				2328CD2919CFF8BB0085AD77 /* MobileCoreServices.framework in Frameworks */,
 				23305DA019C83B2500F9EEE6 /* libsqlite3.0.dylib in Frameworks */,
 				23D7CF0919B5D5D100DFA678 /* CoreBluetooth.framework in Frameworks */,
-				F70EF3D71B46643A002EDEF9 /* HealthKit.framework in Frameworks */,
 				232846C319A43668001C148D /* CoreGraphics.framework in Frameworks */,
 				232846C519A43668001C148D /* UIKit.framework in Frameworks */,
 				232846C119A43668001C148D /* Foundation.framework in Frameworks */,
@@ -1232,7 +1229,6 @@
 		232846BF19A43668001C148D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F70EF3D61B46643A002EDEF9 /* HealthKit.framework */,
 				2393886F1ABBAA2B0018BDA1 /* ImageIO.framework */,
 				23472E911A8AFBCC00ED3CA4 /* Security.framework */,
 				23472E8F1A8AFB8B00ED3CA4 /* SystemConfiguration.framework */,
@@ -2070,7 +2066,7 @@
 						DevelopmentTeam = 4E8WUK78VW;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -2539,7 +2535,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = WMSPlusdot/WMSPlusdot.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2652,7 +2647,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = WMSPlusdot/WMSPlusdot.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2672,7 +2666,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = WMSPlusdot/WMSPlusdot.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

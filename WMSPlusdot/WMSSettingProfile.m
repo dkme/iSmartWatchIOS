@@ -101,7 +101,7 @@
 {
     BLE_UInt8 package[PACKAGE_SIZE] = {0};
     BLE_UInt8 *p = package;
-    int res = setTarget(steps, &p);
+    int res = setTarget((BLE_UInt32)steps, &p);
     if (res != HANDLE_OK) {
         return ;
     }
@@ -118,13 +118,7 @@
     if (res != HANDLE_OK) {
         return ;
     }
-    [self.lostCharacteristic writeValue:[NSData dataWithBytes:package length:PACKAGE_SIZE] completion:^(NSError *error) {
-        if (!error) {
-            if (aCallback) {
-                aCallback(YES);
-            }
-        }
-    }];///写响应，没写重发机制
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SETTING_SET_LOST];
 }
 
 - (void)setSitting:(BOOL)openOrClose

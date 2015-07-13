@@ -10,6 +10,6 @@
 #define WATCH_NAME2                 @"plusdout-watch"
 #define WATCH_NAME_G2               @"plusdot-watch2"
 #define WATCH_NAME_DFU              @"DfuTarg"
-#define SCAN_PERIPHERAL_INTERVAL    5.f
+#define SCAN_PERIPHERAL_INTERVAL    2.f
 
 #define HUD_SIZE                    CGSizeMake(250, 120)

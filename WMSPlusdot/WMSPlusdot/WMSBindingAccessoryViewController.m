@@ -20,7 +20,7 @@
 #import "WMSFilter.h"
 #import "WMSConstants.h"
 
-static const NSTimeInterval SCAN_TIME_INTERVAL      = 60.f;
+static const NSTimeInterval SCAN_TIME_INTERVAL      = 3.f;
 static const NSTimeInterval BINDING_TIME_INTERVAL   = 60.f;
 static const int            MAX_RSSI                = -75;
 
@@ -196,10 +196,15 @@ static const int            MAX_RSSI                = -75;
     if (self.bleControl.isScanning || self.bleControl.isConnecting) {
         return ;
     }
+    WeakObj(self, weakSelf);
     [self.bleControl scanForPeripheralsByInterval:SCAN_TIME_INTERVAL completion:^(NSArray *peripherals)
      {
-         NSArray *array = [WMSFilter filterForPeripherals:peripherals withType:_generation];
-         [self setListData:array];
+         StrongObj(weakSelf, strongSelf);
+         if (strongSelf.bleControl.isScanning) {
+             NSArray *array = [WMSFilter filterForPeripherals:peripherals withType:strongSelf.generation];
+             [strongSelf setListData:array];
+         }
+         
      }];
     [self startRefresh];
 }
