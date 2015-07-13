@@ -46,21 +46,9 @@
     self.title = NSLocalizedString(@"校对时间", nil);
 }
 - (void)setupTurntableView
-{    
-    WS(weakSelf);
-    
-    UIImageView *presentView = [[UIImageView alloc] init];
-    presentView.image = [UIImage imageNamed:@"Turntable"];
-    CGSize sz = self.turntableView.frame.size;
-    
-    [self.turntableView addSubview:presentView];
+{
     self.turntableView.delegate = self;
-    
-    //在做autoLayout之前 一定要先将view添加到superview上 否则会报错
-    [presentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(weakSelf.turntableView);
-        make.size.mas_equalTo(sz);
-    }];
+    self.turntableView.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 
@@ -78,7 +66,7 @@
         _bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
     }
     [self.bleControl.settingProfile adjustTimeDirection:(ROTATE_DIRECTION)direction completion:^(BOOL isSuccess) {
-        DEBUGLog_DETAIL(@"调整时间%d", isSuccess);
+        DEBUGLog_DETAIL(@"调整时间成功");
     }];
 }
 
