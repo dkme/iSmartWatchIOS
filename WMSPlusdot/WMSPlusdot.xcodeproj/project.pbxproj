@@ -301,6 +301,7 @@
 		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
 		F70EF3D71B46643A002EDEF9 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F70EF3D61B46643A002EDEF9 /* HealthKit.framework */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
+		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
 		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
@@ -450,7 +451,6 @@
 		232846C019A43668001C148D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		232846C219A43668001C148D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		232846C419A43668001C148D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		232846C819A43668001C148D /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
 		232846CA19A43668001C148D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		232846CC19A43668001C148D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		232846CE19A43668001C148D /* WMSPlusdot-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WMSPlusdot-Prefix.pch"; sourceTree = "<group>"; };
@@ -753,6 +753,7 @@
 		F70EF3D61B46643A002EDEF9 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
+		F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
 		F783EF5C1B130392008124BE /* TurntableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableView.h; sourceTree = "<group>"; };
 		F783EF5D1B130392008124BE /* TurntableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TurntableView.m; sourceTree = "<group>"; };
 		F78A58331B1C072000DBC3D7 /* RequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestClass.h; sourceTree = "<group>"; };
@@ -1266,11 +1267,11 @@
 		232846C719A43668001C148D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				232846C819A43668001C148D /* WMSPlusdot-Info.plist */,
+				2326A42619A5C4010098657B /* Localizable.strings */,
 				232846C919A43668001C148D /* InfoPlist.strings */,
+				F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */,
 				232846CC19A43668001C148D /* main.m */,
 				232846CE19A43668001C148D /* WMSPlusdot-Prefix.pch */,
-				2326A42619A5C4010098657B /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2225,6 +2226,7 @@
 				239388651ABBA99F0018BDA1 /* switch_camera_h.png in Resources */,
 				23876EB51A52974D00F1F15C /* intro_page3_b.png in Resources */,
 				23876EC81A529DC200F1F15C /* intro_enter.png in Resources */,
+				F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */,
 				23A1532E1A36F4630026D741 /* zq_public_green_btn_b.png in Resources */,
 				2326A45119A605660098657B /* WMSSwitchCell.xib in Resources */,
 				231972541A35B92F002E8A0F /* zq_light_list_middle_b.png in Resources */,
@@ -2672,7 +2674,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = WMSPlusdot/WMSPlusdot.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";

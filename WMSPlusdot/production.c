@@ -23,6 +23,15 @@ int setupPackage(BLE_UInt8 cmd, BLE_UInt8 key, BLE_UInt8 value_len, BLE_UInt8 *v
     for (int j=0; j<value_len; j++) {
         *(*package+(j+5)) = value[j];
     }
+    
+#ifdef DEBUG
+    printf("package:0x");
+    for (int i=0; i<PACKAGE_SIZE; i++) {
+        printf("%02X ", *(*package+i));
+    }
+    printf("\n");
+#endif
+    
     return HANDLE_OK;
 }
 

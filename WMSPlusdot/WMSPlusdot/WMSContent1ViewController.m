@@ -282,7 +282,7 @@
     
     self.isVisible = YES;
     if (self.isNeedUpdate && self.bleControl.isConnected) {
-        [self startSyncSleepData];
+//        [self startSyncSleepData];
     }
     self.isNeedUpdate = NO;
     
@@ -518,9 +518,9 @@
 
 - (void)syncData
 {
-    if (![self.bleControl isConnected]) {
+//    if (![self.bleControl isConnected]) {
         return;
-    }
+//    }
     
     [self startSyncSleepData];
 }
@@ -605,7 +605,7 @@
     
     if ([self.bleControl isConnected]) {
         DEBUGLog(@"同步睡眠数据");
-        [self startSyncSleepData];
+//        [self startSyncSleepData];
     }
 }
 
@@ -618,7 +618,7 @@
     
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
-        [self startSyncSleepData];
+//        [self startSyncSleepData];
         self.isNeedUpdate = NO;
     } else {
         self.isNeedUpdate = YES;

@@ -28,7 +28,7 @@ Struct_Control getControlCommand(BLE_UInt8 *package, BLE_UInt8 len)
     if (s_pg.value_len < 1) {
         return result;
     }
-    result.control = s_pg.cmd;
+    result.control = s_pg.key;
     result.button = s_pg.value[0];
     result.error = HANDLE_OK;
     return result;

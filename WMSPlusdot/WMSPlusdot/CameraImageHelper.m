@@ -131,6 +131,9 @@
     __weak __block __typeof(self) wself = self;
     [captureOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:
      ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+         if (error) {
+             return ;
+         }
          CFDictionaryRef exifAttachments =
          CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
          if (exifAttachments) {

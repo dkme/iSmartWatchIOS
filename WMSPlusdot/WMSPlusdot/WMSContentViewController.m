@@ -42,6 +42,8 @@
 #import "WMSHTTPRequest.h"
 #import "WMSAppConfig.h"
 
+static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
+
 @interface WMSContentViewController ()<WMSSyncDataViewDelegate>
 @property (strong, nonatomic) WMSSyncDataView *syncDataView;
 @property (strong, nonatomic) UIView *tipView;
@@ -52,6 +54,7 @@
 
 @property (assign, nonatomic) BOOL isVisible;//是否可见（当前显示的是否是该控制器）
 @property (assign, nonatomic) BOOL isNeedUpdate;//是否需要更新界面
+@property (assign, nonatomic) BOOL isNeedSyncWhenConnected;//在连接成功时，是否需要同步，默认为YES
 
 @property (strong, nonatomic) WMSBleControl *bleControl;
 @property (assign, nonatomic) BOOL isHasBeenSyncData;//标志是否已经同步过运动数据
@@ -238,6 +241,9 @@
 {
     _targetSteps = [WMSHelper readTodayTargetSteps];
     _bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
+    
+    //status
+    _isNeedSyncWhenConnected = YES;
 }
 - (void)setupView
 {
@@ -484,6 +490,15 @@
 - (void)syncData
 {
     if (![self.bleControl isConnected]) {
+        WeakObj(self, weakSelf);
+        [self.syncDataView startAnimating];
+        [self.hud showAnimated:YES whileExecutingBlock:^{
+            sleep(1);
+        } completionBlock:^{
+            StrongObj(weakSelf, strongSelf);
+            [strongSelf.syncDataView stopAnimating];
+        }];
+        
         return;
     }
     [self startSyncSportData];
@@ -512,6 +527,13 @@
 //         
 //         [self continueSyncSportData];
 //     }];
+    
+    [self.bleControl.syncProfile syncSportData:^(NSDate *date, NSUInteger steps, NSUInteger distance, NSUInteger calories, NSUInteger durations, NSUInteger notSyncDays) {
+        DEBUGLog_DETAIL(@"====>sync data for date:%@,steps:%d,distance:%d,calories:%d,durations:%d,notSyncDays:%d",date,steps,distance,calories,durations,notSyncDays);
+        [self savaSportDate:date steps:steps durations:durations perHourData:nil dataLength:0];
+        
+        [self stopSyncSportData];
+    }];
 }
 - (void)continueSyncSportData
 {
@@ -544,6 +566,13 @@
     [self updateView];
 }
 
+//- (void)saveSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations
+//{
+//    WMSSportModel *model = [WMSSportModel alloc] init;
+//    model.sportDate = date;
+//    model.sportSteps = steps;
+//    model.sportMinute =
+//}
 - (void)savaSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations perHourData:(UInt16 *)perHourData dataLength:(NSUInteger)dataLength
 {
     WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
@@ -626,23 +655,29 @@
 #pragma mark - Handle
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
+    
     [self showTipView:NO];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
         self.isNeedUpdate = NO;
         
-        [self startSyncSportData];
+        if (self.isNeedSyncWhenConnected) {
+            [self startSyncSportData];
+        }
     } else {
         self.isNeedUpdate = YES;
     }
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
-    [self showTipView:YES];
+    self.isNeedSyncWhenConnected = NO;
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
     
-    [self syncUserInfo];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
+    [self performSelector:@selector(updateStatusToDisConnect) withObject:nil afterDelay:UPDATE_STATUS_AFTER_DELAY];
+    
 #ifdef DEBUG
     static int i = 0;
     i++;
@@ -677,6 +712,17 @@
 - (void)reSyncData:(NSNotification *)notification
 {
     [self syncData];
+}
+
+- (void)updateStatusToDisConnect
+{
+    self.isNeedSyncWhenConnected = YES;
+    
+    [self showTipView:YES];
+    [self.hud hide:YES afterDelay:0];
+    [self.syncDataView stopAnimating];
+    
+    [self syncUserInfo];
 }
 
 #pragma mark - WMSSyncDataViewDelegate

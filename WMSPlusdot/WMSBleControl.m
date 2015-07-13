@@ -647,7 +647,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             if (ControlClick == res.control && ButtonTopRightCorner == res.button) {
                 operation = OperationTakePhoto;
             }
-            if (ControlLongPress == res.control && ButtonLowerRightCorner == res.button) {
+            if (ControlLongPress == res.control && ButtonTopRightCorner == res.button) {
                 operation = OperationLookingIPhone;
             }
             if (operation) {

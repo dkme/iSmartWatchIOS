@@ -323,11 +323,15 @@
     [WMSRightVCHelper resetFirstConnectedConfig];
 }
 
+///监听手表的按键
 - (void)handleOperationDeviceButton:(NSNotification *)notification
 {
     NSString *operation = notification.userInfo[@"operation"];
     if ([OperationTakePhoto isEqualToString:operation]) {
         [self.pickerController takePhoto];
+    } else if ([OperationLookingIPhone isEqualToString:operation]) {
+        [_soundOperation playAlarmWithDuration:PLAY_ALERT_DURATION andVibrateWithTimeInterval:PLAY_VIBRATE_TIMEINTERVAL completion:nil];
+        [WMSPostNotificationHelper postSeachPhoneLocalNotification];
     }
 }
 

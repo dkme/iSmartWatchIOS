@@ -97,8 +97,8 @@ static const int            MAX_RSSI                = -75;
 - (void)sendBindingCMD
 {
     WeakObj(self, weakSelf);
-    [self.bleControl bindDevice:^(BOOL isSuccess) {
-        if (isSuccess) {
+//    [self.bleControl bindDevice:^(BOOL isSuccess) {
+//        if (isSuccess) {
             StrongObj(weakSelf, strongSelf);
             if (strongSelf) {
                 NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
@@ -112,8 +112,8 @@ static const int            MAX_RSSI                = -75;
                     [strongSelf closeVC:YES];
                 }
             }
-        }
-    }];
+//        }
+//    }];
 }
 
 - (void)closeVC:(BOOL)successOrFail
