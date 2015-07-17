@@ -10,7 +10,7 @@
 #import "WMSAppDelegate.h"
 #import "Masonry.h"
 
-@interface CheckTimeViewController ()<TurntableViewDelegate>
+@interface CheckTimeViewController ()
 
 @property (nonatomic, strong) WMSBleControl *bleControl;
 
@@ -23,9 +23,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self setupNavBar];
-    [self setupTurntableView];
-    
-    self.view.backgroundColor = UICOLOR_DEFAULT;
+    [self setupUI];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,12 +43,19 @@
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithImageName:@"main_menu_icon_a.png" highImageName:@"main_menu_icon_b.png" target:self action:@selector(clickLeftBarButtonItem:)];
     self.title = NSLocalizedString(@"校对时间", nil);
 }
-- (void)setupTurntableView
+
+- (void)setupUI
 {
-    self.turntableView.delegate = self;
-    self.turntableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.backgroundColor = UICOLOR_DEFAULT;
+    
+    [self updateDescribeLabelWithHour:0 minute:0];
 }
 
+#pragma mark - Update UI
+- (void)updateDescribeLabelWithHour:(NSInteger)hour minute:(NSInteger)minute
+{
+    self.describeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"将手表时间向后调整%02d小时%02d分钟", nil), hour, minute];
+}
 
 #pragma mark - Action
 - (void)clickLeftBarButtonItem:(id)action
@@ -58,16 +63,44 @@
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
-#pragma mark - TurntableViewDelegate
-- (void)turntableViewDidRotate:(TurntableView *)turntableView byRotateDirection:(RotateDirection)direction
+#pragma mark - UIPickerViewDataSource
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    DEBUGLog(@"RotateDirection：%d", direction);
-    if (!self.bleControl) {
-        _bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    return 2;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    switch (component) {
+        case 0:
+            return 12;
+        case 1:
+            return 60;
+        default:
+            break;
     }
-    [self.bleControl.settingProfile adjustTimeDirection:(ROTATE_DIRECTION)direction completion:^(BOOL isSuccess) {
-        DEBUGLog_DETAIL(@"调整时间成功");
-    }];
+    return 0;
+}
+
+#pragma mark - UIPickerViewDelegate
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+{
+    return ScreenWidth/2.0;
+}
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *str = [NSString stringWithFormat:@"%d", (int)row];
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName : [UIColor whiteColor],
+                                 };
+    return [[NSAttributedString alloc] initWithString:str attributes:attributes];
+}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSInteger hour, minute;
+    hour = minute = 0;
+    hour = [pickerView selectedRowInComponent:0];
+    minute = [pickerView selectedRowInComponent:1];
+    [self updateDescribeLabelWithHour:hour minute:minute];
 }
 
 @end

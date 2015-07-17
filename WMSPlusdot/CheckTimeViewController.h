@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TurntableView.h"
 
-@interface CheckTimeViewController : UIViewController
+@interface CheckTimeViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (weak, nonatomic) IBOutlet TurntableView *turntableView;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
+@property (weak, nonatomic) IBOutlet UILabel *describeLabel;
 
 @end
