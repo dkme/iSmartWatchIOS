@@ -107,7 +107,7 @@
         NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityStartHour,(int)activityStartMinute];
         NSString *strEndTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityEndHour,(int)activityEndMinute];
         NSString *strInterval = [NSString stringWithFormat:@"%d %@",(int)activityInterval,NSLocalizedString(@"Minutes clock",nil)];
-        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:activityRepeats];
+        NSString *strRepeats = [WMSRemindHelper description2OfRepeats:activityRepeats];
         
         _detailTextArray = @[@"",strStartTime,strEndTime,strInterval,strRepeats];
     }

@@ -76,7 +76,7 @@
     if (!_textArray) {
         _textArray = [[NSArray alloc] initWithObjects:
                                 NSLocalizedString(@"Start",nil),
-                                NSLocalizedString(@"唤醒时段",nil),
+                                NSLocalizedString(@"唤醒间隔",nil),
                                 NSLocalizedString(@"Repeat",nil),
                                 nil];
     }
@@ -88,7 +88,7 @@
     if (!_detailTextArray) {
         NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",self.clockModel.startHour, self.clockModel.startMinute];
         NSString *strSnooze = [NSString stringWithFormat:@"%d %@",self.clockModel.snoozeMinute,NSLocalizedString(@"Minutes clock",nil)];
-        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:self.clockModel.repeats];
+        NSString *strRepeats = [WMSRemindHelper description2OfRepeats:self.clockModel.repeats];
         _detailTextArray = @[strStartTime,strSnooze,strRepeats];
     }
     return _detailTextArray;

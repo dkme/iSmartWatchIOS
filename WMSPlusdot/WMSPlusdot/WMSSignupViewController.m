@@ -168,7 +168,7 @@
     }
     [self.buttonSignup setTitle:NSLocalizedString(@"完成", nil) forState:UIControlStateNormal];
     [self.buttonSignup.titleLabel setFont:Font_System(15.0)];
-    [self.labelLogin setText:NSLocalizedString(@"登陆", nil)];
+    [self.labelLogin setText:NSLocalizedString(@"登录", nil)];
 }
 
 //滚动view,YES表示向上滑动，NO表示向下滑动

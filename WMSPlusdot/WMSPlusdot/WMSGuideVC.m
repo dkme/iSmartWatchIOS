@@ -121,7 +121,7 @@
     button.backgroundColor = [UIColor clearColor];
     button.tag = INTRO_BUTTON_TAG;
     button.alpha = 0.0;
-    [button setTitle:@"Go" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"立即进入", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setBackgroundImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(enterMainView:) forControlEvents:UIControlEventTouchUpInside];

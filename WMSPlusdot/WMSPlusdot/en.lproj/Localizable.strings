@@ -35,7 +35,7 @@
 "Yesterday" = "Yesterday";
 "Tomorrow" = "Tomorrow";
 "Target" = "Target";
-"Burn" = "Burn";
+"Burn" = "Consume";
 "Distance" = "Distance";
 "Time" = "Time";
 
@@ -123,6 +123,8 @@
 "周六" = "Sat";//"Saturday";
 "周日" = "Sun";//"Sunday";
 "每天" = "Everyday";
+"周末" = "Weekend";
+"工作日" = "Workday";
 
 "努力同步数据中..." = "Syncing data...";
 "运动记录" = "Sport records";
@@ -143,12 +145,12 @@
 "邮箱" = "Email";
 "完成" = "Complete";
 "忘记密码？" = "Forgot password？";
-"登陆" = "Log in";
+"登录" = "Log in";
 "注册" = "Sign up";
 "请输入用户名" = "Please enter your user name";
 "请输入密码" = "Please enter the password";
-"登陆成功" = "Log in successfully";
-"登陆失败" = "Log in failure";
+"登录成功" = "Log in successfully";
+"登录失败" = "Log in failure";
 "网络请求超时" = "Network request timeout";
 "注册成功" = "Sign up successfully";
 "注册失败" = "Sign up failure";
@@ -204,7 +206,7 @@
 "当前步数" = "Current step";
 "个人信息" = "User Information";
 "睡眠时长" = "Sleep time";
-"唤醒时段" = "Wakeup space";
+"唤醒间隔" = "Wake up interval";
 
 "1月" = "Jan";
 "2月" = "Feb";
@@ -342,3 +344,12 @@
 
 "校对时间" = "Time-collating";
 "转动表盘以调整手表时间" = "Turn the dial to adjust the time";
+
+"unknown" = "Unknown";
+"NO" = "NO";
+"YES" = "YES";
+"立即进入" = "Enter into";
+
+
+
+

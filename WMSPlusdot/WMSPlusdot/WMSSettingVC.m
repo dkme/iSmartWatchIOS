@@ -392,7 +392,7 @@
                         double version = [WMSDeviceModel deviceModel].firmwareVersion;
                         strVer = [NSString stringWithFormat:@"%.01f",version];
                     } else {
-                        strVer = @"unknown";
+                        strVer = NSLocalizedString(@"unknown", nil);
                     }
                     cell.rightLabel.text = strVer;
                 }
