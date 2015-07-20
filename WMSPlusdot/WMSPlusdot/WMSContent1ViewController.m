@@ -266,7 +266,7 @@
     
     ////////////
     [self setLabelShowDate:[NSDate systemDate]];
-    //[self updateView];
+    [self updateView];
     
     [self bleOperation];
     

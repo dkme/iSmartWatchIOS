@@ -31,7 +31,7 @@ typedef enum {
     
     [self setupProperty];
     [self setupNavBar];
-    
+    [self setupUI];
     
     [self findCurrentLocation];
 }
@@ -60,10 +60,11 @@ typedef enum {
     navBar.barStyle = UIBarStyleDefault;
     navBar.translucent = NO;
 }
-
 - (void)setupUI
 {
-    
+    self.locationButton.layer.shadowOffset = CGSizeMake(-1, 3);
+    self.locationButton.layer.shadowColor = [UIColor grayColor].CGColor;
+    self.locationButton.layer.shadowOpacity = 1.f;
 }
 
 - (void)findCurrentLocation
