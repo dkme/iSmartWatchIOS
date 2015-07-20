@@ -9,6 +9,7 @@
 #import "WMSAntiLostVC.h"
 #import "WMSAppDelegate.h"
 #import "UIViewController+Tip.h"
+#import "UIViewController+Sync.h"
 #import "WMSNavBarView.h"
 #import "WMSSwitchCell.h"
 #import "WMSInputView.h"
@@ -169,7 +170,9 @@
         _oldTimeInterval = interval;
         [self savaData];
         [self showOperationSuccessTip:NSLocalizedString(@"设置防丢成功", nil)];
-
+        if (self.isNeedBackWhenAfterSync) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
     }];
 }
 
@@ -184,6 +187,7 @@
     if (buttonIndex == 0) {//NO
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
+        self.needBackWhenAfterSync = YES;
         [self syncSettingAction:nil];
     }
 }

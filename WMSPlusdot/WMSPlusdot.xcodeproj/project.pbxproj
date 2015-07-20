@@ -305,6 +305,7 @@
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
 		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
 		F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */; };
+		F7CAE80B1B5CDB050057300C /* UIViewController+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */; };
 		F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */; };
 		F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */; };
 		F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF31B281704001C0CDD /* WMSStackManager.m */; };
@@ -759,6 +760,8 @@
 		F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTimeViewController.h; sourceTree = "<group>"; };
 		F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
 		F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
+		F7CAE8091B5CDB050057300C /* UIViewController+Sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Sync.h"; sourceTree = "<group>"; };
+		F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Sync.m"; sourceTree = "<group>"; };
 		F7CF059E1B1DA0FB00038C9A /* WMSLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLocationManager.h; sourceTree = "<group>"; };
 		F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationManager.m; sourceTree = "<group>"; };
 		F7E99FEF1B26F8D3001C0CDD /* WMSSyncProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncProfile.h; sourceTree = "<group>"; };
@@ -962,6 +965,8 @@
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 				232471B71A50FD0300F70565 /* UIPickerView+Display */,
 				23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */,
+				F7CAE8091B5CDB050057300C /* UIViewController+Sync.h */,
+				F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2329,6 +2334,7 @@
 				2316507D19AAEA350066C301 /* WMSMySportView.m in Sources */,
 				2331CDA119B84AB500719976 /* WMSMyTimers.m in Sources */,
 				237545DB19AF229C00685CD1 /* WMSActivityRemindViewController.m in Sources */,
+				F7CAE80B1B5CDB050057300C /* UIViewController+Sync.m in Sources */,
 				23CB0B791A1358140057E0A8 /* UIDatePicker+Time.m in Sources */,
 				2335119119A476EF00FBCC81 /* WMSSignupViewController.m in Sources */,
 				23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */,

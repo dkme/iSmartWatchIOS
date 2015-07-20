@@ -8,6 +8,7 @@
 
 #import "WMSSmartClockViewController.h"
 #import "UIViewController+Tip.h"
+#import "UIViewController+Sync.h"
 #import "WMSAppDelegate.h"
 
 #import "MBProgressHUD.h"
@@ -97,8 +98,9 @@
 {
     if (!_intervalValueArray) {
         _intervalValueArray = @[@(DEFAULT_SNOOZE_MINUTE),
+                                @(10),
+                                @(15),
                                 @(20),
-                                @(30),
                                 ];
     }
     return _intervalValueArray;
@@ -128,16 +130,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO];
 }
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
-    self.navigationController.navigationBarHidden = YES;
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES];
 }
 - (void)dealloc
 {
@@ -153,7 +153,6 @@
 }
 - (void)setupNavBarView
 {
-    self.navigationController.navigationBarHidden = NO;
     SetControllerKeepExtendedLayout();
     
     UIBarButtonItem *leftItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
@@ -190,6 +189,10 @@
 
 #pragma mark - Action
 - (void)backAction:(id)sender {
+    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected == NO) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return ;
+    }
     BOOL res = [self.clockModel isEqual:_clock];
     if (res == NO) {
         NSString *message = NSLocalizedString(@"您的闹钟已修改，尚未同步到手表，是否同步?", nil);
@@ -216,6 +219,9 @@
         [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
         [WMSDataManager savaAlarmClocks:@[clock]];
         _clock = clock;
+        if (self.isNeedBackWhenAfterSync) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }];
 }
 
@@ -463,6 +469,7 @@
         [self.navigationController popViewControllerAnimated:YES];
         [self.navigationController setNavigationBarHidden:YES];
     } else {
+        self.needBackWhenAfterSync = YES;
         [self syncAction:nil];
     }
 }

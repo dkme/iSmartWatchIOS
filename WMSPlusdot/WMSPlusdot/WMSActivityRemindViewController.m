@@ -8,6 +8,7 @@
 
 #import "WMSActivityRemindViewController.h"
 #import "UIViewController+Tip.h"
+#import "UIViewController+Sync.h"
 #import "WMSAppDelegate.h"
 
 #import "MBProgressHUD.h"
@@ -155,11 +156,6 @@
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = YES;
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (void)dealloc
 {
     DEBUGLog(@"WMSActivityRemindViewController dealloc");
@@ -227,6 +223,9 @@
         [self showTip:NSLocalizedString(@"设置活动提醒成功", nil)];
         [WMSDataManager savaActivityRemind:@[model]];
         _oldActivityModel = model;
+        if (self.isNeedBackWhenAfterSync) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }];
 }
 
@@ -240,6 +239,11 @@
 
 #pragma mark - Action
 - (void)backAction:(id)sender {
+    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected == NO) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return ;
+    }
+    
     WMSActivityModel *model = [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
     BOOL res = [model isEqual:_oldActivityModel];
     if (res == NO) {
@@ -276,6 +280,7 @@
     if (buttonIndex == 0) {//NO
         [self.navigationController popViewControllerAnimated:YES];
     } else {
+        self.needBackWhenAfterSync = YES;
         [self syncSettingAction:nil];
     }
 }
