@@ -142,6 +142,11 @@
 #pragma mark - Action
 - (void)backAction:(id)sender
 {
+    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected == NO) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        return ;
+    }
+    
     if (self.cellSwitch.on          == _oldStatus &&
         _timeInterval               == _oldTimeInterval)
     {
