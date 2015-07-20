@@ -74,6 +74,9 @@ typedef enum {
     ControlClick = 0x01,
     ControlDoubleClick,
     ControlLongPress,
+    
+    ControlKey_RemoteMode = 0x0A,
+    ControlKey_NormalMode = 0x0B,
 } ControlKey;
 
 typedef enum {

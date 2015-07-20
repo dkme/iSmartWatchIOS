@@ -17,6 +17,7 @@ typedef NS_ENUM(int, TimeID) {
     ///Control
     TIME_ID_BIND_DEVICE,
     TIME_ID_UNBIND_DEVICE,
+    TIME_ID_SWITCH_TO_UPGRADE_MODE,
     TIME_ID_SWITCH_MODE,
     
     ///device profile

@@ -13,6 +13,7 @@
 #import "BLEUtils.h"
 #import "WMSStackManager.h"
 #import "update.h"
+#include "control.h"
 
 @class WMSSettingProfile;
 @class WMSDeviceProfile;
@@ -90,6 +91,7 @@ typedef void (^WMSBleControlScanedPeripheralCallback)(NSArray *peripherals);
 
 typedef void(^bindDeviceCallback)(BOOL isSuccess);
 typedef void(^switchModeCallback)(BOOL isSuccess, RequestUpdateFirmwareErrorCode errCode);
+typedef void(^operationCallback)(void);
 
 
 @interface WMSBleControl : NSObject
@@ -130,7 +132,9 @@ typedef void(^switchModeCallback)(BOOL isSuccess, RequestUpdateFirmwareErrorCode
 ///切换到升级模式
 - (void)switchToUpdateMode:(switchModeCallback)aCallback;
 
-
+///模式控制
+- (void)switchToMode:(ControlMode)mode
+          completion:(operationCallback)aCallback;
 
 
 #pragma mark - Private

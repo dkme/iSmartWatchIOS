@@ -7,8 +7,17 @@
 //
 
 #include "control.h"
+#include "production.h"
 #include "parse.h"
 
+
+int switchControlMode(ControlMode mode, BLE_UInt8 **package)
+{
+    BLE_UInt8 keys[2] = {ControlKey_NormalMode,ControlKey_RemoteMode};
+    return setupPackage(CMD_control, keys[mode], 0, NULL, package);
+}
+
+/////////////////////////////////////////////
 
 Struct_Control getControlCommand(BLE_UInt8 *package, BLE_UInt8 len)
 {

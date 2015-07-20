@@ -400,6 +400,7 @@
 }
 - (void)GGIViewControllerDidClose:(GGIViewController *)viewController
 {
+    [self.bleControl switchToMode:NormalMode completion:^{}];
     self.pickerController.delegate = nil;
     self.pickerController = nil;
 }
@@ -589,7 +590,11 @@
     }
     
     if (indexPath.section == 4-1 && indexPath.row == 0) {
-        self.pickerController = [self openCamera];
+        WeakObj(self, weakSelf);
+        [self.bleControl switchToMode:RemoteMode completion:^{
+            StrongObj(weakSelf, strongSelf);
+            strongSelf.pickerController = [strongSelf openCamera];
+        }];
         return;
     }
 }

@@ -309,6 +309,18 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     if (res != HANDLE_OK) {
         return ;
     }
+    [self writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SWITCH_TO_UPGRADE_MODE];
+}
+
+- (void)switchToMode:(ControlMode)mode
+          completion:(operationCallback)aCallback
+{
+    BLE_UInt8 package[PACKAGE_SIZE] = {0};
+    BLE_UInt8 *p = package;
+    int res = switchControlMode(mode, &p);
+    if (res != HANDLE_OK) {
+        return ;
+    }
     [self writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SWITCH_MODE];
 }
 
@@ -639,26 +651,6 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     Byte key = s_pg.key;
 
     if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
-        if (cmd == CMD_control) {
-            Struct_Control res = getControlCommand(package, PACKAGE_SIZE);
-            if (res.error != HANDLE_OK) {
-                return ;
-            }
-            ///发送一个通知
-            NSString *operation = nil;
-            if (ControlClick == res.control && ButtonTopRightCorner == res.button) {
-                operation = OperationTakePhoto;
-            }
-            if (ControlLongPress == res.control && ButtonTopRightCorner == res.button) {
-                operation = OperationLookingIPhone;
-            }
-            if (operation) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:OperationDeviceButtonNotification object:self userInfo:@{@"operation":operation}];
-            }
-            return ;
-        }
-        
-        
         switch (CMD_KEY(cmd, key)) {
             case CMD_KEY(CMD_binding, Binding):
             {
@@ -684,7 +676,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             {
                 Struct_UpdateResult res = getResult(package, PACKAGE_SIZE);
                 if (res.error == HANDLE_OK) {
-                    switchModeCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_SWITCH_MODE];
+                    switchModeCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_SWITCH_TO_UPGRADE_MODE];
                     if (aCallback) {
                         aCallback(res.isSuccess, res.errorCode);
                     }
@@ -694,7 +686,34 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             default:
                 break;
         }///switch
-    }
+        
+        if (cmd == CMD_control) {
+            if (key == ControlKey_RemoteMode || key == ControlKey_NormalMode) {
+                operationCallback aCallback = [self.stackManager popObjFromStackOfTimeID:TIME_ID_SWITCH_MODE];
+                if (aCallback) {
+                    aCallback();
+                }
+                return ;
+            }
+            
+            Struct_Control res = getControlCommand(package, PACKAGE_SIZE);
+            if (res.error != HANDLE_OK) {
+                return ;
+            }
+            ///发送一个通知
+            NSString *operation = nil;
+            if (ControlClick == res.control && ButtonTopRightCorner == res.button) {
+                operation = OperationTakePhoto;
+            }
+            if (ControlLongPress == res.control && ButtonTopRightCorner == res.button) {
+                operation = OperationLookingIPhone;
+            }
+            if (operation) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:OperationDeviceButtonNotification object:self userInfo:@{@"operation":operation}];
+            }
+            return ;
+        }///if
+    }///if
 }
 
 

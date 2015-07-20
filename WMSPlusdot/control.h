@@ -12,6 +12,14 @@
 #include <stdio.h>
 #include "dataType.h"
 
+typedef enum {
+    NormalMode = 0,
+    RemoteMode,
+} ControlMode;
+
+int switchControlMode(ControlMode mode, BLE_UInt8 **package);///切换模式
+
+////////////////////////////////////////////////////
 
 typedef enum {
     ButtonTopRightCorner = 0x01,
