@@ -57,16 +57,16 @@
 {
     static NSArray *matchKey, *matchValue;
     matchKey = matchValue = nil;
-    if (!matchKey) {
+    if (!matchKey) {///使用正则表达式语法
         matchKey = @[
                      @"clear",
                      @"clouds",
-                     @"light rain",
-                     @"moderate rain",
-                     @"heavy rain",
-                     @"light snow",
-                     @"moderate snow",
-                     @"heavy snow",
+                     @"light.*rain",
+                     @"moderate.*rain",
+                     @"heavy.*rain",
+                     @"light.*snow",
+                     @"moderate.*snow",
+                     @"heavy.*snow",
                      
                      @"snow",
                      @"rain",
@@ -83,14 +83,14 @@
                      @"moderate snow",
                      @"heavy snow",
                      
-                     @"moderate snow",
-                     @"moderate rain",
+                     @"light snow",
+                     @"light rain",
                      ];
     }
 
     NSRange matchResult;
     for (int i=0; i<matchKey.count; i++) {
-        matchResult = [desc rangeOfString:matchKey[i] options:NSCaseInsensitiveSearch];
+        matchResult = [desc rangeOfString:matchKey[i] options:NSRegularExpressionSearch];///使用正则表达式匹配字符串
         if (matchResult.location != NSNotFound) {
             return matchValue[i];
         }
