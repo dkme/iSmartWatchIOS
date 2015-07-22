@@ -119,6 +119,22 @@ int adjustTime(ROTATE_DIRECTION direction, BLE_UInt8 **package)
     return setupPackage(CMD_setting, SetAdjustTime, 1, value, package);
 }
 
+int roughAdjustmentTime(ROTATE_DIRECTION direction, BLE_UInt8 timeInterval, BLE_UInt8 **package)
+{
+    BLE_UInt8 value[2] = {0};
+    value[0] = direction;
+    value[1] = timeInterval;
+    return setupPackage(CMD_setting, SetAdjustTime, 2, value, package);
+}
+
+int slightAdjustmentTime(ROTATE_DIRECTION direction, BLE_UInt8 isStart,BLE_UInt8 **package)
+{
+    BLE_UInt8 value[2] = {0};
+    value[0] = direction;
+    value[1] = isStart;
+    return setupPackage(CMD_setting, SetSlightAdjustTime, 2, value, package);
+}
+
 int setAlarmClock(BLE_UInt8 clockID, BLE_UInt8 hour, BLE_UInt8 minute, BLE_UInt8 dayFlags, BLE_UInt8 openOrClose, BLE_UInt8 interval, BLE_UInt8 **package)
 {
     BLE_UInt8 value[7] = {0};

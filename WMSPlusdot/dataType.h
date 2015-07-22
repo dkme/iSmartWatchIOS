@@ -46,6 +46,7 @@ typedef enum {
     SetAdjustTime,
     SetAlarmClock,
     SetSearchDevice,
+    SetSlightAdjustTime,
 } SettingKey;
 
 typedef enum {

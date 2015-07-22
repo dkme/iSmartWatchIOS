@@ -98,7 +98,13 @@ int setRemindEvent(RemindEvents event, BLE_UInt8 **package);
 int setWeather(WeatherType weather, BLE_SInt8 temp, TempUnit tempUnit, BLE_UInt8 humidity, BLE_SInt8 **package);
 
 //0 顺时针, 1 逆时针
-int adjustTime(ROTATE_DIRECTION direction, BLE_UInt8 **package);
+int adjustTime(ROTATE_DIRECTION direction, BLE_UInt8 **package);///DEPRECATED
+
+///粗略调整时间
+int roughAdjustmentTime(ROTATE_DIRECTION direction, BLE_UInt8 timeInterval, BLE_UInt8 **package);
+///微调时间
+///@param isStart 0 开始，1 结束
+int slightAdjustmentTime(ROTATE_DIRECTION direction, BLE_UInt8 isStart,BLE_UInt8 **package);
 
 /**
  clockID    0~7
