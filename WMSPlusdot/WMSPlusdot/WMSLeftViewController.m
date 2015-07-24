@@ -420,7 +420,15 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
     UIViewController *VC = nil;
     if ([Null_Object isEqualToString:[self.contentVCArray objectAtIndex:indexPath.row]]) {
         Class VCClass=[self.specifyContentVCClassArray objectAtIndex:indexPath.row];
-        VC = [[VCClass alloc] init];
+        if (VCClass == [CheckTimeViewController class]) {
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
+                VC = [[VCClass alloc] initWithNibName:@"CheckTimeViewController_iOS7" bundle:nil];
+            } else {
+                VC = [[VCClass alloc] init];
+            }
+        } else {
+            VC = [[VCClass alloc] init];
+        }
         [self.contentVCArray setObject:VC atIndexedSubscript:indexPath.row];
     } else {
         VC = [self.contentVCArray objectAtIndex:indexPath.row];

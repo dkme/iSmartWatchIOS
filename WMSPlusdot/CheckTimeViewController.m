@@ -55,15 +55,17 @@
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithImageName:@"main_menu_icon_a.png" highImageName:@"main_menu_icon_b.png" target:self action:@selector(clickLeftBarButtonItem:)];
     self.title = NSLocalizedString(@"校对时间", nil);
     
+    if (IS_IOS8) {
+        ///将导航栏设置为不透明
+        UINavigationBar *navBar = self.navigationController.navigationBar;
+        navBar.barStyle = UIBarStyleBlack;
+        navBar.translucent = NO;
+        ///当导航栏为不透明时，不去将布局延伸至Bar所在区域
+        self.extendedLayoutIncludesOpaqueBars = NO;
+        ///设置视图只覆盖到左、右、下方的区域，而不覆盖上方的区域
+        self.edgesForExtendedLayout = UIRectEdgeBottom | UIRectEdgeLeft | UIRectEdgeRight;
+    }
     
-    ///将导航栏设置为不透明
-    UINavigationBar *navBar = self.navigationController.navigationBar;
-    navBar.barStyle = UIBarStyleBlack;
-    navBar.translucent = NO;
-    ///当导航栏为不透明时，不去将布局延伸至Bar所在区域
-    self.extendedLayoutIncludesOpaqueBars = NO;
-    ///设置视图只覆盖到左、右、下方的区域，而不覆盖上方的区域
-    self.edgesForExtendedLayout = UIRectEdgeBottom | UIRectEdgeLeft | UIRectEdgeRight;
 }
 - (void)setupTurntableView
 {
