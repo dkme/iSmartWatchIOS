@@ -96,12 +96,12 @@ static const int            MAX_RSSI                = -75;
 }
 - (void)sendBindingCMD
 {
-    WeakObj(self, weakSelf);
+//    WeakObj(self, weakSelf);
 //    [self.bleControl bindDevice:^(BOOL isSuccess) {
 //        if (isSuccess) {
-            StrongObj(weakSelf, strongSelf);
-            if (strongSelf) {
-                NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
+//            StrongObj(weakSelf, strongSelf);
+//            if (strongSelf) {
+                NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
                 if (identify) {
                     NSString *mac = [WMSDeviceModel deviceModel].mac;
                     if (!mac) {
@@ -109,9 +109,9 @@ static const int            MAX_RSSI                = -75;
                     }
                     [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
                     [WMSMyAccessory setBindAccessoryMac:mac];
-                    [strongSelf closeVC:YES];
+                    [self closeVC:YES];
                 }
-            }
+//            }
 //        }
 //    }];
 }

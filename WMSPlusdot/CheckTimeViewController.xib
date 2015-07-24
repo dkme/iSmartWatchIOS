@@ -10,6 +10,7 @@
                 <outlet property="button1h" destination="Bbz-Yq-3CZ" id="eFM-6C-ett"/>
                 <outlet property="button2h" destination="Mff-Fe-jL4" id="uVN-3l-CP2"/>
                 <outlet property="button3h" destination="a4p-pm-2Mw" id="0TF-vM-2o2"/>
+                <outlet property="describeLabel" destination="BYd-BW-MOV" id="CaD-sh-Woh"/>
                 <outlet property="segmentView" destination="65e-zi-7Dr" id="Jar-zi-bpf"/>
                 <outlet property="turntableView" destination="IoS-Gj-304" id="Wnt-mD-Efk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

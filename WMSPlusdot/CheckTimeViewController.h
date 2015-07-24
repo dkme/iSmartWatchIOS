@@ -20,4 +20,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *button2h;
 @property (weak, nonatomic) IBOutlet UIButton *button3h;
 
+@property (weak, nonatomic) IBOutlet UILabel *describeLabel;
+
 @end

@@ -80,6 +80,7 @@
 {
     self.view.backgroundColor = UICOLOR_DEFAULT;
     
+    self.describeLabel.text = NSLocalizedString(@"转动表盘以调整手表时间", nil);
     
     [self.button1h setTitleColor:UICOLOR_DEFAULT forState:UIControlStateNormal];
     [self.button2h setTitleColor:UICOLOR_DEFAULT forState:UIControlStateNormal];

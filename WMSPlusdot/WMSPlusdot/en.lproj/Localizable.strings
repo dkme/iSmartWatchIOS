@@ -341,6 +341,12 @@
 "搜索城市" = "Search the city";
 "输入城市名" = "Enter a city name";
 "定位失败，点击重试" = "Positioning failed，try again";
+"/(定位失败)" = "/(Positioning failed)";
+"城市" = "City";
+"定位服务未开启" = "Location service is not open";
+"请在系统设置中开启定位服务" = "Please turn on location services in the system settings";
+"好" = "OK";
+"请在系统“设置-隐私-定位服务”中开启定位服务" = "Please turn on location services in the system “Settings - Location Services - Privacy”";
 
 "校对时间" = "Time-collating";
 "转动表盘以调整手表时间" = "Turn the dial to adjust the time";
@@ -350,6 +356,6 @@
 "YES" = "YES";
 "立即进入" = "Enter into";
 
-
+"手表将在蓝牙连接断开后，间隔指定的时间提醒您" = "Watch the Bluetooth connection is disconnected after the interval specified time to remind you";
 
 

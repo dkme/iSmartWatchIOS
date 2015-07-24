@@ -80,7 +80,6 @@
 		2326A41119A593E20098657B /* main_target_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40D19A593E20098657B /* main_target_btn_a.png */; };
 		2326A41219A593E20098657B /* main_target_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40E19A593E20098657B /* main_target_btn_b.png */; };
 		2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2326A41419A59E200098657B /* WMSLeftViewController.m */; };
-		2326A41719A59E200098657B /* WMSLeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2326A41519A59E200098657B /* WMSLeftViewController.xib */; };
 		2326A41F19A5A2FC0098657B /* main_avatar_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A41E19A5A2FC0098657B /* main_avatar_default.png */; };
 		2326A42419A5C4010098657B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2326A42619A5C4010098657B /* Localizable.strings */; };
 		2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A42819A5C6970098657B /* main_menu_binding_icon_a.png */; };
@@ -286,6 +285,8 @@
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
 		E8D4F41322CC9FA9822FC6B6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E57208459FF67BC2938C56 /* libPods.a */; };
 		F41930CE19F16B1400E7B0B5 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = F41930CD19F16B1400E7B0B5 /* check.png */; };
+		F7033BA21B6211EC00C8B0AF /* WMSLeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7033BA41B6211EC00C8B0AF /* WMSLeftViewController.xib */; };
+		F7033BA81B6214B100C8B0AF /* WMSLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7033BAA1B6214B100C8B0AF /* WMSLocationViewController.xib */; };
 		F70602CC1B423388006DEE8C /* binding.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602B91B423388006DEE8C /* binding.c */; };
 		F70602CD1B423388006DEE8C /* control.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602BB1B423388006DEE8C /* control.c */; };
 		F70602CE1B423388006DEE8C /* parse.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602BE1B423388006DEE8C /* parse.c */; };
@@ -296,7 +297,6 @@
 		F70602D31B423388006DEE8C /* testing.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602C81B423388006DEE8C /* testing.c */; };
 		F70602D41B423388006DEE8C /* update.c in Sources */ = {isa = PBXBuildFile; fileRef = F70602CA1B423388006DEE8C /* update.c */; };
 		F70EF2141B424335002EDEF9 /* WMSLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2121B424334002EDEF9 /* WMSLocationViewController.m */; };
-		F70EF2151B424335002EDEF9 /* WMSLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F70EF2131B424335002EDEF9 /* WMSLocationViewController.xib */; };
 		F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2181B4244FC002EDEF9 /* HealthManager.m */; };
 		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
@@ -427,7 +427,6 @@
 		2326A40E19A593E20098657B /* main_target_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_target_btn_b.png; sourceTree = "<group>"; };
 		2326A41319A59E200098657B /* WMSLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLeftViewController.h; sourceTree = "<group>"; };
 		2326A41419A59E200098657B /* WMSLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLeftViewController.m; sourceTree = "<group>"; };
-		2326A41519A59E200098657B /* WMSLeftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSLeftViewController.xib; sourceTree = "<group>"; };
 		2326A41E19A5A2FC0098657B /* main_avatar_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_avatar_default.png; sourceTree = "<group>"; };
 		2326A42219A5C3B00098657B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2326A42319A5C3B00098657B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -724,6 +723,10 @@
 		90E57208459FF67BC2938C56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70B1D0CCF52BF4041DAEA77 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F41930CD19F16B1400E7B0B5 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		F7033BA31B6211EC00C8B0AF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/WMSLeftViewController.xib"; sourceTree = "<group>"; };
+		F7033BA51B62120600C8B0AF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WMSLeftViewController.xib; sourceTree = "<group>"; };
+		F7033BA91B6214B100C8B0AF /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/WMSLocationViewController.xib"; sourceTree = "<group>"; };
+		F7033BAB1B6214E100C8B0AF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WMSLocationViewController.xib; sourceTree = "<group>"; };
 		F70602B91B423388006DEE8C /* binding.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = binding.c; sourceTree = "<group>"; };
 		F70602BA1B423388006DEE8C /* binding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = binding.h; sourceTree = "<group>"; };
 		F70602BB1B423388006DEE8C /* control.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = control.c; sourceTree = "<group>"; };
@@ -745,7 +748,6 @@
 		F70602CB1B423388006DEE8C /* update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = update.h; sourceTree = "<group>"; };
 		F70EF2111B424334002EDEF9 /* WMSLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLocationViewController.h; sourceTree = "<group>"; };
 		F70EF2121B424334002EDEF9 /* WMSLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationViewController.m; sourceTree = "<group>"; };
-		F70EF2131B424335002EDEF9 /* WMSLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSLocationViewController.xib; sourceTree = "<group>"; };
 		F70EF2171B4244FC002EDEF9 /* HealthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthManager.h; sourceTree = "<group>"; };
 		F70EF2181B4244FC002EDEF9 /* HealthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthManager.m; sourceTree = "<group>"; };
 		F70EF27E1B42A604002EDEF9 /* WMSTestingProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSTestingProfile.h; sourceTree = "<group>"; };
@@ -902,7 +904,7 @@
 			children = (
 				2326A41319A59E200098657B /* WMSLeftViewController.h */,
 				2326A41419A59E200098657B /* WMSLeftViewController.m */,
-				2326A41519A59E200098657B /* WMSLeftViewController.xib */,
+				F7033BA41B6211EC00C8B0AF /* WMSLeftViewController.xib */,
 				2393884B1ABBA9720018BDA1 /* WMSRightViewController.h */,
 				2393884C1ABBA9720018BDA1 /* WMSRightViewController.m */,
 				2393884D1ABBA9720018BDA1 /* WMSRightViewController.xib */,
@@ -2025,7 +2027,7 @@
 			children = (
 				F70EF2111B424334002EDEF9 /* WMSLocationViewController.h */,
 				F70EF2121B424334002EDEF9 /* WMSLocationViewController.m */,
-				F70EF2131B424335002EDEF9 /* WMSLocationViewController.xib */,
+				F7033BAA1B6214B100C8B0AF /* WMSLocationViewController.xib */,
 			);
 			name = "定位城市视图";
 			sourceTree = "<group>";
@@ -2124,7 +2126,7 @@
 				234BF1FA19B05991005D71A0 /* car_bg.png in Resources */,
 				232846CB19A43668001C148D /* InfoPlist.strings in Resources */,
 				232846D319A43668001C148D /* Images.xcassets in Resources */,
-				F70EF2151B424335002EDEF9 /* WMSLocationViewController.xib in Resources */,
+				F7033BA81B6214B100C8B0AF /* WMSLocationViewController.xib in Resources */,
 				23114A4D19D152F100FA594C /* sava_info_btn_b.png in Resources */,
 				23114A4919D120D600FA594C /* unselect_woman.png in Resources */,
 				238FE0CB1A79E1FD00D27E65 /* main_menu_gift_icon_b.png in Resources */,
@@ -2209,7 +2211,7 @@
 				23C74AFE19A72E9E00C589A1 /* main_deepsleep_icon.png in Resources */,
 				23114A4C19D152F100FA594C /* sava_info_btn_a.png in Resources */,
 				23C74B0419A72F0B00C589A1 /* main_wakeup_icon.png in Resources */,
-				2326A41719A59E200098657B /* WMSLeftViewController.xib in Resources */,
+				F7033BA21B6211EC00C8B0AF /* WMSLeftViewController.xib in Resources */,
 				2316508319AB15510066C301 /* WMSLeftViewCell.xib in Resources */,
 				2326A42419A5C4010098657B /* Localizable.strings in Resources */,
 				23445CE41A6CA6180094DC57 /* add_clock.png in Resources */,
@@ -2512,6 +2514,24 @@
 				2326A42319A5C3B00098657B /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		F7033BA41B6211EC00C8B0AF /* WMSLeftViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7033BA31B6211EC00C8B0AF /* zh-Hans */,
+				F7033BA51B62120600C8B0AF /* en */,
+			);
+			name = WMSLeftViewController.xib;
+			sourceTree = "<group>";
+		};
+		F7033BAA1B6214B100C8B0AF /* WMSLocationViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7033BA91B6214B100C8B0AF /* zh-Hans */,
+				F7033BAB1B6214E100C8B0AF /* en */,
+			);
+			name = WMSLocationViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
