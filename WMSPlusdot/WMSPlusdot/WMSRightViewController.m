@@ -55,6 +55,8 @@
 @property (strong, nonatomic) WMSBleControl *bleControl;
 @property (strong, nonatomic) GGIViewController *pickerController;
 
+@property (assign, nonatomic) BOOL isNeedSwitchToNormalMode;
+
 @end
 
 @implementation WMSRightViewController
@@ -303,6 +305,14 @@
             [self.tableView reloadData];
         }];
     }
+    if (self.isNeedSwitchToNormalMode) {
+        WeakObj(self, weakSelf);
+        [self.bleControl switchToMode:NormalMode completion:^{
+            StrongObj(weakSelf, strongSelf);
+            strongSelf.isNeedSwitchToNormalMode = NO;
+        }];
+    }
+    
     float battery = [[UIDevice currentDevice] batteryLevel];
     [self batteryOperation:battery];
     
@@ -400,7 +410,14 @@
 }
 - (void)GGIViewControllerDidClose:(GGIViewController *)viewController
 {
-    [self.bleControl switchToMode:NormalMode completion:^{}];
+    WeakObj(self, weakSelf);
+    self.isNeedSwitchToNormalMode = YES;
+    [self.bleControl switchToMode:NormalMode completion:^{
+        StrongObj(weakSelf, strongSelf);
+        strongSelf.isNeedSwitchToNormalMode = NO;
+    }];
+    
+//    [self.bleControl switchToMode:NormalMode completion:^{}];
     self.pickerController.delegate = nil;
     self.pickerController = nil;
 }
