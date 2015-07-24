@@ -15,11 +15,14 @@
 typedef NS_ENUM(NSInteger, RotateDirection) {
     clockwise           = 0,
     anticlockwise       = 1,
+    unknowDirection     = 0xFF,
 };
 
 @interface TurntableView : UIView
 
 @property (nonatomic, weak) id<TurntableViewDelegate> delegate;
+
+@property (nonatomic, assign, readonly) RotateDirection previousRotateDirection;
 
 @end
 
@@ -27,6 +30,12 @@ typedef NS_ENUM(NSInteger, RotateDirection) {
 @protocol TurntableViewDelegate <NSObject>
 
 @optional
-- (void)turntableViewDidRotate:(TurntableView *)turntableView byRotateDirection:(RotateDirection)direction;
+//- (void)turntableViewDidRotate:(TurntableView *)turntableView byRotateDirection:(RotateDirection)direction;
+//- (void)turntableViewDidStartRotate:(TurntableView *)turntableView;
+
+
+- (void)turntableViewDidStopRotate:(TurntableView *)turntableView;
+
+- (void)turntableView:(TurntableView *)turntableView didChangeRotateDirection:(RotateDirection)direction;///方向改变
 
 @end

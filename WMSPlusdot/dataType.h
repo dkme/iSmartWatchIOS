@@ -43,10 +43,10 @@ typedef enum {
     SetStopRemind,
     SetRemindEvent,
     SetWeather,
-    SetAdjustTime,
+    SetAdjustTime,///粗调
     SetAlarmClock,
     SetSearchDevice,
-    SetSlightAdjustTime,
+    SetSlightAdjustTime,///微调
 } SettingKey;
 
 typedef enum {

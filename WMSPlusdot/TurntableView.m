@@ -10,24 +10,53 @@
 
 @interface TurntableView()
 {
+    CGPoint startPoint;
+    CGPoint endPoint;
 }
+
 @end
 
 @implementation TurntableView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self setup];
+    }
     return self;
 }
 
+- (void)setup
+{
+    _previousRotateDirection = unknowDirection;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    
+    UITouch * touch=[touches anyObject];
+    startPoint = [touch previousLocationInView:self.superview];
+}
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [super touchesMoved:touches withEvent:event];
+    
     UITouch * touch=[touches anyObject];
     //在旋转的过程中self的坐标系会转动，到superview里面去找坐标点
     CGPoint prePoint=[touch previousLocationInView:self.superview];
     CGPoint curPoint=[touch locationInView:self.superview];
     float angle=[self getAngleWithOrginPoint:self.center PointX:prePoint PointY:curPoint];
+    
     CATransform3D transform=self.layer.transform;
     if (prePoint.y<self.center.y) {
         transform=CATransform3DRotate(transform, angle, 0, 0, 1);
@@ -37,11 +66,37 @@
     }
     self.layer.transform=transform;
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(turntableViewDidRotate:byRotateDirection:)]) {
-        RotateDirection direction = [self getRotateDirectionFromPointX:prePoint toPointY:curPoint];
-        [self.delegate turntableViewDidRotate:self byRotateDirection:direction];
+    RotateDirection direction = [self getRotateDirectionFromPointX:prePoint toPointY:curPoint];
+    if (direction != self.previousRotateDirection) {///方向改变了
+        if (self.delegate && [self.delegate respondsToSelector:@selector(turntableView:didChangeRotateDirection:)]) {
+            [self.delegate turntableView:self didChangeRotateDirection:direction];
+        }
     }
+    
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(turntableViewDidRotate:byRotateDirection:)]) {
+//        
+//        [self.delegate turntableViewDidRotate:self byRotateDirection:direction];
+//    }
+    
+    _previousRotateDirection = direction;
+    
 }
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    
+    UITouch * touch=[touches anyObject];
+    endPoint = [touch previousLocationInView:self.superview];
+    
+    _previousRotateDirection = unknowDirection;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(turntableViewDidStopRotate:)]) {
+        [self.delegate turntableViewDidStopRotate:self];
+    }
+    
+    [self getRotateDirectionFromPointX:startPoint toPointY:endPoint];
+}
+
 //用反余弦函数求角
 -(float)getAngleWithOrginPoint:(CGPoint)aOrginPoint PointX:(CGPoint)aPointX PointY:(CGPoint)aPointY
 {
@@ -78,7 +133,7 @@
     CGPoint vCenter = self.center;
     
     if(pointX.x - vCenter.x == 0 || pointY.x - vCenter.x == 0) {
-        return clockwise;
+        return unknowDirection;
     }
     
     k1 = (pointX.y-vCenter.y) / (pointX.x-vCenter.x);
@@ -88,14 +143,5 @@
     
     return tan > 0.0 ? clockwise : anticlockwise ;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

@@ -7,10 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TurntableView.h"
+#import "RFSegmentView.h"
 
-@interface CheckTimeViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface CheckTimeViewController : UIViewController <RFSegmentViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
-@property (weak, nonatomic) IBOutlet UILabel *describeLabel;
+@property (weak, nonatomic) IBOutlet TurntableView *turntableView;
+
+@property (weak, nonatomic) IBOutlet RFSegmentView *segmentView;
+
+@property (weak, nonatomic) IBOutlet UIButton *button1h;
+@property (weak, nonatomic) IBOutlet UIButton *button2h;
+@property (weak, nonatomic) IBOutlet UIButton *button3h;
 
 @end

@@ -303,9 +303,10 @@
 		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
-		F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */; };
-		F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */; };
 		F7CAE80B1B5CDB050057300C /* UIViewController+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */; };
+		F7CAE80F1B5D05BC0057300C /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80C1B5D05BC0057300C /* CheckTimeViewController.m */; };
+		F7CAE8101B5D05BC0057300C /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7CAE80E1B5D05BC0057300C /* CheckTimeViewController.xib */; };
+		F7CAE8141B60E2F20057300C /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE8131B60E2F20057300C /* RFSegmentView.m */; };
 		F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */; };
 		F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */; };
 		F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF31B281704001C0CDD /* WMSStackManager.m */; };
@@ -757,11 +758,13 @@
 		F783EF5D1B130392008124BE /* TurntableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TurntableView.m; sourceTree = "<group>"; };
 		F78A58331B1C072000DBC3D7 /* RequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestClass.h; sourceTree = "<group>"; };
 		F78A58341B1C072000DBC3D7 /* RequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestClass.m; sourceTree = "<group>"; };
-		F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTimeViewController.h; sourceTree = "<group>"; };
-		F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
-		F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
 		F7CAE8091B5CDB050057300C /* UIViewController+Sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Sync.h"; sourceTree = "<group>"; };
 		F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Sync.m"; sourceTree = "<group>"; };
+		F7CAE80C1B5D05BC0057300C /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
+		F7CAE80D1B5D05BC0057300C /* CheckTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTimeViewController.h; sourceTree = "<group>"; };
+		F7CAE80E1B5D05BC0057300C /* CheckTimeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckTimeViewController.xib; sourceTree = "<group>"; };
+		F7CAE8121B60E2F20057300C /* RFSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFSegmentView.h; sourceTree = "<group>"; };
+		F7CAE8131B60E2F20057300C /* RFSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFSegmentView.m; sourceTree = "<group>"; };
 		F7CF059E1B1DA0FB00038C9A /* WMSLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLocationManager.h; sourceTree = "<group>"; };
 		F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationManager.m; sourceTree = "<group>"; };
 		F7E99FEF1B26F8D3001C0CDD /* WMSSyncProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncProfile.h; sourceTree = "<group>"; };
@@ -1193,6 +1196,7 @@
 				23911F1B19C29053006E9CAF /* WMSSyncDataView */,
 				23491D2D1A59451C00C821E8 /* WMSInputView */,
 				237D2F001A5A9BA30002AB4F /* WMSWeekPicker */,
+				F7CAE8111B60E2F20057300C /* RFSegmentView */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1971,13 +1975,23 @@
 		F78B2BC51B0DB6DA00F5B0D4 /* 校对时间视图 */ = {
 			isa = PBXGroup;
 			children = (
-				F78B2BC61B0DB71F00F5B0D4 /* CheckTimeViewController.h */,
-				F78B2BC71B0DB71F00F5B0D4 /* CheckTimeViewController.m */,
-				F78B2BC81B0DB71F00F5B0D4 /* CheckTimeViewController.xib */,
+				F7CAE80D1B5D05BC0057300C /* CheckTimeViewController.h */,
+				F7CAE80C1B5D05BC0057300C /* CheckTimeViewController.m */,
+				F7CAE80E1B5D05BC0057300C /* CheckTimeViewController.xib */,
 				F783EF5C1B130392008124BE /* TurntableView.h */,
 				F783EF5D1B130392008124BE /* TurntableView.m */,
 			);
 			name = "校对时间视图";
+			sourceTree = "<group>";
+		};
+		F7CAE8111B60E2F20057300C /* RFSegmentView */ = {
+			isa = PBXGroup;
+			children = (
+				F7CAE8121B60E2F20057300C /* RFSegmentView.h */,
+				F7CAE8131B60E2F20057300C /* RFSegmentView.m */,
+			);
+			name = RFSegmentView;
+			path = WMSPlusdot/RFSegmentView;
 			sourceTree = "<group>";
 		};
 		F7CF05A61B1F043300038C9A /* protocol-c */ = {
@@ -2143,7 +2157,6 @@
 				233511B219A4C3D300FBCC81 /* main_date_prev_b.png in Resources */,
 				2326A43719A5C6970098657B /* main_menu_sleep_icon_b.png in Resources */,
 				239F51D61A2D963E0058F6DE /* WMSGuideVC.xib in Resources */,
-				F78B2BCA1B0DB71F00F5B0D4 /* CheckTimeViewController.xib in Resources */,
 				2393886B1ABBA99F0018BDA1 /* flashing_on.png in Resources */,
 				2335119519A479DA00FBCC81 /* signup_arrow_a.png in Resources */,
 				23876EA91A52479800F1F15C /* intro_page3.png in Resources */,
@@ -2182,6 +2195,7 @@
 				2326A43619A5C6970098657B /* main_menu_sleep_icon_a.png in Resources */,
 				2326A43819A5C6970098657B /* main_menu_sport_icon_a.png in Resources */,
 				23114A4F19D1640800FA594C /* zq_sync_btn.png in Resources */,
+				F7CAE8101B5D05BC0057300C /* CheckTimeViewController.xib in Resources */,
 				239388631ABBA99F0018BDA1 /* switch_camera.png in Resources */,
 				232471BF1A51067F00F70565 /* WMSInputView.xib in Resources */,
 				2335119219A476EF00FBCC81 /* WMSSignupViewController.xib in Resources */,
@@ -2371,9 +2385,9 @@
 				230FDC6919D659EB00AE98FF /* PNBarChartView.m in Sources */,
 				F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */,
 				2331838919B6FE2D005B2BA0 /* WMSDeviceProfile.m in Sources */,
+				F7CAE8141B60E2F20057300C /* RFSegmentView.m in Sources */,
 				230298D019A87DBF009D4306 /* WMSBindingAccessoryViewController.m in Sources */,
 				2328CD2F19CFFEE50085AD77 /* UIImage+QuartzProc.m in Sources */,
-				F78B2BC91B0DB71F00F5B0D4 /* CheckTimeViewController.m in Sources */,
 				2333AAFF1A64B3C700DBA846 /* MyNavigationController.m in Sources */,
 				231972481A358DDA002E8A0F /* JSCustomBadge.m in Sources */,
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
@@ -2429,6 +2443,7 @@
 				F70602D01B423388006DEE8C /* reading.c in Sources */,
 				2393884E1ABBA9720018BDA1 /* WMSRightViewController.m in Sources */,
 				237545D419AF02AC00685CD1 /* UIImage+ColorAtPixel.m in Sources */,
+				F7CAE80F1B5D05BC0057300C /* CheckTimeViewController.m in Sources */,
 				F70602CE1B423388006DEE8C /* parse.c in Sources */,
 				23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */,
 				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,

@@ -218,6 +218,36 @@
     [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SETTING_ADJUST_TIME];
 }
 
+- (void)roughAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
+                            timeInterval:(NSTimeInterval)interval
+                              completion:(settingCallback)aCallback
+{
+    BLE_UInt8 package[PACKAGE_SIZE] = {0};
+    BLE_UInt8 *p = package;
+    int res = roughAdjustmentTime(direction, interval, &p);
+    if (res != HANDLE_OK) {
+        return ;
+    }
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:NULL withTimeID:TIME_ID_SETTING_ROUGH_ADJUSTMENT_TIME];
+}
+
+- (void)slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
+                                    start:(BOOL)isStart
+                               completion:(settingCallback)aCallback
+{
+    BLE_UInt8 package[PACKAGE_SIZE] = {0};
+    BLE_UInt8 *p = package;
+    int res = slightAdjustmentTime(direction, !isStart, &p);
+    if (res != HANDLE_OK) {
+        return ;
+    }
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:NULL withTimeID:TIME_ID_SETTING_SLIGHT_ADJUSTMENT_TIME];
+    
+//    NSData *sendData = [NSData dataWithBytes:package length:PACKAGE_SIZE];
+//    [self.serialPortWriteCharacteristic writeValue:sendData completion:nil];
+//    [self.bleControl.stackManager pushObj:aCallback toStackOfTimeID:TIME_ID_SETTING_SLIGHT_ADJUSTMENT_TIME];
+}
+
 - (void)setAlarmClock:(BOOL)openOrClose
                    ID:(NSUInteger)no
                  hour:(NSUInteger)hour
@@ -296,6 +326,19 @@
     BLE_UInt8 key = s_pg.key;
     
     if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
+        switch (CMD_KEY(cmd, key)) {
+            case CMD_KEY(CMD_setting, SetSlightAdjustTime):
+            {
+                settingCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_SETTING_SLIGHT_ADJUSTMENT_TIME];
+                if (aCallback) {
+                    aCallback(YES);
+                }
+                return;
+            }
+            default:
+                break;
+        }///switch
+        
         if (CMD_setting == cmd) {
             static NSDictionary *key_time_map = nil;
             if (!key_time_map) {

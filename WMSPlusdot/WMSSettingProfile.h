@@ -73,7 +73,14 @@ typedef void(^settingCallback)(BOOL isSuccess);
 
 ///调整手表时间
 - (void)adjustTimeDirection:(ROTATE_DIRECTION)direction
-                 completion:(settingCallback)aCallback;
+                 completion:(settingCallback)aCallback;//////DEPRECATED
+
+- (void)roughAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
+                            timeInterval:(NSTimeInterval)interval
+                              completion:(settingCallback)aCallback;
+- (void)slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
+                                    start:(BOOL)isStart
+                               completion:(settingCallback)aCallback;
 
 /**
  * 设置闹钟,目前最多设置8个闹钟
