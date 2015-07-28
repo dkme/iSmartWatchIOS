@@ -90,7 +90,7 @@
 
     NSRange matchResult;
     for (int i=0; i<matchKey.count; i++) {
-        matchResult = [desc rangeOfString:matchKey[i] options:NSRegularExpressionSearch];///使用正则表达式匹配字符串
+        matchResult = [desc.lowercaseString rangeOfString:matchKey[i] options:NSRegularExpressionSearch];///使用正则表达式匹配字符串
         if (matchResult.location != NSNotFound) {
             return matchValue[i];
         }
