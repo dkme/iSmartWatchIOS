@@ -21,12 +21,42 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "DFUOperations.h"
+#import "InitData.h"
 
-@interface IntelHex2BinConverter : NSObject
+@interface DFUHelper : NSObject
 
-/*!
- * Converts the Intel HEX data to a bin format by subtracting only the data part from it.
- Current implemetation does not support Extended Segment Addresses or Extended Linear Addresses.
- */
-+ (NSData*)convert:(NSData*)hex;
+@property DFUOperations *dfuOperations;
+@property NSURL *selectedFileURL;
+@property NSURL *softdeviceURL;
+@property NSURL *bootloaderURL;
+@property NSURL *applicationURL;
+@property NSURL *applicationMetaDataURL;
+@property NSURL *bootloaderMetaDataURL;
+@property NSURL *softdeviceMetaDataURL;
+@property NSURL *systemMetaDataURL;
+@property NSURL *softdevice_bootloaderURL;
+@property NSURL *manifestFileURL;
+@property NSUInteger selectedFileSize;
+@property uint32_t bootloaderSize;
+@property uint32_t softdeviceSize;
+@property (nonatomic, retain)NSArray *manifestData;
+@property (nonatomic)DfuFirmwareTypes enumFirmwareType;
+
+@property int dfuVersion;
+@property BOOL isSelectedFileZipped;
+@property BOOL isDfuVersionExist;
+@property BOOL isManifestExist;
+
+-(void)checkAndPerformDFU;
+-(void)unzipFiles:(NSURL *)zipFileURL;
+-(void) setFirmwareType:(NSString *)firmwareType;
+-(BOOL)isInitPacketFileExist;
+-(BOOL)isValidFileSelected;
+-(NSString *)getUploadStatusMessage;
+-(NSString *)getInitPacketFileValidationMessage;
+-(NSString *)getFileValidationMessage;
+-(DFUHelper *)initWithData:(DFUOperations *)dfuOperations;
+
+
 @end

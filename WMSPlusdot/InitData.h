@@ -21,12 +21,14 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "Utility.h"
 
-@interface IntelHex2BinConverter : NSObject
 
-/*!
- * Converts the Intel HEX data to a bin format by subtracting only the data part from it.
- Current implemetation does not support Extended Segment Addresses or Extended Linear Addresses.
- */
-+ (NSData*)convert:(NSData*)hex;
+@interface InitData : NSObject
+@property (nonatomic, retain)NSString *firmwareBinFileName;
+@property (nonatomic, retain)NSString *firmwareDatFileName;
+@property (nonatomic)DfuFirmwareTypes firmwareType;
+@property (nonatomic)uint32_t bootloaderSize;
+@property (nonatomic)uint32_t softdeviceSize;
+
 @end

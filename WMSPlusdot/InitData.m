@@ -20,13 +20,13 @@
  * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
+#import "InitData.h"
 
-@interface IntelHex2BinConverter : NSObject
+@implementation InitData
+@synthesize firmwareBinFileName;
+@synthesize firmwareDatFileName;
+@synthesize firmwareType;
+@synthesize bootloaderSize;
+@synthesize softdeviceSize;
 
-/*!
- * Converts the Intel HEX data to a bin format by subtracting only the data part from it.
- Current implemetation does not support Extended Segment Addresses or Extended Linear Addresses.
- */
-+ (NSData*)convert:(NSData*)hex;
 @end

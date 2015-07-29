@@ -21,12 +21,12 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "SSZipArchive.h"
 
-@interface IntelHex2BinConverter : NSObject
+@interface UnzipFirmware : NSObject <SSZipArchiveDelegate>
 
-/*!
- * Converts the Intel HEX data to a bin format by subtracting only the data part from it.
- Current implemetation does not support Extended Segment Addresses or Extended Linear Addresses.
- */
-+ (NSData*)convert:(NSData*)hex;
+@property(nonatomic, retain)NSMutableArray *filesURL;
+
+-(NSArray *)unzipFirmwareFiles:(NSURL *)zipFileURL;
+
 @end

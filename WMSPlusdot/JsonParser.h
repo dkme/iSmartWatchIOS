@@ -21,12 +21,16 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "InitData.h"
 
-@interface IntelHex2BinConverter : NSObject
+@interface JsonParser : NSObject
 
-/*!
- * Converts the Intel HEX data to a bin format by subtracting only the data part from it.
- Current implemetation does not support Extended Segment Addresses or Extended Linear Addresses.
- */
-+ (NSData*)convert:(NSData*)hex;
+
+
+@property (nonatomic, retain)InitData *packetData;
+@property(nonatomic, retain)NSMutableArray *firmwareFiles;
+
+-(NSArray *)parseJson:(NSData *)data;
+
+
 @end
