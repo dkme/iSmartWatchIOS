@@ -269,7 +269,7 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
 {
     [RequestClass requestWeatherOfCityName:cityName completion:^(BOOL isSuccess, id data, NSError *error) {
         if (isSuccess) {
-            DEBUGLog(@"data:%@", data);
+//            DEBUGLog(@"data:%@", data);
             ((Condition *)data).locationName = cityName;
             [self updateWeather:data];
             [self updateWeatherOnWatch];

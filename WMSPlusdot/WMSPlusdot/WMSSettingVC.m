@@ -24,6 +24,7 @@
 #import "WMSDeviceModel.h"
 #import "WMSHTTPRequest.h"
 #import "WMSHelper.h"
+#import "NSString+DynamicSize.h"
 
 #define SECTION_NUMBER                  3
 #define CELL_HEIGHT                     41.f
@@ -37,6 +38,7 @@
     BOOL _isUpdateFirmware;
     NSString *_firmwareUpdateDesc;
     NSString *_firmwareUpdateURL;
+    float     _firmwareUpdateVersion;
     
     WMSUpdateVC *_updateVC;
     
@@ -179,10 +181,9 @@
     }
     [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
      {
-         DEBUGLog(@"firmware curVersion:%f, newVersion:%f",[WMSDeviceModel deviceModel].firmwareVersion,newVersion);
-         //DEBUGLog(@"describe:%@, url:%@",describe,strURL);
-         //newVersion = 100.0;
-         if ([WMSDeviceModel deviceModel].firmwareVersion < newVersion) {
+         DEBUGLog(@"software curVersion:%f, newVersion:%f",[WMSDeviceModel deviceModel].softwareVersion,newVersion);
+//         newVersion = 100.0;
+         if ([WMSDeviceModel deviceModel].softwareVersion < newVersion) {
              [WMSHTTPRequest downloadFirmwareUpdateFileStrURL:strURL completion:^(BOOL success)
               {
                   //do something
@@ -191,17 +192,20 @@
                       _isUpdateFirmware = YES;
                       _firmwareUpdateDesc = describe;
                       _firmwareUpdateURL = strURL;
+                      _firmwareUpdateVersion = newVersion;
                       [self.tableView reloadData];
                   } else {
                       _isUpdateFirmware = NO;
                       _firmwareUpdateDesc = @"";
                       _firmwareUpdateURL = @"";
+                      _firmwareUpdateVersion = 0.0;
                   }
               }];
          } else {
              _isUpdateFirmware = NO;
              _firmwareUpdateDesc = @"";
              _firmwareUpdateURL = @"";
+             _firmwareUpdateVersion = 0.0;
          }
      }];
 }
@@ -222,8 +226,10 @@
 {
     if ([cell class] == [WMSDetailCell class]) {
         WMSDetailCell *detaileCell = (WMSDetailCell *)cell;
+        CGSize strSize = [detaileCell.rightLabel.text dynamicSizeWithFont:detaileCell.rightLabel.font];
+        CGRect rightLabelFrame = detaileCell.rightLabel.frame;
         CGRect frame = badge.frame;
-        frame.origin.x = detaileCell.frame.size.width-30-frame.size.width;
+        frame.origin.x = rightLabelFrame.origin.x+rightLabelFrame.size.width-strSize.width-frame.size.width;
         frame.origin.y = (detaileCell.frame.size.height-frame.size.height)/2.0;
         badge.frame = frame;
         
@@ -367,6 +373,10 @@
             cell.rightLabel.text = @"";
             cell.rightLabel.font = Font_System(12.0);
             if (row == 3-3) {
+                NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+                NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
+                cell.rightLabel.text = currentVersion;//NSLocalizedString(@"已是最新版本", nil);
+                
                 if ([self isDetectedNewVersion]==DetectResultCanUpdate/* ||
                     YES*/) {
                     if ([self isExistBadgeOfView:cell] == NO) {
@@ -375,11 +385,17 @@
                     }
                 } else {
                     [self removeBadgeFromView:cell];
-                    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-                    NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
-                    cell.rightLabel.text = currentVersion;//NSLocalizedString(@"已是最新版本", nil);
                 }
             } else if (row == 4-3) {
+                NSString *strVer = @"";
+                if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected) {
+                    double version = [WMSDeviceModel deviceModel].softwareVersion;
+                    strVer = [NSString stringWithFormat:@"%.02f",version];
+                } else {
+                    strVer = NSLocalizedString(@"unknown", nil);
+                }
+                cell.rightLabel.text = strVer;
+                
                 if (_isUpdateFirmware/* || YES*/) {
                     if ([self isExistBadgeOfView:cell] == NO) {
                         JSCustomBadge *badge = [JSCustomBadge customBadgeWithString:@"New"];
@@ -387,14 +403,6 @@
                     }
                 } else {
                     [self removeBadgeFromView:cell];
-                    NSString *strVer = @"";
-                    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected) {
-                        double version = [WMSDeviceModel deviceModel].firmwareVersion;
-                        strVer = [NSString stringWithFormat:@"%.01f",version];
-                    } else {
-                        strVer = NSLocalizedString(@"unknown", nil);
-                    }
-                    cell.rightLabel.text = strVer;
                 }
             }
             return cell;
@@ -501,6 +509,7 @@
                         _updateVC = [[WMSUpdateVC alloc] init];
                         _updateVC.title = self.section1TitleArray[row];
                         _updateVC.updateDescribe = _firmwareUpdateDesc;
+                        _updateVC.updateVersion = _firmwareUpdateVersion;
                         self.navigationController.delegate = self;
                         [self.navigationController pushViewController:_updateVC animated:YES];
                     }

@@ -29,6 +29,7 @@ extern NSString *const WMSUpdateVCEndDFU;
 
 @property (strong, nonatomic) NSString *updateDescribe;
 @property (strong, nonatomic) NSString *updateStrURL;
+@property (assign, nonatomic) float updateVersion;
 
 @property (assign, nonatomic, readonly, getter=isUpdateSuccess) BOOL updateSuccess;
 

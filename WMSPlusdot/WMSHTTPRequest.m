@@ -14,8 +14,13 @@
 #define LOGIN_INTERFACE_PATH    @"api/user/CheckLogin"
 
 #define URL_REQUEST_FIRMWARE_VERSION    @"http://www.youduoyun.com/api/firmwares/version?device_id=180"
+///P3
+#define URL_P3_SERVERS_ADDRESS          @"http://www.guogee.com/plusdot/"
+#define URL_SERVERS_UPDATE_DESCRIBE_FILE_NAME   @"updateDescribe.plist"
 
 #define REQUEST_TIME_INTERVAL   5.0
+
+static inline NSString* UTF8Encoding(NSString *url);
 
 @implementation WMSHTTPRequest
 
@@ -157,28 +162,9 @@
 }
 + (NSDictionary *)firmwareInfo
 {
-    NSString *urlString = URL_REQUEST_FIRMWARE_VERSION;
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIME_INTERVAL];
-    if (!request) {
-        return nil;
-    }
-    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    
-    if (returnData) {
-        NSError *error = nil;
-        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:&error];
-        if (jsonData && error==nil) {
-            if ([jsonData isKindOfClass:[NSDictionary class]]) {
-                //return jsonData[@"data"];
-                return jsonData;
-            }
-        } else {
-            DEBUGLog(@"%s error:not data or error",__FILE__);
-        }
-    } else {
-        return nil;
-    }
-    return nil;
+    NSString *urlString = UTF8Encoding([URL_P3_SERVERS_ADDRESS stringByAppendingString:URL_SERVERS_UPDATE_DESCRIBE_FILE_NAME]);
+    NSDictionary *data = [[NSDictionary alloc] initWithContentsOfURL:[NSURL URLWithString:urlString]];
+    return data;
 }
 
 + (void)downloadFirmwareUpdateFileStrURL:(NSString *)strURL
@@ -187,6 +173,7 @@
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     dispatch_async(queue, ^{
         BOOL success = [self download:strURL];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (aCallBack) {
                 aCallBack(success);
@@ -196,9 +183,6 @@
 }
 + (BOOL)download:(NSString *)strURL
 {
-//    if ([self isExistFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)]) {
-//        return YES;
-//    }
     NSString *urlString = strURL;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIME_INTERVAL];
     if (!request) {
@@ -208,6 +192,22 @@
     
     if (returnData) {
         return [self savaData:returnData toFilePath:FileTmpPath(FILE_TMP_FIRMWARE_UPDATE)];
+    } else {
+        return NO;
+    }
+    return NO;
+}
++ (BOOL)download:(NSString *)strURL saveToPath:(NSString *)path
+{
+    NSString *urlString = strURL;
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:REQUEST_TIME_INTERVAL];
+    if (!request) {
+        return NO;
+    }
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    
+    if (returnData) {
+        return [self savaData:returnData toFilePath:path];
     } else {
         return NO;
     }
@@ -232,6 +232,11 @@
         return YES;
     }
     return NO;
+}
+
+static inline NSString* UTF8Encoding(NSString *url)
+{
+    return [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end

@@ -62,10 +62,6 @@
 		23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23204AA01A42FA0F005874CE /* WMSBindingView.xib */; };
 		2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2321B78019B9500900278677 /* NSMutableArray+Stack.m */; };
 		2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323686019C1A30200E666D3 /* WMSPersonModel.m */; };
-		2323BE061A68B0E900FCA216 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323BDFF1A68B0E900FCA216 /* DFUOperations.m */; };
-		2323BE071A68B0E900FCA216 /* DFUOperationsDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323BE011A68B0E900FCA216 /* DFUOperationsDetails.m */; };
-		2323BE081A68B0E900FCA216 /* FileOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323BE031A68B0E900FCA216 /* FileOperations.m */; };
-		2323BE091A68B0E900FCA216 /* BLEOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323BE051A68B0E900FCA216 /* BLEOperations.m */; };
 		2323BE0E1A68E84900FCA216 /* WMSDeviceModel+Configure.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */; };
 		232471BA1A50FD6D00F70565 /* UIPickerView+Display.m in Sources */ = {isa = PBXBuildFile; fileRef = 232471B91A50FD6D00F70565 /* UIPickerView+Display.m */; };
 		232471BD1A51065D00F70565 /* WMSInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 232471BC1A51065D00F70565 /* WMSInputView.m */; };
@@ -278,8 +274,6 @@
 		23D7CF0919B5D5D100DFA678 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7CF0819B5D5D100DFA678 /* CoreBluetooth.framework */; };
 		23E35B8A1A4BB13B00FDA20D /* WMSAntiLostVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E35B881A4BB13B00FDA20D /* WMSAntiLostVC.m */; };
 		23E35B8B1A4BB13B00FDA20D /* WMSAntiLostVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */; };
-		23E84B921A4814CA0061AD36 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84B911A4814CA0061AD36 /* Utility.m */; };
-		23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84B991A4815050061AD36 /* IntelHex2BinConverter.m */; };
 		23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84FE71A709E12006BBAEA /* UILabel+Attribute.m */; };
 		23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E84FEB1A70CB30006BBAEA /* WMSSportVCHelper.m */; };
 		23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FB8B5819CA7C9100E7D77C /* WMSSleepDatabase.m */; };
@@ -302,6 +296,24 @@
 		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
 		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
+		F76B8BF21B6878CB00315600 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF11B6878CB00315600 /* Utility.m */; };
+		F76B8BFB1B68793200315600 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF41B68793200315600 /* DFUOperations.m */; };
+		F76B8BFC1B68793200315600 /* DFUOperationsDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF61B68793200315600 /* DFUOperationsDetails.m */; };
+		F76B8BFD1B68793200315600 /* FileOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF81B68793200315600 /* FileOperations.m */; };
+		F76B8BFE1B68793200315600 /* BLEOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BFA1B68793200315600 /* BLEOperations.m */; };
+		F76B8C011B68795300315600 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C001B68795300315600 /* IntelHex2BinConverter.m */; };
+		F76B8C041B687F0300315600 /* UnzipFirmware.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C031B687F0300315600 /* UnzipFirmware.m */; };
+		F76B8C0A1B687F7000315600 /* JsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C071B687F7000315600 /* JsonParser.m */; };
+		F76B8C0B1B687F7000315600 /* InitData.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C091B687F7000315600 /* InitData.m */; };
+		F76B8C171B687FF700315600 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C0F1B687FF700315600 /* ioapi.c */; };
+		F76B8C181B687FF700315600 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C111B687FF700315600 /* mztools.c */; };
+		F76B8C191B687FF700315600 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C131B687FF700315600 /* unzip.c */; };
+		F76B8C1A1B687FF700315600 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C151B687FF700315600 /* zip.c */; };
+		F76B8C1D1B68800600315600 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C1C1B68800600315600 /* SSZipArchive.m */; };
+		F76B8C201B68803700315600 /* AccessFileSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C1F1B68803700315600 /* AccessFileSystem.m */; };
+		F76B8C221B6881A900315600 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F76B8C211B6881A900315600 /* libz.dylib */; };
+		F76B8C251B688B0000315600 /* DFUHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C241B688B0000315600 /* DFUHelper.m */; };
+		F76B8C571B69BFF800315600 /* NSString+DynamicSize.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C561B69BFF800315600 /* NSString+DynamicSize.m */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
 		F7CAE80B1B5CDB050057300C /* UIViewController+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */; };
@@ -402,14 +414,6 @@
 		2321B78319B95E8E00278677 /* WMSBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBluetooth.h; sourceTree = "<group>"; };
 		2323685F19C1A30200E666D3 /* WMSPersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSPersonModel.h; sourceTree = "<group>"; };
 		2323686019C1A30200E666D3 /* WMSPersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSPersonModel.m; sourceTree = "<group>"; };
-		2323BDFE1A68B0E900FCA216 /* DFUOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUOperations.h; sourceTree = "<group>"; };
-		2323BDFF1A68B0E900FCA216 /* DFUOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUOperations.m; sourceTree = "<group>"; };
-		2323BE001A68B0E900FCA216 /* DFUOperationsDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUOperationsDetails.h; sourceTree = "<group>"; };
-		2323BE011A68B0E900FCA216 /* DFUOperationsDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUOperationsDetails.m; sourceTree = "<group>"; };
-		2323BE021A68B0E900FCA216 /* FileOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileOperations.h; sourceTree = "<group>"; };
-		2323BE031A68B0E900FCA216 /* FileOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileOperations.m; sourceTree = "<group>"; };
-		2323BE041A68B0E900FCA216 /* BLEOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEOperations.h; sourceTree = "<group>"; };
-		2323BE051A68B0E900FCA216 /* BLEOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEOperations.m; sourceTree = "<group>"; };
 		2323BE0C1A68E84900FCA216 /* WMSDeviceModel+Configure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WMSDeviceModel+Configure.h"; sourceTree = "<group>"; };
 		2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WMSDeviceModel+Configure.m"; sourceTree = "<group>"; };
 		232471B81A50FD6D00F70565 /* UIPickerView+Display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+Display.h"; sourceTree = "<group>"; };
@@ -709,10 +713,6 @@
 		23E35B871A4BB13B00FDA20D /* WMSAntiLostVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSAntiLostVC.h; sourceTree = "<group>"; };
 		23E35B881A4BB13B00FDA20D /* WMSAntiLostVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSAntiLostVC.m; sourceTree = "<group>"; };
 		23E35B891A4BB13B00FDA20D /* WMSAntiLostVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSAntiLostVC.xib; sourceTree = "<group>"; };
-		23E84B901A4814CA0061AD36 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
-		23E84B911A4814CA0061AD36 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
-		23E84B981A4815050061AD36 /* IntelHex2BinConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelHex2BinConverter.h; sourceTree = "<group>"; };
-		23E84B991A4815050061AD36 /* IntelHex2BinConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntelHex2BinConverter.m; sourceTree = "<group>"; };
 		23E84FE61A709E12006BBAEA /* UILabel+Attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Attribute.h"; sourceTree = "<group>"; };
 		23E84FE71A709E12006BBAEA /* UILabel+Attribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Attribute.m"; sourceTree = "<group>"; };
 		23E84FEA1A70CB30006BBAEA /* WMSSportVCHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportVCHelper.h; sourceTree = "<group>"; };
@@ -758,6 +758,42 @@
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
 		F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
+		F76B8BF01B6878CB00315600 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		F76B8BF11B6878CB00315600 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
+		F76B8BF31B68793200315600 /* DFUOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUOperations.h; sourceTree = "<group>"; };
+		F76B8BF41B68793200315600 /* DFUOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUOperations.m; sourceTree = "<group>"; };
+		F76B8BF51B68793200315600 /* DFUOperationsDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUOperationsDetails.h; sourceTree = "<group>"; };
+		F76B8BF61B68793200315600 /* DFUOperationsDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUOperationsDetails.m; sourceTree = "<group>"; };
+		F76B8BF71B68793200315600 /* FileOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileOperations.h; sourceTree = "<group>"; };
+		F76B8BF81B68793200315600 /* FileOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileOperations.m; sourceTree = "<group>"; };
+		F76B8BF91B68793200315600 /* BLEOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEOperations.h; sourceTree = "<group>"; };
+		F76B8BFA1B68793200315600 /* BLEOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEOperations.m; sourceTree = "<group>"; };
+		F76B8BFF1B68795300315600 /* IntelHex2BinConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelHex2BinConverter.h; sourceTree = "<group>"; };
+		F76B8C001B68795300315600 /* IntelHex2BinConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntelHex2BinConverter.m; sourceTree = "<group>"; };
+		F76B8C021B687F0300315600 /* UnzipFirmware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnzipFirmware.h; sourceTree = "<group>"; };
+		F76B8C031B687F0300315600 /* UnzipFirmware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnzipFirmware.m; sourceTree = "<group>"; };
+		F76B8C061B687F7000315600 /* JsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonParser.h; sourceTree = "<group>"; };
+		F76B8C071B687F7000315600 /* JsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonParser.m; sourceTree = "<group>"; };
+		F76B8C081B687F7000315600 /* InitData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitData.h; sourceTree = "<group>"; };
+		F76B8C091B687F7000315600 /* InitData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitData.m; sourceTree = "<group>"; };
+		F76B8C0E1B687FF700315600 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		F76B8C0F1B687FF700315600 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		F76B8C101B687FF700315600 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		F76B8C111B687FF700315600 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		F76B8C121B687FF700315600 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		F76B8C131B687FF700315600 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		F76B8C141B687FF700315600 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		F76B8C151B687FF700315600 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		F76B8C161B687FF700315600 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		F76B8C1B1B68800600315600 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		F76B8C1C1B68800600315600 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		F76B8C1E1B68803700315600 /* AccessFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessFileSystem.h; sourceTree = "<group>"; };
+		F76B8C1F1B68803700315600 /* AccessFileSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessFileSystem.m; sourceTree = "<group>"; };
+		F76B8C211B6881A900315600 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libz.dylib; sourceTree = "<group>"; };
+		F76B8C231B688B0000315600 /* DFUHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUHelper.h; sourceTree = "<group>"; };
+		F76B8C241B688B0000315600 /* DFUHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUHelper.m; sourceTree = "<group>"; };
+		F76B8C551B69BFF800315600 /* NSString+DynamicSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+DynamicSize.h"; path = "WMSPlusdot/NSString+DynamicSize.h"; sourceTree = "<group>"; };
+		F76B8C561B69BFF800315600 /* NSString+DynamicSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+DynamicSize.m"; path = "WMSPlusdot/NSString+DynamicSize.m"; sourceTree = "<group>"; };
 		F783EF5C1B130392008124BE /* TurntableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableView.h; sourceTree = "<group>"; };
 		F783EF5D1B130392008124BE /* TurntableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TurntableView.m; sourceTree = "<group>"; };
 		F78A58331B1C072000DBC3D7 /* RequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestClass.h; sourceTree = "<group>"; };
@@ -785,6 +821,7 @@
 				239388701ABBAA2B0018BDA1 /* ImageIO.framework in Frameworks */,
 				23472E921A8AFBCC00ED3CA4 /* Security.framework in Frameworks */,
 				23472E901A8AFB8B00ED3CA4 /* SystemConfiguration.framework in Frameworks */,
+				F76B8C221B6881A900315600 /* libz.dylib in Frameworks */,
 				23472E8E1A8AFB7800ED3CA4 /* CoreLocation.framework in Frameworks */,
 				236EAF3C1A400F3D00533FC8 /* CoreTelephony.framework in Frameworks */,
 				2378A3ED1A00F06100187836 /* AudioToolbox.framework in Frameworks */,
@@ -1242,6 +1279,7 @@
 		232846BF19A43668001C148D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F76B8C211B6881A900315600 /* libz.dylib */,
 				2393886F1ABBAA2B0018BDA1 /* ImageIO.framework */,
 				23472E911A8AFBCC00ED3CA4 /* Security.framework */,
 				23472E8F1A8AFB8B00ED3CA4 /* SystemConfiguration.framework */,
@@ -1798,6 +1836,7 @@
 				239F51CE1A2D94E20058F6DE /* EAIntroView */,
 				231972451A358DCB002E8A0F /* JSCustomBadge */,
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
+				F76B8C581B69C18A00315600 /* NSString+DynamicSize */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -1868,6 +1907,12 @@
 		23E84B8E1A4814A10061AD36 /* DFU */ = {
 			isa = PBXGroup;
 			children = (
+				F76B8C231B688B0000315600 /* DFUHelper.h */,
+				F76B8C241B688B0000315600 /* DFUHelper.m */,
+				F76B8C1E1B68803700315600 /* AccessFileSystem.h */,
+				F76B8C1F1B68803700315600 /* AccessFileSystem.m */,
+				F76B8C0C1B687FCE00315600 /* SSZipArchive */,
+				F76B8C051B687F5D00315600 /* JSON Parser */,
 				23E84B8F1A4814BD0061AD36 /* Constants */,
 				23E84B931A4814D50061AD36 /* Unzip */,
 				23E84B971A4814F20061AD36 /* Hex to Bin Converter */,
@@ -1879,8 +1924,8 @@
 		23E84B8F1A4814BD0061AD36 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				23E84B901A4814CA0061AD36 /* Utility.h */,
-				23E84B911A4814CA0061AD36 /* Utility.m */,
+				F76B8BF01B6878CB00315600 /* Utility.h */,
+				F76B8BF11B6878CB00315600 /* Utility.m */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -1888,6 +1933,8 @@
 		23E84B931A4814D50061AD36 /* Unzip */ = {
 			isa = PBXGroup;
 			children = (
+				F76B8C021B687F0300315600 /* UnzipFirmware.h */,
+				F76B8C031B687F0300315600 /* UnzipFirmware.m */,
 			);
 			name = Unzip;
 			sourceTree = "<group>";
@@ -1895,8 +1942,8 @@
 		23E84B971A4814F20061AD36 /* Hex to Bin Converter */ = {
 			isa = PBXGroup;
 			children = (
-				23E84B981A4815050061AD36 /* IntelHex2BinConverter.h */,
-				23E84B991A4815050061AD36 /* IntelHex2BinConverter.m */,
+				F76B8BFF1B68795300315600 /* IntelHex2BinConverter.h */,
+				F76B8C001B68795300315600 /* IntelHex2BinConverter.m */,
 			);
 			name = "Hex to Bin Converter";
 			sourceTree = "<group>";
@@ -1904,14 +1951,14 @@
 		23E84B9B1A4815080061AD36 /* DFU Implementation */ = {
 			isa = PBXGroup;
 			children = (
-				2323BDFE1A68B0E900FCA216 /* DFUOperations.h */,
-				2323BDFF1A68B0E900FCA216 /* DFUOperations.m */,
-				2323BE001A68B0E900FCA216 /* DFUOperationsDetails.h */,
-				2323BE011A68B0E900FCA216 /* DFUOperationsDetails.m */,
-				2323BE021A68B0E900FCA216 /* FileOperations.h */,
-				2323BE031A68B0E900FCA216 /* FileOperations.m */,
-				2323BE041A68B0E900FCA216 /* BLEOperations.h */,
-				2323BE051A68B0E900FCA216 /* BLEOperations.m */,
+				F76B8BF31B68793200315600 /* DFUOperations.h */,
+				F76B8BF41B68793200315600 /* DFUOperations.m */,
+				F76B8BF51B68793200315600 /* DFUOperationsDetails.h */,
+				F76B8BF61B68793200315600 /* DFUOperationsDetails.m */,
+				F76B8BF71B68793200315600 /* FileOperations.h */,
+				F76B8BF81B68793200315600 /* FileOperations.m */,
+				F76B8BF91B68793200315600 /* BLEOperations.h */,
+				F76B8BFA1B68793200315600 /* BLEOperations.m */,
 			);
 			name = "DFU Implementation";
 			sourceTree = "<group>";
@@ -1974,6 +2021,52 @@
 				F72385B31B1C3C5E00AC3CD5 /* Condition.m */,
 			);
 			name = "天气";
+			sourceTree = "<group>";
+		};
+		F76B8C051B687F5D00315600 /* JSON Parser */ = {
+			isa = PBXGroup;
+			children = (
+				F76B8C061B687F7000315600 /* JsonParser.h */,
+				F76B8C071B687F7000315600 /* JsonParser.m */,
+				F76B8C081B687F7000315600 /* InitData.h */,
+				F76B8C091B687F7000315600 /* InitData.m */,
+			);
+			name = "JSON Parser";
+			sourceTree = "<group>";
+		};
+		F76B8C0C1B687FCE00315600 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				F76B8C0D1B687FE100315600 /* minizip */,
+				F76B8C1B1B68800600315600 /* SSZipArchive.h */,
+				F76B8C1C1B68800600315600 /* SSZipArchive.m */,
+			);
+			name = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		F76B8C0D1B687FE100315600 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				F76B8C0E1B687FF700315600 /* crypt.h */,
+				F76B8C0F1B687FF700315600 /* ioapi.c */,
+				F76B8C101B687FF700315600 /* ioapi.h */,
+				F76B8C111B687FF700315600 /* mztools.c */,
+				F76B8C121B687FF700315600 /* mztools.h */,
+				F76B8C131B687FF700315600 /* unzip.c */,
+				F76B8C141B687FF700315600 /* unzip.h */,
+				F76B8C151B687FF700315600 /* zip.c */,
+				F76B8C161B687FF700315600 /* zip.h */,
+			);
+			name = minizip;
+			sourceTree = "<group>";
+		};
+		F76B8C581B69C18A00315600 /* NSString+DynamicSize */ = {
+			isa = PBXGroup;
+			children = (
+				F76B8C551B69BFF800315600 /* NSString+DynamicSize.h */,
+				F76B8C561B69BFF800315600 /* NSString+DynamicSize.m */,
+			);
+			name = "NSString+DynamicSize";
 			sourceTree = "<group>";
 		};
 		F78B2BC51B0DB6DA00F5B0D4 /* 校对时间视图 */ = {
@@ -2344,18 +2437,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				237545CD19AF00CF00685CD1 /* TemperaBar.m in Sources */,
+				F76B8C0B1B687F7000315600 /* InitData.m in Sources */,
 				239682291A4AB7F000AA4D9F /* UIColor+RGBValues.m in Sources */,
 				2331834B19B6EBEA005B2BA0 /* WMSSettingProfile.m in Sources */,
 				239682281A4AB7F000AA4D9F /* LDProgressView.m in Sources */,
-				23E84B921A4814CA0061AD36 /* Utility.m in Sources */,
 				23CBBF9219C1516700A3DA4C /* WMSSportModel.m in Sources */,
-				2323BE071A68B0E900FCA216 /* DFUOperationsDetails.m in Sources */,
 				23204A971A42A33A005874CE /* GGAudioTool.m in Sources */,
 				2316507D19AAEA350066C301 /* WMSMySportView.m in Sources */,
 				2331CDA119B84AB500719976 /* WMSMyTimers.m in Sources */,
 				237545DB19AF229C00685CD1 /* WMSActivityRemindViewController.m in Sources */,
 				F7CAE80B1B5CDB050057300C /* UIViewController+Sync.m in Sources */,
 				23CB0B791A1358140057E0A8 /* UIDatePicker+Time.m in Sources */,
+				F76B8BFB1B68793200315600 /* DFUOperations.m in Sources */,
 				2335119119A476EF00FBCC81 /* WMSSignupViewController.m in Sources */,
 				23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */,
 				2326A45019A605660098657B /* WMSSwitchCell.m in Sources */,
@@ -2363,27 +2456,32 @@
 				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
 				F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */,
 				F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */,
+				F76B8C1D1B68800600315600 /* SSZipArchive.m in Sources */,
 				237545D119AF029400685CD1 /* OBShapedButton.m in Sources */,
 				238E2F071A0A1E1300FBABD9 /* WMSUserInfoHelper.m in Sources */,
 				23305D9E19C8375D00F9EEE6 /* WMSSportDatabase.m in Sources */,
 				F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */,
 				2378A3E019FFA96900187836 /* UIViewController+Tip.m in Sources */,
+				F76B8BF21B6878CB00315600 /* Utility.m in Sources */,
 				23D7CF0119B5C49C00DFA678 /* LGPeripheral.m in Sources */,
 				F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */,
 				232471BD1A51065D00F70565 /* WMSInputView.m in Sources */,
+				F76B8BFC1B68793200315600 /* DFUOperationsDetails.m in Sources */,
+				F76B8C171B687FF700315600 /* ioapi.c in Sources */,
 				2388E5C219ED25A9005864D4 /* WMSHTTPRequest.m in Sources */,
 				2323BE0E1A68E84900FCA216 /* WMSDeviceModel+Configure.m in Sources */,
 				2330D7101A5FB9A500494859 /* WMSClockListVC.m in Sources */,
 				234BF1F519B05914005D71A0 /* WMSMyAccountViewController.m in Sources */,
+				F76B8BFE1B68793200315600 /* BLEOperations.m in Sources */,
 				23D7CF0219B5C49C00DFA678 /* LGService.m in Sources */,
 				23E84FEC1A70CB30006BBAEA /* WMSSportVCHelper.m in Sources */,
-				2323BE061A68B0E900FCA216 /* DFUOperations.m in Sources */,
 				2335119E19A4B85700FBCC81 /* RECommonFunctions.m in Sources */,
 				23D7CEFE19B5C49C00DFA678 /* CBUUID+StringExtraction.m in Sources */,
 				234BF1EE19B0305C005D71A0 /* WMSNavBarView.m in Sources */,
 				239F51D31A2D94F90058F6DE /* EAIntroPage.m in Sources */,
 				231972341A3533FD002E8A0F /* WMSSettingVC.m in Sources */,
 				236D95BB1A67ACFC00037DD8 /* WMSFilter.m in Sources */,
+				F76B8C191B687FF700315600 /* unzip.c in Sources */,
 				F783EF5E1B130392008124BE /* TurntableView.m in Sources */,
 				23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */,
 				2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */,
@@ -2394,11 +2492,14 @@
 				F7CAE8141B60E2F20057300C /* RFSegmentView.m in Sources */,
 				230298D019A87DBF009D4306 /* WMSBindingAccessoryViewController.m in Sources */,
 				2328CD2F19CFFEE50085AD77 /* UIImage+QuartzProc.m in Sources */,
+				F76B8C0A1B687F7000315600 /* JsonParser.m in Sources */,
 				2333AAFF1A64B3C700DBA846 /* MyNavigationController.m in Sources */,
 				231972481A358DDA002E8A0F /* JSCustomBadge.m in Sources */,
 				232846D119A43668001C148D /* WMSAppDelegate.m in Sources */,
 				2353790519CD655000269F67 /* WMSAlarmClockModel.m in Sources */,
 				F70602CC1B423388006DEE8C /* binding.c in Sources */,
+				F76B8C181B687FF700315600 /* mztools.c in Sources */,
+				F76B8BFD1B68793200315600 /* FileOperations.m in Sources */,
 				234F81F71A4D42D100332C03 /* WMSSoundOperation.m in Sources */,
 				2319723F1A354535002E8A0F /* WMSAppConfig.m in Sources */,
 				F70602CF1B423388006DEE8C /* production.c in Sources */,
@@ -2427,22 +2528,25 @@
 				23D7CF0719B5C57D00DFA678 /* WMSBleControl.m in Sources */,
 				2335119F19A4B85700FBCC81 /* RESideMenu.m in Sources */,
 				23B0094719D50100008424FA /* PNPlot.m in Sources */,
+				F76B8C011B68795300315600 /* IntelHex2BinConverter.m in Sources */,
 				239388601ABBA99F0018BDA1 /* CameraImageHelper.m in Sources */,
+				F76B8C1A1B687FF700315600 /* zip.c in Sources */,
 				23D7CF0319B5C49C00DFA678 /* LGUtils.m in Sources */,
 				F70602D41B423388006DEE8C /* update.c in Sources */,
 				2354A3B819A6E0CD0027C91F /* WMSContent1ViewController.m in Sources */,
 				F70602D11B423388006DEE8C /* setting.c in Sources */,
 				2319723B1A3540DE002E8A0F /* WMSDetailCell.m in Sources */,
 				231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */,
+				F76B8C571B69BFF800315600 /* NSString+DynamicSize.m in Sources */,
 				23204A9C1A42E71F005874CE /* GGDeviceTool.m in Sources */,
 				23A153241A369F790026D741 /* WMSWebVC.m in Sources */,
 				23197EFC1A0C5B8C00DDC3B3 /* WMSHistoryVCHelper.m in Sources */,
 				239109321A3A90C900333A2A /* WMSUpdateVCHelper.m in Sources */,
 				F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */,
 				233511A019A4B85700FBCC81 /* UIViewController+RESideMenu.m in Sources */,
+				F76B8C201B68803700315600 /* AccessFileSystem.m in Sources */,
 				23B0093F19D4FFEF008424FA /* WMSSportHistoryViewController.m in Sources */,
 				2311611919B1A2BE0012B066 /* NSDate+Formatter.m in Sources */,
-				2323BE081A68B0E900FCA216 /* FileOperations.m in Sources */,
 				F70EF2141B424335002EDEF9 /* WMSLocationViewController.m in Sources */,
 				233511A419A4BD5200FBCC81 /* WMSContentViewController.m in Sources */,
 				230298C319A82FDC009D4306 /* WMSContent2ViewController.m in Sources */,
@@ -2452,15 +2556,15 @@
 				F7CAE80F1B5D05BC0057300C /* CheckTimeViewController.m in Sources */,
 				F70602CE1B423388006DEE8C /* parse.c in Sources */,
 				23491D291A58E90400C821E8 /* WMSBoundCell.m in Sources */,
+				F76B8C041B687F0300315600 /* UnzipFirmware.m in Sources */,
 				236EAF411A40260F00533FC8 /* WMSRightVCHelper.m in Sources */,
 				23911F1E19C290F8006E9CAF /* WMSSyncDataView.m in Sources */,
 				2333AB081A64FE3400DBA846 /* WMSDataManager.m in Sources */,
 				23B0094619D50100008424FA /* PNLineChartView.m in Sources */,
 				237D2EFF1A5A35AD0002AB4F /* WMSWeekPicker.m in Sources */,
-				2323BE091A68B0E900FCA216 /* BLEOperations.m in Sources */,
 				23E35B8A1A4BB13B00FDA20D /* WMSAntiLostVC.m in Sources */,
 				2333AB021A64B57000DBA846 /* UIBarButtonItem+Extension.m in Sources */,
-				23E84B9A1A4815050061AD36 /* IntelHex2BinConverter.m in Sources */,
+				F76B8C251B688B0000315600 /* DFUHelper.m in Sources */,
 				F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */,
 				2347C82C1A63A4C9007A0446 /* WMSClockCell.m in Sources */,
 				232846CD19A43668001C148D /* main.m in Sources */,
@@ -2581,13 +2685,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2a661d91-e4cd-4982-884f-b624614dc371";
+				PROVISIONING_PROFILE = "850f46d0-47f5-4ff6-8207-98eaae21a5f2";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2698,8 +2806,12 @@
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2a661d91-e4cd-4982-884f-b624614dc371";
+				PROVISIONING_PROFILE = "850f46d0-47f5-4ff6-8207-98eaae21a5f2";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2717,8 +2829,12 @@
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2a661d91-e4cd-4982-884f-b624614dc371";
+				PROVISIONING_PROFILE = "850f46d0-47f5-4ff6-8207-98eaae21a5f2";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
