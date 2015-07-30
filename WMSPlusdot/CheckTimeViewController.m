@@ -14,8 +14,6 @@
 
 @property (nonatomic, strong) WMSBleControl *bleControl;
 
-@property (nonatomic, strong) NSTimer *rotateTimer;
-
 @end
 
 @implementation CheckTimeViewController
@@ -39,9 +37,6 @@
 - (void)dealloc
 {
     DEBUGLog(@"%s",__FUNCTION__);
-    
-    [_rotateTimer invalidate];
-    _rotateTimer = nil;
 }
 
 
@@ -138,53 +133,16 @@
 {
     if (direction != unknowDirection) {
         [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:NULL];
-        DEBUGLog(@"旋转结束1");
         
         [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction start:YES completion:NULL];
-        DEBUGLog(@"%@开始", direction==clockwise?@"顺时针":@"逆时针");
+        NSLog(@"%@开始", direction==clockwise?@"顺时针":@"逆时针");
     }
-    
-//    [self stopRotate];
-//    
-//    [self startRotate:direction];
 }
 
 - (void)turntableViewDidStopRotate:(TurntableView *)turntableView
 {
     [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:NULL];
-    DEBUGLog(@"旋转结束2");
-    
-//    [self stopRotate];
-}
-
-//- (void)turntableViewDidRotate:(TurntableView *)turntableView byRotateDirection:(RotateDirection)direction
-//{
-//    [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction start:YES completion:NULL];
-//    DEBUGLog(@"%@开始", direction==clockwise?@"顺时针":@"逆时针");
-//}
-
-///
-- (void)startRotate:(RotateDirection)direction
-{
-    [self stopRotate];
-    
-    _rotateTimer = [NSTimer scheduledTimerWithTimeInterval:120/1000.0 target:self selector:@selector(rotate:) userInfo:@{@"direction":@(direction)} repeats:YES];
-    [self.rotateTimer fire];
-}
-- (void)stopRotate
-{
-    [self.rotateTimer invalidate];
-    self.rotateTimer = nil;
-    
-    [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:NULL];
     DEBUGLog(@"旋转结束");
 }
-- (void)rotate:(NSTimer *)timer
-{
-    RotateDirection direction = [timer.userInfo[@"direction"] intValue];
-    [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction start:YES completion:NULL];
-    DEBUGLog(@"%@开始", direction==clockwise?@"顺时针":@"逆时针");
-}
-
 
 @end

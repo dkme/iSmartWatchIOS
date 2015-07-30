@@ -12,6 +12,8 @@
 {
     CGPoint startPoint;
     CGPoint endPoint;
+    
+    BOOL isNeedChangeStartPoint;
 }
 
 @end
@@ -46,6 +48,9 @@
     
     UITouch * touch=[touches anyObject];
     startPoint = [touch previousLocationInView:self.superview];
+    
+    isNeedChangeStartPoint = YES;
+    _previousRotateDirection = unknowDirection;
 }
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -57,6 +62,7 @@
     CGPoint curPoint=[touch locationInView:self.superview];
     float angle=[self getAngleWithOrginPoint:self.center PointX:prePoint PointY:curPoint];
     
+    ///转动view
     CATransform3D transform=self.layer.transform;
     if (prePoint.y<self.center.y) {
         transform=CATransform3DRotate(transform, angle, 0, 0, 1);
@@ -66,35 +72,39 @@
     }
     self.layer.transform=transform;
     
-    RotateDirection direction = [self getRotateDirectionFromPointX:prePoint toPointY:curPoint];
-    if (direction != self.previousRotateDirection) {///方向改变了
-        if (self.delegate && [self.delegate respondsToSelector:@selector(turntableView:didChangeRotateDirection:)]) {
-            [self.delegate turntableView:self didChangeRotateDirection:direction];
+    
+    RotateDirection direction = [self getRotateDirectionFromPointX:prePoint toPointY:curPoint];///获取旋转方向
+    
+    if (direction != self.previousRotateDirection) {
+        if (self.previousRotateDirection != unknowDirection && isNeedChangeStartPoint) {
+            startPoint = prePoint;
+            isNeedChangeStartPoint = NO;
+            DEBUGLog(@"Change start point");
+        }
+        float radian = [self getAngleWithOrginPoint:self.center PointX:curPoint PointY:startPoint];
+        DEBUGLog(@"angle: %f", fabs(radian));
+        if (fabs(radian) >= 10*M_PI/180.0) {///判断旋转的角度是否大于等于3°（小于3°忽略）
+            DEBUGLog(@"callback...");
+            if (self.delegate && [self.delegate respondsToSelector:@selector(turntableView:didChangeRotateDirection:)]) {
+                [self.delegate turntableView:self didChangeRotateDirection:direction];
+            }
+            _previousRotateDirection = direction;
+            isNeedChangeStartPoint = YES;
         }
     }
-    
-//    if (self.delegate && [self.delegate respondsToSelector:@selector(turntableViewDidRotate:byRotateDirection:)]) {
-//        
-//        [self.delegate turntableViewDidRotate:self byRotateDirection:direction];
-//    }
-    
-    _previousRotateDirection = direction;
-    
 }
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesEnded:touches withEvent:event];
+//    [super touchesEnded:touches withEvent:event];
+//    
+//    UITouch * touch=[touches anyObject];
+//    endPoint = [touch previousLocationInView:self.superview];
     
-    UITouch * touch=[touches anyObject];
-    endPoint = [touch previousLocationInView:self.superview];
     
-    _previousRotateDirection = unknowDirection;
-    
+
     if (self.delegate && [self.delegate respondsToSelector:@selector(turntableViewDidStopRotate:)]) {
         [self.delegate turntableViewDidStopRotate:self];
     }
-    
-    [self getRotateDirectionFromPointX:startPoint toPointY:endPoint];
 }
 
 //用反余弦函数求角
@@ -112,6 +122,8 @@
     float yToOrgin=[self getDistanceFromPointX:aPointY toPointY:aOrginPoint];
     float yDistanceOnX=aPointY.x-aOrginPoint.x;
     float yAngle=acos(yDistanceOnX/yToOrgin);
+    
+    
     float angle=xAngle-yAngle;
 
     return angle;

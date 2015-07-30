@@ -207,6 +207,9 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 - (void)syncData
 {
     DEBUGLog(@"%s",__FUNCTION__);
+    if (self.wmsBleControl.isConnected) {
+        [self.wmsBleControl.settingProfile adjustDate:[NSDate systemDate] completion:^(BOOL isSuccess) {}];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
 }
 
