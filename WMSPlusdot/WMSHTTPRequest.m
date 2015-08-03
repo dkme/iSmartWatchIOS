@@ -16,7 +16,7 @@
 #define URL_REQUEST_FIRMWARE_VERSION    @"http://www.youduoyun.com/api/firmwares/version?device_id=180"
 ///P3
 #define URL_P3_SERVERS_ADDRESS          @"http://www.guogee.com/plusdot/"
-#define URL_SERVERS_UPDATE_DESCRIBE_FILE_NAME   @"updateDescribe.json"
+#define URL_SERVERS_UPDATE_DESCRIBE_FILE_NAME   @"updateDescribe.plist"
 
 #define REQUEST_TIME_INTERVAL   5.0
 
@@ -165,17 +165,17 @@ static inline NSString* UTF8Encoding(NSString *url);
     NSString *urlString = UTF8Encoding([URL_P3_SERVERS_ADDRESS stringByAppendingString:URL_SERVERS_UPDATE_DESCRIBE_FILE_NAME]);
     
     ///读取.plist文件
-//    NSDictionary *data = [[NSDictionary alloc] initWithContentsOfURL:[NSURL URLWithString:urlString]];
-//    return data;
+    NSDictionary *data = [[NSDictionary alloc] initWithContentsOfURL:[NSURL URLWithString:urlString]];
+    return data;
     
-    ///读取.json文件
-    //Json数据
-    NSData *readData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
-    //==JsonObject
-    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:readData
-                                                               options:NSJSONReadingAllowFragments
-                                                                 error:nil];
-    return jsonObject;
+//    ///读取.json文件
+//    //Json数据
+//    NSData *readData = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]];
+//    //==JsonObject
+//    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:readData
+//                                                               options:NSJSONReadingAllowFragments
+//                                                                 error:nil];
+//    return jsonObject;
 }
 
 + (void)downloadFirmwareUpdateFileStrURL:(NSString *)strURL

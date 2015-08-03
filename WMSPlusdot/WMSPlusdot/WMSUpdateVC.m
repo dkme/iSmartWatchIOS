@@ -75,7 +75,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
 }
 - (void)setupTextView
 {
-    NSString *txt = [NSString stringWithFormat:@"%@(v%.02f):\n     %@",NSLocalizedString(@"更新说明",nil),self.updateVersion,self.updateDescribe];
+    NSString *txt = [NSString stringWithFormat:@"%@(v%.02f):\n%@",NSLocalizedString(@"更新说明",nil),self.updateVersion,self.updateDescribe];
     self.textView.backgroundColor = [UIColor whiteColor];
     self.textView.text = txt;
     self.textView.editable = NO;
