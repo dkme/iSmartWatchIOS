@@ -163,6 +163,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     
     NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_LOSE_UUID]];
     NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
+    
     [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options completion:^(NSArray *peripherals) {
         //排除重复的设备
         LGPeripheral *oldObj = nil;
@@ -184,7 +185,14 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             aCallback(scannedPeripheral);
         }
     }];
-    [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
+    NSArray *retrievePeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
+    if (retrievePeripherals && retrievePeripherals.count > 0) {
+        [scannedPeripheral addObjectsFromArray:retrievePeripherals];
+        if (aCallback) {
+            aCallback(scannedPeripheral);
+        }
+    }
+    
 }
 
 - (void)stopScanForPeripherals

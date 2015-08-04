@@ -190,10 +190,10 @@ NSString * const kConnectionMissingErrorMessage = @"BLE Device is not connected"
         __strong LGPeripheral *strongSelf = weakSelf;
         if (strongSelf.connectionBlock) {
             // Delivering connection timeout
-            strongSelf.connectionBlock([self connectionErrorWithCode:kConnectionTimeoutErrorCode
+            strongSelf.connectionBlock([strongSelf connectionErrorWithCode:kConnectionTimeoutErrorCode
                                                              message:kConnectionTimeoutErrorMessage]);
         }
-        self.connectionBlock = nil;
+        strongSelf.connectionBlock = nil;
     }];
 }
 

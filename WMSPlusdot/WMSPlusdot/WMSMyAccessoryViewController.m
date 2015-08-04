@@ -247,18 +247,23 @@ NSString* const WMSUnBindAccessorySuccess =
 //                    break;
 //            }
 //        }];
-        WeakObj(bleControl, weakBleControl);
-        [bleControl unbindDevice:^(BOOL isSuccess) {
-            if (isSuccess) {
-                StrongObj(weakBleControl, strongBleControl);
-                if (strongBleControl) {
-                    [strongBleControl disconnect:^(BOOL success) {
-                        [self showUnBindTip:success];
-                    }];
-                }
-            } else {
-                [self showUnBindTip:NO];
-            }
+        
+//        WeakObj(bleControl, weakBleControl);
+//        [bleControl unbindDevice:^(BOOL isSuccess) {
+//            if (isSuccess) {
+//                StrongObj(weakBleControl, strongBleControl);
+//                if (strongBleControl) {
+//                    [strongBleControl disconnect:^(BOOL success) {
+//                        [self showUnBindTip:success];
+//                    }];
+//                }
+//            } else {
+//                [self showUnBindTip:NO];
+//            }
+//        }];
+        
+        [bleControl disconnect:^(BOOL success) {
+            [self showUnBindTip:success];
         }];
     }
 }

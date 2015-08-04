@@ -89,6 +89,28 @@ static const int            MAX_RSSI                = -75;
 }
 
 #pragma mark - Methods
+- (void)bindingPeripheral
+{
+    NSArray *array = [WMSFilter descendingOrderPeripheralsWithSignal:self.listData];
+    [self setListData:array];
+    
+    if (!self.listData || self.listData.count==0) {
+        return ;
+    }
+    LGPeripheral *peripheral = self.listData[0];
+    if (!peripheral) {
+        return ;
+    }
+    NSInteger RSSI = peripheral.RSSI;
+    if (RSSI >= MAX_RSSI) {
+        if ([self.bleControl isScanning]) {
+            [self.bleControl stopScanForPeripherals];
+        }
+        [self.bleControl connect:peripheral];
+        [self stopRefresh];
+        self.bindView.textView.text = NSLocalizedString(@"请稍等，正在绑定配件...", nil);
+    }
+}
 - (void)continueBinding
 {
     [self scanPeripheral];
@@ -200,13 +222,19 @@ static const int            MAX_RSSI                = -75;
     [self.bleControl scanForPeripheralsByInterval:SCAN_TIME_INTERVAL completion:^(NSArray *peripherals)
      {
          StrongObj(weakSelf, strongSelf);
-         if (strongSelf.bleControl.isScanning) {
+         if (!strongSelf.bleControl.isScanning) {///扫描结束
              NSArray *array = [WMSFilter filterForPeripherals:peripherals withType:strongSelf.generation];
-             [strongSelf setListData:array];
+             if (array && array.count>0) {
+                 [strongSelf setListData:array];
+                 [strongSelf bindingPeripheral];
+             } else {
+                 [strongSelf continueBinding];
+             }
+             
          }
          
      }];
-    [self startRefresh];
+//    [self startRefresh];
 }
 
 //Handle
@@ -233,10 +261,14 @@ static const int            MAX_RSSI                = -75;
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
-    DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
-    
-    [self stopRefresh];
-    DEBUGLog(@"[LINE:%d] stop refresh",__LINE__);
+//    DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
+//    
+//    if (self.bleControl.isConnecting || self.bleControl.isConnected) {
+//        [self stopRefresh];
+//        DEBUGLog(@"[LINE:%d] stop refresh",__LINE__);
+//    } else {
+//        [self continueBinding];
+//    }
 }
 
 #pragma mark - WMSBindingViewDelegate

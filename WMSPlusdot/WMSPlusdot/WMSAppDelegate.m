@@ -284,10 +284,10 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
     //只有绑定了配件，在断开后才去重连
-    if ([WMSMyAccessory isBindAccessory])
-    {
-        [self scanAndConnectPeripheral:nil];
-    }
+//    if ([WMSMyAccessory isBindAccessory])
+//    {
+//        [self scanAndConnectPeripheral:nil];
+//    }
 }
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
@@ -297,6 +297,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 }
 - (void)handleUpdatedBLEState:(NSNotification *)notification
 {
+    DEBUGLog(@"ble state: %d", self.wmsBleControl.bleState);
     switch ([self.wmsBleControl bleState]) {
         case WMSBleStateResetting:
         case WMSBleStatePoweredOff:
@@ -332,8 +333,13 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     if (peripheral) {
         [self.wmsBleControl connect:peripheral];
     } else {
+        WeakObj(self, weakSelf);
         [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion:^(NSArray *peripherals)
          {
+             StrongObj(weakSelf, strongSelf);
+             if (!strongSelf.wmsBleControl.isScanning) {///扫描结束
+                 return ;
+             }
              LGPeripheral *p = [peripherals lastObject];
              if ([WMSMyAccessory isBindAccessory]) {
                  NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
