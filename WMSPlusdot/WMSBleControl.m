@@ -484,7 +484,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
         {
             [self.settingProfile adjustDate:[NSDate systemDate] completion:^(BOOL isSuccess) {
                 StrongObj(weakSelf, strongSelf);
-                [strongSelf readDeviceInfoWithIndex:index+1 completion:aCallback];
+                [strongSelf readDeviceInfoWithIndex:index+2 completion:aCallback];///跳过读取固件版本
             }];
             break;
         }
@@ -502,7 +502,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             [self.deviceProfile readDeviceSoftwareVersion:^(float version) {
                 model.softwareVersion = version;
                 StrongObj(weakSelf, strongSelf);
-                [strongSelf readDeviceInfoWithIndex:index+1 completion:aCallback];
+                [strongSelf readDeviceInfoWithIndex:index+10 completion:aCallback];///跳过读取设备地址
             }];
             break;
         }
