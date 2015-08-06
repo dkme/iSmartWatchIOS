@@ -96,18 +96,18 @@ typedef void(^operationCallback)(void);
 
 @interface WMSBleControl : NSObject
 
-@property (nonatomic, readonly) LGPeripheral *connectedPeripheral;
-@property (nonatomic, readonly) BOOL isScanning;
-@property (nonatomic, readonly) BOOL isConnecting;
-@property (nonatomic, readonly) BOOL isConnected;
-@property (nonatomic, readonly) WMSBleState bleState;
+@property (nonatomic, readonly) LGPeripheral                   *connectedPeripheral;
+@property (nonatomic, readonly, getter = isScanning)      BOOL scanning;
+@property (nonatomic, readonly, getter = isConnecting)    BOOL connecting;
+@property (nonatomic, readonly, getter = isConnected)     BOOL connected;
+@property (nonatomic, readonly) WMSBleState                    bleState;
 
-@property (nonatomic, readonly) WMSSettingProfile   *settingProfile;
-@property (nonatomic, readonly) WMSDeviceProfile    *deviceProfile;
-@property (nonatomic, readonly) WMSSyncProfile      *syncProfile;
-@property (nonatomic, readonly) WMSTestingProfile   *testingProfile;
+@property (nonatomic, readonly) WMSSettingProfile              *settingProfile;
+@property (nonatomic, readonly) WMSDeviceProfile               *deviceProfile;
+@property (nonatomic, readonly) WMSSyncProfile                 *syncProfile;
+@property (nonatomic, readonly) WMSTestingProfile              *testingProfile;
 
-@property (nonatomic, readonly) WMSStackManager *stackManager;
+@property (nonatomic, readonly) WMSStackManager                *stackManager;
 
 
 - (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval

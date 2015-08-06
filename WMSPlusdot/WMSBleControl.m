@@ -34,21 +34,21 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
 
 @interface WMSBleControl ()
 
-@property (nonatomic, strong) LGCentralManager *centralManager;
-@property (nonatomic, strong) LGPeripheral *connectingPeripheral;//用于在连接过程中去断开连接
+@property (nonatomic, strong) LGCentralManager                      *centralManager;
+@property (nonatomic, strong) LGPeripheral                          *connectingPeripheral;//用于在连接过程中去断开连接
 
-@property (nonatomic, strong) NSArray *specificServiceUUIDs;
-@property (nonatomic, strong) NSArray *specificCharacteristicUUIDs;
+@property (nonatomic, strong) NSArray                               *specificServiceUUIDs;
+@property (nonatomic, strong) NSArray                               *specificCharacteristicUUIDs;
 
-@property (nonatomic, strong) NSMutableArray *characteristicArray;
+@property (nonatomic, strong) NSMutableArray                        *characteristicArray;
 
 //characteristic
-@property (nonatomic, strong) LGCharacteristic *serialPortReadCharacteristic;
-@property (nonatomic, strong) LGCharacteristic *serialPortWriteCharacteristic;
+@property (nonatomic, strong) LGCharacteristic                      *serialPortReadCharacteristic;
+@property (nonatomic, strong) LGCharacteristic                      *serialPortWriteCharacteristic;
 
 
 //Block
-@property (nonatomic, copy) WMSBleControlScanedPeripheralCallback scanedBlock;
+@property (nonatomic, copy  ) WMSBleControlScanedPeripheralCallback scanedBlock;
 
 @end
 
@@ -129,7 +129,8 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     
     _stackManager = [[WMSStackManager alloc] init];
     
-    _isConnecting = NO;
+    _connecting = NO;
+    //_connected  = NO;
     findCharacteristicCount = 0;
 }
 
@@ -202,7 +203,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
 
 - (void)connect:(LGPeripheral *)peripheral
 {    
-    _isConnecting = YES;
+    _connecting = YES;
     
     if (self.isScanning) {
         [self stopScanForPeripherals];
@@ -366,7 +367,12 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
                 //初始化Profile
                 [self connectedConfig:peripheral];
                 
+//                WeakObj(self, weakSelf);
                 [self readDeviceInfoWithIndex:0 completion:^{
+                    ///此时才能将_connected置为YES
+//                    StrongObj(weakSelf, strongSelf);
+//                    strongSelf->_connected = YES;
+                    
                     //发送连接成功通知
                     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
                 }];
@@ -378,7 +384,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
 - (void)connectedConfig:(LGPeripheral *)peripheral
 {
     self.connectingPeripheral = nil;
-    _isConnecting = NO;
+    _connecting = NO;
     _connectedPeripheral = peripheral;
     
     _serialPortReadCharacteristic = [self findCharactWithUUID:CHARACTERISTIC_SERIAL_PORT_READ_UUID];
@@ -403,7 +409,8 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     _syncProfile = nil;
     _testingProfile = nil;
     
-    _isConnecting = NO;
+    _connecting = NO;
+    //_connected  = NO;
     findCharacteristicCount = 0;
     
     [self setScanedBlock:nil];

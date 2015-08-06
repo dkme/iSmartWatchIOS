@@ -59,6 +59,8 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 @property (strong, nonatomic) WMSBleControl *bleControl;
 @property (assign, nonatomic) BOOL isHasBeenSyncData;//标志是否已经同步过运动数据
 @property (strong, nonatomic) NSMutableArray *everydaySportDataArray;
+
+@property (assign, nonatomic) BOOL isCanSyncData;
 @end
 
 @implementation WMSContentViewController
@@ -188,7 +190,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
     self.navigationController.navigationBarHidden = YES;
     
     self.isVisible = YES;
-    if (self.isNeedUpdate && self.bleControl.isConnected) {
+    if (self.isNeedUpdate && /*self.bleControl.isConnected*/self.isCanSyncData) {
         [self startSyncSportData];
     }
     self.isNeedUpdate = NO;
@@ -489,7 +491,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 #pragma mark - Data
 - (void)syncData
 {
-    if (![self.bleControl isConnected]) {
+    if (/*![self.bleControl isConnected]*/!self.isCanSyncData) {
         WeakObj(self, weakSelf);
         [self.syncDataView startAnimating];
         [self.hud showAnimated:YES whileExecutingBlock:^{
@@ -656,7 +658,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
-    
+    self.isCanSyncData = YES;
     [self showTipView:NO];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
@@ -671,6 +673,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
+    self.isCanSyncData = NO;
     self.isNeedSyncWhenConnected = NO;
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
