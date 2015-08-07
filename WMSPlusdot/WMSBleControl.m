@@ -195,6 +195,48 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     }
     
 }
+- (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
+                         completion2:(void(^)(LGPeripheral *peripheral,BOOL isConnected))aCallback
+{
+    if ([self.centralManager isScanning]) {
+        return;
+    }
+    NSMutableArray *scannedPeripheral = [NSMutableArray new];
+    
+    NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_LOSE_UUID]];
+    NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
+    
+    [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options completion:^(NSArray *peripherals) {
+        //排除重复的设备
+//        LGPeripheral *oldObj = nil;
+        LGPeripheral *newObj = [peripherals lastObject];
+//        NSString *identifier = newObj.UUIDString;
+//        for (LGPeripheral *p in scannedPeripheral) {
+//            if ([p.UUIDString isEqualToString:identifier]) {
+//                oldObj = p;
+//                break ;
+//            }
+//        }
+//        if (oldObj) {
+//            [scannedPeripheral removeObject:oldObj];
+//        }
+//        if (newObj) {
+//            [scannedPeripheral addObject:newObj];
+//        }
+        if (aCallback) {
+            aCallback(newObj, NO);
+        }
+    }];
+    NSArray *retrievePeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
+    if (retrievePeripherals && retrievePeripherals.count > 0) {
+//        [scannedPeripheral addObjectsFromArray:retrievePeripherals];
+        for (LGPeripheral *pObj in retrievePeripherals) {
+            if (aCallback) {
+                aCallback(pObj, YES);
+            }
+        }
+    }
+}
 
 - (void)stopScanForPeripherals
 {

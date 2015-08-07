@@ -46,21 +46,21 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 
 @interface WMSContentViewController ()<WMSSyncDataViewDelegate>
 @property (strong, nonatomic) WMSSyncDataView *syncDataView;
-@property (strong, nonatomic) UIView *tipView;
-@property (strong, nonatomic) MBProgressHUD *hud;
-@property (strong, nonatomic) UIAlertView *alertView;
-@property (strong, nonatomic) UIImageView *imageView;
-@property (strong, nonatomic) NSDate *showDate;
+@property (strong, nonatomic) UIView          *tipView;
+@property (strong, nonatomic) MBProgressHUD   *hud;
+@property (strong, nonatomic) UIAlertView     *alertView;
+@property (strong, nonatomic) UIImageView     *imageView;
+@property (strong, nonatomic) NSDate          *showDate;
 
-@property (assign, nonatomic) BOOL isVisible;//是否可见（当前显示的是否是该控制器）
-@property (assign, nonatomic) BOOL isNeedUpdate;//是否需要更新界面
-@property (assign, nonatomic) BOOL isNeedSyncWhenConnected;//在连接成功时，是否需要同步，默认为YES
+@property (assign, nonatomic) BOOL            isVisible;//是否可见（当前显示的是否是该控制器）
+@property (assign, nonatomic) BOOL            isNeedUpdate;//是否需要更新界面
+@property (assign, nonatomic) BOOL            isNeedSyncWhenConnected;//在连接成功时，是否需要同步，默认为YES
 
-@property (strong, nonatomic) WMSBleControl *bleControl;
-@property (assign, nonatomic) BOOL isHasBeenSyncData;//标志是否已经同步过运动数据
-@property (strong, nonatomic) NSMutableArray *everydaySportDataArray;
+@property (strong, nonatomic) WMSBleControl   *bleControl;
+@property (assign, nonatomic) BOOL            isHasBeenSyncData;//标志是否已经同步过运动数据
+@property (strong, nonatomic) NSMutableArray  *everydaySportDataArray;
 
-@property (assign, nonatomic) BOOL isCanSyncData;
+@property (assign, nonatomic) BOOL            isCanSyncData;
 @end
 
 @implementation WMSContentViewController
@@ -658,7 +658,8 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
-    self.isCanSyncData = YES;
+    [self performSelector:@selector(setIsCanSyncDataToYES) withObject:nil afterDelay:1.0];
+    //self.isCanSyncData = YES;
     [self showTipView:NO];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
@@ -678,6 +679,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
     
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setIsCanSyncDataToYES) object:nil];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
     [self performSelector:@selector(updateStatusToDisConnect) withObject:nil afterDelay:UPDATE_STATUS_AFTER_DELAY];
     
@@ -726,6 +728,11 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
     [self.syncDataView stopAnimating];
     
     [self syncUserInfo];
+}
+
+- (void)setIsCanSyncDataToYES
+{
+    self.isCanSyncData = YES;
 }
 
 #pragma mark - WMSSyncDataViewDelegate

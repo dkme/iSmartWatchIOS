@@ -330,25 +330,39 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     if (_isStartDFU==YES) {
         return ;
     }
-    if (peripheral) {
+    if (peripheral && NO) {
         [self.wmsBleControl connect:peripheral];
     } else {
         WeakObj(self, weakSelf);
-        [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion:^(NSArray *peripherals)
-         {
-             StrongObj(weakSelf, strongSelf);
-             if (!strongSelf.wmsBleControl.isScanning) {///扫描结束
-                 return ;
-             }
-             LGPeripheral *p = [peripherals lastObject];
-             if ([WMSMyAccessory isBindAccessory]) {
-                 NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
-                 if ([p.UUIDString isEqualToString:uuid])
-                 {
-                     [self.wmsBleControl connect:p];
-                 }
-             }
-         }];
+//        [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion:^(NSArray *peripherals)
+//         {
+//             StrongObj(weakSelf, strongSelf);
+//             if (!strongSelf.wmsBleControl.isScanning) {///扫描结束
+//                 return ;
+//             }
+//             LGPeripheral *p = [peripherals lastObject];
+//             if ([WMSMyAccessory isBindAccessory]) {
+//                 NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
+//                 if ([p.UUIDString isEqualToString:uuid])
+//                 {
+//                     [self.wmsBleControl connect:p];
+//                 }
+//             }
+//         }];
+        [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion2:^(LGPeripheral *peripheral, BOOL isConnected) {
+            StrongObj(weakSelf, strongSelf);
+            if (!strongSelf.wmsBleControl.isScanning) {///扫描结束
+                return ;
+            }
+            if ([WMSMyAccessory isBindAccessory]) {
+                NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
+                if ([peripheral.UUIDString isEqualToString:uuid]    &&
+                    isConnected)
+                {
+                    [self.wmsBleControl connect:peripheral];
+                }
+            }
+        }];
     }
 }
 

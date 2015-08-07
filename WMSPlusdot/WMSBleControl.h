@@ -112,6 +112,8 @@ typedef void(^operationCallback)(void);
 
 - (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
                           completion:(WMSBleControlScanedPeripheralCallback)aCallback;
+- (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
+                         completion2:(void(^)(LGPeripheral *peripheral,BOOL isConnected))aCallback;
 
 - (void)stopScanForPeripherals;
 
