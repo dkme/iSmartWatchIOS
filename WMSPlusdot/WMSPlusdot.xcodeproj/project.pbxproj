@@ -321,6 +321,7 @@
 		F7CAE8101B5D05BC0057300C /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7CAE80E1B5D05BC0057300C /* CheckTimeViewController.xib */; };
 		F7CAE8141B60E2F20057300C /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE8131B60E2F20057300C /* RFSegmentView.m */; };
 		F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */; };
+		F7E64D561B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E64D551B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m */; };
 		F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */; };
 		F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF31B281704001C0CDD /* WMSStackManager.m */; };
 /* End PBXBuildFile section */
@@ -807,6 +808,8 @@
 		F7CAE8131B60E2F20057300C /* RFSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFSegmentView.m; sourceTree = "<group>"; };
 		F7CF059E1B1DA0FB00038C9A /* WMSLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLocationManager.h; sourceTree = "<group>"; };
 		F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationManager.m; sourceTree = "<group>"; };
+		F7E64D541B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTimeZone+TimeDifference.h"; path = "WMSPlusdot/NSTimeZone+TimeDifference.h"; sourceTree = "<group>"; };
+		F7E64D551B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTimeZone+TimeDifference.m"; path = "WMSPlusdot/NSTimeZone+TimeDifference.m"; sourceTree = "<group>"; };
 		F7E99FEF1B26F8D3001C0CDD /* WMSSyncProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncProfile.h; sourceTree = "<group>"; };
 		F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSyncProfile.m; sourceTree = "<group>"; };
 		F7E99FF21B281704001C0CDD /* WMSStackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSStackManager.h; sourceTree = "<group>"; };
@@ -1009,8 +1012,8 @@
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 				232471B71A50FD0300F70565 /* UIPickerView+Display */,
 				23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */,
-				F7CAE8091B5CDB050057300C /* UIViewController+Sync.h */,
-				F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */,
+				F7E64D571B7C37380021ACD7 /* UIViewController+Sync */,
+				F7E64D581B7C374C0021ACD7 /* NSTimeZone+TimeDifference */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2118,6 +2121,24 @@
 			name = "protocol-c";
 			sourceTree = "<group>";
 		};
+		F7E64D571B7C37380021ACD7 /* UIViewController+Sync */ = {
+			isa = PBXGroup;
+			children = (
+				F7CAE8091B5CDB050057300C /* UIViewController+Sync.h */,
+				F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */,
+			);
+			name = "UIViewController+Sync";
+			sourceTree = "<group>";
+		};
+		F7E64D581B7C374C0021ACD7 /* NSTimeZone+TimeDifference */ = {
+			isa = PBXGroup;
+			children = (
+				F7E64D541B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.h */,
+				F7E64D551B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m */,
+			);
+			name = "NSTimeZone+TimeDifference";
+			sourceTree = "<group>";
+		};
 		F7F6AD5F1B302BFE00F3FC8E /* 定位城市视图 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2523,6 +2544,7 @@
 				2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */,
 				23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */,
 				23A153291A36EFAA0026D741 /* WMSUpdateVC.m in Sources */,
+				F7E64D561B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m in Sources */,
 				2333AB051A64C28600DBA846 /* UIImage+Color.m in Sources */,
 				2316508219AB15510066C301 /* WMSLeftViewCell.m in Sources */,
 				23D7CF0719B5C57D00DFA678 /* WMSBleControl.m in Sources */,
