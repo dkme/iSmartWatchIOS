@@ -26,6 +26,7 @@
 #import "WMSMyAccessory.h"
 #import "WMSDeviceModel.h"
 #import "WMSDeviceModel+Configure.h"
+#import "NSTimeZone+TimeDifference.h"
 
 #import "GGAudioTool.h"
 #import "WMSSoundOperation.h"
@@ -38,6 +39,8 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 @interface WMSAppDelegate ()<RESideMenuDelegate>
 
 @property (nonatomic, strong) WMSSoundOperation *soundOperation;
+
+@property (nonatomic, assign, getter=isAdjustTimeWhenConnected) BOOL adjustTimeWhenConnected;///Time zone
 
 @end
 
@@ -120,6 +123,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     [self setupReSyncDataTimer];
     [self setupAppAppearance];
     [self registerForNotifications];
+    [self checkCurrentTimeZone];
     if ([WMSHelper isFirstLaunchApp]) {
         self.window.rootViewController = [WMSGuideVC guide];
         [self.window makeKeyAndVisible];
@@ -181,16 +185,16 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         navBar.barStyle = UIBarStyleBlack;
         navBar.translucent = YES;
     } else {
-//        navBar.barStyle = UIBarStyleBlackTranslucent;
-//        navBar.translucent = YES;
+        //        navBar.barStyle = UIBarStyleBlackTranslucent;
+        //        navBar.translucent = YES;
     }
     
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName:[UIColor whiteColor],
                                  NSFontAttributeName:Font_DINCondensed(20.f),
-                                  };
+                                 };
     [navBar setTitleTextAttributes:attributes];
-
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 //#pragma mark - 后台计时，在00:00发送同步命令
@@ -198,7 +202,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 {
     NSDate *today = [NSDate systemDate];
     NSDate *tomorrow = [NSDate dateWithTimeInterval:24*60*60 sinceDate:today];
-    NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d 00:00:00",[NSDate yearOfDate:tomorrow],[NSDate monthOfDate:tomorrow],[NSDate dayOfDate:tomorrow]];
+    NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d 00:00:00",(unsigned int)[NSDate yearOfDate:tomorrow],(unsigned int)[NSDate monthOfDate:tomorrow],(unsigned int)[NSDate dayOfDate:tomorrow]];
     NSDate *targetDate = [NSDate dateFromString:strDate format:@"yyyy-MM-dd HH:mm:ss"];
     NSTimeInterval interval = [targetDate timeIntervalSinceDate:today];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncData) object:nil];
@@ -237,9 +241,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 {
     DEBUGLog(@"communication .....");
     //发送一个命令，保持蓝牙连接
-//    [self.wmsBleControl.deviceProfile readDeviceTimeWithCompletion:^(NSString *dateString, BOOL success) {
-//        DEBUGLog(@"read device time %@",dateString);
-//    }];
+    [self.wmsBleControl.deviceProfile readDeviceSoftwareVersion:NULL];
     
     if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 61.0) {
         [[GGAudioTool sharedInstance] playSilentSound];
@@ -259,6 +261,8 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidStartDFU:) name:WMSUpdateVCStartDFU object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidEndDFU:) name:WMSUpdateVCEndDFU object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSystemTimeZoneDidChange:) name:NSSystemTimeZoneDidChangeNotification object:nil];///系统时区改变时的通知
 }
 - (void)unregisterFromNotifications
 {
@@ -267,7 +271,9 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 #pragma mark - Handle
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
-    [self connectedConfigure];
+    if ([WMSMyAccessory isBindAccessory]) {
+        [self connectedConfigure];
+    }
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
@@ -278,16 +284,14 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         LGPeripheral *p = (LGPeripheral *)notification.object;
         [self scanAndConnectPeripheral:p];
     }
-    
-    
 }
 - (void)handleFailedConnectPeripheral:(NSNotification *)notification
 {
     //只有绑定了配件，在断开后才去重连
-//    if ([WMSMyAccessory isBindAccessory])
-//    {
-//        [self scanAndConnectPeripheral:nil];
-//    }
+    if ([WMSMyAccessory isBindAccessory])
+    {
+        [self scanAndConnectPeripheral:nil];
+    }
 }
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
@@ -297,7 +301,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 }
 - (void)handleUpdatedBLEState:(NSNotification *)notification
 {
-    DEBUGLog(@"ble state: %d", self.wmsBleControl.bleState);
+    DEBUGLog(@"ble state: %d", (int)self.wmsBleControl.bleState);
     switch ([self.wmsBleControl bleState]) {
         case WMSBleStateResetting:
         case WMSBleStatePoweredOff:
@@ -330,56 +334,30 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     if (_isStartDFU==YES) {
         return ;
     }
-    if (peripheral) {
+    if (peripheral /*&& [self.wmsBleControl isHasBeenSystemConnectedPeripheral:peripheral]*/) {
         [self.wmsBleControl connect:peripheral];
     } else {
         WeakObj(self, weakSelf);
-        [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL completion:^(NSArray *peripherals)
-         {
-             StrongObj(weakSelf, strongSelf);
-             if (!strongSelf.wmsBleControl.isScanning) {///扫描结束
-                 return ;
-             }
-             LGPeripheral *p = [peripherals lastObject];
-             if ([WMSMyAccessory isBindAccessory]) {
-                 NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
-                 if ([p.UUIDString isEqualToString:uuid])
-                 {
-                     [self.wmsBleControl connect:p];
-                 }
-             }
-         }];
+        [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL scanning:^(LGPeripheral *peripheral) {
+            StrongObj(weakSelf, strongSelf);
+            //BOOL hasBeenConnected = [strongSelf.wmsBleControl isHasBeenSystemConnectedPeripheral:peripheral];
+            if ([WMSMyAccessory isBindAccessory] /*&& hasBeenConnected*/) {
+                NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
+                if ([peripheral.UUIDString isEqualToString:uuid])
+                {
+                    [strongSelf.wmsBleControl connect:peripheral];
+                }
+            }
+        } completion:NULL];
     }
 }
 
 - (void)connectedConfigure
 {
-    if (![WMSMyAccessory isBindAccessory]) {
-        return ;
+    if (self.isAdjustTimeWhenConnected) {
+        [self adjustWatchTimeWhenSystemTimeZoneDidChange];
     }
-    
-    [self checkDeviceBattery];
 }
-
-- (void)checkDeviceBattery
-{
-    static int checkCount = 0;
-    if (checkCount >= 1) {
-        return ;
-    }
-//    if ([WMSDeviceModel deviceModel].version < FIRMWARE_ADD_BATTERY_INFO) {
-//        return ;
-//    }
-//    [WMSDeviceModel readDeviceBatteryInfo:self.wmsBleControl completion:^(float voltage) {
-//        DEBUGLog(@"device voltage:%f",voltage);
-//        if (voltage <= WATCH_LOW_VOLTAGE) {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"提示", nil) message:NSLocalizedString(@"手表电量过低，请尽快更换电池！", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"知道了",nil) otherButtonTitles:nil];
-//            [alert show];
-//            checkCount ++;
-//        }else{}
-//    }];
-}
-
 
 #pragma mark - DFU
 - (void)peripheralDidStartDFU:(NSNotification *)notification
@@ -414,8 +392,60 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     [self.soundOperation playSoundWithFile:filePath duration:-1];
 }
 
+#pragma mark - Time zone
+#define KPreviousTimeZoneName       @"com.WMSAppDelegate.previousTimeZoneName"
+#define CLOCK_CYCLE                 12
+#define CLOCK_HALF_CYCLE            6
+- (void)handleSystemTimeZoneDidChange:(NSNotification *)notification
+{
+    [self adjustWatchTimeWhenSystemTimeZoneDidChange];
+}
 
+- (void)adjustWatchTimeWhenSystemTimeZoneDidChange
+{
+    if (!self.wmsBleControl.isConnected) {
+        self.adjustTimeWhenConnected = YES;
+        return ;
+    }
+    self.adjustTimeWhenConnected = NO;
+    [NSTimeZone resetSystemTimeZone];
+    NSString *previousTimeZoneName = [[NSUserDefaults standardUserDefaults] objectForKey:KPreviousTimeZoneName];
+    if (!previousTimeZoneName) {
+        previousTimeZoneName = @"Asia/Shanghai";///默认为中国时区
+    }
+    NSTimeZone *curTimeZone = [NSTimeZone systemTimeZone];
+    NSTimeZone *previousTimeZone = [NSTimeZone timeZoneWithName:previousTimeZoneName];
+    NSInteger timeDifference = [curTimeZone timeDifferenceSinceTimeZone:previousTimeZone];
+    if (timeDifference%CLOCK_CYCLE == 0) {
+        return ;
+    }
+    NSInteger interval = 0;
+    ROTATE_DIRECTION direction = 0;
+    NSInteger abs_timeDifference = abs(((int)timeDifference%CLOCK_CYCLE));
+    if (abs_timeDifference > CLOCK_HALF_CYCLE) {
+        interval = CLOCK_CYCLE - abs_timeDifference;
+        direction = (timeDifference>0 ? DIRECTION_anticlockwise : DIRECTION_clockwise);
+    } else {
+        interval = abs_timeDifference;
+        direction = (timeDifference<0 ? DIRECTION_anticlockwise : DIRECTION_clockwise);
+    }
+    
+    [self.wmsBleControl.settingProfile roughAdjustmentTimeWithDirection:direction timeInterval:interval completion:NULL];
+    [[NSUserDefaults standardUserDefaults] setObject:curTimeZone.name forKey:KPreviousTimeZoneName];
+    DEBUGLog(@"%@调整%d个小时", (direction==DIRECTION_clockwise?@"顺时针":@"逆时针"), (int)interval);
+}
 
-
+- (void)checkCurrentTimeZone
+{
+    NSString *currentTimeZoneName = [[NSTimeZone systemTimeZone] name];
+    NSString *previousTimeZoneName = [[NSUserDefaults standardUserDefaults] objectForKey:KPreviousTimeZoneName];
+    if (!previousTimeZoneName) {
+        previousTimeZoneName = @"Asia/Shanghai";///默认为中国时区
+    }
+    if ([currentTimeZoneName isEqualToString:previousTimeZoneName]) {
+        return ;
+    }
+    [self adjustWatchTimeWhenSystemTimeZoneDidChange];
+}
 
 @end

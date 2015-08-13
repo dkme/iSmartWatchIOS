@@ -154,7 +154,13 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
 }
 
 #pragma mark - Public Methods
-- (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
+- (void)scanForPeripheralsByInterval:(NSTimeInterval)aScanInterval
+                          completion:(WMSBleControlScanedPeripheralCallback)aCallback
+{
+    [self scanForPeripheralsByInterval:aScanInterval scanning:nil completion:aCallback];
+}
+- (void)scanForPeripheralsByInterval:(NSTimeInterval)aScanInterval
+                            scanning:(void(^)(LGPeripheral *peripheral))aScanningCallback
                           completion:(WMSBleControlScanedPeripheralCallback)aCallback
 {
     if ([self.centralManager isScanning]) {
@@ -165,35 +171,27 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_LOSE_UUID]];
     NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
     
-    [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options completion:^(NSArray *peripherals) {
-        //排除重复的设备
-        LGPeripheral *oldObj = nil;
-        LGPeripheral *newObj = [peripherals lastObject];
-        NSString *identifier = newObj.UUIDString;
-        for (LGPeripheral *p in scannedPeripheral) {
-            if ([p.UUIDString isEqualToString:identifier]) {
-                oldObj = p;
-                break ;
-            }
+    NSArray *retrievePeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
+    if (aScanningCallback) {
+        for (LGPeripheral *peripheral in retrievePeripherals) {
+            aScanningCallback(peripheral);
         }
-        if (oldObj) {
-            [scannedPeripheral removeObject:oldObj];
+    }
+    
+    [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options scanning:^(LGPeripheral *peripheral) {
+        if (aScanningCallback) {
+            aScanningCallback(peripheral);
         }
-        if (newObj) {
-            [scannedPeripheral addObject:newObj];
+    } completion:^(NSArray *peripherals) {
+        [scannedPeripheral addObjectsFromArray:peripherals];
+        NSArray *retrievePeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
+        if (retrievePeripherals && retrievePeripherals.count > 0) {
+            [scannedPeripheral addObjectsFromArray:retrievePeripherals];
         }
         if (aCallback) {
             aCallback(scannedPeripheral);
         }
     }];
-    NSArray *retrievePeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
-    if (retrievePeripherals && retrievePeripherals.count > 0) {
-        [scannedPeripheral addObjectsFromArray:retrievePeripherals];
-        if (aCallback) {
-            aCallback(scannedPeripheral);
-        }
-    }
-    
 }
 
 - (void)stopScanForPeripherals
@@ -202,7 +200,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
 }
 
 - (void)connect:(LGPeripheral *)peripheral
-{    
+{
     _connecting = YES;
     
     if (self.isScanning) {
@@ -213,7 +211,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
                                              selector:@selector(connectPeripheralTimeout:)
                                                object:peripheral];
     [self performSelector:@selector(connectPeripheralTimeout:) withObject:peripheral afterDelay:CONNECT_PERIPHERAL_INTERVAL];
-
+    
     [self setConnectingPeripheral:peripheral];
     DEBUGLog(@"connecting peripheral %@",peripheral);
     [peripheral connectWithCompletion:^(NSError *error) {
@@ -230,26 +228,26 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             [self performSelector:@selector(discoverServicesTimeout:) withObject:peripheral afterDelay:DISCOVER_SERVICES_INTERVAL];
             
             [peripheral discoverServices:nil completion:^(NSArray *services, NSError *error)
-            {
-                DEBUGLog(@"发现服务");
-                [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                                         selector:@selector(discoverServicesTimeout:)
-                                                           object:peripheral];
-                
-                if (error) {
-                    DEBUGLog(@"[line:%d] DiscoverServices error",__LINE__);
-                    [self postNotificationConnectFailedForPeripheral:peripheral];
-                    return ;
-                }
-                
-                if ([self checkDiscoverServices:services] == NO) {
-                    DEBUGLog(@"[line:%d] checkDiscoverServices failed",__LINE__);
-                    [self postNotificationConnectFailedForPeripheral:peripheral];
-                    return ;
-                }
-                
-                [self discoverCharacteristics:services forPeripheral:peripheral];
-            }];
+             {
+                 DEBUGLog(@"发现服务");
+                 [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                                          selector:@selector(discoverServicesTimeout:)
+                                                            object:peripheral];
+                 
+                 if (error) {
+                     DEBUGLog(@"[line:%d] DiscoverServices error",__LINE__);
+                     [self postNotificationConnectFailedForPeripheral:peripheral];
+                     return ;
+                 }
+                 
+                 if ([self checkDiscoverServices:services] == NO) {
+                     DEBUGLog(@"[line:%d] checkDiscoverServices failed",__LINE__);
+                     [self postNotificationConnectFailedForPeripheral:peripheral];
+                     return ;
+                 }
+                 
+                 [self discoverCharacteristics:services forPeripheral:peripheral];
+             }];
         }
     }];
 }
@@ -285,6 +283,12 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             aCallback(YES);
         }
     }
+}
+
+- (BOOL)isHasBeenSystemConnectedPeripheral:(LGPeripheral *)peripheral
+{
+    NSArray *results = [self.centralManager retrievePeripheralsWithIdentifiers:@[peripheral.cbPeripheral.identifier]];
+    return (results.count>0 ? YES: NO);
 }
 
 #pragma mark - Peripheral operation
@@ -367,11 +371,11 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
                 //初始化Profile
                 [self connectedConfig:peripheral];
                 
-//                WeakObj(self, weakSelf);
+                //                WeakObj(self, weakSelf);
                 [self readDeviceInfoWithIndex:0 completion:^{
                     ///此时才能将_connected置为YES
-//                    StrongObj(weakSelf, strongSelf);
-//                    strongSelf->_connected = YES;
+                    //                    StrongObj(weakSelf, strongSelf);
+                    //                    strongSelf->_connected = YES;
                     
                     //发送连接成功通知
                     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
@@ -394,15 +398,15 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     _deviceProfile  = [[WMSDeviceProfile alloc] initWithBleControl:self];
     _syncProfile    = [[WMSSyncProfile alloc] initWithBleControl:self];
     _testingProfile = [[WMSTestingProfile alloc] initWithBleControl:self];
-
+    
     [self characteristic:self.serialPortReadCharacteristic enableNotify:YES withTimeID:TimeIDEnableNotifyForSerialPortReadCharacteristic];
 }
 
 - (void)disConnectedClearup
 {
     _connectedPeripheral = nil;
-//    _serialPortReadCharacteristic = nil;
-//    _serialPortWriteCharacteristic = nil;
+    //    _serialPortReadCharacteristic = nil;
+    //    _serialPortWriteCharacteristic = nil;
     
     _settingProfile = nil;
     _deviceProfile = nil;
@@ -473,7 +477,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     //判断外设是否已连接，若已连接则断开连接，但不发送断开连接的通知，而应发送连接失败的通知
     CBPeripheralState state = peripheral.cbPeripheral.state;
     if (CBPeripheralStateConnected == state) {
-        [peripheral disconnectWithCompletion:nil];
+        [peripheral disconnectWithCompletion:^(NSError *error) {}];///block不为NULL，断开连接时，LGPeripheral是不发送连接失败的通知的
     }
     [self disConnectedClearup];
     [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralConnectFailed object:peripheral userInfo:nil];
@@ -601,7 +605,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
         LGCharacteristic *charact = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_CHARACT];
         NSData *value = [timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_VALUE];
         BOOL isResponse = [[timer.userInfo objectForKey:KEY_TIMEOUT_USERINFO_IS_WRITE_RESPONSE] boolValue];
-        #warning 这里写的方式要与最初的保持一致
+#warning 这里写的方式要与最初的保持一致
         if (isResponse) {
             [charact writeValue:value completion:^(NSError *error) {}];
         } else {
@@ -664,7 +668,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     struct_parse_package s_pg = parse(package, PACKAGE_SIZE);
     Byte cmd = s_pg.cmd;
     Byte key = s_pg.key;
-
+    
     if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         switch (CMD_KEY(cmd, key)) {
             case CMD_KEY(CMD_binding, Binding):
@@ -788,7 +792,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     }
     if (aCallback) {
         [self.stackManager pushObj:aCallback toStackOfTimeID:timeID];
-//        [self addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:characteristic handleData:sendData timeID:timeID];
+        //        [self addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL handleCharacteristic:characteristic handleData:sendData timeID:timeID];
         [self.stackManager.myTimers addTimerWithTimeInterval:WRITEVALUE_CHARACTERISTICS_INTERVAL
                                                       target:self
                                                     selector:@selector(writeValueToCharactTimeout:)

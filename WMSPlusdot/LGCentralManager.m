@@ -32,7 +32,7 @@
 
 NSString * const KLGCentralManagerScanPeripheralFinishNotification = @"LGCentralManagerScanPeripheralFinishNotification";
 NSString * const KLGCentralManagerStateUpdatedNotification =
-    @"LGCentralManagerStateUpdatedNotification";
+@"LGCentralManagerStateUpdatedNotification";
 
 @interface LGCentralManager() <CBCentralManagerDelegate>
 
@@ -55,6 +55,7 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
  * Completion block for peripheral scanning
  */
 @property (copy, nonatomic) LGCentralManagerDiscoverPeripheralsCallback scanBlock;
+@property (copy, nonatomic) LGCentralManagerDiscoverPeripheralsCallback2 scanningBlock;
 
 @end
 
@@ -97,7 +98,7 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
 - (void)stopScanForPeripherals
 {
     self.scanning = NO;
-	[self.manager stopScan];
+    [self.manager stopScan];
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self
                                              selector:@selector(stopScanForPeripherals)
@@ -107,10 +108,11 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
         self.scanBlock(self.peripherals);
     }
     self.scanBlock = nil;
+    self.scanningBlock = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:KLGCentralManagerScanPeripheralFinishNotification
                                                         object:nil
-                                                      userInfo:nil];
+                                                      userInfo:@{@"scannedPeripherals":self.peripherals}];
 }
 
 - (void)scanForPeripheralsWithServices:(NSArray *)serviceUUIDs
@@ -118,7 +120,7 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
 {
     [self.scannedPeripherals removeAllObjects];
     self.scanning = YES;
-	[self.manager scanForPeripheralsWithServices:serviceUUIDs
+    [self.manager scanForPeripheralsWithServices:serviceUUIDs
                                          options:options];
 }
 
@@ -147,6 +149,25 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
                afterDelay:aScanInterval];
 }
 
+- (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
+                            services:(NSArray *)serviceUUIDs
+                             options:(NSDictionary *)options
+                            scanning:(LGCentralManagerDiscoverPeripheralsCallback2)aScanningCallback
+                          completion:(LGCentralManagerDiscoverPeripheralsCallback)aCallback
+{
+    self.scanBlock = aCallback;
+    self.scanningBlock = aScanningCallback;
+    
+    [self scanForPeripheralsWithServices:serviceUUIDs
+                                 options:options];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                             selector:@selector(stopScanForPeripherals)
+                                               object:nil];
+    [self performSelector:@selector(stopScanForPeripherals)
+               withObject:nil
+               afterDelay:aScanInterval];
+}
+
 - (NSArray *)retrievePeripheralsWithIdentifiers:(NSArray *)identifiers
 {
     return [self wrappersByPeripherals:[self.manager retrievePeripheralsWithIdentifiers:identifiers]];
@@ -163,32 +184,32 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
 
 - (NSString *)stateMessage
 {
-	NSString *message = nil;
-	switch (self.manager.state) {
-		case CBCentralManagerStateUnsupported:
-			message = @"The platform/hardware doesn't support Bluetooth Low Energy.";
-			break;
-		case CBCentralManagerStateUnauthorized:
-			message = @"The app is not authorized to use Bluetooth Low Energy.";
-			break;
+    NSString *message = nil;
+    switch (self.manager.state) {
+        case CBCentralManagerStateUnsupported:
+            message = @"The platform/hardware doesn't support Bluetooth Low Energy.";
+            break;
+        case CBCentralManagerStateUnauthorized:
+            message = @"The app is not authorized to use Bluetooth Low Energy.";
+            break;
         case CBCentralManagerStateUnknown:
             message = @"Central not initialized yet.";
             break;
         case CBCentralManagerStateResetting:
             message = @"Central Resetting.";
             break;
-		case CBCentralManagerStatePoweredOff:
-			message = @"Bluetooth is currently powered off.";
-			break;
-		case CBCentralManagerStatePoweredOn:
+        case CBCentralManagerStatePoweredOff:
+            message = @"Bluetooth is currently powered off.";
             break;
-		default:
-			break;
-	}
+        case CBCentralManagerStatePoweredOn:
+            break;
+        default:
+            break;
+    }
     if (message) {
         LGLogError(@"%@", message);
     }
-	return message;
+    return message;
 }
 
 - (LGPeripheral *)wrapperByPeripheral:(CBPeripheral *)aPeripheral
@@ -270,8 +291,8 @@ NSString * const KLGCentralManagerStateUpdatedNotification =
         lgPeripheral.advertisingData = advertisementData;
         
         //我修改的
-        if (self.scanBlock) {
-            self.scanBlock(self.scannedPeripherals);
+        if (self.scanningBlock) {
+            self.scanningBlock(lgPeripheral);
         }
     });
 }
@@ -285,23 +306,23 @@ static LGCentralManager *sharedInstance = nil;
 + (LGCentralManager *)sharedInstance
 {
     // Thread blocking to be sure for singleton instance
-	@synchronized(self) {
-		if (!sharedInstance) {
-			sharedInstance = [LGCentralManager new];
-		}
-	}
-	return sharedInstance;
+    @synchronized(self) {
+        if (!sharedInstance) {
+            sharedInstance = [LGCentralManager new];
+        }
+    }
+    return sharedInstance;
 }
 
 - (id)init
 {
-	self = [super init];
-	if (self) {
+    self = [super init];
+    if (self) {
         _centralQueue = dispatch_queue_create("com.LGBluetooth.LGCentralQueue", DISPATCH_QUEUE_SERIAL);
         _manager      = [[CBCentralManager alloc] initWithDelegate:self queue:self.centralQueue];
         _scannedPeripherals = [NSMutableArray new];
-	}
-	return self;
+    }
+    return self;
 }
 
 @end

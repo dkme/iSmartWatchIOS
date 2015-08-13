@@ -33,6 +33,7 @@ extern NSString * const WMSBleControlPeripheralDidConnect;
 
 /*
  *外设连接失败时的通知
+ *如：连接设备error，发现服务、特性error/超时
  */
 extern NSString * const WMSBleControlPeripheralConnectFailed;
 
@@ -109,8 +110,23 @@ typedef void(^operationCallback)(void);
 
 @property (nonatomic, readonly) WMSStackManager                *stackManager;
 
-
-- (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
+/**
+ *  扫描指定时长后才返回设备
+ *
+ *  @param aScanInterval 扫描时长
+ *  @param aCallback     扫描结束时的回调，参数peripherals中是不含重复的设备的
+ */
+- (void)scanForPeripheralsByInterval:(NSTimeInterval)aScanInterval
+                          completion:(WMSBleControlScanedPeripheralCallback)aCallback;
+/**
+ *  扫描指定时长，扫描到设备时通过aScanningCallback回调，直至结束
+ *
+ *  @param aScanInterval     扫描时长
+ *  @param aScanningCallback 扫描到设备时的回调
+ *  @param aCallback         扫描结束时的回调，参数peripherals中是不含重复的设备的
+ */
+- (void)scanForPeripheralsByInterval:(NSTimeInterval)aScanInterval
+                            scanning:(void(^)(LGPeripheral *peripheral))aScanningCallback
                           completion:(WMSBleControlScanedPeripheralCallback)aCallback;
 
 - (void)stopScanForPeripherals;
@@ -119,6 +135,15 @@ typedef void(^operationCallback)(void);
 
 - (void)disconnect;
 - (void)disconnect:(void(^)(BOOL success))aCallback;
+
+/**
+ *  判断一个设备是否已被系统连接上(根据peripheral的identifier来判断)
+ *
+ *  @param peripheral 外设
+ *
+ *  @return 是否已被连接
+ */
+- (BOOL)isHasBeenSystemConnectedPeripheral:(LGPeripheral *)peripheral;
 
 #pragma mark - Public handle
 ///在连接成功后，监听按键，然后以通知的形式发送出去（可以一对多）
