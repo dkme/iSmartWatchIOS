@@ -1,4 +1,4 @@
 /* Localized versions of Info.plist keys */
-CFBundleDisplayName ="+o watch";
+CFBundleDisplayName ="Weide Watch";
 NSLocationAlwaysUsageDescription = "Your location is needed for the weather information";
 NSLocationWhenInUseUsageDescription = "Your location is needed for the weather information";
