@@ -170,14 +170,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     
     NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_LOSE_UUID]];
     NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
-    
-    NSArray *retrievePeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
-    if (aScanningCallback) {
-        for (LGPeripheral *peripheral in retrievePeripherals) {
-            aScanningCallback(peripheral);
-        }
-    }
-    
+        
     [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options scanning:^(LGPeripheral *peripheral) {
         if (aScanningCallback) {
             aScanningCallback(peripheral);
@@ -192,6 +185,13 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
             aCallback(scannedPeripheral);
         }
     }];
+#warning 获取系统已连接的外设，一定要放到扫描外设的后面(因为在LGCentralManager中，扫描外设时，会将扫描到的设备清空，若放在它前面，则会将获取到的设备清除掉)
+    NSArray *retrievePeripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:svUUIDs];
+    if (aScanningCallback) {
+        for (LGPeripheral *peripheral in retrievePeripherals) {
+            aScanningCallback(peripheral);
+        }
+    }
 }
 
 - (void)stopScanForPeripherals
