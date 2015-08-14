@@ -28,6 +28,8 @@
 //我修改的
 extern NSString * const KLGCentralManagerScanPeripheralFinishNotification;
 extern NSString * const KLGCentralManagerStateUpdatedNotification;
+
+typedef void (^LGCentralManagerDiscoverPeripheralsCallback2) (LGPeripheral *peripheral);
 //----
 
 typedef void (^LGCentralManagerDiscoverPeripheralsCallback) (NSArray *peripherals);
@@ -107,6 +109,12 @@ typedef void (^LGCentralManagerDiscoverPeripheralsCallback) (NSArray *peripheral
 - (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
                             services:(NSArray *)serviceUUIDs
                              options:(NSDictionary *)options
+                          completion:(LGCentralManagerDiscoverPeripheralsCallback)aCallback;
+///我修改的
+- (void)scanForPeripheralsByInterval:(NSUInteger)aScanInterval
+                            services:(NSArray *)serviceUUIDs
+                             options:(NSDictionary *)options
+                            scanning:(LGCentralManagerDiscoverPeripheralsCallback2)aScanningCallback
                           completion:(LGCentralManagerDiscoverPeripheralsCallback)aCallback;
 
 /**

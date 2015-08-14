@@ -20,7 +20,7 @@
 #import "WMSFilter.h"
 #import "WMSConstants.h"
 
-static const NSTimeInterval SCAN_TIME_INTERVAL      = 3.f;
+static const NSTimeInterval SCAN_TIME_INTERVAL      = 2.f;
 static const NSTimeInterval BINDING_TIME_INTERVAL   = 60.f;
 static const int            MAX_RSSI                = -75;
 
@@ -63,7 +63,7 @@ static const int            MAX_RSSI                = -75;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
+    
     [self bleOperation];
     
     [self.bindView.textView setText:NSLocalizedString(@"请将手表靠近手机", nil)];
@@ -84,7 +84,7 @@ static const int            MAX_RSSI                = -75;
 - (void)dealloc
 {
     DEBUGLog(@"%s",__FUNCTION__);
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -118,24 +118,24 @@ static const int            MAX_RSSI                = -75;
 }
 - (void)sendBindingCMD
 {
-//    WeakObj(self, weakSelf);
-//    [self.bleControl bindDevice:^(BOOL isSuccess) {
-//        if (isSuccess) {
-//            StrongObj(weakSelf, strongSelf);
-//            if (strongSelf) {
-                NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
-                if (identify) {
-                    NSString *mac = [WMSDeviceModel deviceModel].mac;
-                    if (!mac) {
-                        mac = @"";
-                    }
-                    [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
-                    [WMSMyAccessory setBindAccessoryMac:mac];
-                    [self closeVC:YES];
-                }
-//            }
-//        }
-//    }];
+    //    WeakObj(self, weakSelf);
+    //    [self.bleControl bindDevice:^(BOOL isSuccess) {
+    //        if (isSuccess) {
+    //            StrongObj(weakSelf, strongSelf);
+    //            if (strongSelf) {
+    NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
+    if (identify) {
+        NSString *mac = [WMSDeviceModel deviceModel].mac;
+        if (!mac) {
+            mac = @"";
+        }
+        [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
+        [WMSMyAccessory setBindAccessoryMac:mac];
+        [self closeVC:YES];
+    }
+    //            }
+    //        }
+    //    }];
 }
 
 - (void)closeVC:(BOOL)successOrFail
@@ -175,7 +175,7 @@ static const int            MAX_RSSI                = -75;
     DEBUGLog(@"refresh signal");
     NSArray *array = [WMSFilter descendingOrderPeripheralsWithSignal:self.listData];
     [self setListData:array];
-
+    
     if (!self.listData || self.listData.count==0) {
         return ;
     }
@@ -222,19 +222,15 @@ static const int            MAX_RSSI                = -75;
     [self.bleControl scanForPeripheralsByInterval:SCAN_TIME_INTERVAL completion:^(NSArray *peripherals)
      {
          StrongObj(weakSelf, strongSelf);
-         if (!strongSelf.bleControl.isScanning) {///扫描结束
-             NSArray *array = [WMSFilter filterForPeripherals:peripherals withType:strongSelf.generation];
-             if (array && array.count>0) {
-                 [strongSelf setListData:array];
-                 [strongSelf bindingPeripheral];
-             } else {
-                 [strongSelf continueBinding];
-             }
-             
+         NSArray *array = [WMSFilter filterForPeripherals:peripherals withType:strongSelf.generation];
+         if (array && array.count>0) {
+             [strongSelf setListData:array];
+             [strongSelf bindingPeripheral];
+         } else {
+             [strongSelf continueBinding];
          }
-         
      }];
-//    [self startRefresh];
+    //    [self startRefresh];
 }
 
 //Handle
