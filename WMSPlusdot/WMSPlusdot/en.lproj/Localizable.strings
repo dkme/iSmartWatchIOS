@@ -291,7 +291,8 @@
 "升级已取消..." = "The upgrade has already cancelled...";
 "升级成功..." = "Upgrade successfully...";
 "升级失败..." = "Upgrade failed...";
-"正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, exit will stop update, whether to quit?";
+"正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, the exit will stop the update, whether to continue to quit?";
+"正在准备更新固件，退出会取消更新，是否继续退出？" = "Is preparing to update the firmware, the withdrawal will be canceled, whether to continue to withdraw?";
 "连接成功..." = "connection successfully...";
 "正在重新建立连接..." = "Is to establish a connection...";
 "连接断开，升级中断..." = "Disconnects, upgrade the interrupt...";
