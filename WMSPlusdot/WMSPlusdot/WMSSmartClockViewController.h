@@ -17,7 +17,7 @@
 enum {
     SmartClockTimeCell = 1,
     SmartClockSleepTimeCell,
-    SmartClockRepeatCell,
+    SmartClockRepeatCell = SmartClockSleepTimeCell,
 };
 
 @interface WMSSmartClockViewController : UIViewController

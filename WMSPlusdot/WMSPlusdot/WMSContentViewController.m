@@ -45,6 +45,7 @@
 static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 
 @interface WMSContentViewController ()<WMSSyncDataViewDelegate>
+
 @property (strong, nonatomic) WMSSyncDataView *syncDataView;
 @property (strong, nonatomic) UIView          *tipView;
 @property (strong, nonatomic) MBProgressHUD   *hud;
@@ -61,6 +62,9 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 @property (strong, nonatomic) NSMutableArray  *everydaySportDataArray;
 
 @property (assign, nonatomic) BOOL            isCanSyncData;
+
+@property (strong, nonatomic) NSDate          *syncDate;///同步返回的数据对应的日期
+
 @end
 
 @implementation WMSContentViewController
@@ -511,53 +515,37 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
     [self.syncDataView startAnimating];
     [self.hud show:YES];
     
-//    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
-//     {
-//         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
-//         
-//         int steps = 0;
-//         for (int i=0; i<dataLength; i++) {
-//             steps += PerHourData[i];
-//         }
-//         //保存数据
-//         [self savaSportDate:[NSDate dateFromString:sportdate format:@"yyyy-MM-dd"] steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
-//         
-//         if (surplusDays <= 1) {//同步完成
-//             [self stopSyncSportData];
-//             return ;
-//         }
-//         
-//         [self continueSyncSportData];
-//     }];
-    
+    self.syncDate = [NSDate systemDate];
+    WeakObj(self, weakSelf);
     [self.bleControl.syncProfile syncSportData:^(NSDate *date, NSUInteger steps, NSUInteger distance, NSUInteger calories, NSUInteger durations, NSUInteger notSyncDays) {
         DEBUGLog_DETAIL(@"====>sync data for date:%@,steps:%d,distance:%d,calories:%d,durations:%d,notSyncDays:%d",date,steps,distance,calories,durations,notSyncDays);
-        [self savaSportDate:date steps:steps durations:durations perHourData:nil dataLength:0];
+        StrongObj(weakSelf, strongSelf);
+        [strongSelf savaSportDate:strongSelf.syncDate steps:steps durations:durations perHourData:nil dataLength:0];
         
-        [self stopSyncSportData];
+        if (notSyncDays > 0) {
+            [strongSelf continueSyncSportData];
+        }
+        else {
+            [strongSelf stopSyncSportData];
+        }
     }];
 }
 - (void)continueSyncSportData
 {
-//    [self.bleControl.deviceProfile syncDeviceSportDataWithCompletion:^(NSString *sportdate, NSUInteger todaySteps, NSUInteger todaySportDurations, NSUInteger surplusDays, UInt16 *PerHourData, NSUInteger dataLength)
-//     {
-//         DEBUGLog(@"====>date:%@,steps:%d,durations:%d,surplusDays:%d",sportdate,todaySteps,todaySportDurations,surplusDays);
-//         
-//         int steps = 0;
-//         for (int i=0; i<dataLength; i++) {
-//             steps += PerHourData[i];
-//         }
-//         NSDate *date = [NSDate dateFromString:sportdate format:@"yyyy-MM-dd"];
-//         //保存数据
-//         [self savaSportDate:date steps:steps durations:todaySportDurations perHourData:PerHourData dataLength:dataLength];
-//         
-//         if (surplusDays <= 1) {//同步完成
-//             [self stopSyncSportData];
-//             return ;
-//         }
-//         
-//         [self continueSyncSportData];
-//     }];
+    WeakObj(self, weakSelf);
+    [self.bleControl.syncProfile syncSportData:^(NSDate *date, NSUInteger steps, NSUInteger distance, NSUInteger calories, NSUInteger durations, NSUInteger notSyncDays) {
+        DEBUGLog_DETAIL(@"====>sync data for date:%@,steps:%d,distance:%d,calories:%d,durations:%d,notSyncDays:%d",date,steps,distance,calories,durations,notSyncDays);
+        StrongObj(weakSelf, strongSelf);
+        strongSelf.syncDate = [NSDate dateWithTimeInterval:-1*24*60*60 sinceDate:strongSelf.syncDate];
+        [strongSelf savaSportDate:strongSelf.syncDate steps:steps durations:durations perHourData:nil dataLength:0];
+        
+        if (notSyncDays > 0) {
+            [strongSelf continueSyncSportData];
+        }
+        else {
+            [strongSelf stopSyncSportData];
+        }
+    }];
 }
 - (void)stopSyncSportData
 {
@@ -568,13 +556,6 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
     [self updateView];
 }
 
-//- (void)saveSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations
-//{
-//    WMSSportModel *model = [WMSSportModel alloc] init;
-//    model.sportDate = date;
-//    model.sportSteps = steps;
-//    model.sportMinute =
-//}
 - (void)savaSportDate:(NSDate *)date steps:(NSUInteger)steps durations:(NSUInteger)durations perHourData:(UInt16 *)perHourData dataLength:(NSUInteger)dataLength
 {
     WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];

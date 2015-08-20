@@ -212,9 +212,14 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 {
     DEBUGLog(@"%s",__FUNCTION__);
     if (self.wmsBleControl.isConnected) {
-        [self.wmsBleControl.settingProfile adjustDate:[NSDate systemDate] completion:^(BOOL isSuccess) {}];
+        [self.wmsBleControl.settingProfile adjustDate:[NSDate systemDate] completion:^(BOOL isSuccess) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
+        }];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
+    else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:WMSAppDelegateReSyncData object:nil];
+    }
+    
 }
 
 #pragma mark - 后台保持与BLE设备通讯，以防断开

@@ -77,7 +77,7 @@
     if (!_textArray) {
         _textArray = [[NSArray alloc] initWithObjects:
                                 NSLocalizedString(@"Start",nil),
-                                NSLocalizedString(@"唤醒间隔",nil),
+                                //NSLocalizedString(@"唤醒间隔",nil),
                                 NSLocalizedString(@"Repeat",nil),
                                 nil];
     }
@@ -90,14 +90,19 @@
         NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",self.clockModel.startHour, self.clockModel.startMinute];
         NSString *strSnooze = [NSString stringWithFormat:@"%d %@",self.clockModel.snoozeMinute,NSLocalizedString(@"Minutes clock",nil)];
         NSString *strRepeats = [WMSRemindHelper description2OfRepeats:self.clockModel.repeats];
-        _detailTextArray = @[strStartTime,strSnooze,strRepeats];
+        _detailTextArray = @[
+                             strStartTime,
+                             //strSnooze,
+                             strRepeats
+                             ];
     }
     return _detailTextArray;
 }
 - (NSArray *)intervalValueArray
 {
     if (!_intervalValueArray) {
-        _intervalValueArray = @[@(DEFAULT_SNOOZE_MINUTE),
+        _intervalValueArray = @[
+                                @(DEFAULT_SNOOZE_MINUTE),
                                 @(10),
                                 @(15),
                                 @(20),
@@ -317,17 +322,17 @@
             [self.myInputView.pickerView selectRow:minute inComponent:1 animated:NO];
             break;
         }
-        case SmartClockSleepTimeCell:
-        {
-            NSUInteger row = 0;
-            NSUInteger i = [self.intervalValueArray indexOfObject:@(self.clockModel.snoozeMinute)];
-            if (i < [self.intervalValueArray count]) {
-                row = i;
-            }
-            [self.myInputView show:YES forView:cell];
-            [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
-            break;
-        }
+//        case SmartClockSleepTimeCell:
+//        {
+//            NSUInteger row = 0;
+//            NSUInteger i = [self.intervalValueArray indexOfObject:@(self.clockModel.snoozeMinute)];
+//            if (i < [self.intervalValueArray count]) {
+//                row = i;
+//            }
+//            [self.myInputView show:YES forView:cell];
+//            [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
+//            break;
+//        }
         default:
             return;
     }
