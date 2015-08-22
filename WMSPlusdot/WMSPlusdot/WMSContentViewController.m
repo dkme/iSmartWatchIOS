@@ -42,7 +42,7 @@
 #import "WMSHTTPRequest.h"
 #import "WMSAppConfig.h"
 
-static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
+static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
 
 @interface WMSContentViewController ()<WMSSyncDataViewDelegate>
 
@@ -61,7 +61,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 @property (assign, nonatomic) BOOL            isHasBeenSyncData;//标志是否已经同步过运动数据
 @property (strong, nonatomic) NSMutableArray  *everydaySportDataArray;
 
-@property (assign, nonatomic) BOOL            isCanSyncData;
+@property (assign, nonatomic, getter = isCanSyncData) BOOL canSyncData;
 
 @property (strong, nonatomic) NSDate          *syncDate;///同步返回的数据对应的日期
 
@@ -204,10 +204,8 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
         [self showTipView:2];
     } else {
         //若已绑定手表
-        if ([self.bleControl isConnected]) {
+        if (/*[self.bleControl isConnected]*/self.isCanSyncData) {
             [self showTipView:NO];
-//            int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
-//            [self.syncDataView setEnergy:batteryEnergy];
         } else {
             [self showTipView:YES];
         }
@@ -520,12 +518,15 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
     [self.bleControl.syncProfile syncSportData:^(NSDate *date, NSUInteger steps, NSUInteger distance, NSUInteger calories, NSUInteger durations, NSUInteger notSyncDays) {
         DEBUGLog_DETAIL(@"====>sync data for date:%@,steps:%d,distance:%d,calories:%d,durations:%d,notSyncDays:%d",date,steps,distance,calories,durations,notSyncDays);
         StrongObj(weakSelf, strongSelf);
-        [strongSelf savaSportDate:strongSelf.syncDate steps:steps durations:durations perHourData:nil dataLength:0];
+        [strongSelf savaSportDate:date steps:steps durations:durations perHourData:nil dataLength:0];
         
-        if (notSyncDays > 0) {
-            [strongSelf continueSyncSportData];
-        }
-        else {
+//        if (notSyncDays > 0) {
+//            [strongSelf continueSyncSportData];
+//        }
+//        else {
+//            [strongSelf stopSyncSportData];
+//        }
+        if (notSyncDays == 0) {
             [strongSelf stopSyncSportData];
         }
     }];
@@ -639,8 +640,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
-    [self performSelector:@selector(setIsCanSyncDataToYES) withObject:nil afterDelay:1.0];
-    //self.isCanSyncData = YES;
+    [self performSelector:@selector(setIsCanSyncDataToYES) withObject:nil afterDelay:0.0];
     [self showTipView:NO];
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
@@ -655,7 +655,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
-    self.isCanSyncData = NO;
+    self.canSyncData = NO;
     self.isNeedSyncWhenConnected = NO;
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
@@ -713,7 +713,8 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 10.f;
 
 - (void)setIsCanSyncDataToYES
 {
-    self.isCanSyncData = YES;
+    DEBUGLog(@"%s", __func__);
+    self.canSyncData = YES;
 }
 
 #pragma mark - WMSSyncDataViewDelegate
