@@ -371,14 +371,11 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
                 //初始化Profile
                 [self connectedConfig:peripheral];
                 
-                //                WeakObj(self, weakSelf);
+                WeakObj(self, weakSelf);
                 [self readDeviceInfoWithIndex:0 completion:^{
-                    ///此时才能将_connected置为YES
-                    //                    StrongObj(weakSelf, strongSelf);
-                    //                    strongSelf->_connected = YES;
-                    
+                    StrongObj(weakSelf, strongSelf);
                     //发送连接成功通知
-                    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:self userInfo:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:WMSBleControlPeripheralDidConnect object:strongSelf userInfo:nil];
                 }];
             }
         }];

@@ -465,6 +465,15 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
     }
 }
 
+- (void)updateViewWhenDisconnect
+{
+    self.canSyncData = NO;
+    self.isNeedSyncWhenConnected = YES;
+    [self showTipView:YES];
+    [self.hud hide:YES afterDelay:0];
+    [self.syncDataView stopAnimating];
+}
+
 - (NSUInteger)targetSteps
 {
     WMSLeftViewController *leftVC = (WMSLeftViewController *)self.sideMenuViewController.leftMenuViewController;
@@ -586,7 +595,6 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
             DEBUGLog_DETAIL(@"更新用户信息%d", isSuccess);
         }];
     }
-    
 }
 
 #pragma mark - Action
@@ -630,7 +638,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdatedBLEState:) name:WMSBleControlBluetoothStateUpdated object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reSyncData:) name:WMSAppDelegateReSyncData object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReSyncData:) name:WMSAppDelegateReSyncData object:nil];
 }
 - (void)unregisterFromNotifications
 {
@@ -639,13 +647,13 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
 #pragma mark - Handle
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
-    [self performSelector:@selector(setIsCanSyncDataToYES) withObject:nil afterDelay:0.0];
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
+    //[self performSelector:@selector(setIsCanSyncDataToYES) withObject:nil afterDelay:0.0];
+    self.canSyncData = YES;
     [self showTipView:NO];
-    //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
-    if (self.isVisible) {
+    
+    if (self.isVisible) {//若该视图控制器不可见，则不同步数据，等到该界面显示时同步
         self.isNeedUpdate = NO;
-        
         if (self.isNeedSyncWhenConnected) {
             [self startSyncSportData];
         }
@@ -655,14 +663,13 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
-    self.canSyncData = NO;
-    self.isNeedSyncWhenConnected = NO;
-    [self.hud hide:YES afterDelay:0];
-    [self.syncDataView stopAnimating];
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setIsCanSyncDataToYES) object:nil];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
-    [self performSelector:@selector(updateStatusToDisConnect) withObject:nil afterDelay:UPDATE_STATUS_AFTER_DELAY];
+    
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setIsCanSyncDataToYES) object:nil];
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
+    //[self performSelector:@selector(updateStatusToDisConnect) withObject:nil afterDelay:UPDATE_STATUS_AFTER_DELAY];
+
+    //[self syncUserInfo];
     
 #ifdef DEBUG
     static int i = 0;
@@ -695,27 +702,27 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
             break;
     }
 }
-- (void)reSyncData:(NSNotification *)notification
+
+- (void)handleReSyncData:(NSNotification *)notification
 {
     [self syncData];
 }
 
-- (void)updateStatusToDisConnect
-{
-    self.isNeedSyncWhenConnected = YES;
-    
-    [self showTipView:YES];
-    [self.hud hide:YES afterDelay:0];
-    [self.syncDataView stopAnimating];
-    
-    [self syncUserInfo];
-}
+//- (void)updateStatusToDisConnect
+//{
+//    self.isNeedSyncWhenConnected = YES;
+//    
+//    [self showTipView:YES];
+//    [self.hud hide:YES afterDelay:0];
+//    [self.syncDataView stopAnimating];
+//    
+//    [self syncUserInfo];
+//}
 
-- (void)setIsCanSyncDataToYES
-{
-    DEBUGLog(@"%s", __func__);
-    self.canSyncData = YES;
-}
+//- (void)setIsCanSyncDataToYES
+//{
+//    self.canSyncData = YES;
+//}
 
 #pragma mark - WMSSyncDataViewDelegate
 - (void)syncDataView:(WMSSyncDataView *)syncView didClickSyncButton:(UIButton *)button
