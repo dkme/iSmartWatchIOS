@@ -75,7 +75,7 @@
 - (NSArray *)pickerViewDataSource
 {
     if (!_pickerViewDataSource) {
-        _pickerViewDataSource = @[@"5",@"10",@"15",@"20",@"25",@"35",@"60"];
+        _pickerViewDataSource = @[@"0",@"5",@"10",@"15",@"20",@"25",@"35",@"60"];
     }
     return _pickerViewDataSource;
 }

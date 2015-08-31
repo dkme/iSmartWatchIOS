@@ -467,9 +467,13 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
 
 - (void)updateViewWhenDisconnect
 {
+    if ([WMSMyAccessory isBindAccessory]) {
+        [self showTipView:YES];
+    } else {
+        [self showTipView:2];
+    }
     self.canSyncData = NO;
     self.isNeedSyncWhenConnected = YES;
-    [self showTipView:YES];
     [self.hud hide:YES afterDelay:0];
     [self.syncDataView stopAnimating];
 }
@@ -663,7 +667,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
 }
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
 {
-    
+    [self updateViewWhenDisconnect];
     
     //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setIsCanSyncDataToYES) object:nil];
     //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateStatusToDisConnect) object:nil];
@@ -687,13 +691,14 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
         case WMSBleStateResetting:
         case WMSBleStatePoweredOff:
         {
-            if ([WMSMyAccessory isBindAccessory]) {
-                [self showTipView:YES];
-            } else {
-                [self showTipView:2];
-            }
-            [self.hud hide:YES afterDelay:0];
-            [self.syncDataView stopAnimating];
+//            if ([WMSMyAccessory isBindAccessory]) {
+//                [self showTipView:YES];
+//            } else {
+//                [self showTipView:2];
+//            }
+//            [self.hud hide:YES afterDelay:0];
+//            [self.syncDataView stopAnimating];
+            [self updateViewWhenDisconnect];
             break;
         }
         case WMSBleStatePoweredOn:

@@ -183,48 +183,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
         [self showTip:NSLocalizedString(@"您的连接已断开", nil)];
         return;
     }
-    
-//    NSString *peipheralUUID = [bleControl.connectedPeripheral UUIDString];
-//    _peripheralIdentify = peipheralUUID;
-    
-//    [self updateState:NSLocalizedString(@"正在切换至升级模式...", nil)];
-//    [bleControl switchToUpdateModeCompletion:^(SwitchToUpdateResult result, NSString *failReason)
-//    {
-//        switch (result)
-//        {
-//            case SwitchToUpdateResultSuccess:
-//            {
-//                [self updateState:NSLocalizedString(@"切换模式成功...", nil)];
-//                DEBUGLog(@"success");
-//                break;
-//            }
-//            case SwitchToUpdateResultLowBattery:
-//            {
-//                [self showTip:NSLocalizedString(@"您的手表电量过低，不能升级", nil)];
-//                DEBUGLog(@"low battery");
-//                return ;
-//            }
-//            case SwitchToUpdateResultUnsupported:
-//            {
-//                [self showTip:NSLocalizedString(@"您的手表不支持升级", nil)];
-//                DEBUGLog(@"Unsupported");
-//                return ;
-//            }
-//            default:
-//                return ;
-//        }
-//        self.navBarView.buttonLeft.enabled = NO;
-//        self.buttonUpdate.enabled = NO;
-//        self.buttonUpdate.alpha = 0.7;
-//        _isUpdating = YES;
-//        [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
-//        //发送通知
-//        [self postNotificationForName:WMSUpdateVCStartDFU];
-//        //4s后，会断开连接，此时再去扫描
-//        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:nil];
-//        [self performSelector:@selector(scanPeipheral:) withObject:nil afterDelay:6.0];
-//    }];
-    
+        
     [bleControl switchToUpdateMode:^(BOOL isSuccess, RequestUpdateFirmwareErrorCode errCode) {}];
     
     self.navBarView.buttonLeft.enabled = NO;
@@ -255,7 +214,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
         }
         DEBUGLog(@"scanning");
         NSString *uuid = [peripheral.identifier UUIDString];
-//        if ([specifiedUUID isEqualToString:uuid]) {
+//        if ([specifiedUUID isEqualToString:uuid]) {///切换至DFU后，设备的identifier改变了
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideHUDAtViewCenter];
             });
