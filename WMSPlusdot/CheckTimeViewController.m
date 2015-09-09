@@ -10,8 +10,8 @@
 #import "WMSAppDelegate.h"
 #import "Masonry.h"
 
-static const NSUInteger CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL      = 15;
-static const NSUInteger ANTI_CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL = 22;
+static const NSUInteger CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL      = /*15*/0;
+static const NSUInteger ANTI_CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL = /*22*/0;
 
 @interface CheckTimeViewController ()<TurntableViewDelegate>
 
