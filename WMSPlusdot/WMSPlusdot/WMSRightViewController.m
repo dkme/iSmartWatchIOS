@@ -403,25 +403,6 @@
     }
 }
 
-#pragma mark - GGIViewControllerDelegate
-- (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image
-{
-    [self openPhotoLibrary];
-}
-- (void)GGIViewControllerDidClose:(GGIViewController *)viewController
-{
-    WeakObj(self, weakSelf);
-    self.isNeedSwitchToNormalMode = YES;
-    [self.bleControl switchToMode:NormalMode completion:^{
-        StrongObj(weakSelf, strongSelf);
-        strongSelf.isNeedSwitchToNormalMode = NO;
-    }];
-    
-//    [self.bleControl switchToMode:NormalMode completion:^{}];
-    self.pickerController.delegate = nil;
-    self.pickerController = nil;
-}
-
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -723,6 +704,25 @@
     }
     NSString *key = [self settingKeyFromIndexPath:indexPath];
     return (RemindEvents)[map[key] unsignedIntegerValue];
+}
+
+
+#pragma mark - ----------------------
+#pragma mark - GGIViewControllerDelegate
+- (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image
+{
+    //[self openPhotoLibrary];
+}
+- (void)GGIViewControllerDidClose:(GGIViewController *)viewController
+{
+    WeakObj(self, weakSelf);
+    self.isNeedSwitchToNormalMode = YES;
+    [self.bleControl switchToMode:NormalMode completion:^{
+        StrongObj(weakSelf, strongSelf);
+        strongSelf.isNeedSwitchToNormalMode = NO;
+    }];    
+    self.pickerController.delegate = nil;
+    self.pickerController = nil;
 }
 
 @end

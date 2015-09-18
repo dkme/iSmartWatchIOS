@@ -242,7 +242,6 @@
 		23C74B0719A733FA00C589A1 /* main_clock_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0519A733FA00C589A1 /* main_clock_btn_a.png */; };
 		23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */; };
 		23CB0B791A1358140057E0A8 /* UIDatePicker+Time.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB0B781A1358140057E0A8 /* UIDatePicker+Time.m */; };
-		23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0C19C92C9D00DC915A /* MBProgressHUD.m */; };
 		23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CB9F0F19C9942D00DC915A /* WMSSleepModel.m */; };
 		23CBBF9219C1516700A3DA4C /* WMSSportModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23CBBF9119C1516700A3DA4C /* WMSSportModel.m */; };
 		23D7CEFE19B5C49C00DFA678 /* CBUUID+StringExtraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D7CEF219B5C49C00DFA678 /* CBUUID+StringExtraction.m */; };
@@ -670,8 +669,6 @@
 		23C74B0619A733FA00C589A1 /* main_clock_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_clock_btn_b.png; sourceTree = "<group>"; };
 		23CB0B771A1358140057E0A8 /* UIDatePicker+Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDatePicker+Time.h"; sourceTree = "<group>"; };
 		23CB0B781A1358140057E0A8 /* UIDatePicker+Time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDatePicker+Time.m"; sourceTree = "<group>"; };
-		23CB9F0B19C92C9D00DC915A /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		23CB9F0C19C92C9D00DC915A /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		23CB9F0E19C9942D00DC915A /* WMSSleepModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSleepModel.h; sourceTree = "<group>"; };
 		23CB9F0F19C9942D00DC915A /* WMSSleepModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSSleepModel.m; sourceTree = "<group>"; };
 		23CBBF9019C1516700A3DA4C /* WMSSportModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSportModel.h; sourceTree = "<group>"; };
@@ -1820,22 +1817,12 @@
 			name = "UIDatePicker+Time";
 			sourceTree = "<group>";
 		};
-		23CB9F0A19C92C7500DC915A /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				23CB9F0B19C92C9D00DC915A /* MBProgressHUD.h */,
-				23CB9F0C19C92C9D00DC915A /* MBProgressHUD.m */,
-			);
-			name = MBProgressHUD;
-			sourceTree = "<group>";
-		};
 		23D7CEC319B571B400DFA678 /* External */ = {
 			isa = PBXGroup;
 			children = (
 				2335119719A4B82700FBCC81 /* ResideMenu */,
 				237545CA19AF00AB00685CD1 /* TemperaBar */,
 				239682231A4AB79100AA4D9F /* LDProgress */,
-				23CB9F0A19C92C7500DC915A /* MBProgressHUD */,
 				239F51CE1A2D94E20058F6DE /* EAIntroView */,
 				231972451A358DCB002E8A0F /* JSCustomBadge */,
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
@@ -2542,7 +2529,6 @@
 				239388491ABBA8EE0018BDA1 /* WMSSmartClockViewController.m in Sources */,
 				2353790219CD5F6000269F67 /* WMSMyActivityRemind.m in Sources */,
 				2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */,
-				23CB9F0D19C92C9D00DC915A /* MBProgressHUD.m in Sources */,
 				23A153291A36EFAA0026D741 /* WMSUpdateVC.m in Sources */,
 				F7E64D561B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m in Sources */,
 				2333AB051A64C28600DBA846 /* UIImage+Color.m in Sources */,
@@ -2717,7 +2703,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
+				PROVISIONING_PROFILE = "3c52d60a-8f23-4895-9ff0-7534313ca111";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2833,7 +2819,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
+				PROVISIONING_PROFILE = "3c52d60a-8f23-4895-9ff0-7534313ca111";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2856,7 +2842,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
+				PROVISIONING_PROFILE = "3c52d60a-8f23-4895-9ff0-7534313ca111";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

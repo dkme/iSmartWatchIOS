@@ -51,9 +51,9 @@ typedef NS_ENUM(int, TimeID) {
 };
 
 //超时设置
-static const NSUInteger MAX_TIMEOUT_COUNT                           = 5;
-static const NSUInteger SUBSCRIBE_CHARACTERISTICS_INTERVAL          = 2;
-static const NSUInteger WRITEVALUE_CHARACTERISTICS_INTERVAL         = 2;
+static const NSUInteger MAX_TIMEOUT_COUNT                               = 5;
+static const NSTimeInterval SUBSCRIBE_CHARACTERISTICS_INTERVAL          = 1.f;///1s
+static const NSTimeInterval WRITEVALUE_CHARACTERISTICS_INTERVAL         = 1.f;
 #define KEY_TIMEOUT_USERINFO_CHARACT            @"KEY_TIMEOUT_USERINFO_CHARACT"
 #define KEY_TIMEOUT_USERINFO_VALUE              @"KEY_TIMEOUT_USERINFO_VALUE"
 #define KEY_TIMEOUT_USERINFO_IS_WRITE_RESPONSE  @"KEY_TIMEOUT_USERINFO_IS_WRITE_RESPONSE"

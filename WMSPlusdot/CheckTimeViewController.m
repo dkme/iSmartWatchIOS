@@ -146,17 +146,23 @@ static const NSUInteger ANTI_CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL = /*22*/0;
 - (void)turntableView:(TurntableView *)turntableView didChangeRotateDirection:(RotateDirection)direction
 {
     if (direction != unknowDirection && !self.isRotating) {
-        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:NULL];
+        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:^(BOOL isSuccess) {
+            NSLog(@"completion");
+        }];
         
-        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction start:YES completion:NULL];
+        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction start:YES completion:^(BOOL isSuccess) {
+            DEBUGLog(@"旋转开始");
+        }];
         NSLog(@"%@开始", direction==clockwise?@"顺时针":@"逆时针");
     }
 }
 
 - (void)turntableViewDidStopRotate:(TurntableView *)turntableView
 {
-    [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:NULL];
-    DEBUGLog(@"旋转结束");
+    [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:^(BOOL isSuccess) {
+        DEBUGLog(@"旋转结束");
+    }];
+//    DEBUGLog(@"旋转结束");
 }
 
 @end

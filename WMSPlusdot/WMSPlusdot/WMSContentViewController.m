@@ -507,14 +507,22 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
 - (void)syncData
 {
     if (/*![self.bleControl isConnected]*/!self.isCanSyncData) {
-        WeakObj(self, weakSelf);
-        [self.syncDataView startAnimating];
-        [self.hud showAnimated:YES whileExecutingBlock:^{
-            sleep(1);
-        } completionBlock:^{
-            StrongObj(weakSelf, strongSelf);
-            [strongSelf.syncDataView stopAnimating];
-        }];
+//        WeakObj(self, weakSelf);
+//        [self.syncDataView startAnimating];
+//        [self.hud showAnimated:YES whileExecutingBlock:^{
+//            sleep(1);
+//        } completionBlock:^{
+//            StrongObj(weakSelf, strongSelf);
+//            [strongSelf.syncDataView stopAnimating];
+//        }];
+        
+//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//        dispatch_async(queue, ^(void) {
+//            sleep(2);
+//            dispatch_async(dispatch_get_main_queue(), ^(void) {
+//                [self.syncDataView stopAnimating];
+//            });
+//        });
         
         return;
     }
@@ -524,7 +532,7 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
 {
     self.isHasBeenSyncData = YES;
     [self.syncDataView startAnimating];
-    [self.hud show:YES];
+//    [self.hud show:YES];
     
     self.syncDate = [NSDate systemDate];
     WeakObj(self, weakSelf);
@@ -533,12 +541,6 @@ static const NSTimeInterval UPDATE_STATUS_AFTER_DELAY = 0.f;
         StrongObj(weakSelf, strongSelf);
         [strongSelf savaSportDate:date steps:steps durations:durations perHourData:nil dataLength:0];
         
-//        if (notSyncDays > 0) {
-//            [strongSelf continueSyncSportData];
-//        }
-//        else {
-//            [strongSelf stopSyncSportData];
-//        }
         if (notSyncDays == 0) {
             [strongSelf stopSyncSportData];
         }

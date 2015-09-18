@@ -228,7 +228,7 @@
     if (res != HANDLE_OK) {
         return ;
     }
-    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:NULL withTimeID:TIME_ID_SETTING_ROUGH_ADJUSTMENT_TIME];
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SETTING_ROUGH_ADJUSTMENT_TIME];
 }
 
 - (void)slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
@@ -241,7 +241,7 @@
     if (res != HANDLE_OK) {
         return ;
     }
-    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:NULL withTimeID:TIME_ID_SETTING_SLIGHT_ADJUSTMENT_TIME];
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SETTING_SLIGHT_ADJUSTMENT_TIME];
     
 //    NSData *sendData = [NSData dataWithBytes:package length:PACKAGE_SIZE];
 //    [self.serialPortWriteCharacteristic writeValue:sendData completion:nil];
@@ -324,7 +324,7 @@
     struct_parse_package s_pg = parse(package, PACKAGE_SIZE);
     BLE_UInt8 cmd = s_pg.cmd;
     BLE_UInt8 key = s_pg.key;
-    
+    DEBUGLog(@"cmd: %d, key: %d", cmd, key);
     if (NSOrderedSame == [CHARACTERISTIC_SERIAL_PORT_READ_UUID caseInsensitiveCompare:uuid]) {
         switch (CMD_KEY(cmd, key)) {
             case CMD_KEY(CMD_setting, SetSlightAdjustTime):
