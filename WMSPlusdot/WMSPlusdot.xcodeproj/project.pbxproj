@@ -2188,7 +2188,7 @@
 				ORGANIZATIONNAME = GUOGEE;
 				TargetAttributes = {
 					232846BC19A43668001C148D = {
-						DevelopmentTeam = 4E8WUK78VW;
+						DevelopmentTeam = R39529C8UT;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 0;

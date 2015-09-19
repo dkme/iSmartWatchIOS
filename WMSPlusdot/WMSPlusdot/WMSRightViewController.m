@@ -654,7 +654,19 @@
     else
     {
         NSString *key = [self settingKeyFromIndexPath:indexPath];
-        RemindEvents event = [self eventFromIndexPath:indexPath];
+        RemindEvents event = 0;//????
+        for (NSString *keyObj in self.settingKeys) {
+            if ([keyObj isEqualToString:key]) {
+                continue;
+            }
+            BOOL on = [((NSNumber *)[WMSRightVCHelper loadSettingItemDataOfKey:keyObj]) boolValue];
+            if (on) {
+                event |= [self eventFromKey:keyObj];
+            }
+        }
+        if (sw.on) {
+            event |= [self eventFromKey:key];
+        }
         [self.bleControl.settingProfile setRemindEvent:event completion:^(BOOL isSuccess) {
             DEBUGLog_DETAIL(@"设置提醒项成功");
             StrongObj(weakSelf, strongSelf);
@@ -666,11 +678,20 @@
     }
 }
 
+- (NSArray *)settingKeys
+{
+    static NSArray *keys = nil;
+    if (!keys) {
+        keys = @[@"Phone", @"SMS"/*,@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"*/];
+    }
+    return keys;
+}
+
 - (NSString *)settingKeyFromIndexPath:(NSIndexPath *)indexPath
 {
     static NSDictionary *map = nil;
     if (!map) {
-        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"*/];
+        NSArray *settingKeys = [self settingKeys];
         
         NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:settingKeys.count];
         NSIndexPath *index = nil;
@@ -690,11 +711,11 @@
     return map[indexPath];
 }
 
-- (RemindEvents)eventFromIndexPath:(NSIndexPath *)indexPath
+- (RemindEvents)eventFromKey:(NSString *)key
 {
     static NSDictionary *map = nil;
     if (!map) {
-        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"QQ",@"Wechat",@"sina",@"Facebook",@"Twitter",@"WhatsApp",@"Skype"*/];
+        NSArray *settingKeys = [self settingKeys];
         NSMutableArray *events = [NSMutableArray arrayWithCapacity:settingKeys.count];
         for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
             [events addObject:@(i)];
@@ -702,9 +723,24 @@
         
         map = [NSDictionary dictionaryWithObjects:events forKeys:settingKeys];
     }
-    NSString *key = [self settingKeyFromIndexPath:indexPath];
     return (RemindEvents)[map[key] unsignedIntegerValue];
 }
+//
+//- (RemindEvents)eventFromIndexPath:(NSIndexPath *)indexPath
+//{
+//    static NSDictionary *map = nil;
+//    if (!map) {
+//        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"QQ",@"Wechat",@"sina",@"Facebook",@"Twitter",@"WhatsApp",@"Skype"*/];
+//        NSMutableArray *events = [NSMutableArray arrayWithCapacity:settingKeys.count];
+//        for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
+//            [events addObject:@(i)];
+//        }
+//        
+//        map = [NSDictionary dictionaryWithObjects:events forKeys:settingKeys];
+//    }
+//    NSString *key = [self settingKeyFromIndexPath:indexPath];
+//    return (RemindEvents)[map[key] unsignedIntegerValue];
+//}
 
 
 #pragma mark - ----------------------
