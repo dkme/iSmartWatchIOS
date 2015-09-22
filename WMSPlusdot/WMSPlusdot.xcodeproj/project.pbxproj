@@ -275,6 +275,7 @@
 		F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2181B4244FC002EDEF9 /* HealthManager.m */; };
 		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
+		F74BB82D1BB0017100992A36 /* watch.png in Resources */ = {isa = PBXBuildFile; fileRef = F74BB82C1BB0017100992A36 /* watch.png */; settings = {ASSET_TAGS = (); }; };
 		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
 		F76B8BF21B6878CB00315600 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF11B6878CB00315600 /* Utility.m */; };
 		F76B8BFB1B68793200315600 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF41B68793200315600 /* DFUOperations.m */; };
@@ -318,7 +319,6 @@
 		F7CAE8141B60E2F20057300C /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE8131B60E2F20057300C /* RFSegmentView.m */; };
 		F7CF05A01B1DA0FB00038C9A /* WMSLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */; };
 		F7E64D561B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E64D551B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m */; };
-		F7E64D6E1B7C9B160021ACD7 /* weideWatch.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E64D6D1B7C9B160021ACD7 /* weideWatch.png */; };
 		F7E64D901B7C9C980021ACD7 /* intro_enter.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E64D8F1B7C9C980021ACD7 /* intro_enter.png */; };
 		F7E64D921B7C9C9F0021ACD7 /* intro_enter_en.png in Resources */ = {isa = PBXBuildFile; fileRef = F7E64D911B7C9C9F0021ACD7 /* intro_enter_en.png */; };
 		F7E99FF11B26F8D3001C0CDD /* WMSSyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E99FF01B26F8D3001C0CDD /* WMSSyncProfile.m */; };
@@ -736,6 +736,7 @@
 		F70EF3D51B46643A002EDEF9 /* WMSPlusdot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WMSPlusdot.entitlements; sourceTree = "<group>"; };
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
+		F74BB82C1BB0017100992A36 /* watch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watch.png; sourceTree = "<group>"; };
 		F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
 		F76B8BF01B6878CB00315600 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		F76B8BF11B6878CB00315600 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
@@ -804,7 +805,6 @@
 		F7CF059F1B1DA0FB00038C9A /* WMSLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLocationManager.m; sourceTree = "<group>"; };
 		F7E64D541B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTimeZone+TimeDifference.h"; path = "WMSPlusdot/NSTimeZone+TimeDifference.h"; sourceTree = "<group>"; };
 		F7E64D551B79ECEF0021ACD7 /* NSTimeZone+TimeDifference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTimeZone+TimeDifference.m"; path = "WMSPlusdot/NSTimeZone+TimeDifference.m"; sourceTree = "<group>"; };
-		F7E64D6D1B7C9B160021ACD7 /* weideWatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weideWatch.png; sourceTree = "<group>"; };
 		F7E64D8F1B7C9C980021ACD7 /* intro_enter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_enter.png; sourceTree = "<group>"; };
 		F7E64D911B7C9C9F0021ACD7 /* intro_enter_en.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intro_enter_en.png; sourceTree = "<group>"; };
 		F7E99FEF1B26F8D3001C0CDD /* WMSSyncProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSSyncProfile.h; sourceTree = "<group>"; };
@@ -1089,7 +1089,7 @@
 				23491D261A58E90400C821E8 /* WMSBoundCell.h */,
 				23491D271A58E90400C821E8 /* WMSBoundCell.m */,
 				23491D281A58E90400C821E8 /* WMSBoundCell.xib */,
-				F7E64D6D1B7C9B160021ACD7 /* weideWatch.png */,
+				F74BB82C1BB0017100992A36 /* watch.png */,
 				230298CC19A87D65009D4306 /* 绑定配件视图 */,
 			);
 			name = "我的配件视图";
@@ -2279,6 +2279,7 @@
 				23BD875B1A5D3B6C007A4F2C /* zq_sound_no_b.png in Resources */,
 				F7815F601BAFF210008CA4EB /* intro_page4_b.png in Resources */,
 				233511AE19A4C00600FBCC81 /* main_setting_icon_b.png in Resources */,
+				F74BB82D1BB0017100992A36 /* watch.png in Resources */,
 				239388621ABBA99F0018BDA1 /* GGIViewControlleraa.xib in Resources */,
 				233511B119A4C3D300FBCC81 /* main_date_prev_a.png in Resources */,
 				230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */,
@@ -2346,7 +2347,6 @@
 				2326A43E19A5D71B0098657B /* main_menu_bg_a.png in Resources */,
 				2326A43A19A5C6970098657B /* main_menu_target_icon_a.png in Resources */,
 				2393884F1ABBA9720018BDA1 /* WMSRightViewController.xib in Resources */,
-				F7E64D6E1B7C9B160021ACD7 /* weideWatch.png in Resources */,
 				2326A41F19A5A2FC0098657B /* main_avatar_default.png in Resources */,
 				F7815F4A1BAFF1EC008CA4EB /* intro_page1.png in Resources */,
 				239388651ABBA99F0018BDA1 /* switch_camera_h.png in Resources */,
@@ -2694,6 +2694,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
@@ -2810,6 +2811,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
@@ -2833,6 +2835,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";

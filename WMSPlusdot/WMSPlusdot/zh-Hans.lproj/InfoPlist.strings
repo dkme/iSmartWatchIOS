@@ -2,3 +2,4 @@
 CFBundleDisplayName ="+o watch";
 NSLocationAlwaysUsageDescription = "我们需要通过您的地理位置信息获取您所在城市的天气信息";
 NSLocationWhenInUseUsageDescription = "我们需要通过您的地理位置信息获取您所在城市的天气信息";
+NSLocationUsageDescription = "我们需要通过您的地理位置信息获取您所在城市的天气信息";

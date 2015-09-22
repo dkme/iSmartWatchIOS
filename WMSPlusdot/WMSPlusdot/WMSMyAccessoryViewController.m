@@ -59,7 +59,7 @@ NSString* const WMSUnBindAccessorySuccess =
 {
     if (!_imageNameArray) {
         _imageNameArray = @[
-                            @"weideWatch.png",
+                            @"watch.png",
                             ];
     }
     return _imageNameArray;

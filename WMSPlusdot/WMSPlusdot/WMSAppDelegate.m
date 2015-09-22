@@ -189,9 +189,15 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 //        navBar.translucent = YES;
     }
     
+    UIFont *font = Font_DINCondensed(18.f);
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
+        if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {///DIN Condensed字体，在英文状态下，并不会出现显示不全的问题
+            font = [UIFont boldSystemFontOfSize:19.f];
+        }
+    }
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName:[UIColor whiteColor],
-                                 NSFontAttributeName:Font_DINCondensed(20.f),
+                                 NSFontAttributeName:font,
                                   };
     [navBar setTitleTextAttributes:attributes];
 
