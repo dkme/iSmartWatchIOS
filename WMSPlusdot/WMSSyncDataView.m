@@ -7,6 +7,7 @@
 //
 
 #import "WMSSyncDataView.h"
+#import "WMSAppConfig.h"
 
 #define Cell_Height     10
 #define Cell_Width      30
@@ -109,7 +110,12 @@
     view.imageView.frame = frame;
     
     [view.buttonSync setTitle:NSLocalizedString(@"同步",nil) forState:UIControlStateNormal];
-    [view.buttonSync.titleLabel setFont:Font_DINCondensed(17.0)];
+    [view.buttonSync.titleLabel setFont:Font_DINCondensed(17.f)];
+    if ([[UIDevice currentDevice] systemVersion].floatValue >= 9.0) {///适配iOS9.0
+        if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {
+            [view.buttonSync.titleLabel setFont:[UIFont boldSystemFontOfSize:18.f]];
+        }
+    }
     [view.buttonSync addTarget:view action:@selector(syncDataAction:) forControlEvents:UIControlEventTouchUpInside];
     
     return view;

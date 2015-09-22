@@ -30,6 +30,7 @@
     hud.yOffset = HUD_LOCATED_BOTTOM_Y_OFFSET;
     hud.minSize = HUD_LOCATED_BOTTOM_SIZE;
     hud.labelText = @"";
+    hud.labelFont = [UIFont boldSystemFontOfSize:15.f];
     if (bindYesOrNo == NO) {
         hud.labelText = NSLocalizedString(TIP_NO_BINDING, nil);
     }
@@ -58,6 +59,7 @@
     hud.yOffset = HUD_LOCATED_BOTTOM_Y_OFFSET;
     hud.minSize = HUD_LOCATED_BOTTOM_SIZE;
     hud.labelText = tip;
+    hud.labelFont = [UIFont boldSystemFontOfSize:15.f];
     //[self.view.window addSubview:hud];
     [[WMSAppDelegate appDelegate].window addSubview:hud];
     [hud showAnimated:YES whileExecutingBlock:^{
