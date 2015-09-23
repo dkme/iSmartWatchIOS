@@ -24,6 +24,7 @@
 #import "WMSConstants.h"
 #import "WMSSoundOperation.h"
 #import "NSString+DynamicSize.h"
+#import "WMSAppConfig.h"
 
 #import "GGDeviceTool.h"
 #import "WMSDeviceModel.h"
@@ -502,23 +503,30 @@
                 txt = self.section5TitleArray[indexPath.row];
             }
         
-//            cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
-//            cell.textLabel.textColor = [UIColor whiteColor];
-//            cell.textLabel.font = Font_DINCondensed(18.f);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            ///添加1个label，使用cell.textLabel，字体显示不全
-            CGFloat offset = [CELL_CONTENT_PREFIX dynamicSizeWithFont:Font_DINCondensed(18.f)].width;
-            CGSize textSize = [txt dynamicSizeWithFont:Font_DINCondensed(18.f)];
-            UILabel *centerLabel = [[UILabel alloc] init];
-            CGRect frame = CGRectZero;
-            frame.size = CGSizeMake(textSize.width, textSize.height+10.f);///将height增加10.f
-            frame.origin = CGPointMake(16.f+offset, (cell.bounds.size.height-frame.size.height) / 2.f);///cell.textLabel若设置文本后，origin.x为16.f，所以从16.f位置开始偏移
-            centerLabel.frame = frame;
-            centerLabel.text = txt;
-            centerLabel.textColor = [UIColor whiteColor];
-            centerLabel.font = Font_DINCondensed(18.f);
-            [cell.contentView addSubview:centerLabel];
+            BOOL useNewLabel = NO;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
+                if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {///DIN Condensed字体，在英文状态下，并不会出现显示不全的问题
+                    useNewLabel = YES;
+                }
+            }
+            if (useNewLabel) {
+                ///添加1个label，使用cell.textLabel，字体显示不全
+                CGFloat offset = [CELL_CONTENT_PREFIX dynamicSizeWithFont:Font_DINCondensed(18.f)].width;
+                CGSize textSize = [txt dynamicSizeWithFont:Font_DINCondensed(18.f)];
+                UILabel *centerLabel = [[UILabel alloc] init];
+                CGRect frame = CGRectZero;
+                frame.size = CGSizeMake(textSize.width, textSize.height+10.f);///将height增加10.f
+                frame.origin = CGPointMake(16.f+offset, (cell.bounds.size.height-frame.size.height) / 2.f);///cell.textLabel若设置文本后，origin.x为16.f，所以从16.f位置开始偏移
+                centerLabel.frame = frame;
+                centerLabel.text = txt;
+                centerLabel.textColor = [UIColor whiteColor];
+                centerLabel.font = Font_DINCondensed(18.f);
+                [cell.contentView addSubview:centerLabel];
+            } else {
+                cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
+                cell.textLabel.textColor = [UIColor whiteColor];
+                cell.textLabel.font = Font_DINCondensed(18);
+            }
             
             return cell;
         }
