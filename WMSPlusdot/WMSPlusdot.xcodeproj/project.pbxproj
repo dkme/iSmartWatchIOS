@@ -2697,7 +2697,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
@@ -2706,9 +2706,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.weideWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.enterprise.weideWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
+				PROVISIONING_PROFILE = "3c52d60a-8f23-4895-9ff0-7534313ca111";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2823,9 +2823,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.weideWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.enterprise.weideWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
+				PROVISIONING_PROFILE = "3c52d60a-8f23-4895-9ff0-7534313ca111";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2847,9 +2847,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.weideWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.enterprise.weideWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
+				PROVISIONING_PROFILE = "3c52d60a-8f23-4895-9ff0-7534313ca111";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
