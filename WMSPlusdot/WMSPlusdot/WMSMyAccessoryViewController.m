@@ -68,7 +68,7 @@ NSString* const WMSUnBindAccessorySuccess =
 {
     if (!_textArray) {
         _textArray = @[
-                       NSLocalizedString(@"+o watch", nil),
+                       NSLocalizedString(@"SMART WATCH P3", nil),
                        ];
     }
     return _textArray;

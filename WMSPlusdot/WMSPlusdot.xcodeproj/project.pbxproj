@@ -12,8 +12,6 @@
 		230298C919A83281009D4306 /* target_info_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298C619A83281009D4306 /* target_info_icon.png */; };
 		230298CA19A83281009D4306 /* target_progress_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298C719A83281009D4306 /* target_progress_bg.png */; };
 		230298CB19A83281009D4306 /* target_progress_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298C819A83281009D4306 /* target_progress_btn.png */; };
-		230298D019A87DBF009D4306 /* WMSBindingAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 230298CE19A87DBF009D4306 /* WMSBindingAccessoryViewController.m */; };
-		230298D119A87DBF009D4306 /* WMSBindingAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 230298CF19A87DBF009D4306 /* WMSBindingAccessoryViewController.xib */; };
 		230298D719A87F0A009D4306 /* link_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D319A87F0A009D4306 /* link_bg.png */; };
 		230298D819A87F0A009D4306 /* link_connect_failure_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D419A87F0A009D4306 /* link_connect_failure_icon.png */; };
 		230298D919A87F0A009D4306 /* link_connect_ing_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 230298D519A87F0A009D4306 /* link_connect_ing_icon.png */; };
@@ -58,8 +56,6 @@
 		231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 231C80F21A15D4D80038BD79 /* WMSHelper.m */; };
 		23204A971A42A33A005874CE /* GGAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 23204A961A42A33A005874CE /* GGAudioTool.m */; };
 		23204A9C1A42E71F005874CE /* GGDeviceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 23204A9B1A42E71F005874CE /* GGDeviceTool.m */; };
-		23204A9F1A42F9E2005874CE /* WMSBindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23204A9E1A42F9E2005874CE /* WMSBindingView.m */; };
-		23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23204AA01A42FA0F005874CE /* WMSBindingView.xib */; };
 		2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2321B78019B9500900278677 /* NSMutableArray+Stack.m */; };
 		2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323686019C1A30200E666D3 /* WMSPersonModel.m */; };
 		2323BE0E1A68E84900FCA216 /* WMSDeviceModel+Configure.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */; };
@@ -275,6 +271,9 @@
 		F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2181B4244FC002EDEF9 /* HealthManager.m */; };
 		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
+		F736D8BA1BB3E9B4002C73B9 /* UILabel+VerticalAlign.m in Sources */ = {isa = PBXBuildFile; fileRef = F736D8B91BB3E9B4002C73B9 /* UILabel+VerticalAlign.m */; settings = {ASSET_TAGS = (); }; };
+		F736D8BE1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F736D8BB1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m */; settings = {ASSET_TAGS = (); }; };
+		F736D8BF1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F736D8BC1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		F74BB82D1BB0017100992A36 /* watch.png in Resources */ = {isa = PBXBuildFile; fileRef = F74BB82C1BB0017100992A36 /* watch.png */; settings = {ASSET_TAGS = (); }; };
 		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
 		F76B8BF21B6878CB00315600 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF11B6878CB00315600 /* Utility.m */; };
@@ -342,9 +341,6 @@
 		230298C619A83281009D4306 /* target_info_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = target_info_icon.png; sourceTree = "<group>"; };
 		230298C719A83281009D4306 /* target_progress_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = target_progress_bg.png; sourceTree = "<group>"; };
 		230298C819A83281009D4306 /* target_progress_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = target_progress_btn.png; sourceTree = "<group>"; };
-		230298CD19A87DBF009D4306 /* WMSBindingAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBindingAccessoryViewController.h; sourceTree = "<group>"; };
-		230298CE19A87DBF009D4306 /* WMSBindingAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSBindingAccessoryViewController.m; sourceTree = "<group>"; };
-		230298CF19A87DBF009D4306 /* WMSBindingAccessoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSBindingAccessoryViewController.xib; sourceTree = "<group>"; };
 		230298D319A87F0A009D4306 /* link_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_bg.png; sourceTree = "<group>"; };
 		230298D419A87F0A009D4306 /* link_connect_failure_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_failure_icon.png; sourceTree = "<group>"; };
 		230298D519A87F0A009D4306 /* link_connect_ing_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = link_connect_ing_icon.png; sourceTree = "<group>"; };
@@ -406,9 +402,6 @@
 		23204A961A42A33A005874CE /* GGAudioTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGAudioTool.m; sourceTree = "<group>"; };
 		23204A9A1A42E71F005874CE /* GGDeviceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDeviceTool.h; sourceTree = "<group>"; };
 		23204A9B1A42E71F005874CE /* GGDeviceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDeviceTool.m; sourceTree = "<group>"; };
-		23204A9D1A42F9E2005874CE /* WMSBindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBindingView.h; sourceTree = "<group>"; };
-		23204A9E1A42F9E2005874CE /* WMSBindingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSBindingView.m; sourceTree = "<group>"; };
-		23204AA01A42FA0F005874CE /* WMSBindingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSBindingView.xib; sourceTree = "<group>"; };
 		2321B77F19B9500900278677 /* NSMutableArray+Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Stack.h"; sourceTree = "<group>"; };
 		2321B78019B9500900278677 /* NSMutableArray+Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Stack.m"; sourceTree = "<group>"; };
 		2321B78319B95E8E00278677 /* WMSBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBluetooth.h; sourceTree = "<group>"; };
@@ -736,6 +729,11 @@
 		F70EF3D51B46643A002EDEF9 /* WMSPlusdot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WMSPlusdot.entitlements; sourceTree = "<group>"; };
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
+		F736D8B81BB3E9B4002C73B9 /* UILabel+VerticalAlign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+VerticalAlign.h"; sourceTree = "<group>"; };
+		F736D8B91BB3E9B4002C73B9 /* UILabel+VerticalAlign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+VerticalAlign.m"; sourceTree = "<group>"; };
+		F736D8BB1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSBindingAccessoryViewController.m; sourceTree = "<group>"; };
+		F736D8BC1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSBindingAccessoryViewController.xib; sourceTree = "<group>"; };
+		F736D8BD1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBindingAccessoryViewController.h; sourceTree = "<group>"; };
 		F74BB82C1BB0017100992A36 /* watch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watch.png; sourceTree = "<group>"; };
 		F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
 		F76B8BF01B6878CB00315600 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
@@ -874,12 +872,9 @@
 		230298CC19A87D65009D4306 /* 绑定配件视图 */ = {
 			isa = PBXGroup;
 			children = (
-				230298CD19A87DBF009D4306 /* WMSBindingAccessoryViewController.h */,
-				230298CE19A87DBF009D4306 /* WMSBindingAccessoryViewController.m */,
-				230298CF19A87DBF009D4306 /* WMSBindingAccessoryViewController.xib */,
-				23204A9D1A42F9E2005874CE /* WMSBindingView.h */,
-				23204A9E1A42F9E2005874CE /* WMSBindingView.m */,
-				23204AA01A42FA0F005874CE /* WMSBindingView.xib */,
+				F736D8BD1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.h */,
+				F736D8BB1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m */,
+				F736D8BC1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib */,
 				236D95B91A67ACFC00037DD8 /* WMSFilter.h */,
 				236D95BA1A67ACFC00037DD8 /* WMSFilter.m */,
 			);
@@ -1009,8 +1004,10 @@
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 				232471B71A50FD0300F70565 /* UIPickerView+Display */,
 				23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */,
+				F736D8B71BB3E9A4002C73B9 /* UILabel+VerticalAlign */,
 				F7E64D571B7C37380021ACD7 /* UIViewController+Sync */,
 				F7E64D581B7C374C0021ACD7 /* NSTimeZone+TimeDifference */,
+				F76B8C581B69C18A00315600 /* NSString+DynamicSize */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1826,7 +1823,6 @@
 				239F51CE1A2D94E20058F6DE /* EAIntroView */,
 				231972451A358DCB002E8A0F /* JSCustomBadge */,
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
-				F76B8C581B69C18A00315600 /* NSString+DynamicSize */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -2011,6 +2007,15 @@
 				F72385B31B1C3C5E00AC3CD5 /* Condition.m */,
 			);
 			name = "天气";
+			sourceTree = "<group>";
+		};
+		F736D8B71BB3E9A4002C73B9 /* UILabel+VerticalAlign */ = {
+			isa = PBXGroup;
+			children = (
+				F736D8B81BB3E9B4002C73B9 /* UILabel+VerticalAlign.h */,
+				F736D8B91BB3E9B4002C73B9 /* UILabel+VerticalAlign.m */,
+			);
+			name = "UILabel+VerticalAlign";
 			sourceTree = "<group>";
 		};
 		F76B8C051B687F5D00315600 /* JSON Parser */ = {
@@ -2238,12 +2243,10 @@
 				238FE0CB1A79E1FD00D27E65 /* main_menu_gift_icon_b.png in Resources */,
 				2326A41019A593E20098657B /* main_history_btn_b.png in Resources */,
 				234BF1FB19B05991005D71A0 /* select_man.png in Resources */,
-				23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */,
 				2326A40A19A5916A0098657B /* main_ico_burn.png in Resources */,
 				23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */,
 				F7815F4F1BAFF1EC008CA4EB /* intro_page3@2x.png in Resources */,
 				231972581A35B942002E8A0F /* zq_light_list_bottom_b.png in Resources */,
-				230298D119A87DBF009D4306 /* WMSBindingAccessoryViewController.xib in Resources */,
 				234BF1F619B05914005D71A0 /* WMSMyAccountViewController.xib in Resources */,
 				2393886A1ABBA99F0018BDA1 /* flashing_off@2x.png in Resources */,
 				2335119619A479DA00FBCC81 /* signup_arrow_b.png in Resources */,
@@ -2312,6 +2315,7 @@
 				F7E64D901B7C9C980021ACD7 /* intro_enter.png in Resources */,
 				233511A519A4BD5200FBCC81 /* WMSContentViewController.xib in Resources */,
 				237545C319AED3D200685CD1 /* account_head.png in Resources */,
+				F736D8BF1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib in Resources */,
 				2393884A1ABBA8EE0018BDA1 /* WMSSmartClockViewController.xib in Resources */,
 				F7815F4B1BAFF1EC008CA4EB /* intro_page1@2x.png in Resources */,
 				23C74AFE19A72E9E00C589A1 /* main_deepsleep_icon.png in Resources */,
@@ -2492,13 +2496,13 @@
 				F76B8C191B687FF700315600 /* unzip.c in Sources */,
 				F783EF5E1B130392008124BE /* TurntableView.m in Sources */,
 				23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */,
+				F736D8BA1BB3E9B4002C73B9 /* UILabel+VerticalAlign.m in Sources */,
 				2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */,
 				23305D9A19C7CFAF00F9EEE6 /* WMSMyAccessory.m in Sources */,
 				230FDC6919D659EB00AE98FF /* PNBarChartView.m in Sources */,
 				F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */,
 				2331838919B6FE2D005B2BA0 /* WMSDeviceProfile.m in Sources */,
 				F7CAE8141B60E2F20057300C /* RFSegmentView.m in Sources */,
-				230298D019A87DBF009D4306 /* WMSBindingAccessoryViewController.m in Sources */,
 				2328CD2F19CFFEE50085AD77 /* UIImage+QuartzProc.m in Sources */,
 				F76B8C0A1B687F7000315600 /* JsonParser.m in Sources */,
 				2333AAFF1A64B3C700DBA846 /* MyNavigationController.m in Sources */,
@@ -2519,7 +2523,6 @@
 				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,
 				235427681A3E906E008E5CFD /* WMSPostNotificationHelper.m in Sources */,
 				239388611ABBA99F0018BDA1 /* GGIViewController.m in Sources */,
-				23204A9F1A42F9E2005874CE /* WMSBindingView.m in Sources */,
 				F70602D31B423388006DEE8C /* testing.c in Sources */,
 				2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */,
 				23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */,
@@ -2534,6 +2537,7 @@
 				2333AB051A64C28600DBA846 /* UIImage+Color.m in Sources */,
 				2316508219AB15510066C301 /* WMSLeftViewCell.m in Sources */,
 				23D7CF0719B5C57D00DFA678 /* WMSBleControl.m in Sources */,
+				F736D8BE1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m in Sources */,
 				2335119F19A4B85700FBCC81 /* RESideMenu.m in Sources */,
 				23B0094719D50100008424FA /* PNPlot.m in Sources */,
 				F76B8C011B68795300315600 /* IntelHex2BinConverter.m in Sources */,
