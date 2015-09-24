@@ -248,9 +248,18 @@
             cell = [[[NSBundle mainBundle] loadNibNamed:@"WMSSwitchCell" owner:self options:Nil] lastObject];
         }
         cell.delegate = self;
-        cell.textLabel.text = NSLocalizedString(@"闹钟", nil);
         cell.mySwitch.on = self.clockModel.status;
+        //cell.textLabel.text = NSLocalizedString(@"闹钟", nil);///不要使用cell.textLabel，因为会覆盖UISwitch控件
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UILabel *centerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        CGRect labelRect = CGRectZero;
+        labelRect.origin = CGPointMake(16.f, 0.f);
+        labelRect.size = CGSizeMake(120.f, cell.bounds.size.height);
+        centerLabel.frame = labelRect;
+        centerLabel.text = NSLocalizedString(@"闹钟", nil);
+        [cell.contentView addSubview:centerLabel];
+        
         return cell;
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];

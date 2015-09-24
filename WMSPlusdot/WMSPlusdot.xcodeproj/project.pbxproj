@@ -58,8 +58,6 @@
 		231C80F31A15D4D80038BD79 /* WMSHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 231C80F21A15D4D80038BD79 /* WMSHelper.m */; };
 		23204A971A42A33A005874CE /* GGAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 23204A961A42A33A005874CE /* GGAudioTool.m */; };
 		23204A9C1A42E71F005874CE /* GGDeviceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 23204A9B1A42E71F005874CE /* GGDeviceTool.m */; };
-		23204A9F1A42F9E2005874CE /* WMSBindingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23204A9E1A42F9E2005874CE /* WMSBindingView.m */; };
-		23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23204AA01A42FA0F005874CE /* WMSBindingView.xib */; };
 		2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2321B78019B9500900278677 /* NSMutableArray+Stack.m */; };
 		2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323686019C1A30200E666D3 /* WMSPersonModel.m */; };
 		2323BE0E1A68E84900FCA216 /* WMSDeviceModel+Configure.m in Sources */ = {isa = PBXBuildFile; fileRef = 2323BE0D1A68E84900FCA216 /* WMSDeviceModel+Configure.m */; };
@@ -275,6 +273,7 @@
 		F70EF2191B4244FC002EDEF9 /* HealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF2181B4244FC002EDEF9 /* HealthManager.m */; };
 		F70EF2801B42A604002EDEF9 /* WMSTestingProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EF27F1B42A604002EDEF9 /* WMSTestingProfile.m */; };
 		F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */ = {isa = PBXBuildFile; fileRef = F72385B31B1C3C5E00AC3CD5 /* Condition.m */; };
+		F736D8B61BB3E5EF002C73B9 /* UILabel+VerticalAlign.m in Sources */ = {isa = PBXBuildFile; fileRef = F736D8B51BB3E5EF002C73B9 /* UILabel+VerticalAlign.m */; settings = {ASSET_TAGS = (); }; };
 		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
 		F76B8BF21B6878CB00315600 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF11B6878CB00315600 /* Utility.m */; };
 		F76B8BFB1B68793200315600 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF41B68793200315600 /* DFUOperations.m */; };
@@ -406,9 +405,6 @@
 		23204A961A42A33A005874CE /* GGAudioTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGAudioTool.m; sourceTree = "<group>"; };
 		23204A9A1A42E71F005874CE /* GGDeviceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDeviceTool.h; sourceTree = "<group>"; };
 		23204A9B1A42E71F005874CE /* GGDeviceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDeviceTool.m; sourceTree = "<group>"; };
-		23204A9D1A42F9E2005874CE /* WMSBindingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBindingView.h; sourceTree = "<group>"; };
-		23204A9E1A42F9E2005874CE /* WMSBindingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSBindingView.m; sourceTree = "<group>"; };
-		23204AA01A42FA0F005874CE /* WMSBindingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSBindingView.xib; sourceTree = "<group>"; };
 		2321B77F19B9500900278677 /* NSMutableArray+Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Stack.h"; sourceTree = "<group>"; };
 		2321B78019B9500900278677 /* NSMutableArray+Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Stack.m"; sourceTree = "<group>"; };
 		2321B78319B95E8E00278677 /* WMSBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBluetooth.h; sourceTree = "<group>"; };
@@ -736,6 +732,8 @@
 		F70EF3D51B46643A002EDEF9 /* WMSPlusdot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WMSPlusdot.entitlements; sourceTree = "<group>"; };
 		F72385B21B1C3C5E00AC3CD5 /* Condition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Condition.h; sourceTree = "<group>"; };
 		F72385B31B1C3C5E00AC3CD5 /* Condition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Condition.m; sourceTree = "<group>"; };
+		F736D8B41BB3E5EF002C73B9 /* UILabel+VerticalAlign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+VerticalAlign.h"; sourceTree = "<group>"; };
+		F736D8B51BB3E5EF002C73B9 /* UILabel+VerticalAlign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+VerticalAlign.m"; sourceTree = "<group>"; };
 		F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
 		F76B8BF01B6878CB00315600 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		F76B8BF11B6878CB00315600 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
@@ -877,9 +875,6 @@
 				230298CD19A87DBF009D4306 /* WMSBindingAccessoryViewController.h */,
 				230298CE19A87DBF009D4306 /* WMSBindingAccessoryViewController.m */,
 				230298CF19A87DBF009D4306 /* WMSBindingAccessoryViewController.xib */,
-				23204A9D1A42F9E2005874CE /* WMSBindingView.h */,
-				23204A9E1A42F9E2005874CE /* WMSBindingView.m */,
-				23204AA01A42FA0F005874CE /* WMSBindingView.xib */,
 				236D95B91A67ACFC00037DD8 /* WMSFilter.h */,
 				236D95BA1A67ACFC00037DD8 /* WMSFilter.m */,
 			);
@@ -1008,9 +1003,11 @@
 				23244D7D1A314640006C925C /* UIViewController+Update */,
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 				232471B71A50FD0300F70565 /* UIPickerView+Display */,
+				F736D8B31BB3E5D7002C73B9 /* UILabel+VerticalAlign */,
 				23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */,
 				F7E64D571B7C37380021ACD7 /* UIViewController+Sync */,
 				F7E64D581B7C374C0021ACD7 /* NSTimeZone+TimeDifference */,
+				F76B8C581B69C18A00315600 /* NSString+DynamicSize */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1826,7 +1823,6 @@
 				239F51CE1A2D94E20058F6DE /* EAIntroView */,
 				231972451A358DCB002E8A0F /* JSCustomBadge */,
 				2328CD2C19CFFED00085AD77 /* UIImage+QuartzProc */,
-				F76B8C581B69C18A00315600 /* NSString+DynamicSize */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -2011,6 +2007,15 @@
 				F72385B31B1C3C5E00AC3CD5 /* Condition.m */,
 			);
 			name = "天气";
+			sourceTree = "<group>";
+		};
+		F736D8B31BB3E5D7002C73B9 /* UILabel+VerticalAlign */ = {
+			isa = PBXGroup;
+			children = (
+				F736D8B41BB3E5EF002C73B9 /* UILabel+VerticalAlign.h */,
+				F736D8B51BB3E5EF002C73B9 /* UILabel+VerticalAlign.m */,
+			);
+			name = "UILabel+VerticalAlign";
 			sourceTree = "<group>";
 		};
 		F76B8C051B687F5D00315600 /* JSON Parser */ = {
@@ -2237,7 +2242,6 @@
 				238FE0CB1A79E1FD00D27E65 /* main_menu_gift_icon_b.png in Resources */,
 				2326A41019A593E20098657B /* main_history_btn_b.png in Resources */,
 				234BF1FB19B05991005D71A0 /* select_man.png in Resources */,
-				23204AA11A42FA0F005874CE /* WMSBindingView.xib in Resources */,
 				2326A40A19A5916A0098657B /* main_ico_burn.png in Resources */,
 				23C74B0819A733FA00C589A1 /* main_clock_btn_b.png in Resources */,
 				F7E64D8D1B7C9C3C0021ACD7 /* intro_page3@2x.png in Resources */,
@@ -2492,6 +2496,7 @@
 				F76B8C191B687FF700315600 /* unzip.c in Sources */,
 				F783EF5E1B130392008124BE /* TurntableView.m in Sources */,
 				23E84FE81A709E12006BBAEA /* UILabel+Attribute.m in Sources */,
+				F736D8B61BB3E5EF002C73B9 /* UILabel+VerticalAlign.m in Sources */,
 				2360CED219E6855000B10A0B /* WMSDeviceModel.m in Sources */,
 				23305D9A19C7CFAF00F9EEE6 /* WMSMyAccessory.m in Sources */,
 				230FDC6919D659EB00AE98FF /* PNBarChartView.m in Sources */,
@@ -2519,7 +2524,6 @@
 				231C80ED1A15A0FB0038BD79 /* GGIAnnulusView.m in Sources */,
 				235427681A3E906E008E5CFD /* WMSPostNotificationHelper.m in Sources */,
 				239388611ABBA99F0018BDA1 /* GGIViewController.m in Sources */,
-				23204A9F1A42F9E2005874CE /* WMSBindingView.m in Sources */,
 				F70602D31B423388006DEE8C /* testing.c in Sources */,
 				2323686119C1A30200E666D3 /* WMSPersonModel.m in Sources */,
 				23FB8B5919CA7C9100E7D77C /* WMSSleepDatabase.m in Sources */,
@@ -2693,7 +2697,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
@@ -2702,9 +2706,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.enterprise.weideWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.weideWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2810,7 +2814,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
 				INFOPLIST_FILE = "WMSPlusdot/WMSPlusdot-Info.plist";
@@ -2819,9 +2823,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.enterprise.weideWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.weideWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2843,9 +2847,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.enterprise.weideWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.weideWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e586c955-bdba-4346-af53-5a857597321e";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
