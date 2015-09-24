@@ -33,6 +33,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
     WMSUpdateVCHelper *_updateHelper;
     DFUOperations *_dfuOperations;
     
+    BOOL _isWillUpdate;//是否将要更新
     BOOL _isUpdating;//是否正在更新
     int  _connectSuccessCount;
     NSString *_peripheralIdentify;
@@ -53,8 +54,8 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
     [self initProperty];
     [self adaptiveIphone4];
     
-    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-    [bleControl switchToUpdateMode:^(BOOL isSuccess, RequestUpdateFirmwareErrorCode errCode) {}];
+//    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+//    [bleControl switchToUpdateMode:^(BOOL isSuccess, RequestUpdateFirmwareErrorCode errCode) {}];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -153,11 +154,18 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
 #pragma mark - Action
 - (void)backAction:(id)sender
 {
+    NSString *title = NSLocalizedString(@"提示", nil);
+    NSString *message = @"";
+    NSString *cancel = NSLocalizedString(@"NO", nil);
+    NSString *confirm = NSLocalizedString(@"YES", nil);
+    if (_isWillUpdate) {
+        message = NSLocalizedString(@"正在准备更新固件，退出会取消更新，是否继续退出？", nil);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:confirm, nil];
+        [alert show];
+        return ;
+    }
     if (_isUpdating) {
-        NSString *title = NSLocalizedString(@"提示", nil);
-        NSString *message = NSLocalizedString(@"正在更新固件，退出会停止更新，是否继续退出？", nil);
-        NSString *cancel = NSLocalizedString(@"NO", nil);
-        NSString *confirm = NSLocalizedString(@"YES", nil);
+        message = NSLocalizedString(@"正在更新固件，退出会停止更新，是否继续退出？", nil);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:confirm, nil];
         [alert show];
         return ;
@@ -170,69 +178,27 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
 }
 
 - (IBAction)updateAction:(id)sender {
-//    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-//    if ([bleControl isConnected] == NO) {
-//        [self showTip:NSLocalizedString(@"您的连接已断开", nil)];
-//        return;
-//    }
+    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    if ([bleControl isConnected] == NO) {
+        [self showTip:NSLocalizedString(@"您的连接已断开", nil)];
+        return;
+    }
+        
+    [bleControl switchToUpdateMode:^(BOOL isSuccess, RequestUpdateFirmwareErrorCode errCode) {}];
     
-//    NSString *peipheralUUID = [bleControl.connectedPeripheral UUIDString];
-//    _peripheralIdentify = peipheralUUID;
+    self.navBarView.buttonLeft.enabled = NO;
+    self.buttonUpdate.enabled = NO;
+    self.buttonUpdate.alpha = 0.7;
+    _isWillUpdate = YES;
+    [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
     
-//    [self updateState:NSLocalizedString(@"正在切换至升级模式...", nil)];
-//    [bleControl switchToUpdateModeCompletion:^(SwitchToUpdateResult result, NSString *failReason)
-//    {
-//        switch (result)
-//        {
-//            case SwitchToUpdateResultSuccess:
-//            {
-//                [self updateState:NSLocalizedString(@"切换模式成功...", nil)];
-//                DEBUGLog(@"success");
-//                break;
-//            }
-//            case SwitchToUpdateResultLowBattery:
-//            {
-//                [self showTip:NSLocalizedString(@"您的手表电量过低，不能升级", nil)];
-//                DEBUGLog(@"low battery");
-//                return ;
-//            }
-//            case SwitchToUpdateResultUnsupported:
-//            {
-//                [self showTip:NSLocalizedString(@"您的手表不支持升级", nil)];
-//                DEBUGLog(@"Unsupported");
-//                return ;
-//            }
-//            default:
-//                return ;
-//        }
-//        self.navBarView.buttonLeft.enabled = NO;
-//        self.buttonUpdate.enabled = NO;
-//        self.buttonUpdate.alpha = 0.7;
-//        _isUpdating = YES;
-//        [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
-//        //发送通知
-//        [self postNotificationForName:WMSUpdateVCStartDFU];
-//        //4s后，会断开连接，此时再去扫描
-//        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:nil];
-//        [self performSelector:@selector(scanPeipheral:) withObject:nil afterDelay:6.0];
-//    }];
-//    [bleControl switchToUpdateMode:^(BOOL isSuccess, RequestUpdateFirmwareErrorCode errCode) {
-//        DEBUGLog(@"切换到升级模式%@", isSuccess?@"成功":@"失败");
-//        if (!isSuccess) {
-//            DEBUGLog(@"errCode: %d", errCode);
-//            return ;
-//        }
-        self.navBarView.buttonLeft.enabled = NO;
-        self.buttonUpdate.enabled = NO;
-        self.buttonUpdate.alpha = 0.7;
-        _isUpdating = YES;
-        [self updateState:NSLocalizedString(@"正在准备升级...", nil)];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         //发送通知
         [self postNotificationForName:WMSUpdateVCStartDFU];
         //6s后，会断开连接，此时再去扫描
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scanPeipheral:) object:nil];
         [self performSelector:@selector(scanPeipheral:) withObject:nil afterDelay:6.0];
-//    }];
+    });
 }
 
 #pragma mark - DFU
@@ -248,7 +214,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
         }
         DEBUGLog(@"scanning");
         NSString *uuid = [peripheral.identifier UUIDString];
-//        if ([specifiedUUID isEqualToString:uuid]) {
+//        if ([specifiedUUID isEqualToString:uuid]) {///切换至DFU后，设备的identifier改变了
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self hideHUDAtViewCenter];
             });
@@ -433,6 +399,7 @@ static const NSTimeInterval DFU_DELAY           = 2.f;
     NSLog(@"onDFUStarted");
     dispatch_async(dispatch_get_main_queue(), ^{
         self.progressView.hidden = NO;
+        _isWillUpdate = NO;
         _isUpdating = YES;
         [self updateState:NSLocalizedString(@"正在进行升级...", nil)];
     });

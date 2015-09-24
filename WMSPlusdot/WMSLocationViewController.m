@@ -135,8 +135,21 @@ typedef enum {
 
 - (IBAction)confirmAction:(id)sender {
     NSString *name = [self.cityText text];
-    if (name && ![@"" isEqualToString:name]) {
-        [self callDelegate:name];
+    ///1.匹配已字母开头后面跟着0个或多个字母/空格的字符串
+    ///2.匹配已汉子开头后面跟着0个或多个汉字/空格的字符串
+    NSString *regex = @"^[a-zA-Z][a-zA-Z ]*$|^[\u4e00-\u9fa5][\u4e00-\u9fa5 ]*$";
+    NSRange result = [name rangeOfString:regex options:NSRegularExpressionSearch];
+    if (result.location != NSNotFound) {
+        if (name && ![@"" isEqualToString:name]) {
+            [self callDelegate:name];
+        }
+    } else {
+        ///提示用户
+        NSString *title = NSLocalizedString(@"提示", nil);
+        NSString *message = @"请输入正确的城市名称!";
+        NSString *cancel = NSLocalizedString(@"知道了", nil);
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:cancel otherButtonTitles:nil];
+        [alertView show];
     }
 }
 

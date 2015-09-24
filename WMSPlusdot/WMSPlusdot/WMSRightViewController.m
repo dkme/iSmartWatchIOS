@@ -23,6 +23,8 @@
 #import "WMSMyAccessory.h"
 #import "WMSConstants.h"
 #import "WMSSoundOperation.h"
+#import "NSString+DynamicSize.h"
+#import "WMSAppConfig.h"
 
 #import "GGDeviceTool.h"
 #import "WMSDeviceModel.h"
@@ -403,25 +405,6 @@
     }
 }
 
-#pragma mark - GGIViewControllerDelegate
-- (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image
-{
-    [self openPhotoLibrary];
-}
-- (void)GGIViewControllerDidClose:(GGIViewController *)viewController
-{
-    WeakObj(self, weakSelf);
-    self.isNeedSwitchToNormalMode = YES;
-    [self.bleControl switchToMode:NormalMode completion:^{
-        StrongObj(weakSelf, strongSelf);
-        strongSelf.isNeedSwitchToNormalMode = NO;
-    }];
-    
-//    [self.bleControl switchToMode:NormalMode completion:^{}];
-    self.pickerController.delegate = nil;
-    self.pickerController = nil;
-}
-
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -519,10 +502,32 @@
             } else {
                 txt = self.section5TitleArray[indexPath.row];
             }
-            cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
-            cell.textLabel.textColor = [UIColor whiteColor];
-            cell.textLabel.font = Font_DINCondensed(18);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+            BOOL useNewLabel = NO;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
+                if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {///DIN Condensed字体，在英文状态下，并不会出现显示不全的问题
+                    useNewLabel = YES;
+                }
+            }
+            if (useNewLabel) {
+                ///添加1个label，使用cell.textLabel，字体显示不全
+                CGFloat offset = [CELL_CONTENT_PREFIX dynamicSizeWithFont:Font_DINCondensed(18.f)].width;
+                CGSize textSize = [txt dynamicSizeWithFont:Font_DINCondensed(18.f)];
+                UILabel *centerLabel = [[UILabel alloc] init];
+                CGRect frame = CGRectZero;
+                frame.size = CGSizeMake(textSize.width, textSize.height+10.f);///将height增加10.f
+                frame.origin = CGPointMake(16.f+offset, (cell.bounds.size.height-frame.size.height) / 2.f);///cell.textLabel若设置文本后，origin.x为16.f，所以从16.f位置开始偏移
+                centerLabel.frame = frame;
+                centerLabel.text = txt;
+                centerLabel.textColor = [UIColor whiteColor];
+                centerLabel.font = Font_DINCondensed(18.f);
+                [cell.contentView addSubview:centerLabel];
+            } else {
+                cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
+                cell.textLabel.textColor = [UIColor whiteColor];
+                cell.textLabel.font = Font_DINCondensed(18);
+            }
+            
             return cell;
         }
             
@@ -673,7 +678,19 @@
     else
     {
         NSString *key = [self settingKeyFromIndexPath:indexPath];
-        RemindEvents event = [self eventFromIndexPath:indexPath];
+        RemindEvents event = 0;//????
+        for (NSString *keyObj in self.settingKeys) {
+            if ([keyObj isEqualToString:key]) {
+                continue;
+            }
+            BOOL on = [((NSNumber *)[WMSRightVCHelper loadSettingItemDataOfKey:keyObj]) boolValue];
+            if (on) {
+                event |= [self eventFromKey:keyObj];
+            }
+        }
+        if (sw.on) {
+            event |= [self eventFromKey:key];
+        }
         [self.bleControl.settingProfile setRemindEvent:event completion:^(BOOL isSuccess) {
             DEBUGLog_DETAIL(@"设置提醒项成功");
             StrongObj(weakSelf, strongSelf);
@@ -685,11 +702,20 @@
     }
 }
 
+- (NSArray *)settingKeys
+{
+    static NSArray *keys = nil;
+    if (!keys) {
+        keys = @[@"Phone", @"SMS"/*,@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"*/];
+    }
+    return keys;
+}
+
 - (NSString *)settingKeyFromIndexPath:(NSIndexPath *)indexPath
 {
     static NSDictionary *map = nil;
     if (!map) {
-        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"*/];
+        NSArray *settingKeys = [self settingKeys];
         
         NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:settingKeys.count];
         NSIndexPath *index = nil;
@@ -709,11 +735,11 @@
     return map[indexPath];
 }
 
-- (RemindEvents)eventFromIndexPath:(NSIndexPath *)indexPath
+- (RemindEvents)eventFromKey:(NSString *)key
 {
     static NSDictionary *map = nil;
     if (!map) {
-        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"QQ",@"Wechat",@"sina",@"Facebook",@"Twitter",@"WhatsApp",@"Skype"*/];
+        NSArray *settingKeys = [self settingKeys];
         NSMutableArray *events = [NSMutableArray arrayWithCapacity:settingKeys.count];
         for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
             [events addObject:@(i)];
@@ -721,8 +747,42 @@
         
         map = [NSDictionary dictionaryWithObjects:events forKeys:settingKeys];
     }
-    NSString *key = [self settingKeyFromIndexPath:indexPath];
     return (RemindEvents)[map[key] unsignedIntegerValue];
+}
+//
+//- (RemindEvents)eventFromIndexPath:(NSIndexPath *)indexPath
+//{
+//    static NSDictionary *map = nil;
+//    if (!map) {
+//        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"QQ",@"Wechat",@"sina",@"Facebook",@"Twitter",@"WhatsApp",@"Skype"*/];
+//        NSMutableArray *events = [NSMutableArray arrayWithCapacity:settingKeys.count];
+//        for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
+//            [events addObject:@(i)];
+//        }
+//        
+//        map = [NSDictionary dictionaryWithObjects:events forKeys:settingKeys];
+//    }
+//    NSString *key = [self settingKeyFromIndexPath:indexPath];
+//    return (RemindEvents)[map[key] unsignedIntegerValue];
+//}
+
+
+#pragma mark - ----------------------
+#pragma mark - GGIViewControllerDelegate
+- (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image
+{
+    //[self openPhotoLibrary];
+}
+- (void)GGIViewControllerDidClose:(GGIViewController *)viewController
+{
+    WeakObj(self, weakSelf);
+    self.isNeedSwitchToNormalMode = YES;
+    [self.bleControl switchToMode:NormalMode completion:^{
+        StrongObj(weakSelf, strongSelf);
+        strongSelf.isNeedSwitchToNormalMode = NO;
+    }];    
+    self.pickerController.delegate = nil;
+    self.pickerController = nil;
 }
 
 @end

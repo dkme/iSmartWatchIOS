@@ -16,6 +16,9 @@
 @property (nonatomic, strong) WMSBleControl *bleControl;
 @property (nonatomic, strong) LGCharacteristic *serialPortWriteCharacteristic;
 
+///block
+@property (nonatomic, copy) syncSportDataCallback syncSportDataBlock;
+
 @end
 
 @implementation WMSSyncProfile
@@ -62,7 +65,8 @@
     if (res != HANDLE_OK) {
         return ;
     }
-    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:aCallback withTimeID:TIME_ID_SYNC_SPORT_DATA];
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:NULL withTimeID:TIME_ID_SYNC_SPORT_DATA];
+    self.syncSportDataBlock = aCallback;
 }
 
 #pragma mark - Handle
@@ -93,10 +97,17 @@
                 if (res.error == HANDLE_OK) {
                     NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d", res.year, res.month, res.day];
                     NSDate *date = [NSDate dateFromString:strDate format:@"yyyy-MM-dd"];
-                    syncSportDataCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_SYNC_SPORT_DATA];
-                    if (aCallback) {
-                        aCallback(date, res.steps, res.distances, res.fireHeats, res.durations, res.notSyncDays);
+//                    syncSportDataCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_SYNC_SPORT_DATA];
+//                    if (aCallback) {
+//                        aCallback(date, res.steps, res.distances, res.fireHeats, res.durations, res.notSyncDays);
+//                    }
+                    if (self.syncSportDataBlock) {
+                        self.syncSportDataBlock(date, res.steps, res.distances, res.fireHeats, res.durations, res.notSyncDays);
                     }
+                    if (res.notSyncDays == 0) {
+                        self.syncSportDataBlock = nil;
+                    }
+                    DEBUGLog(@"SYNC DATA----date:%@, steps:%d, notSyncDays:%d", date,res.steps,res.notSyncDays);
                 }
                 break;
             }

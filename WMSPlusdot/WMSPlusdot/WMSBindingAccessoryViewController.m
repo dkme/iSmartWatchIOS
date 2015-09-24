@@ -14,7 +14,7 @@
 #import "WMSContentViewController.h"
 #import "WMSMyAccessoryViewController.h"
 
-#import "WMSBindingView.h"
+#import "UILabel+VerticalAlign.h"
 #import "WMSDeviceModel+Configure.h"
 #import "WMSMyAccessory.h"
 #import "WMSFilter.h"
@@ -24,12 +24,11 @@ static const NSTimeInterval SCAN_TIME_INTERVAL      = 2.f;
 static const NSTimeInterval BINDING_TIME_INTERVAL   = 60.f;
 static const int            MAX_RSSI                = -75;
 
-@interface WMSBindingAccessoryViewController ()<WMSBindingViewDelegate>
+@interface WMSBindingAccessoryViewController ()
 {
 }
 @property (strong, nonatomic) NSArray *listData;
 @property (strong, nonatomic) WMSBleControl *bleControl;
-@property (strong, nonatomic) WMSBindingView *bindView;
 @end
 
 @implementation WMSBindingAccessoryViewController
@@ -40,14 +39,6 @@ static const int            MAX_RSSI                = -75;
 }
 
 #pragma mark - Getter
-- (WMSBindingView *)bindView
-{
-    if (!_bindView) {
-        _bindView = [WMSBindingView instanceBindingView];
-        _bindView.delegate = self;
-    }
-    return _bindView;
-}
 
 #pragma mark - Life Cycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -63,12 +54,9 @@ static const int            MAX_RSSI                = -75;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
     [self bleOperation];
     
-    [self.bindView.textView setText:NSLocalizedString(@"请将手表靠近手机", nil)];
-    [self.bindView show:YES forView:self.view];
-    
+    [self updateStatus:NSLocalizedString(@"请将手表靠近手机", nil)];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -86,6 +74,13 @@ static const int            MAX_RSSI                = -75;
     DEBUGLog(@"%s",__FUNCTION__);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Setup
+- (void)updateStatus:(NSString *)status
+{
+    self.tipLabel.text = status;
+    [self.tipLabel alignTop];
 }
 
 #pragma mark - Methods
@@ -108,21 +103,16 @@ static const int            MAX_RSSI                = -75;
         }
         [self.bleControl connect:peripheral];
         [self stopRefresh];
-        self.bindView.textView.text = NSLocalizedString(@"请稍等，正在绑定配件...", nil);
+        [self updateStatus:NSLocalizedString(@"请稍等，正在绑定配件...", nil)];
     }
 }
 - (void)continueBinding
 {
     [self scanPeripheral];
-    [self.bindView.textView setText:NSLocalizedString(@"请将手表靠近手机", nil)];
+    [self updateStatus:NSLocalizedString(@"请将手表靠近手机", nil)];
 }
 - (void)sendBindingCMD
 {
-    //    WeakObj(self, weakSelf);
-    //    [self.bleControl bindDevice:^(BOOL isSuccess) {
-    //        if (isSuccess) {
-    //            StrongObj(weakSelf, strongSelf);
-    //            if (strongSelf) {
     NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
     if (identify) {
         NSString *mac = [WMSDeviceModel deviceModel].mac;
@@ -133,9 +123,6 @@ static const int            MAX_RSSI                = -75;
         [WMSMyAccessory setBindAccessoryMac:mac];
         [self closeVC:YES];
     }
-    //            }
-    //        }
-    //    }];
 }
 
 - (void)closeVC:(BOOL)successOrFail
@@ -155,7 +142,7 @@ static const int            MAX_RSSI                = -75;
 {
     [self.bleControl disconnect];
     
-    self.bindView.textView.text = NSLocalizedString(@"超时，绑定失败", nil);
+    [self updateStatus:NSLocalizedString(@"超时，绑定失败", nil)];
 }
 
 //刷新外设的信号量
@@ -191,7 +178,7 @@ static const int            MAX_RSSI                = -75;
         [self.bleControl connect:peripheral];
         [self stopRefresh];
         DEBUGLog(@"[LINE:%d] stop refresh",__LINE__);
-        self.bindView.textView.text = NSLocalizedString(@"请稍等，正在绑定配件...", nil);
+        [self updateStatus:NSLocalizedString(@"请稍等，正在绑定配件...", nil)];
     }
 }
 
@@ -230,7 +217,6 @@ static const int            MAX_RSSI                = -75;
              [strongSelf continueBinding];
          }
      }];
-    //    [self startRefresh];
 }
 
 //Handle
@@ -257,19 +243,10 @@ static const int            MAX_RSSI                = -75;
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
-    //    DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
-    //
-    //    if (self.bleControl.isConnecting || self.bleControl.isConnected) {
-    //        [self stopRefresh];
-    //        DEBUGLog(@"[LINE:%d] stop refresh",__LINE__);
-    //    } else {
-    //        [self continueBinding];
-    //    }
 }
 
-#pragma mark - WMSBindingViewDelegate
-- (void)bindingView:(WMSBindingView *)bindingView didClickBottomButton:(UIButton *)button
-{
+#pragma mark - Action
+- (IBAction)clickedCancelButton:(id)sender {
     [self stopRefresh];
     if ([self.bleControl isScanning]) {
         [self.bleControl stopScanForPeripherals];
@@ -280,5 +257,4 @@ static const int            MAX_RSSI                = -75;
     }
     [self closeVC:NO];
 }
-
 @end

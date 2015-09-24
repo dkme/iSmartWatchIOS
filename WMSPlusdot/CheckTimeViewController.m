@@ -10,9 +10,14 @@
 #import "WMSAppDelegate.h"
 #import "Masonry.h"
 
+static const NSUInteger CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL      = /*15*/0;
+static const NSUInteger ANTI_CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL = /*22*/0;
+
 @interface CheckTimeViewController ()<TurntableViewDelegate>
 
 @property (nonatomic, strong) WMSBleControl *bleControl;
+
+@property (nonatomic, assign, getter=isRotating) BOOL rotating;
 
 @end
 
@@ -90,6 +95,11 @@
     [self.button3h setTitle:[prefix stringByAppendingString:@"3h"] forState:UIControlStateNormal];
 }
 
+- (void)resetRotating
+{
+    self.rotating = NO;
+}
+
 #pragma mark - Action
 - (void)clickLeftBarButtonItem:(id)sender
 {
@@ -107,8 +117,12 @@
     } else {
         
     }
-    ROTATE_DIRECTION direction = (ROTATE_DIRECTION)self.segmentView.selectedIndex;
-    [self.bleControl.settingProfile roughAdjustmentTimeWithDirection:direction timeInterval:interval completion:NULL];
+    if (!self.isRotating) {
+        ROTATE_DIRECTION direction = (ROTATE_DIRECTION)self.segmentView.selectedIndex;
+        [self.bleControl.settingProfile roughAdjustmentTimeWithDirection:direction timeInterval:interval completion:NULL];
+        self.rotating = YES;
+        [self performSelector:@selector(resetRotating) withObject:nil afterDelay:interval*(direction==DIRECTION_clockwise?CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL:ANTI_CLOCKWISE_CIRCUIT_NEED_TIME_INTERVAL)];
+    }
 }
 
 #pragma mark - RFSegmentViewDelegate
@@ -131,18 +145,24 @@
 #pragma mark - TurntableViewDelegate
 - (void)turntableView:(TurntableView *)turntableView didChangeRotateDirection:(RotateDirection)direction
 {
-    if (direction != unknowDirection) {
-        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:NULL];
+    if (direction != unknowDirection && !self.isRotating) {
+        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:^(BOOL isSuccess) {
+            NSLog(@"completion");
+        }];
         
-        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction start:YES completion:NULL];
+        [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction start:YES completion:^(BOOL isSuccess) {
+            DEBUGLog(@"旋转开始");
+        }];
         NSLog(@"%@开始", direction==clockwise?@"顺时针":@"逆时针");
     }
 }
 
 - (void)turntableViewDidStopRotate:(TurntableView *)turntableView
 {
-    [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:NULL];
-    DEBUGLog(@"旋转结束");
+    [self.bleControl.settingProfile slightAdjustmentTimeWithDirection:DIRECTION_clockwise start:NO completion:^(BOOL isSuccess) {
+        DEBUGLog(@"旋转结束");
+    }];
+//    DEBUGLog(@"旋转结束");
 }
 
 @end

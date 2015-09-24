@@ -41,7 +41,7 @@ static const int WeightMaxValue         =220;
 #define SEX_WOMAN                       0
 
 #define COMPONENT_NUMBER                2
-#define COMPONENT_WIDTH                 50.f
+#define COMPONENT_WIDTH                 55.f
 
 #define ButtonSavaFrame ( CGRectMake((ScreenWidth-610/2.0)/2, (ScreenHeight-99/2.0-30), 610/2.0, 99/2.0) )
 

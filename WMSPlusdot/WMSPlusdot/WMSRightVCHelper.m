@@ -125,8 +125,8 @@
 {
     NSDictionary *readData = [NSDictionary dictionaryWithContentsOfFile:FilePath(FILE_REMIND_WAY)];
     int way = [[readData objectForKey:@"remindWay"] intValue];
-    if (readData == nil || way == 0) {
-        return 2;//默认“响铃”
+    if (readData == nil /*|| way == 0*/) {
+        return RemindWayShake;//默认“响铃”
     }
     return way;
 }

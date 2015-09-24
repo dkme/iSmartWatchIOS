@@ -58,9 +58,8 @@ NSString* const WMSUnBindAccessorySuccess =
 - (NSArray *)imageNameArray
 {
     if (!_imageNameArray) {
-        _imageNameArray = @[@"plusdot_one.png",
-                            //@"plusdot_two.png",
-                            //@"plusdot_one.png",
+        _imageNameArray = @[
+                            @"watch.png",
                             ];
     }
     return _imageNameArray;
@@ -69,8 +68,6 @@ NSString* const WMSUnBindAccessorySuccess =
 {
     if (!_textArray) {
         _textArray = @[
-                       //NSLocalizedString(@"SMART WATCH P1", nil),
-                       //NSLocalizedString(@"SMART WATCH P2", nil),
                        NSLocalizedString(@"SMART WATCH P3", nil),
                        ];
     }

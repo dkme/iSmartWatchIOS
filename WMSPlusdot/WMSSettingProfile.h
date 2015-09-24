@@ -76,7 +76,7 @@ typedef void(^settingCallback)(BOOL isSuccess);
                  completion:(settingCallback)aCallback;//////DEPRECATED
 
 - (void)roughAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
-                            timeInterval:(NSTimeInterval)interval
+                            timeInterval:(NSTimeInterval)interval///单位是小时
                               completion:(settingCallback)aCallback;
 - (void)slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
                                     start:(BOOL)isStart

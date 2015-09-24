@@ -68,6 +68,7 @@
 - (void)showIntroView
 {
     NSArray *images = nil;
+    NSString *buttonName = @"";
     NSString *languageType = [WMSAppConfig systemLanguage];
     if ([languageType isEqualToString:kLanguageChinese]) {
         images = @[
@@ -76,6 +77,7 @@
                    @"intro_page3.png",
                    @"intro_page4.png",
                    ];
+        buttonName = @"intro_enter.png";
     } else {
         images = @[
                    @"intro_page1_b.png",
@@ -83,6 +85,7 @@
                    @"intro_page3_b.png",
                    @"intro_page4_b.png",
                    ];
+        buttonName = @"intro_enter_en.png";
     }
     
     NSMutableArray *mutiPages = [NSMutableArray arrayWithCapacity:images.count];
@@ -92,25 +95,13 @@
         [mutiPages addObject:page];
     }
     
-//    EAIntroPage *page1 = [EAIntroPage page];
-//    page1.bgImage = [UIImage imageNamed:images[0]];
-    
-//    EAIntroPage *page2 = [EAIntroPage page];
-//    page2.bgImage = [UIImage imageNamed:images[1]];
-//    
-//    EAIntroPage *page3 = [EAIntroPage page];
-//    page3.bgImage = [UIImage imageNamed:images[2]];
-    
-//    EAIntroPage *page4 = [EAIntroPage page];
-//    page4.bgImage = [UIImage imageNamed:images[3]];
-    
-    NSArray *pages = mutiPages;//@[page1/*,page2,page3*/,/*page4*/];
+    NSArray *pages = mutiPages;
     EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.view.bounds andPages:pages];
     intro.swipeToExit = NO;
     intro.skipButton.hidden = YES;
     intro.delegate = self;
     
-    UIImage *image = [UIImage imageNamed:@"intro_enter.png"];
+    UIImage *image = [UIImage imageNamed:buttonName];
     CGRect frame = CGRectZero;
     frame.size = CGSizeMake(image.size.width/2.0, image.size.height/2.0);
     frame.origin.x = (ScreenWidth-frame.size.width)/2.0;
@@ -121,7 +112,7 @@
     button.backgroundColor = [UIColor clearColor];
     button.tag = INTRO_BUTTON_TAG;
     button.alpha = 0.0;
-    [button setTitle:NSLocalizedString(@"立即进入", nil) forState:UIControlStateNormal];
+    //[button setTitle:NSLocalizedString(@"立即进入", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setBackgroundImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(enterMainView:) forControlEvents:UIControlEventTouchUpInside];
