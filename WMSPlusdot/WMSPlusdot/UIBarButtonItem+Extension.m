@@ -36,7 +36,9 @@
     frame.size = size;
     btn.frame = frame;
     btn.titleLabel.font = font;
+    UIColor *highlightedColor = [textColor colorWithAlphaComponent:0.5];
     [btn setTitleColor:textColor forState:UIControlStateNormal];
+    [btn setTitleColor:highlightedColor forState:UIControlStateHighlighted];
     [btn setTitle:title forState:UIControlStateNormal];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     return [[UIBarButtonItem alloc] initWithCustomView:btn];

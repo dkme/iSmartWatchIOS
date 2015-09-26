@@ -58,9 +58,8 @@ NSString* const WMSUnBindAccessorySuccess =
 - (NSArray *)imageNameArray
 {
     if (!_imageNameArray) {
-        _imageNameArray = @[@"plusdot_one.png",
-                            //@"plusdot_two.png",
-                            //@"plusdot_one.png",
+        _imageNameArray = @[
+                            @"watch.png",
                             ];
     }
     return _imageNameArray;
@@ -68,9 +67,8 @@ NSString* const WMSUnBindAccessorySuccess =
 - (NSArray *)textArray
 {
     if (!_textArray) {
-        _textArray = @[NSLocalizedString(@"SMART WATCH P1", nil),
-                       //NSLocalizedString(@"SMART WATCH P2", nil),
-                       //NSLocalizedString(@"SMART WATCH P2", nil),
+        _textArray = @[
+                       NSLocalizedString(@"SMART WATCH P3", nil),
                        ];
     }
     return _textArray;
@@ -231,20 +229,38 @@ NSString* const WMSUnBindAccessorySuccess =
 {
     if (buttonIndex == 0) {//destructive
         WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
-        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BindingResult result) {
-            DEBUGLog(@"解绑%d",result);
-            switch (result) {
-                case BindingResultSuccess:
-                {
-                    [bleControl disconnect:^(BOOL success) {
-                        [self showUnBindTip:success];
-                    }];
-                    break;
-                }
-                default:
-                    [self showUnBindTip:NO];
-                    break;
-            }
+//        [bleControl bindSettingCMD:bindSettingCMDUnbind completion:^(BindingResult result) {
+//            DEBUGLog(@"解绑%d",result);
+//            switch (result) {
+//                case BindingResultSuccess:
+//                {
+//                    [bleControl disconnect:^(BOOL success) {
+//                        [self showUnBindTip:success];
+//                    }];
+//                    break;
+//                }
+//                default:
+//                    [self showUnBindTip:NO];
+//                    break;
+//            }
+//        }];
+        
+//        WeakObj(bleControl, weakBleControl);
+//        [bleControl unbindDevice:^(BOOL isSuccess) {
+//            if (isSuccess) {
+//                StrongObj(weakBleControl, strongBleControl);
+//                if (strongBleControl) {
+//                    [strongBleControl disconnect:^(BOOL success) {
+//                        [self showUnBindTip:success];
+//                    }];
+//                }
+//            } else {
+//                [self showUnBindTip:NO];
+//            }
+//        }];
+        
+        [bleControl disconnect:^(BOOL success) {
+            [self showUnBindTip:success];
         }];
     }
 }

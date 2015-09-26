@@ -7,13 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#include "reading.h"
 
 @interface WMSDeviceModel : NSObject
 
-@property (nonatomic, assign) int batteryEnergy;
-@property (nonatomic, assign) double version;
+@property (nonatomic, assign) double firmwareVersion;
+@property (nonatomic, assign) double hardwareVersion;
+@property (nonatomic, assign) double softwareVersion;
+@property (nonatomic, strong) NSString *firmName;//厂商名
+@property (nonatomic, assign) NSUInteger productModel;//产品型号
 @property (nonatomic, strong) NSString *mac;
-@property (nonatomic, assign) double voltage;
+@property (nonatomic, assign) double power;//电量，通过通知去获取
+@property (nonatomic, assign) BatteryType batteryTypel;
+@property (nonatomic, assign) BatteryStatus status;
 
 + (WMSDeviceModel *)deviceModel;
 

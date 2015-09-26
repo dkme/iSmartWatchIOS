@@ -69,6 +69,36 @@ __weak WMSSoundOperation *SSelf = nil;
     [self playVibrateWithTimeInterval:interval];
 }
 
+- (void)playSoundWithFile:(NSString *)filePath
+                 duration:(NSTimeInterval)duration
+{
+    if (isPlaying) {
+        [self stop];
+    }
+    
+    NSURL *soundURL = [NSURL URLWithString:filePath];
+    CFURLRef soundFileURLRef = (__bridge CFURLRef)soundURL;
+    AudioServicesCreateSystemSoundID(soundFileURLRef, &soundID);
+    isPlaying = YES;
+    
+    AudioServicesRemoveSystemSoundCompletion(soundID);
+    AudioServicesAddSystemSoundCompletion(soundID, NULL, NULL, soundDidStop, NULL);
+    AudioServicesPlaySystemSound(soundID);
+    
+    if (duration != -1) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stop) object:nil];
+        [self performSelector:@selector(stop) withObject:nil afterDelay:duration];
+    }
+}
+
+- (void)stop
+{
+    AudioServicesRemoveSystemSoundCompletion(soundID);
+    AudioServicesDisposeSystemSoundID(soundID);
+    soundID = 0;
+    isPlaying = NO;
+}
+
 #pragma mark - Private
 - (void)playAlarmWithDuration:(NSTimeInterval)duration
 {

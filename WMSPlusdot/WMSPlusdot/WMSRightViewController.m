@@ -23,6 +23,8 @@
 #import "WMSMyAccessory.h"
 #import "WMSConstants.h"
 #import "WMSSoundOperation.h"
+#import "NSString+DynamicSize.h"
+#import "WMSAppConfig.h"
 
 #import "GGDeviceTool.h"
 #import "WMSDeviceModel.h"
@@ -31,7 +33,7 @@
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 
-#define SECTION_NUMBER                          4//5
+#define SECTION_NUMBER                          5-1
 #define SECTION0_HEADER_HEIGHT                  50.f
 #define SECTION_HEADER_HEIGHT                   40.f
 #define SECTION_HEADER_DEFAULT_HEIGHT           0.1f
@@ -55,8 +57,8 @@
 @property (strong, nonatomic) WMSBleControl *bleControl;
 @property (strong, nonatomic) GGIViewController *pickerController;
 
-@property (strong, nonatomic) NSArray *settingItemArray;
-@property (strong, nonatomic) NSArray *cellIndexPathArray;//与上面的值一一对应
+@property (assign, nonatomic) BOOL isNeedSwitchToNormalMode;
+
 @end
 
 @implementation WMSRightViewController
@@ -74,8 +76,11 @@
 - (NSArray *)section1TitleArray
 {
     if (!_section1TitleArray) {
-        _section1TitleArray = @[NSLocalizedString(@"Phone",nil),
-                                NSLocalizedString(@"Battery",nil)
+        _section1TitleArray = @[
+                                NSLocalizedString(@"Phone",nil),
+                                NSLocalizedString(@"Message",nil),
+                                //NSLocalizedString(@"Email",nil),
+                                NSLocalizedString(@"Battery",nil),
                                 ];
     }
     return _section1TitleArray;
@@ -83,10 +88,13 @@
 - (NSArray *)section2TitleArray
 {
     if (!_section2TitleArray) {
-        _section2TitleArray = @[NSLocalizedString(@"Wechat",nil),
+        _section2TitleArray = @[
+                                NSLocalizedString(@"Wechat",nil),
                                 NSLocalizedString(@"QQ",nil),
+                                NSLocalizedString(@"Skype",nil),
+                                NSLocalizedString(@"WhatsApp",nil),
                                 NSLocalizedString(@"Facebook",nil),
-                                NSLocalizedString(@"Twitter",nil)
+                                NSLocalizedString(@"Twitter",nil),
                                 ];
     }
     return _section2TitleArray;
@@ -94,9 +102,8 @@
 - (NSArray *)section3TitleArray
 {
     if (!_section3TitleArray) {
-        _section3TitleArray = @[NSLocalizedString(@"震动",nil),
-                                NSLocalizedString(@"蜂鸣",nil),
-                                NSLocalizedString(@"震动+蜂鸣",nil),
+        _section3TitleArray = @[
+                                NSLocalizedString(@"震动",nil),
                                 ];
     }
     return _section3TitleArray;
@@ -105,7 +112,6 @@
 {
     if (!_section4TitleArray) {
         _section4TitleArray = @[NSLocalizedString(@"防丢",nil),
-                                //                                NSLocalizedString(@"Smart alarm clock", nil)
                                 ];
     }
     return _section4TitleArray;
@@ -113,7 +119,8 @@
 - (NSArray *)section5TitleArray
 {
     if (!_section5TitleArray) {
-        _section5TitleArray = @[NSLocalizedString(@"拍照",nil)
+        _section5TitleArray = @[
+                                NSLocalizedString(@"拍照",nil)
                                 ];
     }
     return _section5TitleArray;
@@ -122,51 +129,13 @@
 {
     if (!_headerTitleArray) {
         _headerTitleArray = @[NSLocalizedString(@"Remind Setting",nil),
+                              //NSLocalizedString(@"社交",nil),
                               NSLocalizedString(@"提醒方式",nil),
                               NSLocalizedString(@"其他",nil),
                               @"",
                               ];
     }
     return _headerTitleArray;
-}
-
-- (NSArray *)settingItemArray//存放保存设置项字典的key
-{
-    if (!_settingItemArray) {
-        _settingItemArray = @[@"Call",@"SMS",@"Email",@"WeiXin",@"QQ",@"Facebook",@"Twitter"];
-    }
-    return _settingItemArray;
-}
-- (NSArray *)cellIndexPathArray
-{
-    if (!_cellIndexPathArray) {
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:7];
-        NSIndexPath *index = nil;
-        
-        index = [NSIndexPath indexPathForRow:0 inSection:0];
-        [indexPaths addObject:index];
-        
-        index = [NSIndexPath indexPathForRow:1 inSection:0];
-        [indexPaths addObject:index];
-        
-        index = [NSIndexPath indexPathForRow:2 inSection:0];
-        [indexPaths addObject:index];
-        
-        index = [NSIndexPath indexPathForRow:0 inSection:1];
-        [indexPaths addObject:index];
-        
-        index = [NSIndexPath indexPathForRow:1 inSection:1];
-        [indexPaths addObject:index];
-        
-        index = [NSIndexPath indexPathForRow:2 inSection:1];
-        [indexPaths addObject:index];
-        
-        index = [NSIndexPath indexPathForRow:3 inSection:1];
-        [indexPaths addObject:index];
-        
-        _cellIndexPathArray = indexPaths;
-    }
-    return _cellIndexPathArray;
 }
 
 #pragma mark - Life Cycle
@@ -211,24 +180,6 @@
 }
 
 #pragma mark - Helper
-//根据cell的indexPath，得出该cell表示的设置项在字典中的key
-- (NSString *)keyForIndexpath:(NSIndexPath *)indexPath
-{
-    int index = -1;
-    for (int i=0; i<[self.cellIndexPathArray count]; i++) {
-        NSIndexPath *obj = self.cellIndexPathArray[i];
-        if (indexPath.section == obj.section &&
-            indexPath.row == obj.row)
-        {
-            index = i;
-            break;
-        }
-    }
-    if (index < 0) {
-        return nil;
-    }
-    return self.settingItemArray[index];
-}
 //#pragma mark - 电量
 - (void)batteryOperation:(float)battery
 {
@@ -243,109 +194,55 @@
         }
     }
 }
-//#pragma mark - 监测手表电量
-- (void)deviceIsLowBattery:(void(^)(BOOL isLow))aCallback
-{
-    double version = [WMSDeviceModel deviceModel].version;
-    double voltage = [WMSDeviceModel deviceModel].voltage;
-    if (version < FIRMWARE_ADD_BATTERY_INFO) {
-        if (aCallback) {
-            aCallback(NO);
-        }
-        return ;
-    }
-    if (voltage <= 0.0) {//表示还没读取设备电压
-        [WMSDeviceModel readDeviceBatteryInfo:self.bleControl completion:^(float voltage) {
-            if (aCallback) {
-                aCallback( (voltage<=WATCH_LOW_VOLTAGE) );
-            }
-        }];
-    } else {
-        if (aCallback) {
-            aCallback( (voltage<=WATCH_LOW_VOLTAGE) );
-        }
-    }
-}
 
 #pragma mark - 监听来电/按键
 - (void)listeningCall
 {
-    __weak __typeof(&*self) weakSelf = self;
-    _callCenter = [[CTCallCenter alloc] init];
-    _callCenter.callEventHandler = ^(CTCall* call) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        WMSSwitchCell *cell = (WMSSwitchCell *)[weakSelf.tableView cellForRowAtIndexPath:indexPath];
-        BOOL on = cell.mySwitch.on;
-        if ([call.callState isEqualToString:CTCallStateDisconnected])
-        {
-            DEBUGLog(@"Call has been disconnected");
-            if (on) {
-                [weakSelf.bleControl.settingProfile finishRemind:OtherRemindTypeCall completion:^(BOOL success) {
-                    
-                }];
-            }
-        }
-        else if ([call.callState isEqualToString:CTCallStateConnected])
-        {
-            DEBUGLog(@"Call has just been connected");
-            if (on) {
-                [weakSelf.bleControl.settingProfile finishRemind:OtherRemindTypeCall completion:^(BOOL success) {
-                    
-                }];
-            }
-        }
-        else if([call.callState isEqualToString:CTCallStateIncoming])
-        {
-            DEBUGLog(@"Call is incoming");
-            if (on) {
-                [weakSelf.bleControl.settingProfile startRemind:OtherRemindTypeCall completion:^(BOOL success) {
-                    DEBUGLog(@"开启电话提醒成功");
-                }];
-            }
-        }
-        else if ([call.callState isEqualToString:CTCallStateDialing])
-        {
-            DEBUGLog(@"call is dialing");
-        }
-        else
-        {
-            DEBUGLog(@"Nothing is done");
-        }
-    };
+//    __weak __typeof(&*self) weakSelf = self;
+//    _callCenter = [[CTCallCenter alloc] init];
+//    _callCenter.callEventHandler = ^(CTCall* call) {
+//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//        WMSSwitchCell *cell = (WMSSwitchCell *)[weakSelf.tableView cellForRowAtIndexPath:indexPath];
+//        BOOL on = cell.mySwitch.on;
+//        if ([call.callState isEqualToString:CTCallStateDisconnected])
+//        {
+//            DEBUGLog(@"Call has been disconnected");
+//            if (on) {
+//                [weakSelf.bleControl.settingProfile finishRemind:OtherRemindTypeCall completion:^(BOOL success) {
+//                    
+//                }];
+//            }
+//        }
+//        else if ([call.callState isEqualToString:CTCallStateConnected])
+//        {
+//            DEBUGLog(@"Call has just been connected");
+//            if (on) {
+//                [weakSelf.bleControl.settingProfile finishRemind:OtherRemindTypeCall completion:^(BOOL success) {
+//                    
+//                }];
+//            }
+//        }
+//        else if([call.callState isEqualToString:CTCallStateIncoming])
+//        {
+//            DEBUGLog(@"Call is incoming");
+//            if (on) {
+//                [weakSelf.bleControl.settingProfile startRemind:OtherRemindTypeCall completion:^(BOOL success) {
+//                    DEBUGLog(@"开启电话提醒成功");
+//                }];
+//            }
+//        }
+//        else if ([call.callState isEqualToString:CTCallStateDialing])
+//        {
+//            DEBUGLog(@"call is dialing");
+//        }
+//        else
+//        {
+//            DEBUGLog(@"Nothing is done");
+//        }
+//    };
 }
 
-//#pragma mark - 监听按键
-- (void)listeningKeys
-{
-    [self.bleControl.deviceProfile readDeviceRemoteDataWithCompletion:^(RemoteDataType dataType)
-     {
-         DEBUGLog(@"监听到的按键dataType:0x%X",(int)dataType);
-         if (RemoteDataTypeTakephoto == dataType) {
-             [self.pickerController takePhoto];
-         }
-         else if (RemoteDataTypeFindPhone == dataType) {
-             [_soundOperation playAlarmWithDuration:PLAY_ALERT_DURATION andVibrateWithTimeInterval:PLAY_VIBRATE_TIMEINTERVAL completion:nil];
-             
-             [WMSPostNotificationHelper postSeachPhoneLocalNotification];
-             //开启闪烁
-             //[[GGDeviceTool sharedInstance] startWebcamFlicker];
-         }
-     }];
-}
 #pragma mark - 遥控拍照
-- (void)switchToRemoteMode
-{
-    [self.bleControl switchToControlMode:ControlModeRemote openOrClose:YES completion:^(BOOL success, NSString *failReason)
-     {
-         [self hideHUDAtViewCenter];
-         if (success) {//切换模式成功，进入相机界面
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 GGIViewController *picker = [self openCamera];
-                 self.pickerController = picker;
-             });
-         } else {}
-     }];
-}
 - (GGIViewController *)openCamera
 {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -387,6 +284,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidDisConnectPeripheral:) name:WMSBleControlPeripheralDidDisConnect object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(peripheralDidEndDFU:) name:WMSUpdateVCEndDFU object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleOperationDeviceButton:) name:OperationDeviceButtonNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDevicePowerChanged:) name:DevicePowerChangedNotification object:nil];
+
 }
 - (void)unregisterFromNotifications
 {
@@ -402,31 +303,22 @@
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     if (_isVisible || _isNeedConfig) {
-        [WMSRightVCHelper startFirstConnectedConfig:self.bleControl.settingProfile completion:nil];
+        [WMSRightVCHelper startFirstConnectedConfig:self.bleControl.settingProfile completion:^{
+            [self.tableView reloadData];
+        }];
     }
+    if (self.isNeedSwitchToNormalMode) {
+        WeakObj(self, weakSelf);
+        [self.bleControl switchToMode:NormalMode completion:^{
+            StrongObj(weakSelf, strongSelf);
+            strongSelf.isNeedSwitchToNormalMode = NO;
+        }];
+    }
+    
     float battery = [[UIDevice currentDevice] batteryLevel];
     [self batteryOperation:battery];
     
-    [self listeningKeys];
-    
     self.pickerController.textLabel.text = NSLocalizedString(@"请按下手表上的确认键拍照...", nil);
-
-    __weak __typeof(self) weakSelf = self;
-    [self deviceIsLowBattery:^(BOOL isLow) {
-        __strong __typeof(weakSelf) strongSelf = weakSelf;
-        if (isLow) {
-            //设置为响铃提醒
-            int way = 2;//响铃
-            [WMSRightVCHelper setRemindWay:way handle:strongSelf.bleControl.settingProfile completion:^(BOOL success) {
-                if (success) {
-                    [WMSRightVCHelper savaRemindWay:way];
-                }
-                [strongSelf.tableView reloadData];
-            }];
-        } else {
-            [strongSelf.tableView reloadData];
-        }
-    }];
 }
 
 - (void)handleDidDisConnectPeripheral:(NSNotification *)notification
@@ -441,6 +333,32 @@
     //进行初始化配置
     _isNeedConfig = YES;
     [WMSRightVCHelper resetFirstConnectedConfig];
+}
+
+///监听手表的按键
+- (void)handleOperationDeviceButton:(NSNotification *)notification
+{
+    NSString *operation = notification.userInfo[@"operation"];
+    if ([OperationTakePhoto isEqualToString:operation]) {
+        [self.pickerController takePhoto];
+    } else if ([OperationLookingIPhone isEqualToString:operation]) {
+        [_soundOperation playAlarmWithDuration:PLAY_ALERT_DURATION andVibrateWithTimeInterval:PLAY_VIBRATE_TIMEINTERVAL completion:nil];
+        [WMSPostNotificationHelper postSeachPhoneLocalNotification];
+    }
+}
+
+- (void)handleDevicePowerChanged:(NSNotification *)notification
+{
+    NSUInteger powerPercent = [notification.object unsignedIntegerValue];
+    //TODO 比较电量是否低于指定值
+    if (powerPercent <= WATCH_LOW_BATTERY) {
+        [self.bleControl.settingProfile setRemindWay:RemindWayNot completion:^(BOOL isSuccess) {
+            DEBUGLog_DETAIL(@"设置提醒方式%d", isSuccess);
+            if (isSuccess) {
+                [WMSRightVCHelper savaRemindWay:RemindWayNot];
+            }
+        }];
+    }
 }
 
 #pragma mark - RESideMenuDelegate
@@ -467,17 +385,17 @@
         if ([self.bleControl isConnected]) {
             [WMSRightVCHelper startFirstConnectedConfig:self.bleControl.settingProfile completion:nil];
         }
-        AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
-        if ([WMSMyAccessory isBindAccessory]) {
-            switch (g) {
-                case AccessoryGenerationONE:
-                    
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
+//        AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
+//        if ([WMSMyAccessory isBindAccessory]) {
+//            switch (g) {
+//                case AccessoryGenerationONE:
+//                    
+//                    break;
+//                    
+//                default:
+//                    break;
+//            }
+//        }
     }
 }
 - (void)sideMenu:(RESideMenu *)sideMenu didHideMenuViewController:(UIViewController *)menuViewController
@@ -485,17 +403,6 @@
     if ([self class] == [menuViewController class]) {
         _isVisible = NO;
     }
-}
-
-#pragma mark - GGIViewControllerDelegate
-- (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image
-{
-    [self openPhotoLibrary];
-}
-- (void)GGIViewControllerDidClose:(GGIViewController *)viewController
-{
-    self.pickerController.delegate = nil;
-    self.pickerController = nil;
 }
 
 #pragma mark - Table view data source
@@ -508,8 +415,8 @@
     switch (section) {
         case 0:
             return self.section1TitleArray.count;
-            //        case 1:
-            //            return self.section2TitleArray.count;
+//        case 1:
+//            return self.section2TitleArray.count;
         case 2-1:
             return self.section3TitleArray.count;
         case 3-1:
@@ -525,106 +432,101 @@
 {
     switch (indexPath.section) {
         case 0:
+//        case 1:
+        case 2-1:
+        //case 3-1:
         {
-            NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
+            NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
             UINib *cellNib = [UINib nibWithNibName:@"WMSSwitchCell" bundle:nil];
-            [self.tableView registerNib:cellNib forCellReuseIdentifier:CellIdentifier];
+            [self.tableView registerNib:cellNib forCellReuseIdentifier:cellIdentifier];
+            WMSSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             
-            WMSSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.backgroundColor = [UIColor clearColor];
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
+            NSString *text = nil;
+            BOOL on = NO;
             
-            cell.myLabelText.text = [self.section1TitleArray objectAtIndex:indexPath.row];
-            cell.myLabelText.textColor = [UIColor whiteColor];
-            cell.myLabelText.font = Font_DINCondensed(18);
-            
-            if ([self.bleControl isConnected]) {
-                NSDictionary *readData = [WMSRightVCHelper loadSettingItemData];
-                NSString *key = [self keyForIndexpath:indexPath];
-                if (key) {
-                    cell.mySwitch.on = [[readData objectForKey:key] boolValue];
+            if (indexPath.section == 0)
+            {
+                text = [self.section1TitleArray objectAtIndex:indexPath.row];
+                if (indexPath.row == self.section1TitleArray.count-1) {//电池
+                    on = [WMSRightVCHelper lowBatteryRemind];
+                } else {
+                    NSString *key = [self settingKeyFromIndexPath:indexPath];
+                    if (key) {
+                        on = [(NSNumber*)[WMSRightVCHelper loadSettingItemDataOfKey:key] boolValue];
+                    }
                 }
-            } else {
-                cell.mySwitch.on = NO;
             }
-            
-            if (indexPath.row == 3-2) {//电池
-                cell.mySwitch.on = [self.bleControl isConnected] ? [WMSRightVCHelper lowBatteryRemind] : NO;
+//            else if (indexPath.section == 1)
+//            {
+//                text = [self.section2TitleArray objectAtIndex:indexPath.row];
+//                NSString *key = [self settingKeyFromIndexPath:indexPath];
+//                if (key) {
+//                    on = [(NSNumber*)[WMSRightVCHelper loadSettingItemDataOfKey:key] boolValue];
+//                }
+//            }
+            else if (indexPath.section == 2-1)
+            {
+                text = [self.section3TitleArray objectAtIndex:indexPath.row];
+                on = [WMSRightVCHelper loadRemindWay];
             }
+//            else if (indexPath.section == 3-1)
+//            {
+//                text = [self.section4TitleArray objectAtIndex:indexPath.row];
+//                on = [WMSRightVCHelper loadLost];
+//            }
             
+            if (![self.bleControl isConnected]) {
+                on = NO;
+            }
+            [cell configureCellWithText:text switchOn:on];
             cell.delegate = self;
             
             return cell;
         }
-        case 2-1:
-        {
-            NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
-            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            cell.backgroundColor = [UIColor clearColor];
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
-            cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_b.png"]];
-            
-            NSString *txt = [self.section3TitleArray objectAtIndex:indexPath.row];
-            cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
-            cell.textLabel.textColor = [UIColor whiteColor];
-            cell.textLabel.font = Font_DINCondensed(18);
-            if ([self.bleControl isConnected]) {
-                if ([WMSRightVCHelper loadRemindWay] == indexPath.row + 1) {
-                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                } else {
-                    cell.accessoryType = UITableViewCellAccessoryNone;
-                }
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
-            
-            return cell;
-        }
-        case 3-1:
-        {
-            NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
-            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            cell.backgroundColor = [UIColor clearColor];
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
-            cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_b.png"]];
-            
-            NSString *txt = self.section4TitleArray[indexPath.row];
-            cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
-            cell.textLabel.textColor = [UIColor whiteColor];
-            cell.textLabel.font = Font_DINCondensed(18);
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            return cell;
-        }
+        case 2:
         case 4-1:
         {
-            NSString *CellIdentifier = [NSString stringWithFormat:@"section%d%d",indexPath.section,indexPath.row];
-            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            NSString *cellIdentifier = [NSString stringWithFormat:@"section%d%d",(int)indexPath.section,(int)indexPath.row];
+            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
             }
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.backgroundColor = [UIColor clearColor];
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
             cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_b.png"]];
-            
-            NSString *txt = [self.section5TitleArray objectAtIndex:indexPath.row];
-            cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
-            cell.textLabel.textColor = [UIColor whiteColor];
-            cell.textLabel.font = Font_DINCondensed(18);
-            cell.detailTextLabel.textColor = [UIColor whiteColor];
-            cell.detailTextLabel.font = Font_System(12);
-            cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
-            cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+            NSString *txt = @"";
+            if (indexPath.section == 2) {
+                txt = self.section4TitleArray[indexPath.row];
+            } else {
+                txt = self.section5TitleArray[indexPath.row];
+            }
+        
+            BOOL useNewLabel = NO;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
+                if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {///DIN Condensed字体，在英文状态下，并不会出现显示不全的问题
+                    useNewLabel = YES;
+                }
+            }
+            if (useNewLabel) {
+                ///添加1个label，使用cell.textLabel，字体显示不全
+                CGFloat offset = [CELL_CONTENT_PREFIX dynamicSizeWithFont:Font_DINCondensed(18.f)].width;
+                CGSize textSize = [txt dynamicSizeWithFont:Font_DINCondensed(18.f)];
+                UILabel *centerLabel = [[UILabel alloc] init];
+                CGRect frame = CGRectZero;
+                frame.size = CGSizeMake(textSize.width, textSize.height+10.f);///将height增加10.f
+                frame.origin = CGPointMake(16.f+offset, (cell.bounds.size.height-frame.size.height) / 2.f);///cell.textLabel若设置文本后，origin.x为16.f，所以从16.f位置开始偏移
+                centerLabel.frame = frame;
+                centerLabel.text = txt;
+                centerLabel.textColor = [UIColor whiteColor];
+                centerLabel.font = Font_DINCondensed(18.f);
+                [cell.contentView addSubview:centerLabel];
+            } else {
+                cell.textLabel.text = [CELL_CONTENT_PREFIX stringByAppendingString:txt];
+                cell.textLabel.textColor = [UIColor whiteColor];
+                cell.textLabel.font = Font_DINCondensed(18);
+            }
             
             return cell;
         }
@@ -639,17 +541,6 @@
 #pragma mark - Table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
-    if ([WMSMyAccessory isBindAccessory]) {
-        switch (g) {
-            case AccessoryGenerationONE:
-                return 44.f;
-            case AccessoryGenerationTWO:
-                return (indexPath.section==1?0.1f:44.f);
-            default:
-                break;
-        }
-    }
     return 44.f;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -657,22 +548,9 @@
     switch (section) {
         case 0:
             return SECTION0_HEADER_HEIGHT;
-            //case 1:
+//        case 1:
         case 2-1:
-        {
-            AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
-            if ([WMSMyAccessory isBindAccessory]) {
-                switch (g) {
-                    case AccessoryGenerationONE:
-                        return SECTION_HEADER_HEIGHT;
-                    case AccessoryGenerationTWO:
-                        return 0.1;
-                    default:
-                        break;
-                }
-            }
             return SECTION_HEADER_HEIGHT;
-        }
         case 3-1:
             return SECTION_HEADER_HEIGHT;
         case 4-1:
@@ -701,21 +579,6 @@
     myView.backgroundColor = [UIColor clearColor];
     [myView addSubview:titleLabel];
     
-    if (section == 1) {
-        AccessoryGeneration g = [WMSMyAccessory generationForBindAccessory];
-        if ([WMSMyAccessory isBindAccessory]) {
-            switch (g) {
-                case AccessoryGenerationONE:
-                    break;
-                case AccessoryGenerationTWO:
-                    titleLabel.text = @"";
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-    
     return myView;
 }
 
@@ -733,44 +596,6 @@
         return;
     }
     
-    if (indexPath.section == 2-1) {
-        if ([WMSRightVCHelper loadRemindWay] != indexPath.row+1) {//当提醒方式改变时再去设置
-            BOOL isShowWarning = NO;
-            if (indexPath.row+1 == 1 || indexPath.row+1 == 3) {//当设置成“震动”时，提醒用户
-                //当电压小于指定值时，不允许切换至“震动”
-                if ([WMSDeviceModel deviceModel].voltage <= WATCH_LOW_VOLTAGE) {
-                    [WMSRightVCHelper showTipOfLowBatteryNotSetVibrationRemindWay];
-                    return ;
-                } else {
-                    //什么提示...
-                    isShowWarning = YES;
-                }
-            }
-            
-            for (int i=0; i<[self.section3TitleArray count]; i++) {
-                NSIndexPath *path = [NSIndexPath indexPathForRow:i inSection:indexPath.section];
-                UITableViewCell *cell=[self.tableView cellForRowAtIndexPath:path];
-                [cell setAccessoryType:UITableViewCellAccessoryNone];
-            }
-            UITableViewCell *checkedCell=[self.tableView cellForRowAtIndexPath:indexPath];
-            [checkedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
-            
-            int way = (int)indexPath.row+1;
-            [WMSRightVCHelper setRemindWay:way handle:self.bleControl.settingProfile completion:^(BOOL success) {
-                DEBUGLog(@"提醒方式设置%@",success?@"成功":@"失败");
-                if (success) {
-                    [WMSRightVCHelper savaRemindWay:way];
-                    [self showOperationSuccessTip:NSLocalizedString(@"提醒方式设置成功", nil)];
-                    if (isShowWarning) {
-                        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(showWarningWhenRemindWayIsVibration) object:nil];
-                        [self performSelector:@selector(showWarningWhenRemindWayIsVibration) withObject:nil afterDelay:1.0];
-                    }
-                }
-            }];
-        }
-        return;
-    }
-    
     if (indexPath.section == 3-1) {
         if (indexPath.row == 0) {
             WMSAntiLostVC *vc = [[WMSAntiLostVC alloc] init];
@@ -778,16 +603,15 @@
             MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
             [self presentViewController:nav animated:YES completion:nil];
         }
-        else if (indexPath.row == 1) {
-            WMSClockListVC *VC = [[WMSClockListVC alloc] init];
-            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:VC];
-            [self presentViewController:nav animated:YES completion:nil];
-        } else{};
         return ;
     }
     
     if (indexPath.section == 4-1 && indexPath.row == 0) {
-        [self switchToRemoteMode];
+        WeakObj(self, weakSelf);
+        [self.bleControl switchToMode:RemoteMode completion:^{
+            StrongObj(weakSelf, strongSelf);
+            strongSelf.pickerController = [strongSelf openCamera];
+        }];
         return;
     }
 }
@@ -808,17 +632,152 @@
         });
         return;
     }
-    //当绑定手表，连接成功后，才能进行后面的操作
-    if ([switchCell.myLabelText.text
-         isEqualToString:NSLocalizedString(@"Battery", nil)])
-    {
-        [WMSRightVCHelper setLowBatteryRemind:sw.on];
-        return;
-    }
     
-    NSIndexPath *atIndex = [self.tableView indexPathForCell:switchCell];
-    NSString *key = [self keyForIndexpath:atIndex];
-    [WMSRightVCHelper savaSettingItemForKey:key data:@(sw.on)];
+    WeakObj(self, weakSelf);
+    //当绑定手表，连接成功后，才能进行后面的操作
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:switchCell];
+    if (indexPath.section == 0 && indexPath.row == self.section1TitleArray.count-1) {
+        [WMSRightVCHelper savaLowBatteryRemind:sw.on];
+        [self showTip:NSLocalizedString(@"提醒设置成功", nil)];
+    } else if (indexPath.section == 2-1) {
+//        BOOL isShowWarning = NO;
+//        if (sw.on) {//当设置成“震动”时，提醒用户
+//            //当电压小于指定值时，不允许切换至“震动”
+//            if ([WMSDeviceModel deviceModel].power <= WATCH_LOW_BATTERY) {
+//                sw.on = (sw.on?NO:YES);
+//                [WMSRightVCHelper showTipOfLowBatteryNotSetVibrationRemindWay];
+//                return ;
+//            } else {
+//                //什么提示...
+//                isShowWarning = YES;
+//            }
+//        }
+        //发送设置提醒方式的命令
+        RemindWay way = sw.on ? RemindWayShake : RemindWayNot;
+        [self.bleControl.settingProfile setRemindWay:way completion:^(BOOL isSuccess) {
+            DEBUGLog_DETAIL(@"设置提醒方式%d", isSuccess);
+            StrongObj(weakSelf, strongSelf);
+            [strongSelf showTip:NSLocalizedString(@"提醒方式设置成功", nil)];
+            if (isSuccess) {
+                [WMSRightVCHelper savaRemindWay:way];
+            }
+        }];
+    }
+//    else if (indexPath.section == 3-1)
+//    {
+//        [self.bleControl.settingProfile setLost:sw.on completion:^(BOOL isSuccess) {
+//            DEBUGLog_DETAIL(@"设置防丢%d", isSuccess);
+//        }];
+//
+//    }
+    else
+    {
+        NSString *key = [self settingKeyFromIndexPath:indexPath];
+        RemindEvents event = 0;//????
+        for (NSString *keyObj in self.settingKeys) {
+            if ([keyObj isEqualToString:key]) {
+                continue;
+            }
+            BOOL on = [((NSNumber *)[WMSRightVCHelper loadSettingItemDataOfKey:keyObj]) boolValue];
+            if (on) {
+                event |= [self eventFromKey:keyObj];
+            }
+        }
+        if (sw.on) {
+            event |= [self eventFromKey:key];
+        }
+        [self.bleControl.settingProfile setRemindEvent:event completion:^(BOOL isSuccess) {
+            DEBUGLog_DETAIL(@"设置提醒项成功");
+            StrongObj(weakSelf, strongSelf);
+            [strongSelf showTip:NSLocalizedString(@"提醒设置成功", nil)];
+            if (isSuccess) {
+                [WMSRightVCHelper savaSettingItemForKey:key data:@(sw.on)];
+            }
+        }];
+    }
+}
+
+- (NSArray *)settingKeys
+{
+    static NSArray *keys = nil;
+    if (!keys) {
+        keys = @[@"Phone", @"SMS"/*,@"Email",@"Wechat",@"QQ",@"Skype",@"WhatsApp",@"Facebook",@"Twitter"*/];
+    }
+    return keys;
+}
+
+- (NSString *)settingKeyFromIndexPath:(NSIndexPath *)indexPath
+{
+    static NSDictionary *map = nil;
+    if (!map) {
+        NSArray *settingKeys = [self settingKeys];
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:settingKeys.count];
+        NSIndexPath *index = nil;
+        
+        static int sections[1] = {0};
+        sections[0] = (int)self.section1TitleArray.count-1;
+        //sections[1] = (int)self.section2TitleArray.count;
+        for (int i=0; i<( sizeof(sections)/sizeof(int) ); i++) {
+            for (int j=0; j<sections[i]; j++) {
+                index = [NSIndexPath indexPathForRow:j inSection:i];
+                [indexPaths addObject:index];
+            }
+        }
+        
+        map = [NSDictionary dictionaryWithObjects:settingKeys forKeys:indexPaths];
+    }
+    return map[indexPath];
+}
+
+- (RemindEvents)eventFromKey:(NSString *)key
+{
+    static NSDictionary *map = nil;
+    if (!map) {
+        NSArray *settingKeys = [self settingKeys];
+        NSMutableArray *events = [NSMutableArray arrayWithCapacity:settingKeys.count];
+        for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
+            [events addObject:@(i)];
+        }
+        
+        map = [NSDictionary dictionaryWithObjects:events forKeys:settingKeys];
+    }
+    return (RemindEvents)[map[key] unsignedIntegerValue];
+}
+//
+//- (RemindEvents)eventFromIndexPath:(NSIndexPath *)indexPath
+//{
+//    static NSDictionary *map = nil;
+//    if (!map) {
+//        NSArray *settingKeys = @[@"Phone",@"SMS"/*,@"Email",@"QQ",@"Wechat",@"sina",@"Facebook",@"Twitter",@"WhatsApp",@"Skype"*/];
+//        NSMutableArray *events = [NSMutableArray arrayWithCapacity:settingKeys.count];
+//        for (int i=RemindEventCall; i<=RemindEventSMS; i++) {
+//            [events addObject:@(i)];
+//        }
+//        
+//        map = [NSDictionary dictionaryWithObjects:events forKeys:settingKeys];
+//    }
+//    NSString *key = [self settingKeyFromIndexPath:indexPath];
+//    return (RemindEvents)[map[key] unsignedIntegerValue];
+//}
+
+
+#pragma mark - ----------------------
+#pragma mark - GGIViewControllerDelegate
+- (void)GGIViewController:(GGIViewController *)viewController didClickImage:(UIImage *)image
+{
+    //[self openPhotoLibrary];
+}
+- (void)GGIViewControllerDidClose:(GGIViewController *)viewController
+{
+    WeakObj(self, weakSelf);
+    self.isNeedSwitchToNormalMode = YES;
+    [self.bleControl switchToMode:NormalMode completion:^{
+        StrongObj(weakSelf, strongSelf);
+        strongSelf.isNeedSwitchToNormalMode = NO;
+    }];    
+    self.pickerController.delegate = nil;
+    self.pickerController = nil;
 }
 
 @end

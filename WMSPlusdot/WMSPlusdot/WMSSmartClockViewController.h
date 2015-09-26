@@ -11,13 +11,13 @@
 
 #define DEFAULT_START_HOUR          8
 #define DEFAULT_START_MINUTE        0
-#define DEFAULT_SNOOZE_MINUTE       10
+#define DEFAULT_SNOOZE_MINUTE       5
 
 //cell所在行的下标
 enum {
     SmartClockTimeCell = 1,
     SmartClockSleepTimeCell,
-    SmartClockRepeatCell,
+    SmartClockRepeatCell = SmartClockSleepTimeCell,
 };
 
 @interface WMSSmartClockViewController : UIViewController

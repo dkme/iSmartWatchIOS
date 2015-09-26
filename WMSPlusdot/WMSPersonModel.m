@@ -7,6 +7,8 @@
 //
 
 #import "WMSPersonModel.h"
+#import "WMSSettingProfile.h"
+#import "NSDate+Formatter.h"
 
 @implementation WMSPersonModel
 
@@ -30,6 +32,32 @@
         _stride = stride;
     }
     return self;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    __typeof(&*self)model = object;
+    if (self.gender             == model.gender                 &&
+        self.height             == model.height                 &&
+        self.currentWeight      == model.currentWeight          &&
+        [self.birthday isEqualToDate:model.birthday]
+        )
+    {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)syncInfoToWatchWithProfile:(WMSSettingProfile *)profile
+                        completion:(void(^)(BOOL isSuccess))aCallback
+{
+    NSUInteger age = [NSDate yearOfDate:self.birthday] - [NSDate yearOfDate:[NSDate systemDate]];
+    
+    [profile setUserInfoWithGender:(GenderType)self.gender age:age height:self.height weight:self.currentWeight completion:^(BOOL isSuccess) {
+        if (aCallback) {
+            aCallback(isSuccess);
+        }
+    }];
 }
 
 #pragma mark - NSCoding

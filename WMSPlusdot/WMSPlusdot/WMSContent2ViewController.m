@@ -90,11 +90,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-//    if (iPhone4s) {
-//        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_setting_target"]]];
-//    } else {
-//        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"skin_setting_target-568h"]]];
-//    }
     [self.view addSubview:self.temperaBar];
     CGPoint center = [[self.temperaBar superview] center];
     self.temperaBar.center = center;
@@ -117,22 +112,13 @@
     
     [self setTargetSteps:self.sportTargetSteps];
     [self.temperaBar setCurrentTempera:self.sportTargetSteps/MULTIPLE];
-    //self.sideMenuViewController.panGestureEnabled = NO;
     self.navigationController.navigationBarHidden = YES;
 }
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    DEBUGLog(@"Content2ViewController viewWillDisappear");
-    //self.sideMenuViewController.panGestureEnabled = YES;
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 - (void)dealloc
 {
     DEBUGLog(@"Content2ViewController dealloc");
@@ -156,11 +142,8 @@
 {
     _labelViewTitle.text = NSLocalizedString(@"设置目标",nil);
     _labelStep.text = NSLocalizedString(@"Step",nil);
-    //_labelRange.text = [NSString stringWithFormat:NSLocalizedString(@"The range of %d-%d steps",nil), MIN_SPORT_STEPS,MAX_SPORT_STEPS];
     _labelRange.text = [NSString stringWithFormat:@"%@,",NSLocalizedString(@"坚持锻炼一个月", nil)];
     
-    //_labelTip.text = NSLocalizedString(@"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle",nil);
-    //[self setLabelTipText:NSLocalizedString(@"Experts suggest that exercise every day 10000 steps is positive and healthy lifestyle",nil)];
     [self setLabelTipText:[NSString stringWithFormat:@"%@！",NSLocalizedString(@"并分享到朋友圈，即可获得精美礼品哦",nil)] ];
     
 }

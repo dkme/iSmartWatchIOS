@@ -52,8 +52,8 @@
 
 #pragma mark - 设置目标
 #define MIN_SPORT_STEPS             6000
-#define MAX_SPORT_STEPS             20000
-#define DEFAULT_TARGET_STEPS        20000
+#define MAX_SPORT_STEPS             60000
+#define DEFAULT_TARGET_STEPS        60000
 
 #pragma mark - 固件版本号
 #define FIRMWARE_TARGET_VERSION     12.0

@@ -7,8 +7,8 @@
 //
 
 #import "WMSSmartClockViewController.h"
-//#import "WMSSelectValueViewController.h"
 #import "UIViewController+Tip.h"
+#import "UIViewController+Sync.h"
 #import "WMSAppDelegate.h"
 
 #import "MBProgressHUD.h"
@@ -33,7 +33,7 @@
 
 #define DAY_HOURS                           24
 #define DAY_MINUTES                         60
-#define CLOCK_DEFAULT_ID                    1
+#define CLOCK_DEFAULT_ID                    0
 
 @interface WMSSmartClockViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,WMSInputViewDelegate,WMSWeekPickerDelegate,WMSSwitchCellDelegage,UIAlertViewDelegate>
 @property (strong,nonatomic) WMSInputView *myInputView;
@@ -76,10 +76,10 @@
 {
     if (!_textArray) {
         _textArray = [[NSArray alloc] initWithObjects:
-                                NSLocalizedString(@"Start",nil),
-                                NSLocalizedString(@"唤醒时段",nil),
-                                NSLocalizedString(@"Repeat",nil),
-                                nil];
+                      NSLocalizedString(@"Start",nil),
+                      //NSLocalizedString(@"唤醒间隔",nil),
+                      NSLocalizedString(@"Repeat",nil),
+                      nil];
     }
     return _textArray;
 }
@@ -89,17 +89,23 @@
     if (!_detailTextArray) {
         NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",self.clockModel.startHour, self.clockModel.startMinute];
         NSString *strSnooze = [NSString stringWithFormat:@"%d %@",self.clockModel.snoozeMinute,NSLocalizedString(@"Minutes clock",nil)];
-        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:self.clockModel.repeats];
-        _detailTextArray = @[strStartTime,strSnooze,strRepeats];
+        NSString *strRepeats = [WMSRemindHelper description2OfRepeats:self.clockModel.repeats];
+        _detailTextArray = @[
+                             strStartTime,
+                             //strSnooze,
+                             strRepeats
+                             ];
     }
     return _detailTextArray;
 }
 - (NSArray *)intervalValueArray
 {
     if (!_intervalValueArray) {
-        _intervalValueArray = @[@(DEFAULT_SNOOZE_MINUTE),
+        _intervalValueArray = @[
+                                @(DEFAULT_SNOOZE_MINUTE),
+                                @(10),
+                                @(15),
                                 @(20),
-                                @(30),
                                 ];
     }
     return _intervalValueArray;
@@ -119,7 +125,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
+    
     [self setupValue];
     [self setupView];
     [self setupNavBarView];
@@ -129,16 +135,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO];
 }
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
-    self.navigationController.navigationBarHidden = YES;
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES];
 }
 - (void)dealloc
 {
@@ -154,7 +158,6 @@
 }
 - (void)setupNavBarView
 {
-    self.navigationController.navigationBarHidden = NO;
     SetControllerKeepExtendedLayout();
     
     UIBarButtonItem *leftItem = [UIBarButtonItem defaultItemWithTarget:self action:@selector(backAction:)];
@@ -187,11 +190,14 @@
         _clockModel = [[WMSAlarmClockModel alloc] initWithStatus:NO startHour:[NSDate hourOfDate:date] startMinute:[NSDate minuteOfDate:date] snoozeMinute:DEFAULT_SNOOZE_MINUTE repeats:repeats];
     }
     _clock = [[WMSAlarmClockModel alloc] initWithClock:self.clockModel];
-//    [self setClockModel:_clock];
 }
 
 #pragma mark - Action
 - (void)backAction:(id)sender {
+    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected == NO) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return ;
+    }
     BOOL res = [self.clockModel isEqual:_clock];
     if (res == NO) {
         NSString *message = NSLocalizedString(@"您的闹钟已修改，尚未同步到手表，是否同步?", nil);
@@ -212,22 +218,16 @@
     }
     
     WMSAlarmClockModel *clock = self.clockModel;
-    NSArray *array = [WMSRemindHelper repeatsWithArray:clock.repeats];
-    Byte repeats[7] = {0};
-    NSUInteger length = 7;
-    for (int i=0; i<[array count]; i++) {
-        Byte b = (Byte)[array[i] intValue];
-        if (i < length) {
-            repeats[i] = b;
+    NSArray *repeats = [WMSRemindHelper repeatsWithArray:clock.repeats];
+    [bleControl.settingProfile setAlarmClock:clock.status ID:CLOCK_DEFAULT_ID hour:clock.startHour minute:clock.startMinute interval:clock.snoozeMinute repeats:repeats completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"设置闹钟%d", isSuccess);
+        [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
+        [WMSDataManager savaAlarmClocks:@[clock]];
+        _clock = clock;
+        if (self.isNeedBackWhenAfterSync) {
+            [self.navigationController popViewControllerAnimated:YES];
         }
-    }
-    [bleControl.settingProfile setAlarmClockWithId:CLOCK_DEFAULT_ID withHour:clock.startHour withMinute:clock.startMinute withStatus:clock.status withRepeat:repeats withLength:length withSnoozeMinute:clock.snoozeMinute withCompletion:^(BOOL success)
-     {
-         DEBUGLog(@"设置闹钟%@",success?@"成功":@"失败");
-         [self showTip:NSLocalizedString(@"设置闹钟成功", nil)];
-         [WMSDataManager savaAlarmClocks:@[clock]];
-         _clock = clock;
-     }];
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -248,9 +248,18 @@
             cell = [[[NSBundle mainBundle] loadNibNamed:@"WMSSwitchCell" owner:self options:Nil] lastObject];
         }
         cell.delegate = self;
-        cell.textLabel.text = NSLocalizedString(@"闹钟", nil);
         cell.mySwitch.on = self.clockModel.status;
+        //cell.textLabel.text = NSLocalizedString(@"闹钟", nil);///不要使用cell.textLabel，因为会覆盖UISwitch控件
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UILabel *centerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        CGRect labelRect = CGRectZero;
+        labelRect.origin = CGPointMake(16.f, 0.f);
+        labelRect.size = CGSizeMake(120.f, cell.bounds.size.height);
+        centerLabel.frame = labelRect;
+        centerLabel.text = NSLocalizedString(@"闹钟", nil);
+        [cell.contentView addSubview:centerLabel];
+        
         return cell;
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -322,17 +331,17 @@
             [self.myInputView.pickerView selectRow:minute inComponent:1 animated:NO];
             break;
         }
-        case SmartClockSleepTimeCell:
-        {
-            NSUInteger row = 0;
-            NSUInteger i = [self.intervalValueArray indexOfObject:@(self.clockModel.snoozeMinute)];
-            if (i < [self.intervalValueArray count]) {
-                row = i;
-            }
-            [self.myInputView show:YES forView:cell];
-            [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
-            break;
-        }
+            //        case SmartClockSleepTimeCell:
+            //        {
+            //            NSUInteger row = 0;
+            //            NSUInteger i = [self.intervalValueArray indexOfObject:@(self.clockModel.snoozeMinute)];
+            //            if (i < [self.intervalValueArray count]) {
+            //                row = i;
+            //            }
+            //            [self.myInputView show:YES forView:cell];
+            //            [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
+            //            break;
+            //        }
         default:
             return;
     }
@@ -474,6 +483,7 @@
         [self.navigationController popViewControllerAnimated:YES];
         [self.navigationController setNavigationBarHidden:YES];
     } else {
+        self.needBackWhenAfterSync = YES;
         [self syncAction:nil];
     }
 }

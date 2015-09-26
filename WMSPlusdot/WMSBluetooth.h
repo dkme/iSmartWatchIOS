@@ -9,4 +9,5 @@
 #import "WMSBleControl.h"
 #import "WMSSettingProfile.h"
 #import "WMSDeviceProfile.h"
-#import "WMSRemindProfile.h"
+#import "WMSSyncProfile.h"
+#import "WMSTestingProfile.h"

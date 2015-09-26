@@ -35,7 +35,7 @@
 "Yesterday" = "Yesterday";
 "Tomorrow" = "Tomorrow";
 "Target" = "Target";
-"Burn" = "Burn";
+"Burn" = "Consume";
 "Distance" = "Distance";
 "Time" = "Time";
 
@@ -123,6 +123,8 @@
 "周六" = "Sat";//"Saturday";
 "周日" = "Sun";//"Sunday";
 "每天" = "Everyday";
+"周末" = "Weekend";
+"工作日" = "Workday";
 
 "努力同步数据中..." = "Syncing data...";
 "运动记录" = "Sport records";
@@ -143,12 +145,12 @@
 "邮箱" = "Email";
 "完成" = "Complete";
 "忘记密码？" = "Forgot password？";
-"登陆" = "Log in";
+"登录" = "Log in";
 "注册" = "Sign up";
 "请输入用户名" = "Please enter your user name";
 "请输入密码" = "Please enter the password";
-"登陆成功" = "Log in successfully";
-"登陆失败" = "Log in failure";
+"登录成功" = "Log in successfully";
+"登录失败" = "Log in failure";
 "网络请求超时" = "Network request timeout";
 "注册成功" = "Sign up successfully";
 "注册失败" = "Sign up failure";
@@ -204,7 +206,7 @@
 "当前步数" = "Current step";
 "个人信息" = "User Information";
 "睡眠时长" = "Sleep time";
-"唤醒时段" = "Wakeup space";
+"唤醒间隔" = "Wake up interval";
 
 "1月" = "Jan";
 "2月" = "Feb";
@@ -289,7 +291,8 @@
 "升级已取消..." = "The upgrade has already cancelled...";
 "升级成功..." = "Upgrade successfully...";
 "升级失败..." = "Upgrade failed...";
-"正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, exit will stop update, whether to quit?";
+"正在更新固件，退出会停止更新，是否继续退出？" = "Is updating the firmware, the exit will stop the update, whether to continue to quit?";
+"正在准备更新固件，退出会取消更新，是否继续退出？" = "Is preparing to update the firmware, the withdrawal will be canceled, whether to continue to withdraw?";
 "连接成功..." = "connection successfully...";
 "正在重新建立连接..." = "Is to establish a connection...";
 "连接断开，升级中断..." = "Disconnects, upgrade the interrupt...";
@@ -322,4 +325,38 @@
 "手表电量过低，不能设置为“震动”模式" = "Low watch battery, please do not set to the “vibration” mode.";
 "手表电量过低，请尽快更换电池！" = "Low watch battery, please replace it A.S.A.P.";
 
+//天气
+"温度" = "Temp";
+"湿度" = "Humidity";
+"晴" = "Clear";
+"多云" = "Clouds";
+"小雨" = "Light rain";
+"中雨" = "Moderate rain";
+"大雨" = "Heavy rain";
+"小雪" = "Light snow";
+"中雪" = "Moderate snow";
+"大雪" = "Heavy snow";
+"我们需要通过您的地理位置信息获取您所在城市的天气信息" = "Your location is needed for the weather information";
+"定位城市" = "City positioning";
+"正在定位中..." = "Locating...";
+"搜索城市" = "Search the city";
+"输入城市名" = "Enter a city name";
+"定位失败，点击重试" = "Positioning failed，try again";
+"/(定位失败)" = "/(Positioning failed)";
+"城市" = "City";
+"定位服务未开启" = "Location service is not open";
+"请在系统设置中开启定位服务" = "Please turn on location services in the system settings";
+"好" = "OK";
+"请在系统“设置-隐私-定位服务”中开启定位服务" = "Please turn on location services in the system “Settings - Location Services - Privacy”";
 
+"校对时间" = "Time-collating";
+"转动表盘以调整手表时间" = "Turn the dial to adjust the time";
+
+"unknown" = "Unknown";
+"NO" = "NO";
+"YES" = "YES";
+"立即进入" = "Enter into";
+
+"手表将在蓝牙连接断开后，间隔指定的时间提醒您" = "Watch the Bluetooth connection is disconnected after the interval specified time to remind you";
+
+"请输入正确的城市名称!" = "Please enter the correct city name!";

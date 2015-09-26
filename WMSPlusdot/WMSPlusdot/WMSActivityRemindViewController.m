@@ -7,8 +7,8 @@
 //
 
 #import "WMSActivityRemindViewController.h"
-//#import "WMSInputViewController.h"
 #import "UIViewController+Tip.h"
+#import "UIViewController+Sync.h"
 #import "WMSAppDelegate.h"
 
 #import "MBProgressHUD.h"
@@ -108,7 +108,7 @@
         NSString *strStartTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityStartHour,(int)activityStartMinute];
         NSString *strEndTime = [NSString stringWithFormat:@"%02d:%02d",(int)activityEndHour,(int)activityEndMinute];
         NSString *strInterval = [NSString stringWithFormat:@"%d %@",(int)activityInterval,NSLocalizedString(@"Minutes clock",nil)];
-        NSString *strRepeats = [WMSRemindHelper descriptionOfRepeats:activityRepeats];
+        NSString *strRepeats = [WMSRemindHelper description2OfRepeats:activityRepeats];
         
         _detailTextArray = @[@"",strStartTime,strEndTime,strInterval,strRepeats];
     }
@@ -155,11 +155,6 @@
 {
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = YES;
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 - (void)dealloc
 {
@@ -223,12 +218,14 @@
     
     WMSBleControl *bleControl = [[WMSAppDelegate appDelegate] wmsBleControl];
     //设置提醒成功
-    [bleControl.settingProfile setSportRemindWithStatus:model.status startHour:model.startHour startMinute:model.startMinute endHour:model.endHour endMinute:model.endMinute intervalMinute:model.intervalMinute repeats:repeats completion:^(BOOL success)
-    {
-        DEBUGLog(@"设置提醒%@",success?@"成功":@"失败");
+    [bleControl.settingProfile setSitting:model.status startHour:model.startHour endHour:model.endHour duration:model.intervalMinute repeats:repeats completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"设置久坐提醒%d", isSuccess);
         [self showTip:NSLocalizedString(@"设置活动提醒成功", nil)];
         [WMSDataManager savaActivityRemind:@[model]];
         _oldActivityModel = model;
+        if (self.isNeedBackWhenAfterSync) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }];
 }
 
@@ -242,6 +239,11 @@
 
 #pragma mark - Action
 - (void)backAction:(id)sender {
+    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected == NO) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return ;
+    }
+    
     WMSActivityModel *model = [[WMSActivityModel alloc] initWithStatus:activityStatus startHour:activityStartHour startMinute:activityStartMinute endHour:activityEndHour endMinute:activityEndMinute intervalMinute:activityInterval repeats:activityRepeats];
     BOOL res = [model isEqual:_oldActivityModel];
     if (res == NO) {
@@ -278,6 +280,7 @@
     if (buttonIndex == 0) {//NO
         [self.navigationController popViewControllerAnimated:YES];
     } else {
+        self.needBackWhenAfterSync = YES;
         [self syncSettingAction:nil];
     }
 }

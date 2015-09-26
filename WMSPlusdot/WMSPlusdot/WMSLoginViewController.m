@@ -102,7 +102,7 @@
     [self.buttonFogetPassword setTitle:NSLocalizedString(@"忘记密码？", nil) forState:UIControlStateNormal];
     [self.buttonFogetPassword.titleLabel setFont:Font_System(15.0)];
     [self.buttonFogetPassword.titleLabel setAdjustsFontSizeToFitWidth:YES];
-    [self.buttonLogin setTitle:NSLocalizedString(@"登陆", nil) forState:UIControlStateNormal];
+    [self.buttonLogin setTitle:NSLocalizedString(@"登录", nil) forState:UIControlStateNormal];
     [self.buttonLogin.titleLabel setFont:Font_System(15.0)];
     
     [self.labelSignup setText:NSLocalizedString(@"注册", nil)];

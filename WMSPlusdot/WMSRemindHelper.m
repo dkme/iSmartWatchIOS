@@ -45,12 +45,28 @@
             flag = NO;
         }
     }
-    if ([repeats count] > 0 && flag) {
-        return NSLocalizedString(@"每天",nil);
+    
+    int flag_repeats = 0;///6~0bit分别表示周一至周末，1表示重复，0表示不重复
+    for (int i=0; i<repeats.count; i++) {
+        BOOL var = [repeats[i] boolValue];
+        if (var) {
+            flag_repeats |= (0x01 << (repeats.count-i-1));
+        }
     }
-    else {
-        return ([str isEqualToString:@""]?NSLocalizedString(@"永不", nil):str);
+    switch (flag_repeats) {
+        case 0x7C:///周一至周五
+            return NSLocalizedString(@"工作日", nil);
+        case 0x03:///周六至周日
+            return NSLocalizedString(@"周末", nil);
+        case 0x00:
+            return NSLocalizedString(@"永不", nil);
+        case 0x7F:
+            return NSLocalizedString(@"每天",nil);
+        default:
+            break;
     }
+
+    return str;
 }
 
 + (NSArray *)repeatsWithArray:(NSArray *)array

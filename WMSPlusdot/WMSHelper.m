@@ -170,7 +170,7 @@
      {
          if (aCallBack) {
              NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-             if ([WMSDeviceModel deviceModel].version < newVersion) {
+             if ([WMSDeviceModel deviceModel].firmwareVersion < newVersion) {
                  [userDefaults setBool:YES forKey:@"isUpdateFirmware"];
                  aCallBack(YES);
              } else {

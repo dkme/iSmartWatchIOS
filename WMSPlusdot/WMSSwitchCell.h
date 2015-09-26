@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UISwitch *mySwitch;
 @property (weak, nonatomic) id<WMSSwitchCellDelegage> delegate;
 
+- (void)configureCellWithText:(NSString *)text switchOn:(BOOL)on;
+
 @end
 
 @protocol WMSSwitchCellDelegage<NSObject>

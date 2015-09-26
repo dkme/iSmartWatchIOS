@@ -14,22 +14,21 @@
 #import "WMSContentViewController.h"
 #import "WMSMyAccessoryViewController.h"
 
-#import "WMSBindingView.h"
+#import "UILabel+VerticalAlign.h"
 #import "WMSDeviceModel+Configure.h"
 #import "WMSMyAccessory.h"
 #import "WMSFilter.h"
 #import "WMSConstants.h"
 
-static const NSTimeInterval SCAN_TIME_INTERVAL      = 60.f;
+static const NSTimeInterval SCAN_TIME_INTERVAL      = 2.f;
 static const NSTimeInterval BINDING_TIME_INTERVAL   = 60.f;
 static const int            MAX_RSSI                = -75;
 
-@interface WMSBindingAccessoryViewController ()<WMSBindingViewDelegate>
+@interface WMSBindingAccessoryViewController ()
 {
 }
 @property (strong, nonatomic) NSArray *listData;
 @property (strong, nonatomic) WMSBleControl *bleControl;
-@property (strong, nonatomic) WMSBindingView *bindView;
 @end
 
 @implementation WMSBindingAccessoryViewController
@@ -40,14 +39,6 @@ static const int            MAX_RSSI                = -75;
 }
 
 #pragma mark - Getter
-- (WMSBindingView *)bindView
-{
-    if (!_bindView) {
-        _bindView = [WMSBindingView instanceBindingView];
-        _bindView.delegate = self;
-    }
-    return _bindView;
-}
 
 #pragma mark - Life Cycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -63,12 +54,9 @@ static const int            MAX_RSSI                = -75;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
     [self bleOperation];
     
-    [self.bindView.textView setText:NSLocalizedString(@"请将手表靠近手机", nil)];
-    [self.bindView show:YES forView:self.view];
-    
+    [self updateStatus:NSLocalizedString(@"请将手表靠近手机", nil)];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -84,46 +72,57 @@ static const int            MAX_RSSI                = -75;
 - (void)dealloc
 {
     DEBUGLog(@"%s",__FUNCTION__);
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - Setup
+- (void)updateStatus:(NSString *)status
+{
+    self.tipLabel.text = status;
+    [self.tipLabel alignTop];
+}
+
 #pragma mark - Methods
+- (void)bindingPeripheral
+{
+    NSArray *array = [WMSFilter descendingOrderPeripheralsWithSignal:self.listData];
+    [self setListData:array];
+    
+    if (!self.listData || self.listData.count==0) {
+        return ;
+    }
+    LGPeripheral *peripheral = self.listData[0];
+    if (!peripheral) {
+        return ;
+    }
+    NSInteger RSSI = peripheral.RSSI;
+    if (RSSI >= MAX_RSSI) {
+        if ([self.bleControl isScanning]) {
+            [self.bleControl stopScanForPeripherals];
+        }
+        [self.bleControl connect:peripheral];
+        [self stopRefresh];
+        [self updateStatus:NSLocalizedString(@"请稍等，正在绑定配件...", nil)];
+    }
+}
 - (void)continueBinding
 {
     [self scanPeripheral];
-    [self.bindView.textView setText:NSLocalizedString(@"请将手表靠近手机", nil)];
+    [self updateStatus:NSLocalizedString(@"请将手表靠近手机", nil)];
 }
 - (void)sendBindingCMD
 {
-    __weak __typeof(self) weakSelf = self;
-    double version = [WMSDeviceModel deviceModel].version;
-    BindSettingCMD bindCMD = bindSettingCMDBind;
-    if (version >= FIRMWARE_TARGET_VERSION) {
-        bindCMD = BindSettingCMDMandatoryBind;
+    NSString *identify = self.bleControl.connectedPeripheral.UUIDString;
+    if (identify) {
+        NSString *mac = [WMSDeviceModel deviceModel].mac;
+        if (!mac) {
+            mac = @"";
+        }
+        [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
+        [WMSMyAccessory setBindAccessoryMac:mac];
+        [self closeVC:YES];
     }
-    [self.bleControl bindSettingCMD:bindCMD completion:^(BindingResult result)
-     {
-         __strong __typeof(weakSelf) strongSelf = weakSelf;
-         if (!strongSelf) {
-             return ;
-         }
-         
-         if (result == BindingResultSuccess) {
-             NSString *identify = strongSelf.bleControl.connectedPeripheral.UUIDString;
-             if (identify) {
-                 NSString *mac = [WMSDeviceModel deviceModel].mac;
-                 if (!mac) {
-                     mac = @"";
-                 }else{}
-                 [WMSMyAccessory bindAccessoryWith:identify generation:_generation];
-                 [WMSMyAccessory setBindAccessoryMac:mac];
-                 [strongSelf closeVC:YES];
-             } else {}
-         } else {
-             [strongSelf closeVC:NO];
-         }
-     }];
 }
 
 - (void)closeVC:(BOOL)successOrFail
@@ -143,7 +142,7 @@ static const int            MAX_RSSI                = -75;
 {
     [self.bleControl disconnect];
     
-    self.bindView.textView.text = NSLocalizedString(@"超时，绑定失败", nil);
+    [self updateStatus:NSLocalizedString(@"超时，绑定失败", nil)];
 }
 
 //刷新外设的信号量
@@ -163,7 +162,7 @@ static const int            MAX_RSSI                = -75;
     DEBUGLog(@"refresh signal");
     NSArray *array = [WMSFilter descendingOrderPeripheralsWithSignal:self.listData];
     [self setListData:array];
-
+    
     if (!self.listData || self.listData.count==0) {
         return ;
     }
@@ -179,7 +178,7 @@ static const int            MAX_RSSI                = -75;
         [self.bleControl connect:peripheral];
         [self stopRefresh];
         DEBUGLog(@"[LINE:%d] stop refresh",__LINE__);
-        self.bindView.textView.text = NSLocalizedString(@"请稍等，正在绑定配件...", nil);
+        [self updateStatus:NSLocalizedString(@"请稍等，正在绑定配件...", nil)];
     }
 }
 
@@ -206,45 +205,28 @@ static const int            MAX_RSSI                = -75;
     if (self.bleControl.isScanning || self.bleControl.isConnecting) {
         return ;
     }
+    WeakObj(self, weakSelf);
     [self.bleControl scanForPeripheralsByInterval:SCAN_TIME_INTERVAL completion:^(NSArray *peripherals)
      {
-         NSArray *array = [WMSFilter filterForPeripherals:peripherals withType:_generation];
-         [self setListData:array];
+         StrongObj(weakSelf, strongSelf);
+         NSArray *array = [WMSFilter filterForPeripherals:peripherals withType:strongSelf.generation];
+         if (array && array.count>0) {
+             [strongSelf setListData:array];
+             [strongSelf bindingPeripheral];
+         } else {
+             [strongSelf continueBinding];
+         }
      }];
-    [self startRefresh];
 }
 
 //Handle
 - (void)handleSuccessConnectPeripheral:(NSNotification *)notification
 {
     DEBUGLog(@"蓝牙连接成功 %@",NSStringFromClass([self class]));
-
-    [WMSDeviceModel setDeviceDate:self.bleControl completion:^{
-        
-        [WMSDeviceModel readDeviceInfo:self.bleControl completion:^(NSUInteger batteryEnergy, NSUInteger version) {
-            DEBUGLog(@"read version:%d",version);
-            
-            if (version >= FIRMWARE_CAN_READ_MAC) {
-                [WMSDeviceModel readDeviceMac:self.bleControl completion:^(NSString *mac) {
-                    if (version < FIRMWARE_TARGET_VERSION) {
-                        self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-                    }
-                    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
-                    [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
-                    [self sendBindingCMD];
-                }];
-            } else {
-                if (version < FIRMWARE_TARGET_VERSION) {
-                    self.bindView.textView.text = NSLocalizedString(@"请在手表灯亮起时,\n按下右上角按键,完成设备的匹配", nil);
-                }
-                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
-                [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
-                [self sendBindingCMD];
-            }
-            
-        }];
-        
-    }];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(bindingTimeout) object:nil];
+    [self performSelector:@selector(bindingTimeout) withObject:nil afterDelay:BINDING_TIME_INTERVAL];
+    [self sendBindingCMD];
 }
 - (void)handleDisConnectPeripheral:(NSNotification *)notification
 {
@@ -261,15 +243,10 @@ static const int            MAX_RSSI                = -75;
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
-    DEBUGLog(@"扫描结束 %@,connecting:%d,connected:%d",NSStringFromClass([self class]),[self.bleControl isConnecting], [self.bleControl isConnected]);
-    
-    [self stopRefresh];
-    DEBUGLog(@"[LINE:%d] stop refresh",__LINE__);
 }
 
-#pragma mark - WMSBindingViewDelegate
-- (void)bindingView:(WMSBindingView *)bindingView didClickBottomButton:(UIButton *)button
-{
+#pragma mark - Action
+- (IBAction)clickedCancelButton:(id)sender {
     [self stopRefresh];
     if ([self.bleControl isScanning]) {
         [self.bleControl stopScanForPeripherals];
@@ -280,5 +257,4 @@ static const int            MAX_RSSI                = -75;
     }
     [self closeVC:NO];
 }
-
 @end

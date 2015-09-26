@@ -7,62 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#include "setting.h"
 @class WMSBleControl;
 
-//
-typedef NS_ENUM(Byte, GenderType) {
-    GenderTypeWoman = 0,
-    GenderTypeMan,
-    GenderTypeOther,
-};
-
-typedef NS_ENUM(Byte, LengthUnitType) {
-    LengthUnitTypeMetricSystem = 0,
-    LengthUnitTypeBritishSystem,
-};
-
-typedef NS_ENUM(NSUInteger, RemindMode) {
-    RemindModeNot = 0x00,
-    RemindModeShake = 0x01,
-    RemindModeBell = 0x02,
-    RemindModeBellAndShake = 0x03,
-};
-
-//提醒事件类型
-typedef NS_ENUM(NSUInteger, RemindEventsType) {
-    RemindEventsTypeSMS = 0x01 << 0,
-    RemindEventsTypeCall = 0x01 << 1,
-    RemindEventsTypeEmail = 0x01 << 2,
-    RemindEventsTypeQQ = 0x01 << 3,
-    RemindEventsTypeWeixin = 0x01 << 4,
-    RemindEventsTypeSinaWeibo = 0x01 << 5,
-    RemindEventsTypeFacebook = 0x01 << 6,
-    RemindEventsTypeTwitter = 0x01 << 7,
-};
-
-//其他提醒事件类型
-typedef NS_ENUM(NSUInteger, OtherRemindType) {
-    OtherRemindTypeCall = 0x01,
-    OtherRemindTypeSearchWatch = 0x10,
-    OtherRemindTypeLowBattery = 0x11,
-};
-
-
-//Block
-typedef void (^setCurrentDateCallBack)(BOOL success);
-typedef void (^setPersonInfoCallBack)(BOOL success);
-typedef void (^setAlarmClockCallBack)(BOOL success);
-typedef void (^setTargetCallBack)(BOOL success);
-typedef void (^setRemindModeCallBack)(BOOL success);
-typedef void (^setRemindEventsCallBack)(BOOL success);
-typedef void (^setRemindEventsAndModeCallBack)(BOOL success);
-typedef void (^setOtherRemindCallBack)(BOOL success);
-typedef void (^setStartLowBatteryRemind)(BOOL success);
-typedef void (^setStopLowBatteryRemind)(BOOL success);
-typedef void (^setSportRemindCallBack)(BOOL success);
-typedef void (^setAntiLostCallBack)(BOOL success);
-typedef void (^startRemind)(BOOL success);
-typedef void (^finishRemind)(BOOL success);
+typedef void(^settingCallback)(BOOL isSuccess);
 
 @interface WMSSettingProfile : NSObject
 
@@ -71,100 +19,88 @@ typedef void (^finishRemind)(BOOL success);
  */
 - (id)initWithBleControl:(WMSBleControl *)bleControl;
 
-/**
- 设置当前系统时间
- */
-- (void)setCurrentDate:(NSDate *)date
-            completion:(setCurrentDateCallBack)aCallBack;
+
+///校准时间
+- (void)adjustDate:(NSDate *)date
+        completion:(settingCallback)aCallback;
+
+///设置用户信息
+- (void)setUserInfoWithGender:(GenderType)gender
+                          age:(NSUInteger)age
+                       height:(NSUInteger)height
+                       weight:(NSUInteger)weight
+                   completion:(settingCallback)aCallback;
+
+///设置运动目标
+- (void)setSportTarget:(NSUInteger)steps
+            completion:(settingCallback)aCallback;
+
+///设置防丢
+- (void)setLost:(BOOL)openOrClose
+       interval:(NSInteger)interval
+     completion:(settingCallback)aCallback;
+
+///设置久坐提醒
+///@param repeats length为7，分别对应周一到周日，
+///里面元素为BOOL类型，YES-重复，NO-不重复
+- (void)setSitting:(BOOL)openOrClose
+         startHour:(NSUInteger)startHour
+           endHour:(NSUInteger)endHour
+          duration:(NSUInteger)duration
+           repeats:(NSArray *)repeats
+        completion:(settingCallback)aCallback;
+
+///设置提醒方式
+- (void)setRemindWay:(RemindWay)way
+          completion:(settingCallback)aCallback;
+
+///设置提醒开始/结束
+- (void)setRemind:(BOOL)startOrEnd
+            event:(RemindEvents)event
+       completion:(settingCallback)aCallback;
+
+///设置提醒事件
+///如：电话、短信、邮件提醒
+- (void)setRemindEvent:(RemindEvents)event
+            completion:(settingCallback)aCallback;
+
+///设置天气
+- (void)setWeatherType:(WeatherType)type
+                  temp:(NSInteger)temp
+              tempUnit:(TempUnit)unit
+              humidity:(NSUInteger)humidity
+            completion:(settingCallback)aCallback;
+
+///调整手表时间
+- (void)adjustTimeDirection:(ROTATE_DIRECTION)direction
+                 completion:(settingCallback)aCallback;//////DEPRECATED
+
+- (void)roughAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
+                            timeInterval:(NSTimeInterval)interval///单位是小时
+                              completion:(settingCallback)aCallback;
+- (void)slightAdjustmentTimeWithDirection:(ROTATE_DIRECTION)direction
+                                    start:(BOOL)isStart
+                               completion:(settingCallback)aCallback;
 
 /**
- 描述:设置个人信息
- 参数:birthday   出生日期字符串
-     format     日期的格式
-     weight     单位kg
-     height     单位cm
-     stride     单位cm
+ * 设置闹钟,目前最多设置8个闹钟
+ * @param no  闹钟编号，取值0-7
+ * @param repeats length为7，分别对应周一到周日，
+ * 里面元素为BOOL类型，YES-重复，NO-不重复
  */
-- (void)setPersonInfoWithWeight:(UInt16)weight
-                     withHeight:(Byte)height
-                     withGender:(GenderType)gender
-                   withBirthday:(NSString *)birthday
-                 withDateFormat:(NSString *)format
-                     withStride:(Byte)stride
-                     withMetric:(LengthUnitType)metric
-                 withCompletion:(setPersonInfoCallBack)aCallBack;
+- (void)setAlarmClock:(BOOL)openOrClose
+                   ID:(NSUInteger)no
+                 hour:(NSUInteger)hour
+               minute:(NSUInteger)minute
+             interval:(NSUInteger)interval
+              repeats:(NSArray *)repeats
+           completion:(settingCallback)aCallback;
 
-/**
- 描述:设置闹钟时间
- 参数:no  闹钟编号，取值1-10
-     repeat 重复状态
- */
-- (void)setAlarmClockWithId:(Byte)no
-                   withHour:(Byte)hour
-                 withMinute:(Byte)minute
-                 withStatus:(BOOL)openOrClose
-                  withRepeat:(Byte *)repeat
-                 withLength:(NSUInteger)length
-           withSnoozeMinute:(Byte)snoozeMinute
-             withCompletion:(setAlarmClockCallBack)aCallBack;
+///设置寻找手表
+///不用回调
+//- (void)setSearchDevice:(BOOL)openOrClose;
 
-/**
- 设置目标
- */
-- (void)setTargetWithStep:(UInt32)step
-          withSleepMinute:(UInt16)minute
-           withCompletion:(setTargetCallBack)aCallBack;
-
-/**
- 设置提醒方式
- */
-- (void)setRemindWithMode:(RemindMode)remindMode
-           withCompletion:(setRemindModeCallBack)aCallBack;
-
-/**
- 提醒事件
- */
-- (void)setRemindEventsType:(RemindEventsType)remindEventsType
-                 completion:(setRemindEventsCallBack)aCallBack;
-
-/**
- 设置提醒方式和提醒事件
- */
-- (void)setRemindEventsType:(RemindEventsType)remindEventsType
-                       mode:(RemindMode)remindMode
-                 completion:(setRemindEventsAndModeCallBack)aCallBack;
-
-/**
- 开始提醒
- */
-- (void)startRemind:(OtherRemindType)remindType
-         completion:(startRemind)aCallBack;
-/**
- 结束提醒
- */
-- (void)finishRemind:(OtherRemindType)remindType
-         completion:(finishRemind)aCallBack;
-
-
-
-/**
- 久坐运动提醒
- */
-- (void)setSportRemindWithStatus:(BOOL)openOrClose
-                       startHour:(Byte)startHour
-                     startMinute:(Byte)startMinute
-                         endHour:(Byte)endHour
-                       endMinute:(Byte)endMinute
-                  intervalMinute:(UInt16)intervalMinute
-                         repeats:(NSArray *)repeats
-                      completion:(setSportRemindCallBack)aCallBack;
-
-/**
- 防丢提醒
- */
-- (void)setAntiLostStatus:(BOOL)openOrClose
-                 distance:(NSUInteger)distance
-             timeInterval:(NSUInteger)interval
-               completion:(setAntiLostCallBack)aCallBack;
+///获取天气类型
++ (NSUInteger)weatherTypeFromCondition:(NSString *)condition;
 
 @end

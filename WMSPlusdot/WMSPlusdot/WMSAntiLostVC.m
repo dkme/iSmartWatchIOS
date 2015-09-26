@@ -9,6 +9,7 @@
 #import "WMSAntiLostVC.h"
 #import "WMSAppDelegate.h"
 #import "UIViewController+Tip.h"
+#import "UIViewController+Sync.h"
 #import "WMSNavBarView.h"
 #import "WMSSwitchCell.h"
 #import "WMSInputView.h"
@@ -74,7 +75,7 @@
 - (NSArray *)pickerViewDataSource
 {
     if (!_pickerViewDataSource) {
-        _pickerViewDataSource = @[@"5",@"10",@"20",@"35"];
+        _pickerViewDataSource = @[@"0",@"5",@"10",@"15",@"20",@"25",@"35",@"60"];
     }
     return _pickerViewDataSource;
 }
@@ -141,6 +142,11 @@
 #pragma mark - Action
 - (void)backAction:(id)sender
 {
+    if ([WMSAppDelegate appDelegate].wmsBleControl.isConnected == NO) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        return ;
+    }
+    
     if (self.cellSwitch.on          == _oldStatus &&
         _timeInterval               == _oldTimeInterval)
     {
@@ -163,14 +169,16 @@
     }
     BOOL on = self.cellSwitch.on;
     NSUInteger interval = _timeInterval;
-    [bleControl.settingProfile setAntiLostStatus:on distance:ANTI_LOST_DISTANCE timeInterval:interval completion:^(BOOL success)
-     {
-         DEBUGLog(@"设置防丢%@",success?@"成功":@"失败");
-         _oldStatus = on;
-         _oldTimeInterval = interval;
-         [self savaData];
-         [self showOperationSuccessTip:NSLocalizedString(@"设置防丢成功", nil)];
-     }];
+    [bleControl.settingProfile setLost:on interval:interval completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"设置防丢%@",isSuccess?@"成功":@"失败");
+        _oldStatus = on;
+        _oldTimeInterval = interval;
+        [self savaData];
+        [self showOperationSuccessTip:NSLocalizedString(@"设置防丢成功", nil)];
+        if (self.isNeedBackWhenAfterSync) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
 }
 
 - (void)switchBtnValueChanged:(id)sender
@@ -184,6 +192,7 @@
     if (buttonIndex == 0) {//NO
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else {
+        self.needBackWhenAfterSync = YES;
         [self syncSettingAction:nil];
     }
 }
@@ -254,7 +263,7 @@
     titleLabel.adjustsFontSizeToFitWidth = YES;
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     
-    NSString *title = NSLocalizedString(@"添加时间，手表会在蓝牙断开后的这个时间提醒您", nil);
+    NSString *title = NSLocalizedString(@"手表将在蓝牙连接断开后，间隔指定的时间提醒您", nil);
     
     [titleLabel setText:title];
     [myView addSubview:titleLabel];

@@ -22,4 +22,14 @@ typedef void(^playFinishCallback)(void);
    andVibrateWithTimeInterval:(NSTimeInterval)interval
                    completion:(playFinishCallback)aCallback;
 
+
+/**
+ * 播放报警声
+ * @param duration 播放的时长，-1表示一直播放
+ */
+- (void)playSoundWithFile:(NSString *)filePath
+                 duration:(NSTimeInterval)duration;
+
+- (void)stop;
+
 @end

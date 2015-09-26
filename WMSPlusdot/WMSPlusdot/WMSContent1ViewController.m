@@ -266,7 +266,7 @@
     
     ////////////
     [self setLabelShowDate:[NSDate systemDate]];
-    //[self updateView];
+    [self updateView];
     
     [self bleOperation];
     
@@ -282,7 +282,7 @@
     
     self.isVisible = YES;
     if (self.isNeedUpdate && self.bleControl.isConnected) {
-        [self startSyncSleepData];
+//        [self startSyncSleepData];
     }
     self.isNeedUpdate = NO;
     
@@ -292,8 +292,8 @@
     } else {
         if ([self.bleControl isConnected]) {
             [self showTipView:NO];
-            int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
-            [self.syncDataView setEnergy:batteryEnergy];
+//            int batteryEnergy = [WMSDeviceModel deviceModel].batteryEnergy;
+//            [self.syncDataView setEnergy:batteryEnergy];
         } else {
             [self showTipView:YES];
         }
@@ -518,9 +518,9 @@
 
 - (void)syncData
 {
-    if (![self.bleControl isConnected]) {
+//    if (![self.bleControl isConnected]) {
         return;
-    }
+//    }
     
     [self startSyncSleepData];
 }
@@ -531,56 +531,56 @@
     [self.syncDataView startAnimating];
     [self.hud show:YES];
     
-    [self.bleControl.deviceProfile syncDeviceSleepDataWithCompletion:^(NSString *sleepDate, NSUInteger sleepEndHour, NSUInteger sleepEndMinute, NSUInteger todaySleepMinute, NSUInteger todayAsleepMinute, NSUInteger awakeCount, NSUInteger deepSleepMinute, NSUInteger lightSleepMinute, UInt16 *startedMinutes, UInt8 *startedStatus, UInt8 *statusDurations, NSUInteger dataLength)
-     {
-         //         DEBUGLog(@"====>>>date:%@,sleepEndHour:%d,sleepEndMinute:%d,SleepDurations:%d,AsleepDurations:%d,awakeCount:%d",sleepDate,sleepEndHour,sleepEndMinute,todaySleepMinute,todayAsleepMinute,awakeCount);
-         //         printf("\t\t [startedMinutes--startedStatus--statusDurations]\n");
-         //         for (int i=0; i<dataLength; i++) {
-         //             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
-         //         }
-         //         printf("\n");
-         DEBUGLog(@"sleep date %@",sleepDate);
-         
-         if ([sleepDate isEqualToString:@"0000-00-00"]) {
-             DEBUGLog(@"同步睡眠数据完成");
-             [self syncSleepDataOver];
-             return ;
-         }
-         
-         //保存数据
-         NSDate *date = [NSDate dateFromString:sleepDate format:@"yyyy-MM-dd"];
-         WMSSleepModel *model = [[WMSSleepModel alloc] initWithSleepDate:date sleepEndHour:sleepEndHour sleepEndMinute:sleepEndMinute sleepMinute:todaySleepMinute asleepMinute:todayAsleepMinute awakeCount:awakeCount deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
-         [self savaSleepData:model];
-         
-         
-         [self continueSyncSleepData];
-     }];
+//    [self.bleControl.deviceProfile syncDeviceSleepDataWithCompletion:^(NSString *sleepDate, NSUInteger sleepEndHour, NSUInteger sleepEndMinute, NSUInteger todaySleepMinute, NSUInteger todayAsleepMinute, NSUInteger awakeCount, NSUInteger deepSleepMinute, NSUInteger lightSleepMinute, UInt16 *startedMinutes, UInt8 *startedStatus, UInt8 *statusDurations, NSUInteger dataLength)
+//     {
+//         //         DEBUGLog(@"====>>>date:%@,sleepEndHour:%d,sleepEndMinute:%d,SleepDurations:%d,AsleepDurations:%d,awakeCount:%d",sleepDate,sleepEndHour,sleepEndMinute,todaySleepMinute,todayAsleepMinute,awakeCount);
+//         //         printf("\t\t [startedMinutes--startedStatus--statusDurations]\n");
+//         //         for (int i=0; i<dataLength; i++) {
+//         //             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
+//         //         }
+//         //         printf("\n");
+//         DEBUGLog(@"sleep date %@",sleepDate);
+//         
+//         if ([sleepDate isEqualToString:@"0000-00-00"]) {
+//             DEBUGLog(@"同步睡眠数据完成");
+//             [self syncSleepDataOver];
+//             return ;
+//         }
+//         
+//         //保存数据
+//         NSDate *date = [NSDate dateFromString:sleepDate format:@"yyyy-MM-dd"];
+//         WMSSleepModel *model = [[WMSSleepModel alloc] initWithSleepDate:date sleepEndHour:sleepEndHour sleepEndMinute:sleepEndMinute sleepMinute:todaySleepMinute asleepMinute:todayAsleepMinute awakeCount:awakeCount deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
+//         [self savaSleepData:model];
+//         
+//         
+//         [self continueSyncSleepData];
+//     }];
 }
 
 - (void)continueSyncSleepData
 {
-    [self.bleControl.deviceProfile syncDeviceSleepDataWithCompletion:^(NSString *sleepDate, NSUInteger sleepEndHour, NSUInteger sleepEndMinute, NSUInteger todaySleepMinute, NSUInteger todayAsleepMinute, NSUInteger awakeCount, NSUInteger deepSleepMinute, NSUInteger lightSleepMinute, UInt16 *startedMinutes, UInt8 *startedStatus, UInt8 *statusDurations, NSUInteger dataLength)
-     {
-         //         DEBUGLog(@"====>>>date:%@,sleepEndHour:%d,sleepEndMinute:%d,SleepDurations:%d,AsleepDurations:%d,awakeCount:%d",sleepDate,sleepEndHour,sleepEndMinute,todaySleepMinute,todayAsleepMinute,awakeCount);
-         //         printf("\t\t [startedMinutes--startedStatus--statusDurations]\n");
-         //         for (int i=0; i<dataLength; i++) {
-         //             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
-         //         }
-         //         printf("\n");
-         DEBUGLog(@"sleep date %@",sleepDate);
-         if ([sleepDate isEqualToString:@"0000-00-00"]) {
-             DEBUGLog(@"同步睡眠数据完成");
-             [self syncSleepDataOver];
-             return ;
-         }
-         
-         //保存数据
-         NSDate *date = [NSDate dateFromString:sleepDate format:@"yyyy-MM-dd"];
-         WMSSleepModel *model = [[WMSSleepModel alloc] initWithSleepDate:date sleepEndHour:sleepEndHour sleepEndMinute:sleepEndMinute sleepMinute:todaySleepMinute asleepMinute:todayAsleepMinute awakeCount:awakeCount deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
-         [self savaSleepData:model];
-         
-         [self continueSyncSleepData];
-     }];
+//    [self.bleControl.deviceProfile syncDeviceSleepDataWithCompletion:^(NSString *sleepDate, NSUInteger sleepEndHour, NSUInteger sleepEndMinute, NSUInteger todaySleepMinute, NSUInteger todayAsleepMinute, NSUInteger awakeCount, NSUInteger deepSleepMinute, NSUInteger lightSleepMinute, UInt16 *startedMinutes, UInt8 *startedStatus, UInt8 *statusDurations, NSUInteger dataLength)
+//     {
+//         //         DEBUGLog(@"====>>>date:%@,sleepEndHour:%d,sleepEndMinute:%d,SleepDurations:%d,AsleepDurations:%d,awakeCount:%d",sleepDate,sleepEndHour,sleepEndMinute,todaySleepMinute,todayAsleepMinute,awakeCount);
+//         //         printf("\t\t [startedMinutes--startedStatus--statusDurations]\n");
+//         //         for (int i=0; i<dataLength; i++) {
+//         //             printf("\t\t [%d--%d--%d] ",startedMinutes[i],startedStatus[i],statusDurations[i]);
+//         //         }
+//         //         printf("\n");
+//         DEBUGLog(@"sleep date %@",sleepDate);
+//         if ([sleepDate isEqualToString:@"0000-00-00"]) {
+//             DEBUGLog(@"同步睡眠数据完成");
+//             [self syncSleepDataOver];
+//             return ;
+//         }
+//         
+//         //保存数据
+//         NSDate *date = [NSDate dateFromString:sleepDate format:@"yyyy-MM-dd"];
+//         WMSSleepModel *model = [[WMSSleepModel alloc] initWithSleepDate:date sleepEndHour:sleepEndHour sleepEndMinute:sleepEndMinute sleepMinute:todaySleepMinute asleepMinute:todayAsleepMinute awakeCount:awakeCount deepSleepMinute:deepSleepMinute lightSleepMinute:lightSleepMinute startedMinutes:startedMinutes startedStatus:startedStatus statusDurations:statusDurations dataLength:dataLength];
+//         [self savaSleepData:model];
+//         
+//         [self continueSyncSleepData];
+//     }];
 }
 
 - (void)syncSleepDataOver
@@ -605,7 +605,7 @@
     
     if ([self.bleControl isConnected]) {
         DEBUGLog(@"同步睡眠数据");
-        [self startSyncSleepData];
+//        [self startSyncSleepData];
     }
 }
 
@@ -618,7 +618,7 @@
     
     //若该视图控制器不可见，则不同步数据，等到该界面显示时同步
     if (self.isVisible) {
-        [self startSyncSleepData];
+//        [self startSyncSleepData];
         self.isNeedUpdate = NO;
     } else {
         self.isNeedUpdate = YES;

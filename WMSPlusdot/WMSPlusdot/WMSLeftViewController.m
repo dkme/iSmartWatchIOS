@@ -15,112 +15,64 @@
 #import "WMSBindingAccessoryViewController.h"
 #import "WMSMyAccountViewController.h"
 #import "WMSMyAccessoryViewController.h"
+#import "CheckTimeViewController.h"
 #import "WMSSettingVC.h"
 #import "WMSAppDelegate.h"
 #import "WMSClockListVC.h"
+#import "WMSLocationViewController.h"
 
 #import "WMSLeftViewCell.h"
 
 #import "WMSPersonModel.h"
+#import "Condition.h"
 
 #import "WMSConstants.h"
 #import "WMSUserInfoHelper.h"
 #import "WMSAppConfig.h"
-
-
-#define userInfoViewFrame ( CGRectMake(0, 0, self.view.frame.size.width - 82, (self.view.frame.size.height - 54 * 5) / 2.0f + 30) )
-#define userImgBtnFrame ( CGRectMake(_userInfoView.center.x - 40, _userInfoView.center.y - 45 - 10, 79, 79) )
-#define userLabelFrame ( CGRectMake(0, userImgBtn.center.y + 45, _userInfoView.frame.size.width, 35) )
-#define tableViewFrame ( iPhone5 ? (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 60, self.view.frame.size.width, 65 * 5)) : (CGRectMake(0, (self.view.frame.size.height - 65 * 5) / 2.0f + 150, self.view.frame.size.width, 65 * 5)) )
-#define settingBtnFrame ( iPhone5 ? CGRectMake(16, self.view.frame.size.height - 50, 30, 30) : CGRectMake(16, self.view.frame.size.height - 150, 30, 30) )
+#import "RequestClass.h"
+#import "WMSLocationManager.h"
+#import "UILabel+Attribute.h"
+//#import "BLEUtils.h"
 
 #define Null_Object     @"Null_Object"
 
 #define SECTION_NUMBER  1
 #define CELL_HEIGHT     46
 
-@interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate>
+#define WEATHER_INFO_KEY                        @"WMSLeftViewController.WEATHER_INFO_KEY"
+#define WEATHER_INFO_CITY_KEY                   @"WMSLeftViewController.WEATHER_INFO_CITY_KEY"
+#define WEATHER_INFO_TEMP_KEY                   @"WMSLeftViewController.WEATHER_INFO_TEMP_KEY"
+#define WEATHER_INFO_HUMIDITY_KEY               @"WMSLeftViewController.WEATHER_INFO_HUMIDITY_KEY"
+#define WEATHER_INFO_DESCRIPTION_KEY            @"WMSLeftViewController.WEATHER_INFO_DESCRIPTION_KEY"
 
-@property (strong, nonatomic) UIView *userInfoView;
-@property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) UIButton *buttonSetting;
+#define DEFAULT_CITY                            @"深圳"
+
+static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1小时
+
+@interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate,WMSMyAccountViewControllerDelegate,WMSLocationViewControllerDelegate>
 
 @property (strong, nonatomic) NSArray *titleArray;
 @property (strong, nonatomic) NSArray *imageNameArray;
 @property (strong, nonatomic) NSArray *seletedImageNameArray;
 
 @property (strong, nonatomic) NSArray *specifyContentVCClassArray;
+
+@property (strong, nonatomic) NSTimer *refreshWeatherTimer;
+@property (strong, nonatomic) Condition *condition;
+
 @end
 
 @implementation WMSLeftViewController
 
-#pragma mark - Property Getter Method
-- (UIView *)userInfoView
-{
-    if (!_userInfoView) {
-        _userInfoView = [[UIView alloc] initWithFrame:userInfoViewFrame];
-        [_userInfoView setBackgroundColor:[UIColor clearColor]];
-        
-        UIButton *userImgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [userImgBtn setFrame:userImgBtnFrame];
-        [userImgBtn setImage:[UIImage imageNamed:@"main_avatar_default.png"] forState:UIControlStateNormal];
-        [userImgBtn setHighlighted:NO];
-        [userImgBtn addTarget:self action:@selector(userImgBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [userImgBtn setClipsToBounds:YES];
-        [userImgBtn.layer setCornerRadius:userImgBtn.bounds.size.width/2];
-        [userImgBtn.layer setBorderWidth:0];
-        [userImgBtn.layer setBorderColor:[UIColor clearColor].CGColor];
-        [_userInfoView addSubview:userImgBtn];
-        
-        UILabel *userLabel = [[UILabel alloc] initWithFrame:userLabelFrame];
-        [userLabel setText:@""];
-        [userLabel setTextAlignment:NSTextAlignmentCenter];
-        [userLabel setTextColor:[UIColor whiteColor]];
-        [userLabel setBackgroundColor:[UIColor clearColor]];
-        [userLabel setFont:Font_DINCondensed(17)];
-        [_userInfoView addSubview:userLabel];
-    }
-    return _userInfoView;
-}
-- (UITableView *)tableView
-{
-    if (!_tableView) {
-        UITableView *tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStylePlain];
-        tableView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-        tableView.delegate = self;
-        tableView.dataSource = self;
-        tableView.opaque = NO;
-        tableView.backgroundColor = [UIColor clearColor];
-        tableView.backgroundView = nil;
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        tableView.bounces = NO;
-        tableView.scrollsToTop = NO;
-        
-        _tableView = tableView;
-    }
-    return _tableView;
-}
-- (UIButton *)buttonSetting
-{
-    if (!_buttonSetting) {
-        UIButton *settingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [settingBtn setFrame:settingBtnFrame];
-        [settingBtn setImage:[UIImage imageNamed:@"main_menu_setting_icon_a.png"] forState:UIControlStateNormal];
-        [settingBtn setImage:[UIImage imageNamed:@"main_menu_setting_icon_b.png"] forState:UIControlStateHighlighted];
-        [settingBtn addTarget:self action:@selector(settingBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        _buttonSetting = settingBtn;
-    }
-    return _buttonSetting;
-}
-
+#pragma mark - Getter
 - (NSArray *)titleArray
 {
     if (!_titleArray) {
         NSArray *items = @[NSLocalizedString(@"My sport",nil),
                            NSLocalizedString(@"My sleep",nil),
                            NSLocalizedString(@"Target setting",nil),
-                           NSLocalizedString(@"Bound watch",nil)
+                           NSLocalizedString(@"校对时间", nil),
+                           NSLocalizedString(@"Bound watch",nil),
                            ];
         NSMutableArray *mutiArr = [NSMutableArray arrayWithArray:items];
         _titleArray = mutiArr;
@@ -133,6 +85,7 @@
         _imageNameArray = @[@"main_menu_sport_icon_a.png",
                             @"main_menu_sleep_icon_a.png",
                             @"main_menu_target_icon_a.png",
+                            @"main_menu_checkTime_icon_a.png",
                             @"main_menu_binding_icon_a.png",
                             ];
     }
@@ -144,12 +97,12 @@
         _seletedImageNameArray = @[@"main_menu_sport_icon_b.png",
                                    @"main_menu_sleep_icon_b.png",
                                    @"main_menu_target_icon_b.png",
+                                   @"main_menu_checkTime_icon_b.png",
                                    @"main_menu_binding_icon_b.png",
                                    ];
     }
     return _seletedImageNameArray;
 }
-
 - (NSArray *)specifyContentVCClassArray
 {
     if (!_specifyContentVCClassArray) {
@@ -157,6 +110,7 @@
                                         [WMSContentViewController class],
                                         [WMSContent1ViewController class],
                                         [WMSContent2ViewController class],
+                                        [CheckTimeViewController class],
                                         [WMSMyAccessoryViewController class],
                                         ];
     }
@@ -171,6 +125,7 @@
         UIViewController *vc = ((MyNavigationController *)self.sideMenuViewController.contentViewController).topViewController;
         _contentVCArray = [[NSMutableArray alloc] initWithObjects:
                            vc,
+                           Null_Object,
                            Null_Object,
                            Null_Object,
                            Null_Object,
@@ -195,84 +150,224 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.view setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:self.userInfoView];
-    [self.view addSubview:self.tableView];
-    [self.view addSubview:self.buttonSetting];
     
-    [self reloadView];
+    [self loadUserInfo];
+    [self setupTableView];
+    [self setupUserPhoto];
+    [self setupCityLabel];
+    
+    [self loadDefaultWeatherInfo];
+    
+    [self registerForNotifications];
 }
-- (void)dealloc
-{
-    DEBUGLog(@"LeftViewController dealloc");
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)dealloc
+{
+    DEBUGLog_METHOD;
+    [_refreshWeatherTimer invalidate];
+    [self unregisterFromNotifications];
+}
 
-- (void)reloadView
+#pragma mark - Setup
+- (void)setupTableView
+{
+    self.menuTableView.delegate = self;
+    self.menuTableView.dataSource = self;
+    self.menuTableView.opaque = NO;
+    self.menuTableView.backgroundColor = [UIColor clearColor];
+    self.menuTableView.backgroundView = nil;
+    self.menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.menuTableView.bounces = NO;
+    self.menuTableView.scrollsToTop = NO;
+}
+- (void)setupUserPhoto
+{
+    [self.userPhoto setClipsToBounds:YES];
+    [self.userPhoto.layer setCornerRadius:self.userPhoto.bounds.size.width/2];
+    [self.userPhoto.layer setBorderWidth:0];
+    [self.userPhoto.layer setBorderColor:[UIColor clearColor].CGColor];
+    [self.userPhoto.layer setBackgroundColor:[UIColor whiteColor].CGColor];
+}
+- (void)setupCityLabel
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCityLabel:)];
+    [self.cityLabel addGestureRecognizer:tapGesture];
+}
+
+- (void)loadUserInfo
 {
     WMSPersonModel *model = [WMSUserInfoHelper readPersonInfo];
-    [self setUserImage:model.image];
-    [self setUserNickname:model.name];
+    if (model.image) {
+        [self.userPhoto setBackgroundImage:model.image forState:UIControlStateNormal];
+    }
+    [self.nickNameLabel setText:model.name];
 }
 
-
-//设置用户头像和昵称
-- (void)setUserImage:(UIImage *)image
+#pragma mark - Weather
+- (void)loadDefaultWeatherInfo
 {
-    if (image == nil) {
-        return;
+    NSDictionary *data = [[NSUserDefaults standardUserDefaults] objectForKey:WEATHER_INFO_KEY];
+    if (!data) {
+        [self findCurrentLocation];
+    } else {
+        Condition *weather = [[Condition alloc] init];
+        weather.locationName = data[WEATHER_INFO_CITY_KEY];
+        weather.temperature = data[WEATHER_INFO_TEMP_KEY];
+        weather.humidity = data[WEATHER_INFO_HUMIDITY_KEY];
+        weather.conditionDescription = data[WEATHER_INFO_DESCRIPTION_KEY];
+        
+        [self updateWeather:weather];
+        //[self updateWeatherOnWatch];
     }
-    NSArray *views = self.userInfoView.subviews;
-    UIButton *buttonUserImage = nil;
-    for (UIView *viewObj in views) {
-        if ([UIButton class] == [viewObj class]) {
-            buttonUserImage = (UIButton *)viewObj;
-            break;
+    if (!self.refreshWeatherTimer) {
+        _refreshWeatherTimer = [NSTimer scheduledTimerWithTimeInterval:REFRESH_WEATHER_TIMER_INTERVAL target:self selector:@selector(refreshWeather:) userInfo:nil repeats:YES];
+    }
+}
+- (void)savaWeatherInfo
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *data = @{
+                           WEATHER_INFO_CITY_KEY        : self.condition.locationName,
+                           WEATHER_INFO_TEMP_KEY        : self.condition.temperature,
+                           WEATHER_INFO_HUMIDITY_KEY    : self.condition.humidity,
+                           WEATHER_INFO_DESCRIPTION_KEY : self.condition.conditionDescription,
+                           };
+    [userDefaults setObject:data forKey:WEATHER_INFO_KEY];
+}
+
+- (void)findCurrentLocation
+{
+    WMSLocationManager *manager = [WMSLocationManager sharedManager];
+    WeakObj(manager, weakManager);
+    [manager findCurrentLocation:^(BOOL isSuccess, float lat, float lon, NSError *error) {
+        if (isSuccess) {
+            StrongObj(weakManager, strongManager);
+            if (strongManager) {
+                [self requestWeatherOfCity:strongManager.currentCityName];
+            }
+        } else {
+            //提示定位失败
+            NSString *txt = NSLocalizedString(DEFAULT_CITY, nil);
+            txt = [txt stringByAppendingString:NSLocalizedString(@"/(定位失败)", nil)];
+            
+            NSArray *attrisArr = @[
+                                   @{NSFontAttributeName:self.cityLabel.font},
+                                   @{NSFontAttributeName:Font_DINCondensed(12.0)},
+                                   ];
+            [self.cityLabel setSegmentsText:txt separateMark:@"/" attributes:attrisArr];
+            
+            [self requestWeatherOfCity:DEFAULT_CITY];
         }
-    }
-    [buttonUserImage setImage:image forState:UIControlStateNormal];
+    }];
 }
 
-- (void)setUserNickname:(NSString *)nickname
+- (void)requestWeatherOfCity:(NSString *)cityName
 {
-    if (nickname == nil) {
-        return;
-    }
-    NSArray *views = self.userInfoView.subviews;
-    UILabel *labelUserNickname = nil;
-    for (UIView *viewObj in views) {
-        if ([UILabel class] == [viewObj class]) {
-            labelUserNickname = (UILabel *)viewObj;
-            break;
+    [RequestClass requestWeatherOfCityName:cityName completion:^(BOOL isSuccess, id data, NSError *error) {
+        if (isSuccess) {
+//            DEBUGLog(@"data:%@", data);
+            ((Condition *)data).locationName = cityName;
+            [self updateWeather:data];
+            [self updateWeatherOnWatch];
+        } else {
+            DEBUGLog(@"error code:%d", (int)error.code);
         }
-    }
-    [labelUserNickname setText:nickname];
+    }];
 }
 
-- (void)skipToViewControllerForIndex:(NSUInteger)index
+- (void)updateWeather:(Condition *)weather
 {
-    NSIndexPath *path = [NSIndexPath indexPathForRow:index inSection:0];
-    [self tableView:nil didSelectRowAtIndexPath:path];
+    self.condition = weather;
+    
+    self.cityLabel.text = weather.locationName;
+    self.tempLabel.text = [NSString stringWithFormat:@" %d°", weather.temperature.intValue];
+    self.humidityLabel.text = [NSString stringWithFormat:@" %d%%", weather.humidity.intValue];
+    self.weatherIcon.image = [UIImage imageNamed:weather.imageName];
+    self.weatherLabel.text = weather.weatherName;
 }
 
-#pragma mark - Events
-- (void)userImgBtnClick:(id)sender
+///更新手表上的天气
+- (void)updateWeatherOnWatch
 {
+    WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
+    
+    WeatherType type = [WMSSettingProfile weatherTypeFromCondition:self.condition.condition];
+    NSUInteger temp = self.condition.temperature.unsignedIntegerValue;
+    TempUnit unit = TempUnitCentigrade;
+    NSUInteger humidity = self.condition.humidity.unsignedIntegerValue;
+    [bleControl.settingProfile setWeatherType:type temp:temp tempUnit:unit humidity:humidity completion:^(BOOL isSuccess) {
+        DEBUGLog_DETAIL(@"设置天气成功");
+    }];
+}
+
+- (void)refreshWeather:(NSTimer *)timer
+{
+    NSString *city = self.condition.locationName;
+    [self requestWeatherOfCity:city];
+}
+
+
+#pragma mark - Action
+- (IBAction)clickUserPhoto:(id)sender {
     WMSMyAccountViewController *VC = [[WMSMyAccountViewController alloc] init];
     VC.isModifyAccount = YES;
     VC.isNewUser = NO;
+    VC.delegate = self;
     MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:VC];
     [self presentViewController:nav animated:YES completion:nil];
 }
-- (void)settingBtnClick:(id)sender
-{
+
+- (IBAction)clickSettingButton:(id)sender {
     WMSSettingVC *vc = [[WMSSettingVC alloc] init];
     MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)clickedCityLabel:(id)sender
+{
+    DEBUGLog(@"%s", __func__);
+    WMSLocationViewController *vc = [[WMSLocationViewController alloc] init];
+    vc.delegate = self;
+    MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+
+#pragma mark -  Notifications
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccessConnectPeripheral:) name:WMSBleControlPeripheralDidConnect object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppWillTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+}
+- (void)unregisterFromNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)handleSuccessConnectPeripheral:(NSNotification *)notification
+{
+    [self updateWeatherOnWatch];
+}
+
+- (void)handleAppWillTerminate:(NSNotification *)notification
+{
+    [self savaWeatherInfo];
+}
+
+#pragma mark - WMSMyAccountViewControllerDelegate
+- (void)accountViewControllerDidClose:(WMSMyAccountViewController *)viewController
+{
+    [self loadUserInfo];
+}
+
+#pragma mark - WMSLocationViewControllerDelegate
+- (void)locationViewController:(WMSLocationViewController *)vc didGetLocation:(NSString *)locationName
+{
+    [self requestWeatherOfCity:locationName];
 }
 
 
@@ -289,25 +384,13 @@
 {
     static NSString *cellIdentifier = @"WMSLeftViewCell";
     UINib *cellNib = [UINib nibWithNibName:@"WMSLeftViewCell" bundle:nil];
-    [self.tableView registerNib:cellNib forCellReuseIdentifier:cellIdentifier];
+    [tableView registerNib:cellNib forCellReuseIdentifier:cellIdentifier];
     
     WMSLeftViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[WMSLeftViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     cell.backgroundColor = [UIColor clearColor];
     cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_a.png"]];
     cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_menu_bg_b.png"]];
-    
-    //不用系统自带的
-//    cell.textLabel.textColor = [UIColor whiteColor];
-//    cell.textLabel.font = [UIFont fontWithName:@"System" size:8.f];
-//    cell.textLabel.text = [self.titleArray objectAtIndex:indexPath.row];
-//    cell.imageView.image = [UIImage imageNamed:[self.imageNameArray objectAtIndex:indexPath.row]];
-//    cell.imageView.highlightedImage = [UIImage imageNamed:[self.seletedImageNameArray objectAtIndex:indexPath.row]];
     
     cell.leftImageView.image = [UIImage imageNamed:[self.imageNameArray objectAtIndex:indexPath.row]];
     cell.leftImageView.highlightedImage = [UIImage imageNamed:[self.seletedImageNameArray objectAtIndex:indexPath.row]];
@@ -324,7 +407,6 @@
 {
     return CELL_HEIGHT;
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -338,7 +420,15 @@
     UIViewController *VC = nil;
     if ([Null_Object isEqualToString:[self.contentVCArray objectAtIndex:indexPath.row]]) {
         Class VCClass=[self.specifyContentVCClassArray objectAtIndex:indexPath.row];
-        VC = [[VCClass alloc] init];
+        if (VCClass == [CheckTimeViewController class]) {
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
+                VC = [[VCClass alloc] initWithNibName:@"CheckTimeViewController_iOS7" bundle:nil];
+            } else {
+                VC = [[VCClass alloc] init];
+            }
+        } else {
+            VC = [[VCClass alloc] init];
+        }
         [self.contentVCArray setObject:VC atIndexedSubscript:indexPath.row];
     } else {
         VC = [self.contentVCArray objectAtIndex:indexPath.row];
@@ -348,6 +438,13 @@
     [self.sideMenuViewController setContentViewController:nav
                                                  animated:YES];
     [self.sideMenuViewController hideMenuViewController];
+}
+
+#pragma mark - Public methods
+- (void)skipToViewControllerForIndex:(NSUInteger)index
+{
+    NSIndexPath *path = [NSIndexPath indexPathForRow:index inSection:0];
+    [self tableView:nil didSelectRowAtIndexPath:path];
 }
 
 @end
