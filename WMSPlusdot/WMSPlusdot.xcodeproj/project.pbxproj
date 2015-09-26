@@ -1001,7 +1001,6 @@
 				2311611619B1A2620012B066 /* NSDate+Formatter */,
 				2378A3E119FFB0A000187836 /* UIViewController+Tip */,
 				23244D7D1A314640006C925C /* UIViewController+Update */,
-				F7E64D931B7CB02F0021ACD7 /* UIViewController+Sync */,
 				23CB0B7A1A1358FF0057E0A8 /* UIDatePicker+Time */,
 				232471B71A50FD0300F70565 /* UIPickerView+Display */,
 				23E84FE91A70B8B1006BBAEA /* UILabel+Attribute */,
@@ -2708,8 +2707,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.watchp3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "850f46d0-47f5-4ff6-8207-98eaae21a5f2";
+				PROVISIONING_PROFILE = "ee27d103-bde3-42d4-8cf3-1e6f3491e265";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2825,8 +2825,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.watchp3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "850f46d0-47f5-4ff6-8207-98eaae21a5f2";
+				PROVISIONING_PROFILE = "ee27d103-bde3-42d4-8cf3-1e6f3491e265";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2849,8 +2850,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.guogee.watchp3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "850f46d0-47f5-4ff6-8207-98eaae21a5f2";
+				PROVISIONING_PROFILE = "ee27d103-bde3-42d4-8cf3-1e6f3491e265";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

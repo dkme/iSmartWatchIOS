@@ -603,11 +603,6 @@
             MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
             [self presentViewController:nav animated:YES completion:nil];
         }
-//        else if (indexPath.row == 1) {
-//            WMSClockListVC *VC = [[WMSClockListVC alloc] init];
-//            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:VC];
-//            [self presentViewController:nav animated:YES completion:nil];
-//        } else{};
         return ;
     }
     
