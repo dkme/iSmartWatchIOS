@@ -11,7 +11,14 @@
 #import "CameraImageHelper.h"
 #import <ImageIO/ImageIO.h>
 
+@interface CameraImageHelper ()
+
+@property (nonatomic, assign) dispatch_queue_t sessionQueue;
+
+@end
+
 @implementation CameraImageHelper
+
 @synthesize session,image,captureOutput,g_orientation;
 @synthesize preview;
 @synthesize delegate;
@@ -20,42 +27,47 @@
 
 - (void) initialize
 {
+    self.sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
+    
     //1.创建会话层
     self.session = [[[AVCaptureSession alloc] init] autorelease];
-    [self.session setSessionPreset:AVCaptureSessionPresetPhoto];
     
-
-    //2.创建、配置输入设备
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    dispatch_async(self.sessionQueue, ^{
+        [self.session beginConfiguration];
+        
+        [self.session setSessionPreset:AVCaptureSessionPresetPhoto];
+        
+        //2.创建、配置输入设备
+        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 #if 1
-    int flags = NSKeyValueObservingOptionNew; //监听自动对焦
-    [device addObserver:self forKeyPath:@"adjustingFocus" options:flags context:nil];
+        int flags = NSKeyValueObservingOptionNew; //监听自动对焦
+        [device addObserver:self forKeyPath:@"adjustingFocus" options:flags context:nil];
 #endif
-
-	NSError *error;
-	AVCaptureDeviceInput *captureInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
-	if (!captureInput)
-	{
-		NSLog(@"Error: %@", error);
-		return;
-	}
-    [self.session addInput:captureInput];
-    
-    
-    //3.创建、配置输出       
-    captureOutput = [[[AVCaptureStillImageOutput alloc] init] autorelease];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey,nil];
-    [captureOutput setOutputSettings:outputSettings];
-    
-    [outputSettings release];
-	[self.session addOutput:captureOutput];
+        NSError *error;
+        AVCaptureDeviceInput *captureInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+        if (!captureInput)
+        {
+            NSLog(@"Error: %@", error);
+            return;
+        }
+        [self.session addInput:captureInput];
+        
+        //3.创建、配置输出
+        captureOutput = [[[AVCaptureStillImageOutput alloc] init] autorelease];
+        NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey,nil];
+        [captureOutput setOutputSettings:outputSettings];
+        [outputSettings release];
+        [self.session addOutput:captureOutput];
+        
+        [self.session commitConfiguration];
+    });
 }
 
 - (id) init
 {
-	if (self = [super init])
+    if (self = [super init])
         [self initialize];
-	return self;
+    return self;
 }
 
 
@@ -77,7 +89,7 @@
     //设置取景
     preview = [AVCaptureVideoPreviewLayer layerWithSession: session];
     preview.frame = aView.bounds;
-    preview.videoGravity = AVLayerVideoGravityResizeAspectFill; 
+    preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [aView.layer addSublayer: preview];
 }
 
@@ -86,7 +98,7 @@
     if (!preview) {
         return;
     }
-     [CATransaction begin];
+    [CATransaction begin];
     if (interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
         g_orientation = UIImageOrientationUp;
         preview.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
@@ -115,48 +127,53 @@
 
 -(void)Captureimage
 {
-    //get connection
-    AVCaptureConnection *videoConnection = nil;
-    for (AVCaptureConnection *connection in captureOutput.connections) {
-        for (AVCaptureInputPort *port in [connection inputPorts]) {
-            if ([[port mediaType] isEqual:AVMediaTypeVideo] ) {
-                videoConnection = connection;
-                break;
+    dispatch_async(self.sessionQueue, ^{
+        //get connection
+        AVCaptureConnection *videoConnection = nil;
+        for (AVCaptureConnection *connection in captureOutput.connections) {
+            for (AVCaptureInputPort *port in [connection inputPorts]) {
+                if ([[port mediaType] isEqual:AVMediaTypeVideo] ) {
+                    videoConnection = connection;
+                    break;
+                }
             }
+            if (videoConnection) { break; }
         }
-        if (videoConnection) { break; }
-    }
-
-    //get UIImage
-    __weak __block __typeof(self) wself = self;
-    [captureOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:
-     ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
-         if (error) {
-             return ;
-         }
-         CFDictionaryRef exifAttachments =
-         CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-         if (exifAttachments) {
-             // Do something with the attachments.
-         }
-         
-         // Continue as appropriate.
-         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-         UIImage *t_image = [UIImage imageWithData:imageData];
-         UIImage *temp_image = [[[UIImage alloc]initWithCGImage:t_image.CGImage scale:1.0 orientation:g_orientation] autorelease];
-         wself.image = temp_image;
-         [self giveImg2Delegate];
-     }];
+        
+        //get UIImage
+        __weak __block __typeof(self) wself = self;
+        [captureOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:
+         ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+             if (error) {
+                 return ;
+             }
+             CFDictionaryRef exifAttachments =
+             CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+             if (exifAttachments) {
+                 // Do something with the attachments.
+             }
+             
+             // Continue as appropriate.
+             NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+             UIImage *t_image = [UIImage imageWithData:imageData];
+             UIImage *temp_image = [[[UIImage alloc]initWithCGImage:t_image.CGImage scale:1.0 orientation:g_orientation] autorelease];
+             wself.image = temp_image;
+             
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self giveImg2Delegate];
+             });
+         }];
+    });
 }
 
 - (void) dealloc
 {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     [device removeObserver:self forKeyPath:@"adjustingFocus"];
-
-	self.session = nil;
-	self.image = nil;
-	[super dealloc];
+    
+    self.session = nil;
+    self.image = nil;
+    [super dealloc];
 }
 
 #pragma mark Class Interface
@@ -164,12 +181,16 @@
 
 - (void) startRunning
 {
-	[[self session] startRunning];	
+    dispatch_async(self.sessionQueue, ^{
+        [[self session] startRunning];
+    });
 }
 
 - (void) stopRunning
 {
-	[[self session] stopRunning];
+    dispatch_async(self.sessionQueue, ^{
+        [[self session] stopRunning];
+    });
 }
 
 -(void)CaptureStillImage
@@ -185,52 +206,56 @@
 }
 
 - (void)switchCamera:(BOOL)isFrontCamera {
-    NSArray *inputs = [self.session inputs];
-    if (!inputs || [inputs count] <= 0) {
-        return;
-    }
-    
-    [self.session beginConfiguration];
-    
-    for (AVCaptureInput *inputObj in inputs) {
-        [self.session removeInput:inputObj];
-    }
-    
-    [self addVideoInputFrontCamera:isFrontCamera];
-    
-    [self.session commitConfiguration];
+    dispatch_async(self.sessionQueue, ^{
+        NSArray *inputs = [self.session inputs];
+        if (!inputs || [inputs count] <= 0) {
+            return;
+        }
+        
+        [self.session beginConfiguration];
+        
+        for (AVCaptureInput *inputObj in inputs) {
+            [self.session removeInput:inputObj];
+        }
+        
+        [self addVideoInputFrontCamera:isFrontCamera];
+        
+        [self.session commitConfiguration];
+    });
 }
 
 - (void)switchFlashMode:(CameraFlashMode)flashMode
 {
-    Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
-    if (!captureDeviceClass) {
-        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息" message:@"您的设备没有拍照功能" delegate:nil cancelButtonTitle:NSLocalizedString(@"Sure", nil) otherButtonTitles: nil];
-        //[alert show];
-        return;
-    }
-
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    [device lockForConfiguration:nil];
-    if ([device hasFlash]) {
-//        if (device.flashMode == AVCaptureFlashModeOff) {
-//            device.flashMode = AVCaptureFlashModeOn;
-//            
-//        } else if (device.flashMode == AVCaptureFlashModeOn) {
-//            device.flashMode = AVCaptureFlashModeAuto;
-//            
-//        } else if (device.flashMode == AVCaptureFlashModeAuto) {
-//            device.flashMode = AVCaptureFlashModeOff;
-//            
-//        }
+    dispatch_async(self.sessionQueue, ^{
+        Class captureDeviceClass = NSClassFromString(@"AVCaptureDevice");
+        if (!captureDeviceClass) {
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息" message:@"您的设备没有拍照功能" delegate:nil cancelButtonTitle:NSLocalizedString(@"Sure", nil) otherButtonTitles: nil];
+            //[alert show];
+            return;
+        }
         
-        device.flashMode = (AVCaptureFlashMode)flashMode;
-        
-    } else {
-        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息" message:@"您的设备没有闪光灯功能" delegate:nil cancelButtonTitle:@"噢T_T" otherButtonTitles: nil];
-        //[alert show];
-    }
-    [device unlockForConfiguration];
+        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        [device lockForConfiguration:nil];
+        if ([device hasFlash]) {
+            //        if (device.flashMode == AVCaptureFlashModeOff) {
+            //            device.flashMode = AVCaptureFlashModeOn;
+            //
+            //        } else if (device.flashMode == AVCaptureFlashModeOn) {
+            //            device.flashMode = AVCaptureFlashModeAuto;
+            //
+            //        } else if (device.flashMode == AVCaptureFlashModeAuto) {
+            //            device.flashMode = AVCaptureFlashModeOff;
+            //
+            //        }
+            
+            device.flashMode = (AVCaptureFlashMode)flashMode;
+            
+        } else {
+            //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示信息" message:@"您的设备没有闪光灯功能" delegate:nil cancelButtonTitle:@"噢T_T" otherButtonTitles: nil];
+            //[alert show];
+        }
+        [device unlockForConfiguration];
+    });
 }
 
 

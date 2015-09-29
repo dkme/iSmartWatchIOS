@@ -89,8 +89,8 @@
     // 开始实时取景
     [_CameraHelper startRunning];
     [_CameraHelper embedPreviewInView:self.liveView];
-    [_CameraHelper switchCamera:NO];
-    [_CameraHelper switchFlashMode:CameraFlashModeAuto];
+//    [_CameraHelper switchCamera:NO];
+//    [_CameraHelper switchFlashMode:CameraFlashModeAuto];
 
     [_CameraHelper changePreviewOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
