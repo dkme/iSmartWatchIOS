@@ -397,4 +397,10 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Setup status bar appearance
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 @end

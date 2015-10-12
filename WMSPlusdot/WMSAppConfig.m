@@ -55,12 +55,11 @@ NSString *const kLanguageChinese = @"kLanguageChinese";
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
     NSArray *languages = [defs objectForKey:@"AppleLanguages"];
     NSString *preferredLang = [languages objectAtIndex:0];
-    if ([preferredLang isEqualToString:@"en"] || [preferredLang isEqualToString:@"en-CN"])
+    if ([preferredLang hasPrefix:@"en"])
     {
         return kLanguageEnglish;
     }
-    else if ([preferredLang isEqualToString:@"zh-Hans"] || [preferredLang isEqualToString:@"zh-Hant"] ||
-             [preferredLang isEqualToString:@"zh-Hans-CN"] || [preferredLang isEqualToString:@"zh-Hant-CN"])
+    else if ([preferredLang hasPrefix:@"zh-Hans"] || [preferredLang hasPrefix:@"zh-Hant"])
     {
         return kLanguageChinese;
     }
