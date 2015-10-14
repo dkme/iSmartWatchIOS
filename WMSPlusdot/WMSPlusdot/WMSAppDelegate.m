@@ -185,8 +185,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         navBar.barStyle = UIBarStyleBlack;
         navBar.translucent = YES;
     } else {
-//        navBar.barStyle = UIBarStyleBlackTranslucent;
-//        navBar.translucent = YES;
     }
     
     UIFont *font = Font_DINCondensed(18.f);
@@ -200,8 +198,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
                                  NSFontAttributeName:font,
                                   };
     [navBar setTitleTextAttributes:attributes];
-
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 //#pragma mark - 后台计时，在00:00发送同步命令
 - (void)setupReSyncDataTimer

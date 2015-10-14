@@ -13,7 +13,7 @@
 
 #define URL_WEATHER_API_PREFIX              @"http://api.openweathermap.org/data/2.5/weather"
 #define URL_WEATHER_API                     @"http://api.openweathermap.org/data/2.5/weather"
-
+#define WEATHER_APPID                       @"f741532bb5da4b658f30301669e4b6b9"
 
 
 

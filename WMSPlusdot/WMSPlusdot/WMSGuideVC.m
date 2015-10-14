@@ -174,4 +174,10 @@
     DEBUGLog(@"introDidFinish");
 }
 
+#pragma mark - Setup status bar appearance
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end

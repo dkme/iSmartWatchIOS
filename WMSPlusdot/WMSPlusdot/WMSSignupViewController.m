@@ -410,4 +410,10 @@
     [hud removeFromSuperview];
 }
 
+#pragma mark - Setup status bar appearance
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end

@@ -494,15 +494,15 @@
 //                    //[self.navigationController pushViewController:vc animated:YES];
 //                    break;
 //                }
-                case 3-3:
-                {
-                    if ([self isDetectedNewVersion]==DetectResultCanUpdate) {
-                        [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
-                    } else {
-                        [self checkAppUpdate];
-                    }
-                    break;
-                }
+//                case 3-3:
+//                {
+//                    if ([self isDetectedNewVersion]==DetectResultCanUpdate) {
+//                        [self showUpdateAlertViewWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE cancelButtonTitle:ALERTVIEW_CANCEL_TITLE okButtonTitle:ALERTVIEW_OK_TITLE];
+//                    } else {
+//                        [self checkAppUpdate];
+//                    }
+//                    break;
+//                }
                 case 4-3:
                 {
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
