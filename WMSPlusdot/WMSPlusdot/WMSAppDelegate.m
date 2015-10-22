@@ -42,6 +42,8 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
 
 @property (nonatomic, assign, getter=isAdjustTimeWhenConnected) BOOL adjustTimeWhenConnected;///Time zone
 
+@property (nonatomic, copy) NSString *appUpdateUrlFromFir;
+
 @end
 
 @implementation WMSAppDelegate
@@ -124,6 +126,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     [self setupAppAppearance];
     [self registerForNotifications];
     [self checkCurrentTimeZone];
+    [self checkAppUpdatesFromFirPlatform];
     if ([WMSHelper isFirstLaunchApp]) {
         self.window.rootViewController = [WMSGuideVC guide];
         [self.window makeKeyAndVisible];
@@ -460,6 +463,64 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         return ;
     }
     [self adjustWatchTimeWhenSystemTimeZoneDidChange];
+}
+
+#pragma mark - 通过fir.im平台，检查是否有更新
+- (void)checkAppUpdatesFromFirPlatform
+{
+    ///使用 BundleID 进行检查更新
+    ///see http://bughd.com/doc/ios-version-update
+    NSString *bundleId = [[NSBundle mainBundle] infoDictionary][@"CFBundleIdentifier"];
+    NSString *apiToken = @"337055ba6359308f20197dc8697562e4";
+    NSString *bundleIdUrlString = [NSString stringWithFormat:@"http://api.fir.im/apps/latest/%@?apiToken=%@&type=ios", bundleId, apiToken];
+    NSURL *requestURL = [NSURL URLWithString:bundleIdUrlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError) {
+            //do something
+            DEBUGLog(@"connectionError: %@", connectionError.localizedDescription);
+        }else {
+            NSError *jsonError = nil;
+            id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            if (!jsonError && [object isKindOfClass:[NSDictionary class]]) {
+                //do something
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self analyzingInfoFromFirPlatform:object];
+                });
+            } else {
+                DEBUGLog(@"jsonError: %@, object: %@", jsonError.localizedDescription, object);
+            }
+        }
+    }];
+}
+
+- (void)analyzingInfoFromFirPlatform:(NSDictionary *)info
+{
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *currentVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
+    NSString *newVersion = info[@"versionShort"];
+    self.appUpdateUrlFromFir = info[@"update_url"];
+    NSComparisonResult res = [currentVersion compare:newVersion options:NSCaseInsensitiveSearch];
+    if (res == NSOrderedAscending) {///有更新
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:ALERTVIEW_TITLE message:ALERTVIEW_MESSAGE delegate:self cancelButtonTitle:ALERTVIEW_CANCEL_TITLE otherButtonTitles:NSLocalizedString(@"现在更新", nil), nil];
+        [alertView show];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        ;
+    } else {
+        UIApplication *application = [UIApplication sharedApplication];
+        if (self.appUpdateUrlFromFir) {
+//            if ([application canOpenURL:[NSURL URLWithString:self.appUpdateUrlFromFir]]) {///适配iOS9，使用canOpenURL:方法需要将url加入白名单中
+                [application openURL:[NSURL URLWithString:self.appUpdateUrlFromFir]];
+//            }
+        }
+    }
 }
 
 @end

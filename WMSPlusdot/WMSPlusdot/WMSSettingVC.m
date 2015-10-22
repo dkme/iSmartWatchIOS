@@ -179,6 +179,11 @@
     if (res == NO) {
         return ;
     }
+    ///校验设备的固件版本是否大于等于指定固件版本，若是则可以更新，否则不可以更新
+    if ([WMSDeviceModel deviceModel].firmwareVersion < FIRMWARE_NEW_VERSION) {
+        return ;
+    }
+    
     [WMSHTTPRequest detectionFirmwareUpdate:^(double newVersion, NSString *describe, NSString *strURL)
      {
          double curVersion = [WMSDeviceModel deviceModel].softwareVersion;

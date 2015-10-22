@@ -55,11 +55,13 @@
 #define MAX_SPORT_STEPS             60000
 #define DEFAULT_TARGET_STEPS        60000
 
-#pragma mark - 固件版本号
+#pragma mark - 软件版本号
 #define FIRMWARE_TARGET_VERSION     12.0
 #define FIRMWARE_CAN_READ_MAC       13.0
 #define FIRMWARE_ADD_BATTERY_INFO   20.0//添加读取设备电池信息的接口
 
+#pragma mark - 固件版本号
+#define FIRMWARE_NEW_VERSION        8.01 //使用新的固件
 
 
 

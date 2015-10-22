@@ -492,7 +492,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
         {
             [self.settingProfile adjustDate:[NSDate systemDate] completion:^(BOOL isSuccess) {
                 StrongObj(weakSelf, strongSelf);
-                [strongSelf readDeviceInfoWithIndex:index+2 completion:aCallback];///跳过读取固件版本
+                [strongSelf readDeviceInfoWithIndex:index+1 completion:aCallback];
             }];
             break;
         }
