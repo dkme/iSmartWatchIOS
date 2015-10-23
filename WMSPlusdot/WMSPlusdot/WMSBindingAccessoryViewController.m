@@ -215,7 +215,7 @@ static const int            MAX_RSSI                = -75;
              [strongSelf setListData:array];
              [strongSelf bindingPeripheral];
          } else {
-             [strongSelf continueBinding];
+             //[strongSelf continueBinding];
          }
      }];
 }
@@ -244,6 +244,7 @@ static const int            MAX_RSSI                = -75;
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
+    [self continueBinding];
 }
 
 #pragma mark - Action
