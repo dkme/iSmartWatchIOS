@@ -472,7 +472,7 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     ///see http://bughd.com/doc/ios-version-update
     NSString *bundleId = [[NSBundle mainBundle] infoDictionary][@"CFBundleIdentifier"];
     NSString *apiToken = @"337055ba6359308f20197dc8697562e4";
-    NSString *bundleIdUrlString = [NSString stringWithFormat:@"http://api.fir.im/apps/latest/%@?apiToken=%@&type=ios", bundleId, apiToken];
+    NSString *bundleIdUrlString = [NSString stringWithFormat:@"http://api.fir.im/apps/latest/%@?api_token=%@", bundleId, apiToken];
     NSURL *requestURL = [NSURL URLWithString:bundleIdUrlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
