@@ -146,9 +146,9 @@ static inline NSString* UTF8Encoding(NSString *url);
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
                 if (aCallBack) {
-                    double version = [info[@"version"] doubleValue];
+                    double version = [info[@"version2"] doubleValue];
                     NSString *desc = info[@"desc"];
-                    NSString *strURL = info[@"url"];
+                    NSString *strURL = info[@"url2"];
                     aCallBack(version,desc,strURL);
                 }
             } else {

@@ -185,8 +185,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
         navBar.barStyle = UIBarStyleBlack;
         navBar.translucent = YES;
     } else {
-        //        navBar.barStyle = UIBarStyleBlackTranslucent;
-        //        navBar.translucent = YES;
     }
     
     UIFont *font = Font_DINCondensed(18.f);
@@ -200,8 +198,6 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
                                  NSFontAttributeName:font,
                                   };
     [navBar setTitleTextAttributes:attributes];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 //#pragma mark - 后台计时，在00:00发送同步命令
 - (void)setupReSyncDataTimer
@@ -345,14 +341,14 @@ NSString *const WMSAppDelegateNewDay = @"com.ios.plusdot.WMSAppDelegateReSyncDat
     if (_isStartDFU==YES) {
         return ;
     }
-    if (peripheral && [self.wmsBleControl isHasBeenSystemConnectedPeripheral:peripheral]) {
+    if (peripheral/* && [self.wmsBleControl isHasBeenSystemConnectedPeripheral:peripheral]*/) {
         [self.wmsBleControl connect:peripheral];
     } else {
         WeakObj(self, weakSelf);
         [self.wmsBleControl scanForPeripheralsByInterval:SCAN_PERIPHERAL_INTERVAL scanning:^(LGPeripheral *peripheral) {
             StrongObj(weakSelf, strongSelf);
             BOOL hasBeenConnected = [strongSelf.wmsBleControl isHasBeenSystemConnectedPeripheral:peripheral];
-            if ([WMSMyAccessory isBindAccessory] && hasBeenConnected) {
+            if ([WMSMyAccessory isBindAccessory]/* && hasBeenConnected*/) {
                 NSString *uuid = [WMSMyAccessory identifierForbindAccessory];
                 if ([peripheral.UUIDString isEqualToString:uuid])
                 {

@@ -22,7 +22,7 @@ typedef enum : NSUInteger {
 
 + (void)requestWeatherOfCityName:(NSString *)cityName completion:(requestCompletionCallback)aCallback
 {
-    NSDictionary *param = @{@"q":cityName};
+    NSDictionary *param = @{@"q":cityName, @"appid":WEATHER_APPID};
     [self JSONDataWithUrl:UTF8Encoding(URL_WEATHER_API) parameters:param success:^(id json) {
         [self parseJsonData:json callback:aCallback];
     } fail:^{
@@ -32,7 +32,7 @@ typedef enum : NSUInteger {
 
 + (void)requestWeatherOfLatitude:(CGFloat)lat longitude:(CGFloat)lon completion:(requestCompletionCallback)aCallback
 {
-    NSDictionary *param = @{@"lat":@(lat), @"lon":@(lon)};
+    NSDictionary *param = @{@"lat":@(lat), @"lon":@(lon), @"appid":WEATHER_APPID};
     [self JSONDataWithUrl:UTF8Encoding(URL_WEATHER_API) parameters:param success:^(id json) {
         [self parseJsonData:json callback:aCallback];
     } fail:^{

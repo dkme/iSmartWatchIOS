@@ -297,6 +297,7 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
     
     WeatherType type = [WMSSettingProfile weatherTypeFromCondition:self.condition.condition];
     NSInteger temp = self.condition.temperature.intValue;
+
     TempUnit unit = TempUnitCentigrade;
     NSUInteger humidity = self.condition.humidity.unsignedIntegerValue;
     [bleControl.settingProfile setWeatherType:type temp:temp tempUnit:unit humidity:humidity completion:^(BOOL isSuccess) {

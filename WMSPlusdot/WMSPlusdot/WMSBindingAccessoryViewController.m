@@ -214,7 +214,7 @@ static const int            MAX_RSSI                = -75;
              [strongSelf setListData:array];
              [strongSelf bindingPeripheral];
          } else {
-             [strongSelf continueBinding];
+             //[strongSelf continueBinding];///#warning 不能这样调用，会循环调用
          }
      }];
 }
@@ -243,6 +243,9 @@ static const int            MAX_RSSI                = -75;
 
 - (void)handleScanPeripheralFinish:(NSNotification *)notification
 {
+    //if (![WMSMyAccessory isBindAccessory]) {///只有在没有绑定设备时，才去继续绑定
+        [self continueBinding];///在绑定后，该ViewController已销毁，所以不用判断也可以
+    //}
 }
 
 #pragma mark - Action
