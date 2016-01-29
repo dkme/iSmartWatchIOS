@@ -269,7 +269,7 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
 {
     [RequestClass requestWeatherOfCityName:cityName completion:^(BOOL isSuccess, id data, NSError *error) {
         if (isSuccess) {
-//            DEBUGLog(@"data:%@", data);
+            DEBUGLog(@"data:%@", data);
             ((Condition *)data).locationName = cityName;
             [self updateWeather:data];
             [self updateWeatherOnWatch];
@@ -296,11 +296,11 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
     WMSBleControl *bleControl = [WMSAppDelegate appDelegate].wmsBleControl;
     
     WeatherType type = [WMSSettingProfile weatherTypeFromCondition:self.condition.condition];
-    NSUInteger temp = self.condition.temperature.unsignedIntegerValue;
+    NSInteger temp = self.condition.temperature.intValue;
     TempUnit unit = TempUnitCentigrade;
     NSUInteger humidity = self.condition.humidity.unsignedIntegerValue;
     [bleControl.settingProfile setWeatherType:type temp:temp tempUnit:unit humidity:humidity completion:^(BOOL isSuccess) {
-        DEBUGLog_DETAIL(@"设置天气成功");
+        DEBUGLog_DETAIL(@"设置天气成功，温度：%d",temp);
     }];
 }
 
