@@ -73,7 +73,6 @@
 		2326A41019A593E20098657B /* main_history_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40C19A593E20098657B /* main_history_btn_b.png */; };
 		2326A41119A593E20098657B /* main_target_btn_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40D19A593E20098657B /* main_target_btn_a.png */; };
 		2326A41219A593E20098657B /* main_target_btn_b.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A40E19A593E20098657B /* main_target_btn_b.png */; };
-		2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2326A41419A59E200098657B /* WMSLeftViewController.m */; };
 		2326A41F19A5A2FC0098657B /* main_avatar_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A41E19A5A2FC0098657B /* main_avatar_default.png */; };
 		2326A42419A5C4010098657B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2326A42619A5C4010098657B /* Localizable.strings */; };
 		2326A43219A5C6970098657B /* main_menu_binding_icon_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 2326A42819A5C6970098657B /* main_menu_binding_icon_a.png */; };
@@ -295,6 +294,7 @@
 		F76B8C571B69BFF800315600 /* NSString+DynamicSize.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8C561B69BFF800315600 /* NSString+DynamicSize.m */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
+		F799577E1CC0FE380006DD12 /* WMSLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F799577D1CC0FE380006DD12 /* WMSLeftViewController.m */; settings = {ASSET_TAGS = (); }; };
 		F7CAE80B1B5CDB050057300C /* UIViewController+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */; };
 		F7CAE80F1B5D05BC0057300C /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80C1B5D05BC0057300C /* CheckTimeViewController.m */; };
 		F7CAE8101B5D05BC0057300C /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7CAE80E1B5D05BC0057300C /* CheckTimeViewController.xib */; };
@@ -427,7 +427,6 @@
 		2326A40D19A593E20098657B /* main_target_btn_a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_target_btn_a.png; sourceTree = "<group>"; };
 		2326A40E19A593E20098657B /* main_target_btn_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_target_btn_b.png; sourceTree = "<group>"; };
 		2326A41319A59E200098657B /* WMSLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSLeftViewController.h; sourceTree = "<group>"; };
-		2326A41419A59E200098657B /* WMSLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLeftViewController.m; sourceTree = "<group>"; };
 		2326A41E19A5A2FC0098657B /* main_avatar_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_avatar_default.png; sourceTree = "<group>"; };
 		2326A42219A5C3B00098657B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2326A42319A5C3B00098657B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -775,6 +774,7 @@
 		F783EF5D1B130392008124BE /* TurntableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TurntableView.m; sourceTree = "<group>"; };
 		F78A58331B1C072000DBC3D7 /* RequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestClass.h; sourceTree = "<group>"; };
 		F78A58341B1C072000DBC3D7 /* RequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestClass.m; sourceTree = "<group>"; };
+		F799577D1CC0FE380006DD12 /* WMSLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSLeftViewController.m; sourceTree = "<group>"; };
 		F7CAE8091B5CDB050057300C /* UIViewController+Sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Sync.h"; sourceTree = "<group>"; };
 		F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Sync.m"; sourceTree = "<group>"; };
 		F7CAE80C1B5D05BC0057300C /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
@@ -936,8 +936,8 @@
 		230298DE19A88D3C009D4306 /* 左右菜单视图 */ = {
 			isa = PBXGroup;
 			children = (
+				F799577D1CC0FE380006DD12 /* WMSLeftViewController.m */,
 				2326A41319A59E200098657B /* WMSLeftViewController.h */,
-				2326A41419A59E200098657B /* WMSLeftViewController.m */,
 				F7033BA41B6211EC00C8B0AF /* WMSLeftViewController.xib */,
 				2393884B1ABBA9720018BDA1 /* WMSRightViewController.h */,
 				2393884C1ABBA9720018BDA1 /* WMSRightViewController.m */,
@@ -2465,7 +2465,6 @@
 				23CB9F1019C9942D00DC915A /* WMSSleepModel.m in Sources */,
 				2326A45019A605660098657B /* WMSSwitchCell.m in Sources */,
 				2321B78119B9500900278677 /* NSMutableArray+Stack.m in Sources */,
-				2326A41619A59E200098657B /* WMSLeftViewController.m in Sources */,
 				F7E99FF41B281704001C0CDD /* WMSStackManager.m in Sources */,
 				F72385B41B1C3C5E00AC3CD5 /* Condition.m in Sources */,
 				F76B8C1D1B68800600315600 /* SSZipArchive.m in Sources */,
@@ -2531,6 +2530,7 @@
 				230FDC6A19D659EB00AE98FF /* PNBar.m in Sources */,
 				239F51CC1A2D6B410058F6DE /* WMSGuideVC.m in Sources */,
 				239388491ABBA8EE0018BDA1 /* WMSSmartClockViewController.m in Sources */,
+				F799577E1CC0FE380006DD12 /* WMSLeftViewController.m in Sources */,
 				2353790219CD5F6000269F67 /* WMSMyActivityRemind.m in Sources */,
 				2354A5F219EE180C00751E92 /* WMSRegularExpressions.m in Sources */,
 				23A153291A36EFAA0026D741 /* WMSUpdateVC.m in Sources */,
