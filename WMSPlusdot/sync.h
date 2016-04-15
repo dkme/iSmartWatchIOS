@@ -34,7 +34,19 @@ typedef struct {
     HANDLE_RESULT error;
 } Struct_SportData;
 
-Struct_SportData getSportData(BLE_UInt8 *package, BLE_UInt8 len);
+typedef struct {
+    BLE_UInt16 year;
+    BLE_UInt8 month;
+    BLE_UInt8 day;
+    
+    BLE_UInt16 deepSleepMinute; //深睡时长
+    BLE_UInt16 lightSleepMinute; //浅睡时长
+    BLE_UInt8  notSyncDays; //睡眠未同步天数
+    
+    HANDLE_RESULT error;
+}Struct_SleepData;
 
+Struct_SportData getSportData(BLE_UInt8 *package, BLE_UInt8 len);
+Struct_SleepData getSleepData(BLE_UInt8 *package, BLE_UInt8 len);
 
 #endif /* defined(__WMSPlusdot__sync__) */

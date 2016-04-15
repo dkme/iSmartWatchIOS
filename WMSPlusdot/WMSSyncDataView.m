@@ -117,7 +117,7 @@
         }
     }
     [view.buttonSync addTarget:view action:@selector(syncDataAction:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     return view;
 }
 - (void)setup
@@ -137,6 +137,11 @@
     CGSize size = CGSizeMake(70, 30);
     CGPoint point = CGPointMake(self.frame.size.width-size.width-10-30, (self.frame.size.height-size.height)/2);
     _buttonSync.frame = (CGRect){point,size};
+    if ([[UIDevice currentDevice] systemVersion].floatValue >= 9.0) {///适配iOS9.0
+        CGPoint newPoint = point;
+        newPoint.y -= 2.f;
+        _buttonSync.frame = (CGRect){newPoint, size};
+    }
     
     point = CGPointMake(point.x-5, point.y);
     _imageView = [[UIImageView alloc] initWithFrame:(CGRect){point,size}];

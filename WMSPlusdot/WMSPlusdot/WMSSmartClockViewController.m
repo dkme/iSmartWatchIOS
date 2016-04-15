@@ -76,10 +76,10 @@
 {
     if (!_textArray) {
         _textArray = [[NSArray alloc] initWithObjects:
-                                NSLocalizedString(@"Start",nil),
-                                //NSLocalizedString(@"唤醒间隔",nil),
-                                NSLocalizedString(@"Repeat",nil),
-                                nil];
+                      NSLocalizedString(@"Start",nil),
+                      //NSLocalizedString(@"唤醒间隔",nil),
+                      NSLocalizedString(@"Repeat",nil),
+                      nil];
     }
     return _textArray;
 }
@@ -125,7 +125,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
+    
     [self setupValue];
     [self setupView];
     [self setupNavBarView];
@@ -331,17 +331,17 @@
             [self.myInputView.pickerView selectRow:minute inComponent:1 animated:NO];
             break;
         }
-//        case SmartClockSleepTimeCell:
-//        {
-//            NSUInteger row = 0;
-//            NSUInteger i = [self.intervalValueArray indexOfObject:@(self.clockModel.snoozeMinute)];
-//            if (i < [self.intervalValueArray count]) {
-//                row = i;
-//            }
-//            [self.myInputView show:YES forView:cell];
-//            [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
-//            break;
-//        }
+            //        case SmartClockSleepTimeCell:
+            //        {
+            //            NSUInteger row = 0;
+            //            NSUInteger i = [self.intervalValueArray indexOfObject:@(self.clockModel.snoozeMinute)];
+            //            if (i < [self.intervalValueArray count]) {
+            //                row = i;
+            //            }
+            //            [self.myInputView show:YES forView:cell];
+            //            [self.myInputView.pickerView selectRow:row inComponent:0 animated:NO];
+            //            break;
+            //        }
         default:
             return;
     }

@@ -8,6 +8,6 @@
 
 #import "WMSMacro.h"
 
-@implementation WMSMacro
+@implementation WMSMacro : NSObject
 
 @end

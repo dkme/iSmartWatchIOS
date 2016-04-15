@@ -170,7 +170,7 @@ NSString * const OperationTakePhoto                     = @"com.guogee.WMSBleCon
     
     NSArray *svUUIDs = @[[CBUUID UUIDWithString:SERVICE_SERIAL_PORT_UUID], [CBUUID UUIDWithString:SERVICE_LOSE_UUID]];
     NSDictionary *options = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
-        
+
     [self.centralManager scanForPeripheralsByInterval:aScanInterval services:svUUIDs options:options scanning:^(LGPeripheral *peripheral) {
         if (aScanningCallback) {
             aScanningCallback(peripheral);

@@ -502,7 +502,7 @@
             } else {
                 txt = self.section5TitleArray[indexPath.row];
             }
-            
+
             BOOL useNewLabel = NO;
             if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) {
                 if ([[WMSAppConfig systemLanguage] isEqualToString:kLanguageChinese]) {///DIN Condensed字体，在英文状态下，并不会出现显示不全的问题
@@ -528,6 +528,7 @@
                 cell.textLabel.font = Font_DINCondensed(18);
             }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
             
             return cell;
         }
@@ -604,11 +605,6 @@
             MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:vc];
             [self presentViewController:nav animated:YES completion:nil];
         }
-//        else if (indexPath.row == 1) {
-//            WMSClockListVC *VC = [[WMSClockListVC alloc] init];
-//            MyNavigationController *nav = [[MyNavigationController alloc] initWithRootViewController:VC];
-//            [self presentViewController:nav animated:YES completion:nil];
-//        } else{};
         return ;
     }
     

@@ -220,7 +220,7 @@
                 NSString *stringDate = [NSString stringWithUTF8String:strDate];
                 //stringDate = [stringDate substringToIndex:10];
                 //printf("read DateString:%s \n",strDate);
-                DEBUGLog(@"read stringDate:%@",stringDate);
+               // DEBUGLog(@"read stringDate:%@",stringDate);
                 
                 NSUInteger endHour = sqlite3_column_int(statement, 2);
                 NSUInteger endMinute = sqlite3_column_int(statement, 3);
@@ -287,7 +287,7 @@
                 NSString *stringDate = [NSString stringWithUTF8String:strDate];
                 //stringDate = [stringDate substringToIndex:10];
                 //printf("read DateString:%s \n",strDate);
-                DEBUGLog(@"read stringDate:%@",stringDate);
+               // DEBUGLog(@"read stringDate:%@",stringDate);
                 
                 NSUInteger endHour = sqlite3_column_int(statement, 2);
                 NSUInteger endMinute = sqlite3_column_int(statement, 3);
