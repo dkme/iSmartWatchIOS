@@ -49,7 +49,9 @@
 
 static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1小时
 
-@interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate,WMSMyAccountViewControllerDelegate,WMSLocationViewControllerDelegate>
+@interface WMSLeftViewController ()<UITableViewDataSource,UITableViewDelegate,WMSMyAccountViewControllerDelegate,WMSLocationViewControllerDelegate>{
+    NSMutableDictionary *_cityDict;
+}
 
 @property (strong, nonatomic) NSArray *titleArray;
 @property (strong, nonatomic) NSArray *imageNameArray;
@@ -267,7 +269,10 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
 
 - (void)requestWeatherOfCity:(NSString *)cityName
 {
-    [RequestClass requestWeatherOfCityName:cityName completion:^(BOOL isSuccess, id data, NSError *error) {
+    [self readCityData];
+    NSString *requestCityName = [_cityDict objectForKey:cityName];
+    requestCityName = requestCityName?requestCityName.lowercaseString:cityName; //如果城市列表中有数据则使用拼音，如果没有，则使用传进来的城市名。因为天气的API城市大部分全都改为了拼音
+    [RequestClass requestWeatherOfCityName:requestCityName completion:^(BOOL isSuccess, id data, NSError *error) {
         if (isSuccess) {
             DEBUGLog(@"data:%@", data);
             ((Condition *)data).locationName = cityName;
@@ -278,6 +283,15 @@ static const NSTimeInterval REFRESH_WEATHER_TIMER_INTERVAL = 1*60*60;///间隔1�
         }
     }];
 }
+
+//读取城市数据
+-(void) readCityData{
+    if (_cityDict == nil) {
+        NSString *plistPatch = [[NSBundle mainBundle] pathForResource:@"City" ofType:@"plist"];
+        _cityDict = [NSMutableDictionary dictionaryWithContentsOfFile:plistPatch];
+    }
+}
+
 
 - (void)updateWeather:(Condition *)weather
 {

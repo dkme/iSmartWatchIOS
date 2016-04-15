@@ -18,7 +18,7 @@
 
 ///block
 @property (nonatomic, copy) syncSportDataCallback syncSportDataBlock;
-
+@property (nonatomic, copy) syncSleepDataCallBack syncSleepDataBlock;
 @end
 
 @implementation WMSSyncProfile
@@ -69,6 +69,17 @@
     self.syncSportDataBlock = aCallback;
 }
 
+-(void) syncSleepData:(syncSleepDataCallBack)aCallback{
+    BLE_UInt8 package[PACKAGE_SIZE] = {0};
+    BLE_UInt8 *p = package;
+    int res = syncSleepData(&p);
+    if (res != HANDLE_OK) {
+        return ;
+    }
+    [self.bleControl writeBytes:package length:PACKAGE_SIZE toCharacteristic:self.serialPortWriteCharacteristic response:NO callbackHandle:NULL withTimeID:TIME_ID_SYNC_SLEEP_DATA];
+    self.syncSleepDataBlock = aCallback;
+}
+
 #pragma mark - Handle
 - (void)handleDidGetNotifyValue:(NSNotification *)notification
 {
@@ -95,12 +106,7 @@
             {
                 Struct_SportData res = getSportData(package, PACKAGE_SIZE);
                 if (res.error == HANDLE_OK) {
-                    NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d", res.year, res.month, res.day];
-                    NSDate *date = [NSDate dateFromString:strDate format:@"yyyy-MM-dd"];
-//                    syncSportDataCallback aCallback = [self.bleControl.stackManager popObjFromStackOfTimeID:TIME_ID_SYNC_SPORT_DATA];
-//                    if (aCallback) {
-//                        aCallback(date, res.steps, res.distances, res.fireHeats, res.durations, res.notSyncDays);
-//                    }
+                    NSDate *date = [self dateStrFromYear:res.year month:res.month day:res.day];
                     if (self.syncSportDataBlock) {
                         self.syncSportDataBlock(date, res.steps, res.distances, res.fireHeats, res.durations, res.notSyncDays);
                     }
@@ -111,6 +117,17 @@
                 }
                 break;
             }
+            case CMD_KEY(CMD_syncData, KEY_syncSleepData):{
+                Struct_SleepData res = getSleepData(package, PACKAGE_SIZE);
+                if (self.syncSleepDataBlock) {
+                    NSDate *date = [self dateStrFromYear:res.year month:res.month day:res.day];
+                    self.syncSleepDataBlock(date,res.year,res.month,res.day,res.deepSleepMinute,res.lightSleepMinute,res.notSyncDays);
+                }
+                if (res.notSyncDays == 0) {
+                    self.syncSportDataBlock = nil;
+                }
+            }
+                break;
                 
             default:
                 break;
@@ -118,5 +135,9 @@
     }///if
 }
 
-
+-(NSDate *) dateStrFromYear:(NSInteger) year month:(NSInteger) month day:(NSInteger) day{
+    NSString *strDate = [NSString stringWithFormat:@"%04d-%02d-%02d", year, month, day];
+    NSDate *date = [NSDate dateFromString:strDate format:@"yyyy-MM-dd"];
+    return date;
+}
 @end

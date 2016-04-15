@@ -249,10 +249,13 @@ NSString * const kConnectionMissingErrorMessage = @"BLE Device is not connected"
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
 {
+    DEBUGLog(@"receive data:===%@",characteristic.value);
+     //如果有多包数据的话，后面数据会接收很快，间隔时间很短，后面的包会出现覆盖情况，即characteristic的value还没传递出去，就被覆盖了。
+    NSData *value = characteristic.value;
     dispatch_async(dispatch_get_main_queue(), ^{
         [[[self wrapperByService:characteristic.service]
           wrapperByCharacteristic:characteristic]
-         handleReadValue:characteristic.value error:error];
+         handleReadValue:value error:error];
     });
 }
 

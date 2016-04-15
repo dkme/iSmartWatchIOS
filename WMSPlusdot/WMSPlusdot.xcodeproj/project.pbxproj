@@ -278,7 +278,6 @@
 		F72F91B71BC60C500063CAAB /* intro_page3_b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F72F91B51BC60C500063CAAB /* intro_page3_b@2x.png */; settings = {ASSET_TAGS = (); }; };
 		F736D8BA1BB3E9B4002C73B9 /* UILabel+VerticalAlign.m in Sources */ = {isa = PBXBuildFile; fileRef = F736D8B91BB3E9B4002C73B9 /* UILabel+VerticalAlign.m */; settings = {ASSET_TAGS = (); }; };
 		F736D8BE1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F736D8BB1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m */; settings = {ASSET_TAGS = (); }; };
-		F736D8BF1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F736D8BC1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		F763D3901B511B17003CE5B3 /* WMSPlusdot-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */; };
 		F76B8BF21B6878CB00315600 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF11B6878CB00315600 /* Utility.m */; };
 		F76B8BFB1B68793200315600 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = F76B8BF41B68793200315600 /* DFUOperations.m */; };
@@ -312,6 +311,7 @@
 		F7815F611BAFF210008CA4EB /* intro_page4_b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F7815F591BAFF210008CA4EB /* intro_page4_b@2x.png */; };
 		F783EF5E1B130392008124BE /* TurntableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F783EF5D1B130392008124BE /* TurntableView.m */; };
 		F78A58351B1C072000DBC3D7 /* RequestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = F78A58341B1C072000DBC3D7 /* RequestClass.m */; };
+		F799577B1CC0F4DD0006DD12 /* WMSBindingAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F79957791CC0F4DD0006DD12 /* WMSBindingAccessoryViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		F7CAE80B1B5CDB050057300C /* UIViewController+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */; };
 		F7CAE80F1B5D05BC0057300C /* CheckTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CAE80C1B5D05BC0057300C /* CheckTimeViewController.m */; };
 		F7CAE8101B5D05BC0057300C /* CheckTimeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7CAE80E1B5D05BC0057300C /* CheckTimeViewController.xib */; };
@@ -737,7 +737,6 @@
 		F736D8B81BB3E9B4002C73B9 /* UILabel+VerticalAlign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+VerticalAlign.h"; sourceTree = "<group>"; };
 		F736D8B91BB3E9B4002C73B9 /* UILabel+VerticalAlign.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+VerticalAlign.m"; sourceTree = "<group>"; };
 		F736D8BB1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WMSBindingAccessoryViewController.m; sourceTree = "<group>"; };
-		F736D8BC1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WMSBindingAccessoryViewController.xib; sourceTree = "<group>"; };
 		F736D8BD1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WMSBindingAccessoryViewController.h; sourceTree = "<group>"; };
 		F763D38F1B511B17003CE5B3 /* WMSPlusdot-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WMSPlusdot-Info.plist"; sourceTree = "<group>"; };
 		F76B8BF01B6878CB00315600 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
@@ -792,6 +791,8 @@
 		F783EF5D1B130392008124BE /* TurntableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TurntableView.m; sourceTree = "<group>"; };
 		F78A58331B1C072000DBC3D7 /* RequestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestClass.h; sourceTree = "<group>"; };
 		F78A58341B1C072000DBC3D7 /* RequestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestClass.m; sourceTree = "<group>"; };
+		F799577A1CC0F4DD0006DD12 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WMSBindingAccessoryViewController.xib; sourceTree = "<group>"; };
+		F799577C1CC0F4F80006DD12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/WMSBindingAccessoryViewController.xib"; sourceTree = "<group>"; };
 		F7CAE8091B5CDB050057300C /* UIViewController+Sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Sync.h"; sourceTree = "<group>"; };
 		F7CAE80A1B5CDB050057300C /* UIViewController+Sync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Sync.m"; sourceTree = "<group>"; };
 		F7CAE80C1B5D05BC0057300C /* CheckTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTimeViewController.m; sourceTree = "<group>"; };
@@ -874,7 +875,7 @@
 			children = (
 				F736D8BD1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.h */,
 				F736D8BB1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.m */,
-				F736D8BC1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib */,
+				F79957791CC0F4DD0006DD12 /* WMSBindingAccessoryViewController.xib */,
 				236D95B91A67ACFC00037DD8 /* WMSFilter.h */,
 				236D95BA1A67ACFC00037DD8 /* WMSFilter.m */,
 			);
@@ -2315,7 +2316,7 @@
 				F72F91B31BC60C3E0063CAAB /* intro_page3@2x.png in Resources */,
 				233511A519A4BD5200FBCC81 /* WMSContentViewController.xib in Resources */,
 				237545C319AED3D200685CD1 /* account_head.png in Resources */,
-				F736D8BF1BB3EB85002C73B9 /* WMSBindingAccessoryViewController.xib in Resources */,
+				F799577B1CC0F4DD0006DD12 /* WMSBindingAccessoryViewController.xib in Resources */,
 				2393884A1ABBA8EE0018BDA1 /* WMSSmartClockViewController.xib in Resources */,
 				F7815F4B1BAFF1EC008CA4EB /* intro_page1@2x.png in Resources */,
 				23C74AFE19A72E9E00C589A1 /* main_deepsleep_icon.png in Resources */,
@@ -2654,6 +2655,15 @@
 			name = WMSLocationViewController.xib;
 			sourceTree = "<group>";
 		};
+		F79957791CC0F4DD0006DD12 /* WMSBindingAccessoryViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F799577A1CC0F4DD0006DD12 /* en */,
+				F799577C1CC0F4F80006DD12 /* zh-Hans */,
+			);
+			name = WMSBindingAccessoryViewController.xib;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -2697,7 +2707,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
@@ -2816,7 +2826,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: an liu (6PAC8WLTAS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";
@@ -2841,7 +2851,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Guogee";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WMSPlusdot/WMSPlusdot-Prefix.pch";

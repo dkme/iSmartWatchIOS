@@ -88,7 +88,6 @@
 		522E3540449198796EAC92F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E14EC6CF22EDBDED8112BB8 /* Foundation.framework */; };
 		5271986A63BCB8CF423FFE52 /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2820E788B345DE962F63F7E1 /* SDWebImageDownloaderOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		52F03A7B71A4D91230340F39 /* NSArray+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD105FF67154A00425FAFE1 /* NSArray+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		56FD5FE78375151950D8BEC6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 621DA647D288E4116FC90E3A /* AssetsLibrary.framework */; };
 		5915459826805672937AB939 /* NSValueTransformer+MTLPredefinedTransformerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB3021231CDE20CAF588BFD /* NSValueTransformer+MTLPredefinedTransformerAdditions.h */; };
 		5B409FE5A35AA872895D1261 /* MASConstraint+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 51242F81B31D9C9F67CCC475 /* MASConstraint+Private.h */; };
 		5B9948141B97514277E8C8B2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 555CAC5374E44492BB8CD9B6 /* Security.framework */; };
@@ -397,7 +396,6 @@
 		614B900E703CD3932BD8F161 /* MASViewAttribute.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MASViewAttribute.m; path = Masonry/MASViewAttribute.m; sourceTree = "<group>"; };
 		6160C0262E5EE609DF5A79A6 /* ImageSelectedOff.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = ImageSelectedOff.png; path = Pod/Assets/ImageSelectedOff.png; sourceTree = "<group>"; };
 		61E27F38E4ED92D0D9C02D11 /* MTLTransformerErrorHandling.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MTLTransformerErrorHandling.m; path = Mantle/MTLTransformerErrorHandling.m; sourceTree = "<group>"; };
-		621DA647D288E4116FC90E3A /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/AssetsLibrary.framework; sourceTree = DEVELOPER_DIR; };
 		64534D6F897DDE48ADC21B4A /* AFSecurityPolicy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFSecurityPolicy.m; path = AFNetworking/AFSecurityPolicy.m; sourceTree = "<group>"; };
 		64CD094CFC6311D6F265F104 /* MWTapDetectingView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MWTapDetectingView.m; path = Pod/Classes/MWTapDetectingView.m; sourceTree = "<group>"; };
 		64E0795E855AAD3B3D5A88B4 /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+MASAdditions.h"; path = "Masonry/NSArray+MASAdditions.h"; sourceTree = "<group>"; };
@@ -572,7 +570,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56FD5FE78375151950D8BEC6 /* AssetsLibrary.framework in Frameworks */,
 				112BCB5F7A898CA64AC60FF1 /* Foundation.framework in Frameworks */,
 				9783A0D72C66D02FCBA52662 /* ImageIO.framework in Frameworks */,
 				ADC7EBCCE145A726B81AC022 /* MediaPlayer.framework in Frameworks */,
@@ -749,7 +746,6 @@
 		19DB9B769D7A98802B5B13FD /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				621DA647D288E4116FC90E3A /* AssetsLibrary.framework */,
 				682E4EA077772326C9C71EDD /* CoreGraphics.framework */,
 				0E14EC6CF22EDBDED8112BB8 /* Foundation.framework */,
 				C5D335E96A0F526496CDA343 /* ImageIO.framework */,
